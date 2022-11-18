@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-bt-corretora-de-câmbio-ltda
-title: OpenPix suporta o BT Corretora de Câmbio Ltda. ?
+title: Woovi suporta o BT Corretora de Câmbio Ltda. ?
 tags:
   - bank
 ---

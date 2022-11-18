@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-cooperativa-central-de-crédito-noroeste-brasileiro-ltda-centralcredi
-title: OpenPix suporta o Cooperativa Central de Crédito Noroeste Brasileiro Ltda - CentralCredi ?
+title: Woovi suporta o Cooperativa Central de Crédito Noroeste Brasileiro Ltda - CentralCredi ?
 tags:
   - bank
 ---

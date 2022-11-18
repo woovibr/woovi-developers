@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-topazio
-title: OpenPix suporta o Banco Topazio ?
+title: Woovi suporta o Banco Topazio ?
 tags:
   - bank
 ---

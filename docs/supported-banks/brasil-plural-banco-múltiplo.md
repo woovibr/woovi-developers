@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-brasil-plural-banco-múltiplo
-title: OpenPix suporta o Brasil Plural  Banco Múltiplo ?
+title: Woovi suporta o Brasil Plural  Banco Múltiplo ?
 tags:
   - bank
 ---

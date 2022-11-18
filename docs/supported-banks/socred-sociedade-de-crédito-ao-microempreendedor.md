@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-socred-sociedade-de-crédito-ao-microempreendedor
-title: OpenPix suporta o Socred  - Sociedade de Crédito ao Microempreendedor ?
+title: Woovi suporta o Socred  - Sociedade de Crédito ao Microempreendedor ?
 tags:
   - bank
 ---

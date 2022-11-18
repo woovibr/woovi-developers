@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-terra-investimentos-distribuidora-de-títulos-e-valores-mobiliários-ltda
-title: OpenPix suporta o Terra Investimentos Distribuidora de Títulos e Valores Mobiliários Ltda. ?
+title: Woovi suporta o Terra Investimentos Distribuidora de Títulos e Valores Mobiliários Ltda. ?
 tags:
   - bank
 ---

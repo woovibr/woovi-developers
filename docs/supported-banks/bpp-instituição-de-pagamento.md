@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-bpp-instituição-de-pagamento
-title: OpenPix suporta o BPP Instituição de Pagamento ?
+title: Woovi suporta o BPP Instituição de Pagamento ?
 tags:
   - bank
 ---

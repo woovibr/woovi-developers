@@ -10,7 +10,7 @@ tags:
 
 ## Resumo
 
-Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Flagship, na OpenPix. Após conectar a sua conta na OpenPix é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
+Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Flagship, na Woovi. Após conectar a sua conta na Woovi é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
 
 Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diretamente na conta corrente da sua empresa no Flagship
 
@@ -19,10 +19,10 @@ Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diret
 
 ## 1. Obtendo o Account ID da sua conta Flagship
 
-Entre em contato com o suporte da OpenPix para abrir sua conta Flagship
+Entre em contato com o suporte da Woovi para abrir sua conta Flagship
 
 
-## 2. Cadastrando o Account ID da sua conta corrente na plataforma OpenPix
+## 2. Cadastrando o Account ID da sua conta corrente na plataforma Woovi
 
 Uma vez recebido as credenciais de produção da sua conta no Flagship basta cadastrar o Account ID e Developer Api Key
 

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-sistema
-title: OpenPix suporta o Banco Sistema ?
+title: Woovi suporta o Banco Sistema ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-hipercard-banco-múltiplo
-title: OpenPix suporta o Hipercard Banco Múltiplo ?
+title: Woovi suporta o Hipercard Banco Múltiplo ?
 tags:
   - bank
 ---

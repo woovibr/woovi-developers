@@ -1,7 +1,7 @@
 ---
 id: woocommerce-plugin
-title: Integrando a OpenPix com WooCommerce
-sidebar_label: WooCommerce OpenPix Plugin
+title: Integrando a Woovi com WooCommerce
+sidebar_label: WooCommerce Woovi Plugin
 tags:
 - ecommerce
 - woocommerce
@@ -12,12 +12,12 @@ tags:
 
 ## Resumo
 
-Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no WooCommerce, na OpenPix. A plataforma OpenPix efetua em tempo real a conciliação entre seu Banco e seu e-Commerce.
-Após conectar a sua conta na OpenPix é possível cobrar clientes em tempo real com QrCodes Pix, enviar Links de Pagamento, gerenciar cobranças incluindo extornos.
+Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no WooCommerce, na Woovi. A plataforma Woovi efetua em tempo real a conciliação entre seu Banco e seu e-Commerce.
+Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real com QrCodes Pix, enviar Links de Pagamento, gerenciar cobranças incluindo extornos.
 
 > _Nota: Este documento espera que você já tenha um ambiente WooCommerce ativo._
 
-## 1. Instale o Plugin OpenPix na sua instância WooCommerce
+## 1. Instale o Plugin Woovi na sua instância WooCommerce
 
 [OpenPix For WooCommerce](https://wordpress.org/plugins/openpix-for-woocommerce/)
 
@@ -30,7 +30,7 @@ Entre em WooCommerce -> Settings > Payments.
 
 ![Payments](/img/ecommerce/woocommerce-payments.png)
 
-Clique em `Manage` no Plugin OpenPix.
+Clique em `Manage` no Plugin Woovi.
 
 - [ ] Cadastre um AppID do tipo API. Crie um appID [aqui](../apis/api-getting-started.md)
 - [ ] Customize o Título, Descrição e Texto de Botão de Pedido
@@ -44,14 +44,14 @@ Após adicionar o seu appID, clique em `Configure now with one click` para confi
 Caso não configure você pode acessar a plataforma, criar um webhook manualmente. Para isso:
 
 - [ ] Crie uma senha para a integração do Webhook. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-- [ ] Cadastre a URL de Callback do WooCommerce na OpenPix. Exemplo: <https://meusite.com.br/wc-api/WC_OpenPix_Pix_Gateway>
+- [ ] Cadastre a URL de Callback do WooCommerce na Woovi. Exemplo: <https://meusite.com.br/wc-api/WC_OpenPix_Pix_Gateway>
 - [ ] Clique em `Configure now with one click` novamente, para configurar o Webhook com esses novos dados criados.
 
 ![Webhook](/img/ecommerce/woocommerce-gatilho.png)
 
 ### 2.1 Customer
 
-Para salvar o customer da order na sua cobrança OpenPix é necessário que seja ativado um plugin que possibilite que o cliente informe o CPF/CNPJ no momento da compra.
+Para salvar o customer da order na sua cobrança Woovi é necessário que seja ativado um plugin que possibilite que o cliente informe o CPF/CNPJ no momento da compra.
 
 Indicamos o uso do plugin [woocommerce-extra-checkout-fields-for-brazil](https://wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/) para este caso. Uma vez ativado o plugin passará a salvar os clientes que informarem o CPF/CNPJ no momento da compra.
 
@@ -73,11 +73,11 @@ Valide que o status do Pedido mudou após o pagamento
 
 A cobrança da Openpix tem um valor de expiração padrão que equivale a 1 dia, já a configuração de expiração padrão do Woocommerce é de 60 minutos
 
-Para saber mais sobre Como configurar o tempo de expiração da OpenPix Charge [Clique aqui](/docs/flows/flow-edit-default-expiration).
+Para saber mais sobre Como configurar o tempo de expiração da Woovi Charge [Clique aqui](/docs/flows/flow-edit-default-expiration).
 
 ![Woocommerce Pedido](/img/ecommerce/woo-pedido.png)
 
-Para alterar e igualar esse tempo de expiração para a OpenPix e para Woocommerce você deve procurar no menu admin:
+Para alterar e igualar esse tempo de expiração para a Woovi e para Woocommerce você deve procurar no menu admin:
 
 `Woocommerce` > `Settings` > `Products` > `Inventory`
 

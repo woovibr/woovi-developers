@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks
-title: OpenPix suporta quais bancos?
+title: Woovi suporta quais bancos?
 tags:
 - bank
 ---

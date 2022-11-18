@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-intesa-sanpaolo-brasil-banco-múltiplo
-title: OpenPix suporta o Intesa Sanpaolo Brasil  - Banco Múltiplo ?
+title: Woovi suporta o Intesa Sanpaolo Brasil  - Banco Múltiplo ?
 tags:
   - bank
 ---

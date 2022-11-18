@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-avista-crédito
-title: OpenPix suporta o Avista  Crédito ?
+title: Woovi suporta o Avista  Crédito ?
 tags:
   - bank
 ---

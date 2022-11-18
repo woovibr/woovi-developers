@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-stone-pagamentos
-title: OpenPix suporta o Stone Pagamentos ?
+title: Woovi suporta o Stone Pagamentos ?
 tags:
   - bank
 ---

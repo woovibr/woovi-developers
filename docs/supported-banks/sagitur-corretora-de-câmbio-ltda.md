@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-sagitur-corretora-de-câmbio-ltda
-title: OpenPix suporta o Sagitur Corretora de Câmbio Ltda. ?
+title: Woovi suporta o Sagitur Corretora de Câmbio Ltda. ?
 tags:
   - bank
 ---

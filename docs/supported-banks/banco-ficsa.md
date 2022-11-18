@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-ficsa
-title: OpenPix suporta o Banco Ficsa ?
+title: Woovi suporta o Banco Ficsa ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-lecca-crédito
-title: OpenPix suporta o Lecca Crédito ?
+title: Woovi suporta o Lecca Crédito ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-ourinvest
-title: OpenPix suporta o Banco Ourinvest ?
+title: Woovi suporta o Banco Ourinvest ?
 tags:
   - bank
 ---

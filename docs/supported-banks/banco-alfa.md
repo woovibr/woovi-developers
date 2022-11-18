@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-alfa
-title: OpenPix suporta o Banco Alfa ?
+title: Woovi suporta o Banco Alfa ?
 tags:
   - bank
 ---

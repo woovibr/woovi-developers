@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-senff-crédito
-title: OpenPix suporta o Senff  - Crédito ?
+title: Woovi suporta o Senff  - Crédito ?
 tags:
   - bank
 ---

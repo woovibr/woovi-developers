@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-ubs-brasil-corretora-de-câmbio
-title: OpenPix suporta o UBS Brasil Corretora de Câmbio ?
+title: Woovi suporta o UBS Brasil Corretora de Câmbio ?
 tags:
   - bank
 ---

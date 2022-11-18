@@ -6,11 +6,11 @@ tags:
 - bank
 ---
 
-### Integrando conta corrente da sua empresa do Itaú na plataforma OpenPix
+### Integrando conta corrente da sua empresa do Itaú na plataforma Woovi
 
 ## Resumo
 
-Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Itaú, na OpenPix. Após conectar a sua conta na OpenPix é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
+Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Itaú, na Woovi. Após conectar a sua conta na Woovi é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
 
 Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diretamente na conta corrente da sua empresa do Itaú.
 
@@ -47,7 +47,7 @@ Primeiro temos que cadastrar a sua chave Pix da sua conta Itaú. Normalmente é 
 
 ![Pix Key](/img/integrations/pix-key.png)
 
-## 3. Cadastro do Token temporário enviado pelo Itaú na plataforma OpenPix
+## 3. Cadastro do Token temporário enviado pelo Itaú na plataforma Woovi
 
 Uma vez recebido seu `ClientID` e `AccessTokenTemp` do Itaú basta cadastrar os dados na plataforma. 
 

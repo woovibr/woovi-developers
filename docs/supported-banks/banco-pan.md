@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-pan
-title: OpenPix suporta o Banco Pan ?
+title: Woovi suporta o Banco Pan ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-hs-financeira-crédito
-title: OpenPix suporta o HS Financeira  Crédito ?
+title: Woovi suporta o HS Financeira  Crédito ?
 tags:
   - bank
 ---

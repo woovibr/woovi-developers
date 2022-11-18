@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-triângulo
-title: OpenPix suporta o Banco Triângulo ?
+title: Woovi suporta o Banco Triângulo ?
 tags:
   - bank
 ---

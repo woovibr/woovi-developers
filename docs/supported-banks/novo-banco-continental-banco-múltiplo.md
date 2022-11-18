@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-novo-banco-continental-banco-múltiplo
-title: OpenPix suporta o Novo Banco Continental  - Banco Múltiplo ?
+title: Woovi suporta o Novo Banco Continental  - Banco Múltiplo ?
 tags:
   - bank
 ---

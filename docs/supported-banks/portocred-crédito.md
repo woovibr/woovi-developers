@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-portocred-crédito
-title: OpenPix suporta o PortoCred  Crédito ?
+title: Woovi suporta o PortoCred  Crédito ?
 tags:
   - bank
 ---

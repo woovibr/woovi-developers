@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-capital
-title: OpenPix suporta o Banco Capital ?
+title: Woovi suporta o Banco Capital ?
 tags:
   - bank
 ---

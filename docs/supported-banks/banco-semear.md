@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-semear
-title: OpenPix suporta o Banco Semear ?
+title: Woovi suporta o Banco Semear ?
 tags:
   - bank
 ---

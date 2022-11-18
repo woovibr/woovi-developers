@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-cifra
-title: OpenPix suporta o Banco Cifra ?
+title: Woovi suporta o Banco Cifra ?
 tags:
   - bank
 ---

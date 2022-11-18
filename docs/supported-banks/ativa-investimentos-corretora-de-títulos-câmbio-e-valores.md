@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-ativa-investimentos-corretora-de-títulos-câmbio-e-valores
-title: OpenPix suporta o Ativa Investimentos  Corretora de Títulos Câmbio e Valores ?
+title: Woovi suporta o Ativa Investimentos  Corretora de Títulos Câmbio e Valores ?
 tags:
   - bank
 ---

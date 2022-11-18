@@ -6,11 +6,11 @@ tags:
 - bank
 ---
 
-### Integrando conta corrente da sua empresa da Gerencia Net na plataforma OpenPix
+### Integrando conta corrente da sua empresa da Gerencia Net na plataforma Woovi
 
 ## Resumo
 
-Este documento explica como conectar a conta corrente da sua empresa, domiciliada na Gerencia Net, na OpenPix. Após conectar a sua conta na OpenPix é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
+Este documento explica como conectar a conta corrente da sua empresa, domiciliada na Gerencia Net, na Woovi. Após conectar a sua conta na Woovi é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
 
 Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diretamente na conta corrente da sua empresa da Gerencia Net.
 
@@ -37,13 +37,13 @@ Primeiro temos que cadastrar a sua chave Pix da sua conta Gerencianet. Normalmen
 
 ![Pix Key](/img/integrations/pix-key.png)
 
-## 4. Cadastro Credenciais Gerencia Net na plataforma OpenPix
+## 4. Cadastro Credenciais Gerencia Net na plataforma Woovi
 
 ![GN Setup](/img/integrations/gn-setup.png)
 
-É possível cadastrar mais de um conta corrente na OpenPix.
+É possível cadastrar mais de um conta corrente na Woovi.
 
 ## 5. Pronto!
 
-Agora você já pode cobrar os seus clientes usando a OpenPix.
+Agora você já pode cobrar os seus clientes usando a Woovi.
 

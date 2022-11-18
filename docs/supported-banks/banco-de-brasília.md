@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-de-brasília
-title: OpenPix suporta o Banco de Brasília ?
+title: Woovi suporta o Banco de Brasília ?
 tags:
   - bank
 ---

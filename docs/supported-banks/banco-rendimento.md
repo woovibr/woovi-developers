@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-rendimento
-title: OpenPix suporta o Banco Rendimento ?
+title: Woovi suporta o Banco Rendimento ?
 tags:
   - bank
 ---

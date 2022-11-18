@@ -10,7 +10,7 @@ tags:
 
 ## Resumo
 
-Este documento explica como conectar a conta corrente da sua empresa, domiciliada no BS2, na OpenPix. Após conectar a sua conta na OpenPix é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
+Este documento explica como conectar a conta corrente da sua empresa, domiciliada no BS2, na Woovi. Após conectar a sua conta na Woovi é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
 
 Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diretamente na conta corrente da sua empresa no BS2
 
@@ -21,11 +21,11 @@ Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diret
 
 Para operar usando uma conta corrente existente é necessário criar uma nova API Key no Portal da [BS2 Empresas](https://app.empresas.bs2.com/bs2/). 
 
-Clique em API Banking para gerar uma nova chave de API para ser utilizada na OpenPix
+Clique em API Banking para gerar uma nova chave de API para ser utilizada na Woovi
 
 ![BS2 Api key ](/img/integrations/bs2-key-api.png)
 
-## 2. Cadastrando o Client ID e Client Secret sua conta corrente na plataforma OpenPix
+## 2. Cadastrando o Client ID e Client Secret sua conta corrente na plataforma Woovi
 
 Uma vez recebido as credenciais de produção no portal BS2 basta cadastrar o Client ID, Client Secret e Developer Api Key 
 

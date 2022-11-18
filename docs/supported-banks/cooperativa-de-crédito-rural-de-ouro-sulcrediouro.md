@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-cooperativa-de-crédito-rural-de-ouro-sulcrediouro
-title: OpenPix suporta o Cooperativa de Crédito Rural de Ouro Sulcredi/Ouro ?
+title: Woovi suporta o Cooperativa de Crédito Rural de Ouro Sulcredi/Ouro ?
 tags:
   - bank
 ---

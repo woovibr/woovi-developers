@@ -1,7 +1,7 @@
 ---
 id: magento2-plugin
-title: Integrando a OpenPix com Magento2
-sidebar_label: Magento2 OpenPix Plugin
+title: Integrando a Woovi com Magento2
+sidebar_label: Magento2 Woovi Plugin
 tags:
 - magento2
 - ecommerce
@@ -11,18 +11,18 @@ tags:
 
 ## Resumo
 
-Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no Magento2, na OpenPix. A plataforma OpenPix efetua em tempo real a conciliação entre seu Banco e seu e-Commerce.
-Após conectar a sua conta na OpenPix é possível cobrar clientes em tempo real com QrCodes Pix, enviar Links de Pagamento, gerenciar cobranças incluindo extornos.
+Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no Magento2, na Woovi. A plataforma Woovi efetua em tempo real a conciliação entre seu Banco e seu e-Commerce.
+Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real com QrCodes Pix, enviar Links de Pagamento, gerenciar cobranças incluindo extornos.
 
 > *Nota: Este documento espera que você já tenha um ambiente Magento2 ativo.*
 
-## 1. Instale o Plugin OpenPix na sua instância Magento2
+## 1. Instale o Plugin Woovi na sua instância Magento2
 
 [OpenPix For Magento2](https://marketplace.magento.com/openpix-pix.html)
 
 ![Banner](/img/ecommerce/woocommerce-banner.png)
 ![Install](/img/ecommerce/magento2/magento2-marketplace-search.png)
-[Download OpenPix Magento2 Plugin - versão 2.0.6](pathname:///magento2/openpix_pix.2.0.6.zip) - Versão Atual
+[Download Woovi Magento2 Plugin - versão 2.0.6](pathname:///magento2/openpix_pix.2.0.6.zip) - Versão Atual
 
 ## 2. Configurando o Plugin Magento2
 
@@ -30,7 +30,7 @@ Entre em Magento2 Admin -> Stores > Configuration -> Sales -> Payment Method.
 
 ![Payments](/img/ecommerce/magento2/magento2-payments.png)
 
-Clicando em em `Credentials` no Plugin OpenPix.
+Clicando em em `Credentials` no Plugin Woovi.
 
 - [ ] Cadastre um AppID do tipo Plugin. Crie um appID [aqui](../apis/api-getting-started.md)
 
@@ -45,13 +45,13 @@ Após adicionar o seu appID, clique em `Configure now with one click` para confi
 Caso não configure, você pode acessar a plataforma, criar um webhook manualmente. Para isso:
 
 - [ ] Crie uma senha para a integração do Webhook em `Webhook Authorization` clique em `Save Config`.
-- [ ] Va até a plataforma OpenPix e acesse: `Admin -> API/Plugins -> Novo Webhook`
+- [ ] Va até a plataforma Woovi e acesse: `Admin -> API/Plugins -> Novo Webhook`
 - [ ] A URL de Callback que deve ser utilizada no cadastro se encontra logo abaixo ao campo em que se registra a senha do webhook dentro da sua loja Magento2
 - [ ] Clique em `Configure now with one click` novamente, para configurar o Webhook com esses novos dados criados.
 
 ![Webhook Manual Configuration](/img/ecommerce/magento2/magento2-webhook-manual-configuration.png)
 
-Clicando em `Payment via Pix` no Plugin OpenPix.
+Clicando em `Payment via Pix` no Plugin Woovi.
 
 - [ ] Ative ou Desative o Plugin
 - [ ] Customize o título do pagamento dentro da sua Store
@@ -60,7 +60,7 @@ Clicando em `Payment via Pix` no Plugin OpenPix.
 
 ### 2.2 Configurando CPF/CNPJ para o Customer (opcional)
 
-Para salvar o cpf/cnpj do customer da order na sua cobrança OpenPix é necessário que seja ativado o campo `TaxVat` em sua loja Magento.
+Para salvar o cpf/cnpj do customer da order na sua cobrança Woovi é necessário que seja ativado o campo `TaxVat` em sua loja Magento.
 
 **Obs: Caso você siga sem a configuração deste campo suas cobranças serão salvas sem o cliente da mesma.**
 
@@ -76,7 +76,7 @@ Em seguida em `Name and Address Options` ative o campo `Show Tax/VAT Number`:
 
 ![magento2-customer-name-address-options.png](/img/ecommerce/magento2/magento2-customer-name-address-options.png)
 
-A partir de agora os clientes terão que preencher esse campo com o CPF ou CNPJ e o mesmo será usado para salvar o cliente na plataforma OpenPix.
+A partir de agora os clientes terão que preencher esse campo com o CPF ou CNPJ e o mesmo será usado para salvar o cliente na plataforma Woovi.
 
 ### 2.3 Giftback
 
@@ -84,13 +84,13 @@ Importante lembrete sobre a feature de [Giftback](../giftback/what-is-giftback.m
 
 > **A versão minima do plugin Magento2 para consumir a feature giftback é  a 2.0.6**
 
-## 3. Crie o Webhook dentro da Plataforma OpenPix
+## 3. Crie o Webhook dentro da Plataforma Woovi
 
-Ao configurar a Store volte para a Plataforma OpenPix e registre o Webhook que será responsável para atualizar sua Store Magento2 quando uma cobrança Pix for paga.
+Ao configurar a Store volte para a Plataforma Woovi e registre o Webhook que será responsável para atualizar sua Store Magento2 quando uma cobrança Pix for paga.
 
 Para realizar o registro de um novo Webhook siga os passos abaixo:
 
-- Va até a plataforma OpenPix e acesse: Admin -> API/Plugins -> Novo Webhook
+- Va até a plataforma Woovi e acesse: Admin -> API/Plugins -> Novo Webhook
 - Utilize a mesma senha cadastrada em sua store Magento2. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
 - A URL de Callback que deve ser utilizada no cadastro se encontra logo abaixo ao campo em que se registra a senha do webhook dentro da sua Store Magento2. O padrão é: <https://youstore.com.br/openpix/index/webhook>
 
@@ -118,6 +118,6 @@ Seu cliente poderá visualizar o pedido realizado via Pix dentro do detalhes do 
 
 ## 6. Debug
 
-Para debugar o plugin OpenPix temos o arquivo de log e você encontra dentro de `var/log`:
+Para debugar o plugin Woovi temos o arquivo de log e você encontra dentro de `var/log`:
 
-- `openpix.log`: arquivo que concentra logs referentes ao processo de criação de um novo pedido Magento e consequentemente a charge no lado da OpenPix e o processo de atualização da Order quando paga.
+- `openpix.log`: arquivo que concentra logs referentes ao processo de criação de um novo pedido Magento e consequentemente a charge no lado da Woovi e o processo de atualização da Order quando paga.

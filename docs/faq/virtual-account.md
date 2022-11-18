@@ -61,7 +61,7 @@ Na plataforma, acesse o menu `Contas`
 
 ![Menu Accounts](/img/FAQ/accounts-menu.png)
 
-Selecione a Conta OpenPix.
+Selecione a Conta Woovi.
 
 ![Openix Account](/img/FAQ/account-list.png)
 

@@ -5,9 +5,9 @@ tags:
 - test
 ---
 
-Para gerar novas cobranças na OpenPix, você precisa criar uma conta bancária que represente o provedor do seu banco Pix.
+Para gerar novas cobranças na Woovi, você precisa criar uma conta bancária que represente o provedor do seu banco Pix.
 
-Para evitar custos ao testar a OpenPix, temos uma conta bancária especial para testes. Cada cobrança criada usando o teste da mesma não irá gerar custos em seu banco e você também não gastará nenhum dinheiro.
+Para evitar custos ao testar a Woovi, temos uma conta bancária especial para testes. Cada cobrança criada usando o teste da mesma não irá gerar custos em seu banco e você também não gastará nenhum dinheiro.
 
 ## Como criar uma Conta Bancária para testes
 

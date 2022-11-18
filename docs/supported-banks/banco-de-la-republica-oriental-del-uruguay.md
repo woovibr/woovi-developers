@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-de-la-republica-oriental-del-uruguay
-title: OpenPix suporta o Banco de La Republica Oriental del Uruguay ?
+title: Woovi suporta o Banco de La Republica Oriental del Uruguay ?
 tags:
   - bank
 ---

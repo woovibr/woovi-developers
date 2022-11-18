@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-guanabara
-title: OpenPix suporta o Banco Guanabara ?
+title: Woovi suporta o Banco Guanabara ?
 tags:
   - bank
 ---

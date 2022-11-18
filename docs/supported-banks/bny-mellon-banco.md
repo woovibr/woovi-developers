@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-bny-mellon-banco
-title: OpenPix suporta o BNY Mellon Banco ?
+title: Woovi suporta o BNY Mellon Banco ?
 tags:
   - bank
 ---

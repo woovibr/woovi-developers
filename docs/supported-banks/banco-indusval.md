@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-indusval
-title: OpenPix suporta o Banco Indusval ?
+title: Woovi suporta o Banco Indusval ?
 tags:
   - bank
 ---

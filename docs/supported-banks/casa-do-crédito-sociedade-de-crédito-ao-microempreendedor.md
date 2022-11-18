@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-casa-do-crédito-sociedade-de-crédito-ao-microempreendedor
-title: OpenPix suporta o Casa do Crédito  Sociedade de Crédito ao Microempreendedor ?
+title: Woovi suporta o Casa do Crédito  Sociedade de Crédito ao Microempreendedor ?
 tags:
   - bank
 ---

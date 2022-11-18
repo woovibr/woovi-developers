@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-confederação-nacional-das-cooperativas-centrais-de-crédito-e-economia-familiar-e
-title: OpenPix suporta o Confederação Nacional das Cooperativas Centrais de Crédito e Economia Familiar e ?
+title: Woovi suporta o Confederação Nacional das Cooperativas Centrais de Crédito e Economia Familiar e ?
 tags:
   - bank
 ---

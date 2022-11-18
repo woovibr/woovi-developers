@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-brk-crédito
-title: OpenPix suporta o BRK  Crédito ?
+title: Woovi suporta o BRK  Crédito ?
 tags:
   - bank
 ---

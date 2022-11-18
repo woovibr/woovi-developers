@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-credit-suisse-hedginggriffo-corretora-de-valores
-title: OpenPix suporta o Credit Suisse Hedging-Griffo Corretora de Valores ?
+title: Woovi suporta o Credit Suisse Hedging-Griffo Corretora de Valores ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-pine
-title: OpenPix suporta o Banco Pine ?
+title: Woovi suporta o Banco Pine ?
 tags:
   - bank
 ---

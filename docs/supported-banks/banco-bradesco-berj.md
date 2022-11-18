@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-bradesco-berj
-title: OpenPix suporta o Banco Bradesco BERJ ?
+title: Woovi suporta o Banco Bradesco BERJ ?
 tags:
   - bank
 ---

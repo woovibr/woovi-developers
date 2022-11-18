@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-financiamento-e-investimentos
-title: OpenPix suporta o Financiamento e Investimentos ?
+title: Woovi suporta o Financiamento e Investimentos ?
 tags:
   - bank
 ---

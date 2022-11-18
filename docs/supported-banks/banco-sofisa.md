@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-sofisa
-title: OpenPix suporta o Banco Sofisa ?
+title: Woovi suporta o Banco Sofisa ?
 tags:
   - bank
 ---

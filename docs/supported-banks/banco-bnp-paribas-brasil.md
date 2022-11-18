@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-bnp-paribas-brasil
-title: OpenPix suporta o Banco BNP Paribas Brasil ?
+title: Woovi suporta o Banco BNP Paribas Brasil ?
 tags:
   - bank
 ---

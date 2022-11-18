@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-abc-brasil
-title: OpenPix suporta o Banco ABC Brasil ?
+title: Woovi suporta o Banco ABC Brasil ?
 tags:
   - bank
 ---

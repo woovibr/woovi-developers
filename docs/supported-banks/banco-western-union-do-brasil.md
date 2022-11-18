@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-western-union-do-brasil
-title: OpenPix suporta o Banco Western Union do Brasil ?
+title: Woovi suporta o Banco Western Union do Brasil ?
 tags:
   - bank
 ---

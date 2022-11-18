@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-credit-suisse-(brasil)
-title: OpenPix suporta o Banco Credit Suisse (Brasil) ?
+title: Woovi suporta o Banco Credit Suisse (Brasil) ?
 tags:
   - bank
 ---

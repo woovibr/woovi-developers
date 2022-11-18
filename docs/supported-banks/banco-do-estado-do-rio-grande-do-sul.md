@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-do-estado-do-rio-grande-do-sul
-title: OpenPix suporta o Banco do Estado do Rio Grande do Sul ?
+title: Woovi suporta o Banco do Estado do Rio Grande do Sul ?
 tags:
   - bank
 ---

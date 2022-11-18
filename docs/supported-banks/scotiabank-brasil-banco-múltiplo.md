@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-scotiabank-brasil-banco-múltiplo
-title: OpenPix suporta o Scotiabank Brasil  Banco Múltiplo ?
+title: Woovi suporta o Scotiabank Brasil  Banco Múltiplo ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-cargill
-title: OpenPix suporta o Banco Cargill ?
+title: Woovi suporta o Banco Cargill ?
 tags:
   - bank
 ---

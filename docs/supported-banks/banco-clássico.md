@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-clássico
-title: OpenPix suporta o Banco Clássico ?
+title: Woovi suporta o Banco Clássico ?
 tags:
   - bank
 ---

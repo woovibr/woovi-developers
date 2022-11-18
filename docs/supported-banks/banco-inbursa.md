@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-inbursa
-title: OpenPix suporta o Banco Inbursa ?
+title: Woovi suporta o Banco Inbursa ?
 tags:
   - bank
 ---

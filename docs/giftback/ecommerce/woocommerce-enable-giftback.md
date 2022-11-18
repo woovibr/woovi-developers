@@ -8,10 +8,10 @@ tags:
 
 ## Resumo
 
-Este documento detalha como você pode habilitar o Giftback dentro da OpenPix para o seu WooCommerce.
+Este documento detalha como você pode habilitar o Giftback dentro da Woovi para o seu WooCommerce.
 
-Para isso é necessário que você já tenho instalado o plugin WooCommerce e que você tenha configurado o seu WooCommerce para utilizar a OpenPix.
-Caso ainda não tenha configurado o WooCommerce com a OpenPix corretamente, leia o [Guia de Instalação](../../ecommerce/woocommerce-plugin.md) e retorne para este documento.
+Para isso é necessário que você já tenho instalado o plugin WooCommerce e que você tenha configurado o seu WooCommerce para utilizar a Woovi.
+Caso ainda não tenha configurado o WooCommerce com a Woovi corretamente, leia o [Guia de Instalação](../../ecommerce/woocommerce-plugin.md) e retorne para este documento.
 
 Caso ainda não tenha o giftback ativado, veja como ativar [Habilitar Giftback](../giftback-enable)
 

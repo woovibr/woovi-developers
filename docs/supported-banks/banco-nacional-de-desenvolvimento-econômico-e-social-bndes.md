@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-nacional-de-desenvolvimento-econômico-e-social-bndes
-title: OpenPix suporta o Banco Nacional de Desenvolvimento Econômico e Social BNDES ?
+title: Woovi suporta o Banco Nacional de Desenvolvimento Econômico e Social BNDES ?
 tags:
   - bank
 ---

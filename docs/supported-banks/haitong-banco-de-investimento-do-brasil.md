@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-haitong-banco-de-investimento-do-brasil
-title: OpenPix suporta o Haitong Banco de Investimento do Brasil ?
+title: Woovi suporta o Haitong Banco de Investimento do Brasil ?
 tags:
   - bank
 ---

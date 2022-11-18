@@ -18,14 +18,14 @@ module.exports = {
     locales,
     localeConfigs,
   },
-  title: 'OpenPix Developers',
+  title: 'Woovi Developers',
   tagline: 'Instant payments Docs, APIs, SDKs',
-  url: 'https://developers.openpix.com.br',
+  url: 'https://developers.woovi.com',
   baseUrl: '/',
-  organizationName: 'entria',
+  organizationName: 'woovi',
   projectName: 'developer-portal',
   scripts: [],
-  favicon: 'img/icons/OpenPixIcon.svg',
+  favicon: 'img/icons/WooviIcon.svg',
   onBrokenLinks: 'log',
   trailingSlash: false,
   onBrokenMarkdownLinks: 'warn',
@@ -35,10 +35,10 @@ module.exports = {
   ],
   themeConfig: {
     navbar: {
-      title: 'OpenPix Developers',
+      title: 'Woovi Developers',
       logo: {
-        alt: 'OpenPix Developers',
-        src: 'img/icons/OpenPixIcon.svg',
+        alt: 'Woovi Developers',
+        src: 'img/logo.svg',
       },
       items: [
         {
@@ -62,12 +62,12 @@ module.exports = {
           label: 'Tags',
         },
         {
-          href: 'https://openpix.com.br/',
-          label: 'OpenPix',
+          href: 'https://woovi.com/',
+          label: 'Woovi',
           position: 'right',
         },
         {
-          href: 'https://github.com/Open-Pix/developers',
+          href: 'https://github.com/Open-Pix/woovi-developers',
           label: 'Github',
           position: 'right',
         },
@@ -111,7 +111,7 @@ module.exports = {
           path: './docs',
           sidebarPath: './sidebars.js',
           editUrl: ({ locale, versionDocsDirPath, docPath }) => {
-            return `https://github.com/Open-Pix/developers/edit/main/${versionDocsDirPath}/${docPath}`;
+            return `https://github.com/Open-Pix/woovi-developers/edit/main/${versionDocsDirPath}/${docPath}`;
           },
           editCurrentVersion: true,
           remarkPlugins: [require('mdx-mermaid')],
@@ -120,7 +120,7 @@ module.exports = {
         //   "path": "blog"
         // },
         theme: {
-          customCss: [require.resolve('./src/theme/customTheme.css')],
+          customCss: require.resolve('./src/css/custom.css'),
         },
         googleAnalytics: {
           trackingID: 'G-DFFLN19210',

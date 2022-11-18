@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-crefisa
-title: OpenPix suporta o Banco Crefisa ?
+title: Woovi suporta o Banco Crefisa ?
 tags:
   - bank
 ---

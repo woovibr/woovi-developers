@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-standard-chartered-bank-(brasil)-banco-de-investimento
-title: OpenPix suporta o Standard Chartered Bank (Brasil)  Banco de Investimento ?
+title: Woovi suporta o Standard Chartered Bank (Brasil)  Banco de Investimento ?
 tags:
   - bank
 ---

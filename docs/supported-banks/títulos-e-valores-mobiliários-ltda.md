@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-títulos-e-valores-mobiliários-ltda
-title: OpenPix suporta o Títulos e Valores Mobiliários Ltda. ?
+title: Woovi suporta o Títulos e Valores Mobiliários Ltda. ?
 tags:
   - bank
 ---

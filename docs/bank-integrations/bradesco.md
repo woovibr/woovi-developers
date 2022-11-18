@@ -6,11 +6,11 @@ tags:
 - bank
 ---
 
-### Integrando sua corrente do Bradesco na OpenPix
+### Integrando sua corrente do Bradesco na Woovi
 
 ## Resumo
 
-Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Bradesco, na OpenPix. Após conectar a sua conta na OpenPix é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
+Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Bradesco, na Woovi. Após conectar a sua conta na Woovi é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
 
 Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diretamente na conta corrente da sua empresa no Bradesco.
 
@@ -33,9 +33,9 @@ Após seu cadastro no Bradesco developers você terá os seguintes elementos do 
 - `Certificado A1`
 - `Senha Certificado A1`
 
-## 3. Cadastrando o Token da Sua conta corrente na plataforma OpenPix
+## 3. Cadastrando o Token da Sua conta corrente na plataforma Woovi
 
-Após receber o `Client ID`, `Client Secret`, `Certificado A1` e `Senha Certificado A1` você terá que cadastrar eles na platforma OpenPix
+Após receber o `Client ID`, `Client Secret`, `Certificado A1` e `Senha Certificado A1` você terá que cadastrar eles na platforma Woovi
 
 ![Bradesco Setup](/img/integrations/bradesco-setup.png)
 

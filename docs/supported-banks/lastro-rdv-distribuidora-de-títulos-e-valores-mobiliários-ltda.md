@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-lastro-rdv-distribuidora-de-títulos-e-valores-mobiliários-ltda
-title: OpenPix suporta o Lastro RDV Distribuidora de Títulos e Valores Mobiliários Ltda. ?
+title: Woovi suporta o Lastro RDV Distribuidora de Títulos e Valores Mobiliários Ltda. ?
 tags:
   - bank
 ---

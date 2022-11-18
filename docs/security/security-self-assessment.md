@@ -21,7 +21,7 @@ tags:
 >
 > Applications: In scope for this Security Questionnaire 
 >
-> OpenPix is a instant payment provider
+> Woovi is a instant payment provider
 
 **Primary Contact for Security**
 > Name: Sibelius Seraphini

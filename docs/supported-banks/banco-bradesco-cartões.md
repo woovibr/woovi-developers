@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-bradesco-cartões
-title: OpenPix suporta o Banco Bradesco Cartões ?
+title: Woovi suporta o Banco Bradesco Cartões ?
 tags:
   - bank
 ---

@@ -171,7 +171,7 @@ Essas são as informações que podem ser usadas sozinhas ou com outras informa�
 
 ### Segurança na nuvem
  
-A plataforma OpenPix é executada na nuvem. A nuvem reduz nosso tempo de entrada no mercado, permite prototipagem rápida e custos controlados. No entanto, a nuvem é um ambiente compartilhado e deve ser considerado um
+A plataforma Woovi é executada na nuvem. A nuvem reduz nosso tempo de entrada no mercado, permite prototipagem rápida e custos controlados. No entanto, a nuvem é um ambiente compartilhado e deve ser considerado um
 ambiente que pode ser comprometido.
 
 Independentemente da nuvem ou DataCenter utilizado a segurança da plataforma permanece sob nossa responsabilidade.

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-fibra
-title: OpenPix suporta o Banco Fibra ?
+title: Woovi suporta o Banco Fibra ?
 tags:
   - bank
 ---

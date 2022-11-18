@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-xp-investimentos-corretora-de-câmbio-títulos-e-valores-mobiliários
-title: OpenPix suporta o XP Investimentos Corretora de Câmbio Títulos e Valores Mobiliários ?
+title: Woovi suporta o XP Investimentos Corretora de Câmbio Títulos e Valores Mobiliários ?
 tags:
   - bank
 ---

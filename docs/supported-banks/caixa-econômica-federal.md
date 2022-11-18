@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-caixa-econômica-federal
-title: OpenPix suporta o Caixa Econômica Federal ?
+title: Woovi suporta o Caixa Econômica Federal ?
 tags:
   - bank
 ---

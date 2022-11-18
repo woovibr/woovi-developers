@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-rabobank-international-brasil
-title: OpenPix suporta o Banco Rabobank International Brasil ?
+title: Woovi suporta o Banco Rabobank International Brasil ?
 tags:
   - bank
 ---

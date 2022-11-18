@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-central-de-cooperativas-de-economia-e-crédito-mútuo-do-est-rs-unicred
-title: OpenPix suporta o Central de Cooperativas de Economia e Crédito Mútuo do Est RS - Unicred ?
+title: Woovi suporta o Central de Cooperativas de Economia e Crédito Mútuo do Est RS - Unicred ?
 tags:
   - bank
 ---

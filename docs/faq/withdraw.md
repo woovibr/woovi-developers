@@ -23,7 +23,7 @@ Os saques da plataforma são instantâneos pelo Pix. 24 horas por dia, 7 dias po
 
 ![Menu Accounts](/img/FAQ/accounts-menu.png)
 
-2 - Selecionar a conta virtual OpenPix;
+2 - Selecionar a conta virtual Woovi;
 
 ![Openix Account](/img/FAQ/account-openpix.png)
 

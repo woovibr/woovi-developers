@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-itaubank
-title: OpenPix suporta o Banco ItauBank ?
+title: Woovi suporta o Banco ItauBank ?
 tags:
   - bank
 ---

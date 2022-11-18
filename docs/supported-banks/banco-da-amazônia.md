@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-da-amazônia
-title: OpenPix suporta o Banco da Amazônia ?
+title: Woovi suporta o Banco da Amazônia ?
 tags:
   - bank
 ---

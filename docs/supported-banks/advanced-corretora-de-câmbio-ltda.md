@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-advanced-corretora-de-câmbio-ltda
-title: OpenPix suporta o Advanced Corretora de Câmbio Ltda. ?
+title: Woovi suporta o Advanced Corretora de Câmbio Ltda. ?
 tags:
   - bank
 ---

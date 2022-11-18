@@ -39,7 +39,7 @@ defaultValue="PHP"
     $headers['X-OpenPix-Signature'] = 'jgR2XF0PKDiAwHP1s+TryvxMySQ='; // vira da chamada do webhook
     $body = '{"data_criacao":"2021-08-10T20:32:14.429Z","evento":"teste_webhook"}'; // vira da chamada do webhook
 
-    $secretKeyOnOpenpixPlatform = 'hmac-secret-key'; // secret key da chave de acesso do OpenPix
+    $secretKeyOnOpenpixPlatform = 'hmac-secret-key'; // secret key da chave de acesso do Woovi
 
     $algorithm = 'sha1'; // algoritmo de hash
 
@@ -73,7 +73,7 @@ defaultValue="PHP"
 
     const body = '{"data_criacao":"2021-08-10T20:32:14.429Z","evento":"teste_webhook"}'; // vem da chamada do webhook
 
-    const key = 'hmac-secret-key'; // secret key da chave de acesso do OpenPix
+    const key = 'hmac-secret-key'; // secret key da chave de acesso do Woovi
 
     const signature = hmacCalculateSignature(key, body, 'base64');
 

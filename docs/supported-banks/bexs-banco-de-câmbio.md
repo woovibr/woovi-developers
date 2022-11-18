@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-bexs-banco-de-câmbio
-title: OpenPix suporta o Bexs Banco de Câmbio ?
+title: Woovi suporta o Bexs Banco de Câmbio ?
 tags:
   - bank
 ---

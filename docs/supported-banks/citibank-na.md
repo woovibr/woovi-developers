@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-citibank-na
-title: OpenPix suporta o Citibank N.A. ?
+title: Woovi suporta o Citibank N.A. ?
 tags:
   - bank
 ---

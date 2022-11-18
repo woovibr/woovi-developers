@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-cooperativo-do-brasil-bancoob
-title: OpenPix suporta o Banco Cooperativo do Brasil  - Bancoob ?
+title: Woovi suporta o Banco Cooperativo do Brasil  - Bancoob ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-keb-hana-do-brasil
-title: OpenPix suporta o Banco Keb Hana do Brasil ?
+title: Woovi suporta o Banco Keb Hana do Brasil ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-nova-futura-corretora-de-títulos-e-valores-mobiliários-ltda
-title: OpenPix suporta o Nova Futura Corretora de Títulos e Valores Mobiliários Ltda. ?
+title: Woovi suporta o Nova Futura Corretora de Títulos e Valores Mobiliários Ltda. ?
 tags:
   - bank
 ---

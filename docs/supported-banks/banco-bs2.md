@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-bs2
-title: OpenPix suporta o Banco BS2 ?
+title: Woovi suporta o Banco BS2 ?
 tags:
   - bank
 ---

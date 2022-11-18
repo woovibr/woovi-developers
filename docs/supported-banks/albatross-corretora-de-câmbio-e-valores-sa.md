@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-albatross-corretora-de-câmbio-e-valores-sa
-title: OpenPix suporta o Albatross Corretora de Câmbio e Valores S.A ?
+title: Woovi suporta o Albatross Corretora de Câmbio e Valores S.A ?
 tags:
   - bank
 ---

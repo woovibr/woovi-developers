@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-kdb-do-brasil
-title: OpenPix suporta o Banco KDB do Brasil ?
+title: Woovi suporta o Banco KDB do Brasil ?
 tags:
   - bank
 ---
