@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-central-cooperativa-de-crédito-no-estado-do-espírito-santo-cecoop
-title: OpenPix suporta o Central Cooperativa de Crédito no Estado do Espírito Santo - CECOOP ?
+title: Woovi suporta o Central Cooperativa de Crédito no Estado do Espírito Santo - CECOOP ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-luso-brasileiro
-title: OpenPix suporta o Banco Luso Brasileiro ?
+title: Woovi suporta o Banco Luso Brasileiro ?
 tags:
   - bank
 ---

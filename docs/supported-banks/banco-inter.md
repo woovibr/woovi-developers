@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-inter
-title: OpenPix suporta o Banco Inter ?
+title: Woovi suporta o Banco Inter ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-j-safra
-title: OpenPix suporta o Banco J. Safra ?
+title: Woovi suporta o Banco J. Safra ?
 tags:
   - bank
 ---

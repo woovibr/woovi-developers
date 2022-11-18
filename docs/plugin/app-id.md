@@ -6,7 +6,7 @@ tags:
 - api
 ---
 
-O appID é criado dentro da plataforma OpenPix pelo administrador. Para criá-lo, acesse a documentação para criação de novas APIs clicando [aqui](/docs/apis/api-getting-started). Lembre de selecionar a API com o tipo **PLUGIN**.
+O appID é criado dentro da plataforma Woovi pelo administrador. Para criá-lo, acesse a documentação para criação de novas APIs clicando [aqui](/docs/apis/api-getting-started). Lembre de selecionar a API com o tipo **PLUGIN**.
 
 > **Importante**: para visualizar o sidebar API/Plugins é necessário ter a permissão de: ADMIN.
 > 

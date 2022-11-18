@@ -12,7 +12,7 @@ tags:
 
 ## Getting Started Guide
 
-To start using OpenPix you just need to follow this steps:
+To start using Woovi you just need to follow this steps:
 
 1. Register for a new account at [Register](https://openpix.com.br/register/?src=occ) or [Talk to Sales](https://openpix.com.br/join/?src=occ)
 2. Create an API appID of type Oracle Commerce Cloud [here](http://localhost:3000/docs/apis/api-getting-started)

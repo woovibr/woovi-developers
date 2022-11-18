@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-ing-bank-nv
-title: OpenPix suporta o ING Bank N.V. ?
+title: Woovi suporta o ING Bank N.V. ?
 tags:
   - bank
 ---

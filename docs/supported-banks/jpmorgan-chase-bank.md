@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-jpmorgan-chase-bank
-title: OpenPix suporta o JPMorgan Chase Bank ?
+title: Woovi suporta o JPMorgan Chase Bank ?
 tags:
   - bank
 ---

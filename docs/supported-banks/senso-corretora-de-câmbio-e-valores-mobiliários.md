@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-senso-corretora-de-câmbio-e-valores-mobiliários
-title: OpenPix suporta o Senso Corretora de Câmbio e Valores Mobiliários ?
+title: Woovi suporta o Senso Corretora de Câmbio e Valores Mobiliários ?
 tags:
   - bank
 ---

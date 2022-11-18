@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-bcv-banco-de-crédito-e-varejo
-title: OpenPix suporta o BCV - Banco de Crédito e Varejo ?
+title: Woovi suporta o BCV - Banco de Crédito e Varejo ?
 tags:
   - bank
 ---

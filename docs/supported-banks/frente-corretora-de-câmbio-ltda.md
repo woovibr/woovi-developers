@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-frente-corretora-de-câmbio-ltda
-title: OpenPix suporta o Frente Corretora de Câmbio Ltda. ?
+title: Woovi suporta o Frente Corretora de Câmbio Ltda. ?
 tags:
   - bank
 ---

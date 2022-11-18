@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-commerzbank-brasil-banco-múltiplo
-title: OpenPix suporta o Commerzbank Brasil  - Banco Múltiplo ?
+title: Woovi suporta o Commerzbank Brasil  - Banco Múltiplo ?
 tags:
   - bank
 ---

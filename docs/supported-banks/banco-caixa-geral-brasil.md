@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-caixa-geral-brasil
-title: OpenPix suporta o Banco Caixa Geral - Brasil ?
+title: Woovi suporta o Banco Caixa Geral - Brasil ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-ribeirão-preto
-title: OpenPix suporta o Banco Ribeirão Preto ?
+title: Woovi suporta o Banco Ribeirão Preto ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-deutsche-bank-banco-alemão
-title: OpenPix suporta o Deutsche Bank  - Banco Alemão ?
+title: Woovi suporta o Deutsche Bank  - Banco Alemão ?
 tags:
   - bank
 ---

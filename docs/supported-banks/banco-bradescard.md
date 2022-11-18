@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-bradescard
-title: OpenPix suporta o Banco Bradescard ?
+title: Woovi suporta o Banco Bradescard ?
 tags:
   - bank
 ---

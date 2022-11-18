@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-cooperativa-de-crédito-rural-de-primavera-do-leste
-title: OpenPix suporta o Cooperativa de Crédito Rural de Primavera do Leste ?
+title: Woovi suporta o Cooperativa de Crédito Rural de Primavera do Leste ?
 tags:
   - bank
 ---

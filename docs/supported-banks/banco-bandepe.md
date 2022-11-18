@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-bandepe
-title: OpenPix suporta o Banco Bandepe ?
+title: Woovi suporta o Banco Bandepe ?
 tags:
   - bank
 ---

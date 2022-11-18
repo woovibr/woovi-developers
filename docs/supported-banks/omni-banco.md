@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-omni-banco
-title: OpenPix suporta o Omni Banco ?
+title: Woovi suporta o Omni Banco ?
 tags:
   - bank
 ---

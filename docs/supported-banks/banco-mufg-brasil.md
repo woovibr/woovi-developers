@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-mufg-brasil
-title: OpenPix suporta o Banco MUFG Brasil ?
+title: Woovi suporta o Banco MUFG Brasil ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-vortx-distribuidora-de-títulos-e-valores-mobiliários-ltda
-title: OpenPix suporta o Vortx Distribuidora de Títulos e Valores Mobiliários Ltda. ?
+title: Woovi suporta o Vortx Distribuidora de Títulos e Valores Mobiliários Ltda. ?
 tags:
   - bank
 ---

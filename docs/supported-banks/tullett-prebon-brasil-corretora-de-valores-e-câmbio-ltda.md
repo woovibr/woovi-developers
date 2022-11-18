@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-tullett-prebon-brasil-corretora-de-valores-e-câmbio-ltda
-title: OpenPix suporta o Tullett Prebon Brasil Corretora de Valores e Câmbio Ltda. ?
+title: Woovi suporta o Tullett Prebon Brasil Corretora de Valores e Câmbio Ltda. ?
 tags:
   - bank
 ---

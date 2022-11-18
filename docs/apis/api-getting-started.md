@@ -7,7 +7,7 @@ tags:
   - getting-started
 ---
 
-Este documento irá ajudá-lo a começar a utilizar as APIs e Plugins da OpenPix.
+Este documento irá ajudá-lo a começar a utilizar as APIs e Plugins da Woovi.
 
 ### Criando uma nova chave de API/Plugin
 

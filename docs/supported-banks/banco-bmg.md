@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-bmg
-title: OpenPix suporta o Banco BMG ?
+title: Woovi suporta o Banco BMG ?
 tags:
   - bank
 ---

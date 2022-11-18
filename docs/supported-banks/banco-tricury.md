@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-tricury
-title: OpenPix suporta o Banco Tricury ?
+title: Woovi suporta o Banco Tricury ?
 tags:
   - bank
 ---

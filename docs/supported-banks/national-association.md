@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-national-association
-title: OpenPix suporta o National Association ?
+title: Woovi suporta o National Association ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-facta-financeira-crédito-financiamento-e-investimento
-title: OpenPix suporta o Facta Financeira  - Crédito Financiamento e Investimento ?
+title: Woovi suporta o Facta Financeira  - Crédito Financiamento e Investimento ?
 tags:
   - bank
 ---

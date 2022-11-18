@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-máxima
-title: OpenPix suporta o Banco Máxima ?
+title: Woovi suporta o Banco Máxima ?
 tags:
   - bank
 ---

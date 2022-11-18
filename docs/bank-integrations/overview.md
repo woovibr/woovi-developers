@@ -13,6 +13,6 @@ Essa seção contêm informações especificas do que é necessário para a inte
 
 Para a integração das APIs dos seus bancos é necessário o `Client ID` e o `Client Secret` e certificados de criptografia.
 
-A OpenPix guarda esses dados de forma criptograda e utilizada eles para acessar a API do seu banco
+A Woovi guarda esses dados de forma criptograda e utilizada eles para acessar a API do seu banco
 
 

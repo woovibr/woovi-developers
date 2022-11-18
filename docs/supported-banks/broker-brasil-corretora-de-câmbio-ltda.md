@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-broker-brasil-corretora-de-câmbio-ltda
-title: OpenPix suporta o Broker Brasil Corretora de Câmbio Ltda. ?
+title: Woovi suporta o Broker Brasil Corretora de Câmbio Ltda. ?
 tags:
   - bank
 ---

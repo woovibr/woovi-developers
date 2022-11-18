@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-olé-bonsucesso-consignado
-title: OpenPix suporta o Banco Olé Bonsucesso Consignado ?
+title: Woovi suporta o Banco Olé Bonsucesso Consignado ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-icbc-do-brasil-banco-múltiplo
-title: OpenPix suporta o ICBC do Brasil Banco Múltiplo ?
+title: Woovi suporta o ICBC do Brasil Banco Múltiplo ?
 tags:
   - bank
 ---

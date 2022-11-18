@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-sumitomo-mitsui-brasileiro
-title: OpenPix suporta o Banco Sumitomo Mitsui Brasileiro ?
+title: Woovi suporta o Banco Sumitomo Mitsui Brasileiro ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-original
-title: OpenPix suporta o Banco Original ?
+title: Woovi suporta o Banco Original ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banestes-banco-do-estado-do-espírito-santo
-title: OpenPix suporta o Banestes  Banco do Estado do Espírito Santo ?
+title: Woovi suporta o Banestes  Banco do Estado do Espírito Santo ?
 tags:
   - bank
 ---

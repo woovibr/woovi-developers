@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-bgc-liquidez-distribuidora-de-títulos-e-valores-mobiliários-ltda
-title: OpenPix suporta o BGC Liquidez Distribuidora de Títulos e Valores Mobiliários Ltda. ?
+title: Woovi suporta o BGC Liquidez Distribuidora de Títulos e Valores Mobiliários Ltda. ?
 tags:
   - bank
 ---

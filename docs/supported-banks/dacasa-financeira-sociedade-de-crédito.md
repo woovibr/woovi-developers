@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-dacasa-financeira-sociedade-de-crédito
-title: OpenPix suporta o Dacasa Financeira  - Sociedade de Crédito ?
+title: Woovi suporta o Dacasa Financeira  - Sociedade de Crédito ?
 tags:
   - bank
 ---

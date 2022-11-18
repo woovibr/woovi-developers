@@ -10,7 +10,7 @@ tags:
 
 ## Resumo
 
-Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Banco Original, na OpenPix. Após conectar a sua conta na OpenPix é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
+Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Banco Original, na Woovi. Após conectar a sua conta na Woovi é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
 
 Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diretamente na conta corrente da sua empresa no Banco Original
 
@@ -24,7 +24,7 @@ Para operar usando uma conta corrente existente é necessário criar uma nova AP
 Veja em [Documentação](https://www.originalhub.com.br/documentacaohttps://www.originalhub.com.br/documentacao)
 do Banco Original
 
-## 2. Cadastrando Credenciais do Banco Original da sua conta corrente na plataforma OpenPix
+## 2. Cadastrando Credenciais do Banco Original da sua conta corrente na plataforma Woovi
 
 Uma vez recebido as credenciais de produção no portal do Banco Original basta cadastrá-las 
 

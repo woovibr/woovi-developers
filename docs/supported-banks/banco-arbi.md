@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-arbi
-title: OpenPix suporta o Banco Arbi ?
+title: Woovi suporta o Banco Arbi ?
 tags:
   - bank
 ---

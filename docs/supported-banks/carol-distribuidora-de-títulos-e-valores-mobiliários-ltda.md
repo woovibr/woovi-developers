@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-carol-distribuidora-de-títulos-e-valores-mobiliários-ltda
-title: OpenPix suporta o Carol Distribuidora de Títulos e Valores Mobiliários Ltda. ?
+title: Woovi suporta o Carol Distribuidora de Títulos e Valores Mobiliários Ltda. ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-itaú-consignado
-title: OpenPix suporta o Banco Itaú Consignado ?
+title: Woovi suporta o Banco Itaú Consignado ?
 tags:
   - bank
 ---

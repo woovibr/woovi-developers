@@ -1,10 +1,10 @@
 openapi: 3.0.3
 info:
-  title: OpenPix
-  description: A OpenPix é uma Plataforma de Gestão de Pagamentos. Para utilizar
+  title: Woovi
+  description: A Woovi é uma Plataforma de Gestão de Pagamentos. Para utilizar
     nossa API você deve
     acessar  __[https://api.openpix.com.br/](https://api.openpix.com.br/)__ e
-    somente o mesmo. A OpenPix não aceita subdominios para a API.
+    somente o mesmo. A Woovi não aceita subdominios para a API.
   version: 1.0.0
 servers:
   - url: https://api.openpix.com.br/

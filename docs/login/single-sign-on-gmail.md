@@ -39,7 +39,7 @@ Veja em https://admin.google.com/AdminHome?hl=en#AppsList:serviceType=SAML_APPS
 
 ![saml-step2](/img/step-2-google-admin.png)
 
-- Download IDP metadata, opção 1 (será o xml utilizado dentro do OpenPix)
+- Download IDP metadata, opção 1 (será o xml utilizado dentro do Woovi)
 
 ### Passo 3
 

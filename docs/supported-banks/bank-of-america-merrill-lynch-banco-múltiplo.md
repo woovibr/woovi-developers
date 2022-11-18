@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-bank-of-america-merrill-lynch-banco-múltiplo
-title: OpenPix suporta o Bank of America Merrill Lynch Banco Múltiplo ?
+title: Woovi suporta o Bank of America Merrill Lynch Banco Múltiplo ?
 tags:
   - bank
 ---

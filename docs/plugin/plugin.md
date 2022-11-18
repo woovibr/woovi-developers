@@ -4,28 +4,28 @@ title: Plugin
 tags:
 - plugin
 ---
-A OpenPix possui 2 plugins para ser utilizados em seu negócio, o Plugin de `Order` e o Plugin de `Widget`.
+A Woovi possui 2 plugins para ser utilizados em seu negócio, o Plugin de `Order` e o Plugin de `Widget`.
 
 ## O que é necessário saber antes de utilizar os plugins?
 
-- É necessário entender que para utilizar as API's e plugins disponibilizados dentro da OpenPix você precisa ter um AppID válido, veja como criar [aqui](./app-id).
+- É necessário entender que para utilizar as API's e plugins disponibilizados dentro da Woovi você precisa ter um AppID válido, veja como criar [aqui](./app-id).
 
-- Ao tentar consumir o plugin para criar uma cobrança você precisa gerar um correlationID único, para conseguir buscar essa cobrança dentro da OpenPix, se você não informar um novo correlationID para uma nova cobrança, sera mostrado a cobrança anterior relacionada a esse correlationID
+- Ao tentar consumir o plugin para criar uma cobrança você precisa gerar um correlationID único, para conseguir buscar essa cobrança dentro da Woovi, se você não informar um novo correlationID para uma nova cobrança, sera mostrado a cobrança anterior relacionada a esse correlationID
 
 ## Começando com o Plugin de `Widget`
 
 O Plugin de `Widget` permite criar facilmente cobranças Pix dentro do seu frontend Javascript.
-E deve ser utilizado quando a cobrança ainda precisa ser criada na OpenPix.
+E deve ser utilizado quando a cobrança ainda precisa ser criada na Woovi.
 
 ### Criando o Plugin de `Widget`
 
-A primeira coisa é incluir a tag de script do plugin OpenPix na parte inferior do arquivo html
+A primeira coisa é incluir a tag de script do plugin Woovi na parte inferior do arquivo html
 
 ```html
 <script src="https://plugin.openpix.com.br/v1/openpix.js" async>
 ```
 
-O script pode ser importado dentro de um arquivo `.html`. Por exemplo, se seu aplicativo for um aplicativo em React, o script do Plugin OpenPix será importado dentro de `index.html`.
+O script pode ser importado dentro de um arquivo `.html`. Por exemplo, se seu aplicativo for um aplicativo em React, o script do Plugin Woovi será importado dentro de `index.html`.
 
 Veja o exemplo abaixo:
 
@@ -33,7 +33,7 @@ Veja o exemplo abaixo:
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
-    <title>Demo OpenPix Plugin</title>
+    <title>Demo Woovi Plugin</title>
   </head>
   <body>
     <div id="root"></div>
@@ -64,7 +64,7 @@ Agora seu plugin está pronto para ser consumido.
 
 ### Gerando uma cobrança Pix
 
-O Plugin OpenPix injeta uma variável `$openpix` especial para permitir que seu aplicativo se comunique com o Plugin
+O Plugin Woovi injeta uma variável `$openpix` especial para permitir que seu aplicativo se comunique com o Plugin
 
 Você pode criar uma nova Cobrança Pix como este:
 
@@ -90,7 +90,7 @@ window.$openpix.push([
 <html lang="pt-BR">
 
   <head>
-    <title>Demo OpenPix Plugin</title>
+    <title>Demo Woovi Plugin</title>
   </head>
 
   <body>
@@ -214,7 +214,7 @@ window.$openpix.push([
 
 Os eventos disponiveis são
 
-- `CHARGE_COMPLETED`: quando a cobrança foi paga pelo cliente e deu baixa na OpenPix.
+- `CHARGE_COMPLETED`: quando a cobrança foi paga pelo cliente e deu baixa na Woovi.
 - `CHARGE_EXPIRED`: quando a cobrança foi expirada.
 - `ON_CLOSE`: quando o modal da cobrança foi fechado.
 
@@ -250,7 +250,7 @@ if(!!window.$openpix?.addEventListener) {
 <html lang="pt-BR">
 
   <head>
-    <title>Demo OpenPix Plugin</title>
+    <title>Demo Woovi Plugin</title>
   </head>
 
   <body>
@@ -304,7 +304,7 @@ if(!!window.$openpix?.addEventListener) {
 
 ## Começando com o Plugin de `Order`
 
-O Plugin de `Order` é utilizado somente para mostrar cobranças já criadas na OpenPix, ou seja, você cria essa cobrança em um backend, e depois exibe ela consumindo o plugin de `Order`.
+O Plugin de `Order` é utilizado somente para mostrar cobranças já criadas na Woovi, ou seja, você cria essa cobrança em um backend, e depois exibe ela consumindo o plugin de `Order`.
 Nele todos os eventos de cobrança paga e expirada funcionam, e são atualizados em tempo real.
 
 ### Criando o Plugin de `Order`
@@ -319,7 +319,7 @@ ex: `?appID=<APPIDVALIDO>&correlationID=<CORRELATION-ID-VALIDO>&node=<DIV-PARA-I
 <html lang="pt-BR">
 
 <head>
-  <title>Demo OpenPix Plugin</title>
+  <title>Demo Woovi Plugin</title>
 </head>
 
 <body>

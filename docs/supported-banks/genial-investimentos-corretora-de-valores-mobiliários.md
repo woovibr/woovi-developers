@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-genial-investimentos-corretora-de-valores-mobiliários
-title: OpenPix suporta o Genial Investimentos Corretora de Valores Mobiliários ?
+title: Woovi suporta o Genial Investimentos Corretora de Valores Mobiliários ?
 tags:
   - bank
 ---

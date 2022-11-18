@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-fator
-title: OpenPix suporta o Banco Fator ?
+title: Woovi suporta o Banco Fator ?
 tags:
   - bank
 ---

@@ -24,7 +24,7 @@ Exemplo: um cliente transfere um valor para a chave Pix da sua empresa, ao invé
 
 ### Pix avulso é cobrado?
 
-Sim, caso o cliente realize um Pix avulso para a chave aleatória da sua conta virtual OpenPix haverá cobrança da taxa de R$ 0,50.
+Sim, caso o cliente realize um Pix avulso para a chave aleatória da sua conta virtual Woovi haverá cobrança da taxa de R$ 0,50.
 
 ### Como localizar uma transação?
 

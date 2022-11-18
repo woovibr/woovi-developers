@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-da-china-brasil
-title: OpenPix suporta o Banco da China Brasil ?
+title: Woovi suporta o Banco da China Brasil ?
 tags:
   - bank
 ---

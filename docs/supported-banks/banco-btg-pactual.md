@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-btg-pactual
-title: OpenPix suporta o Banco BTG Pactual ?
+title: Woovi suporta o Banco BTG Pactual ?
 tags:
   - bank
 ---

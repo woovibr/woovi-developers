@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-caruana-sociedade-de-crédito
-title: OpenPix suporta o Caruana  Sociedade de Crédito ?
+title: Woovi suporta o Caruana  Sociedade de Crédito ?
 tags:
   - bank
 ---

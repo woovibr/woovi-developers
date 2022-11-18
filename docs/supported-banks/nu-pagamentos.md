@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-nu-pagamentos
-title: OpenPix suporta o Nu Pagamentos ?
+title: Woovi suporta o Nu Pagamentos ?
 tags:
   - bank
 ---

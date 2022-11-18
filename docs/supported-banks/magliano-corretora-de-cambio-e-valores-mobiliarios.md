@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-magliano-corretora-de-cambio-e-valores-mobiliarios
-title: OpenPix suporta o Magliano  Corretora de Cambio e Valores Mobiliarios ?
+title: Woovi suporta o Magliano  Corretora de Cambio e Valores Mobiliarios ?
 tags:
   - bank
 ---

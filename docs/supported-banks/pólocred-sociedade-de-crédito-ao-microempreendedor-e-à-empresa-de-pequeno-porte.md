@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-pólocred-sociedade-de-crédito-ao-microempreendedor-e-à-empresa-de-pequeno-porte
-title: OpenPix suporta o Pólocred Sociedade de Crédito ao Microempreendedor e à Empresa de Pequeno Porte ?
+title: Woovi suporta o Pólocred Sociedade de Crédito ao Microempreendedor e à Empresa de Pequeno Porte ?
 tags:
   - bank
 ---

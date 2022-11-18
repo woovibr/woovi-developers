@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-rodobens-sa
-title: OpenPix suporta o Banco Rodobens SA ?
+title: Woovi suporta o Banco Rodobens SA ?
 tags:
   - bank
 ---

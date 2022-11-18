@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-itaú-unibanco
-title: OpenPix suporta o Itaú Unibanco ?
+title: Woovi suporta o Itaú Unibanco ?
 tags:
   - bank
 ---

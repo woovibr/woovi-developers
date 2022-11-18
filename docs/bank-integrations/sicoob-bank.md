@@ -10,7 +10,7 @@ tags:
 
 ## Resumo
 
-Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Sicoob, na OpenPix. Após conectar a sua conta na OpenPix é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
+Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Sicoob, na Woovi. Após conectar a sua conta na Woovi é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
 
 Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diretamente na conta corrente da sua empresa no Sicoob
 
@@ -27,7 +27,7 @@ As credenciais de acesso em Sandbox são disponibilizadas no menu [Dashboard](ht
 
 ![Sicoob Setup](/img/integrations/dashboard-sicoob.png)
 
-## 3. Cadastrando Credenciais Sicoob da sua conta corrente na plataforma OpenPix
+## 3. Cadastrando Credenciais Sicoob da sua conta corrente na plataforma Woovi
 
 Uma vez recebido as credenciais de produção da sua conta no Sicoob basta cadastrar o Client ID, Client Secret e Developer Api Key
 

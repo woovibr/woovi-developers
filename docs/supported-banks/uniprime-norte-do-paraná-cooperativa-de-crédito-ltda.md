@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-uniprime-norte-do-paraná-cooperativa-de-crédito-ltda
-title: OpenPix suporta o Uniprime Norte do Paraná - Cooperativa de Crédito Ltda. ?
+title: Woovi suporta o Uniprime Norte do Paraná - Cooperativa de Crédito Ltda. ?
 tags:
   - bank
 ---

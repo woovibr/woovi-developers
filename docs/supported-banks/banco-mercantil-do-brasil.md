@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-mercantil-do-brasil
-title: OpenPix suporta o Banco Mercantil do Brasil ?
+title: Woovi suporta o Banco Mercantil do Brasil ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-bs2-distribuidora-de-títulos-e-valores-mobiliários
-title: OpenPix suporta o BS2 Distribuidora de Títulos e Valores Mobiliários ?
+title: Woovi suporta o BS2 Distribuidora de Títulos e Valores Mobiliários ?
 tags:
   - bank
 ---

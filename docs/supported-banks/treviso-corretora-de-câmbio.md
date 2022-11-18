@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-treviso-corretora-de-câmbio
-title: OpenPix suporta o Treviso Corretora de Câmbio ?
+title: Woovi suporta o Treviso Corretora de Câmbio ?
 tags:
   - bank
 ---

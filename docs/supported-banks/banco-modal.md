@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-modal
-title: OpenPix suporta o Banco Modal ?
+title: Woovi suporta o Banco Modal ?
 tags:
   - bank
 ---

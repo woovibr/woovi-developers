@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-b3
-title: OpenPix suporta o Banco B3 ?
+title: Woovi suporta o Banco B3 ?
 tags:
   - bank
 ---

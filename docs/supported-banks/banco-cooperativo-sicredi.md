@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-cooperativo-sicredi
-title: OpenPix suporta o Banco Cooperativo Sicredi ?
+title: Woovi suporta o Banco Cooperativo Sicredi ?
 tags:
   - bank
 ---

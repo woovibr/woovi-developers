@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-paulista
-title: OpenPix suporta o Banco Paulista ?
+title: Woovi suporta o Banco Paulista ?
 tags:
   - bank
 ---

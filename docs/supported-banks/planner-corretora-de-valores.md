@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-planner-corretora-de-valores
-title: OpenPix suporta o Planner Corretora de Valores ?
+title: Woovi suporta o Planner Corretora de Valores ?
 tags:
   - bank
 ---

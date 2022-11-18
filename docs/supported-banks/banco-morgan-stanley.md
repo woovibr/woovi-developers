@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-morgan-stanley
-title: OpenPix suporta o Banco Morgan Stanley ?
+title: Woovi suporta o Banco Morgan Stanley ?
 tags:
   - bank
 ---

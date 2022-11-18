@@ -6,13 +6,13 @@ tags:
 - faq
 - user
 ---
-A OpenPix possui todas as ferramentas necessárias para gerenciar os usuários dentro da sua plataforma. Aqui você pode encontrar as principais dúvidas referente ao assunto.
+A Woovi possui todas as ferramentas necessárias para gerenciar os usuários dentro da sua plataforma. Aqui você pode encontrar as principais dúvidas referente ao assunto.
 
 ## Permissões
-Permissões possibilitam o gerenciamento de usuários em relação as atividades dentro da OpenPix.
+Permissões possibilitam o gerenciamento de usuários em relação as atividades dentro da Woovi.
 
 ### Como gerenciar as permissões dos usuários
-Os usuários dentro da plataforma OpenPix podem possuir permissões individuais ou grupos de permissões. Permitindo assim o fácil gerenciamento tanto particular quanto em grupo dos mesmos.
+Os usuários dentro da plataforma Woovi podem possuir permissões individuais ou grupos de permissões. Permitindo assim o fácil gerenciamento tanto particular quanto em grupo dos mesmos.
 
 Para editar as permissões de um usuário basta:
 

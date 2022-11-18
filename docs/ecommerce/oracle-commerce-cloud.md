@@ -1,6 +1,6 @@
 ---
 id: oracle-commerce-cloud
-title: Integrating Oracle Commerce Cloud and OpenPix
+title: Integrating Oracle Commerce Cloud and Woovi
 sidebar_label: Oracle Commerce Cloud
 tags:
 - ecommerce
@@ -8,27 +8,27 @@ tags:
 - oracle
 ---
 
-### Plugin OpenPix Pix for OCC - Oracle Commerce Cloud
+### Plugin Woovi Pix for OCC - Oracle Commerce Cloud
 
 ## Summary
 
-This document details a step by step configuration guide for OCC and OpenPix integration
+This document details a step by step configuration guide for OCC and Woovi integration
 
 > *Note: This setup requires that you already have an enabled Oracle Commerce Cloud environment.*
 
 ## OCC Registered Applications
 
 Inside your OCC Admin instance, go to Settings -> Web APIs -> Registered Applications
-Click in Register Application, to create a new application to be used by OpenPix
+Click in Register Application, to create a new application to be used by Woovi
 
 ![Registered Applications](/img/occ/register-application.png)
 
-You are going to use ApplicationID and ApplicationSecret to create an OpenPix application of type Oracle OCC.
+You are going to use ApplicationID and ApplicationSecret to create an Woovi application of type Oracle OCC.
 
-## OpenPix Cash Gateway Extension
+## Woovi Cash Gateway Extension
 
 Inside your OCC Admin instance, go to Settings -> Extensions
-Upload OpenPix Cash Gateway Extension
+Upload Woovi Cash Gateway Extension
 
 [OpenPix Cash Gateway Extension - version 1.0.0](pathname:///occ/openpix-cash-gateway-1.0.0.zip)
 
@@ -40,9 +40,9 @@ The configuration should be similar as the above image.
 
 ![Payment Gateway](/img/occ/payment-gateway.png)
 
-- OpenPix AppID
+- Woovi AppID
 
-Create a new Application of type Oracle OCC inside your OpenPix account to get the AppID. Follow this [step by step guide](../apis/api-getting-started.md)
+Create a new Application of type Oracle OCC inside your Woovi account to get the AppID. Follow this [step by step guide](../apis/api-getting-started.md)
 
 ![App](/img/ecommerce/occ-app.png)
 
@@ -56,7 +56,7 @@ Select countries where this payment gateway will be available (usually Brazil).
 
 ### Storefront configuration
 
-Download OpenPix OSF OCC Widgets reference implementation 
+Download Woovi OSF OCC Widgets reference implementation 
 [OpenPix OCC Widgets - version 1.0.0](pathname:///occ/openpix-occ-widgets-1.0.0.zip)
 
 Copy the code inside your OSF Workspace and Storefront App plugins components folder
@@ -65,7 +65,7 @@ Copy the code inside your OSF Workspace and Storefront App plugins components fo
 <osf-workspaces>/packages/apps/<storefront-app/src/plugins/components/
 ```
 
-#### OpenPix Components
+#### Woovi Components
 
 - _OpenpixCheckoutCash
 

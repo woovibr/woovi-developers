@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-intercap
-title: OpenPix suporta o Banco Intercap ?
+title: Woovi suporta o Banco Intercap ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-parana-banco
-title: OpenPix suporta o Parana Banco ?
+title: Woovi suporta o Parana Banco ?
 tags:
   - bank
 ---

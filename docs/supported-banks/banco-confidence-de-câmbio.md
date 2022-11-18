@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-confidence-de-câmbio
-title: OpenPix suporta o Banco Confidence de Câmbio ?
+title: Woovi suporta o Banco Confidence de Câmbio ?
 tags:
   - bank
 ---

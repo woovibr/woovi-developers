@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-levycam-corretora-de-câmbio-e-valores-ltda
-title: OpenPix suporta o Levycam - Corretora de Câmbio e Valores Ltda. ?
+title: Woovi suporta o Levycam - Corretora de Câmbio e Valores Ltda. ?
 tags:
   - bank
 ---

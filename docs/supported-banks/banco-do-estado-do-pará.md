@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-do-estado-do-pará
-title: OpenPix suporta o Banco do Estado do Pará ?
+title: Woovi suporta o Banco do Estado do Pará ?
 tags:
   - bank
 ---

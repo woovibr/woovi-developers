@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-cédula
-title: OpenPix suporta o Banco Cédula ?
+title: Woovi suporta o Banco Cédula ?
 tags:
   - bank
 ---

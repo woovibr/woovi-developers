@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-vip-s-corretora-de-câmbio-ltda
-title: OpenPix suporta o Vip s Corretora de Câmbio Ltda. ?
+title: Woovi suporta o Vip s Corretora de Câmbio Ltda. ?
 tags:
   - bank
 ---

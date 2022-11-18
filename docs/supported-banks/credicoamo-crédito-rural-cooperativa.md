@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-credicoamo-crédito-rural-cooperativa
-title: OpenPix suporta o Credicoamo Crédito Rural Cooperativa ?
+title: Woovi suporta o Credicoamo Crédito Rural Cooperativa ?
 tags:
   - bank
 ---

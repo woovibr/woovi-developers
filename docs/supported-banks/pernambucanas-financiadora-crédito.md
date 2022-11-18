@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-pernambucanas-financiadora-crédito
-title: OpenPix suporta o Pernambucanas Financiadora  Crédito ?
+title: Woovi suporta o Pernambucanas Financiadora  Crédito ?
 tags:
   - bank
 ---

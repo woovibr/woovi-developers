@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-itaú-bba
-title: OpenPix suporta o Banco Itaú BBA ?
+title: Woovi suporta o Banco Itaú BBA ?
 tags:
   - bank
 ---

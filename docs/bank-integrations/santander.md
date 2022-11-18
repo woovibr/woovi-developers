@@ -10,7 +10,7 @@ tags:
 
 ## Resumo
 
-Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Santander, na OpenPix. Após conectar a sua conta na OpenPix é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
+Este documento explica como conectar a conta corrente da sua empresa, domiciliada no Santander, na Woovi. Após conectar a sua conta na Woovi é possível gerar QrCodes Pix, Links de Pagamento, usar Plugins para eCommerce, acessar APIs, gerenciar e acompanhar cobranças Pix.
 
 Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diretamente na conta corrente da sua empresa no Santander
 
@@ -21,7 +21,7 @@ Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diret
 
 Você consegue utilizar o ambiente de desenvolvimento (sandbox) do Santander. Para isso, basta realizar o [login](https://developer.santander.com.br/user/login), criar sua aplicação e acessar suas credenciais. Com elas, você poderá baixar a collection do postman ou integrar diretamente do seu sistema para explorar as APIs. Estas informações podem ser encontradas na [documentação técnica](https://developer.santander.com.br/api/documentacao/pix#/Cob/put_cob__txid_).
 
-## 2. Cadastrando Credenciais Santander da sua conta corrente na plataforma OpenPix
+## 2. Cadastrando Credenciais Santander da sua conta corrente na plataforma Woovi
 
 Uma vez recebido as credenciais de produção da sua conta no Santander basta cadastrar o Client ID, Client Secret e Developer Api Key
 

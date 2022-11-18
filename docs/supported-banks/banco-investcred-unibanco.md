@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-investcred-unibanco
-title: OpenPix suporta o Banco Investcred Unibanco ?
+title: Woovi suporta o Banco Investcred Unibanco ?
 tags:
   - bank
 ---

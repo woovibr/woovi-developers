@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-credialiança-cooperativa-de-crédito-rural
-title: OpenPix suporta o Credialiança Cooperativa de Crédito Rural ?
+title: Woovi suporta o Credialiança Cooperativa de Crédito Rural ?
 tags:
   - bank
 ---

@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-hsbc-brasil-banco-de-investimento
-title: OpenPix suporta o HSBC Brasil  Banco de Investimento ?
+title: Woovi suporta o HSBC Brasil  Banco de Investimento ?
 tags:
   - bank
 ---

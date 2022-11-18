@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-renascença-distribuidora-de-títulos-e-valores-mobiliários-ltda
-title: OpenPix suporta o Renascença Distribuidora de Títulos e Valores Mobiliários Ltda. ?
+title: Woovi suporta o Renascença Distribuidora de Títulos e Valores Mobiliários Ltda. ?
 tags:
   - bank
 ---

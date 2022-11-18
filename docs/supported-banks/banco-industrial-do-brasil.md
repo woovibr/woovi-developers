@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-industrial-do-brasil
-title: OpenPix suporta o Banco Industrial do Brasil ?
+title: Woovi suporta o Banco Industrial do Brasil ?
 tags:
   - bank
 ---

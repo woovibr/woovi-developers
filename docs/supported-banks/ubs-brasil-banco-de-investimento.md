@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-ubs-brasil-banco-de-investimento
-title: OpenPix suporta o UBS Brasil Banco de Investimento ?
+title: Woovi suporta o UBS Brasil Banco de Investimento ?
 tags:
   - bank
 ---

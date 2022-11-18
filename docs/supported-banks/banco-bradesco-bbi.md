@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-bradesco-bbi
-title: OpenPix suporta o Banco Bradesco BBI ?
+title: Woovi suporta o Banco Bradesco BBI ?
 tags:
   - bank
 ---

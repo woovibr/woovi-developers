@@ -1,6 +1,6 @@
 ---
 id: integration-supported-banks-banco-john-deere
-title: OpenPix suporta o Banco John Deere ?
+title: Woovi suporta o Banco John Deere ?
 tags:
   - bank
 ---
