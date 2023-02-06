@@ -25,7 +25,7 @@ module.exports = {
   organizationName: 'woovi',
   projectName: 'developer-portal',
   scripts: [],
-  favicon: 'img/icons/WooviIcon.svg',
+  favicon: 'img/icons/woovi.svg',
   onBrokenLinks: 'log',
   trailingSlash: false,
   onBrokenMarkdownLinks: 'warn',
