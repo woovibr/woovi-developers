@@ -127,9 +127,6 @@ module.exports = {
     'import/resolver': {
       node: true,
       'eslint-import-resolver-typescript': true,
-      'eslint-import-resolver-lerna': {
-        packages: path.resolve(__dirname, 'packages'),
-      },
     },
   },
 };
