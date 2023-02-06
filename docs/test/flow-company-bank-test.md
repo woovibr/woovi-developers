@@ -13,7 +13,7 @@ Para evitar custos ao testar a Woovi, temos uma conta bancária especial para te
 
 Clique em `Ajustes -> Pix -> Ir para Configurações avançadas`
 
-Veja em [https://yourcompany.openpix.com.br/home/accounts/list](https://yourcompany.openpix.com.br/home/accounts/list)
+Veja em [https://yourcompany.woovi.com/home/accounts/list](https://yourcompany.woovi.com/home/accounts/list)
 
 Para adicionar uma conta de teste basta clicar no botão `Criar uma conta bancária de teste`
 

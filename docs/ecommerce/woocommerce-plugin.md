@@ -19,7 +19,7 @@ Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real c
 
 ## 1. Instale o Plugin Woovi na sua instância WooCommerce
 
-[OpenPix For WooCommerce](https://wordpress.org/plugins/openpix-for-woocommerce/)
+[Woovi For WooCommerce](https://wordpress.org/plugins/openpix-for-woocommerce/)
 
 ![Banner](/img/ecommerce/woocommerce-banner.png)
 ![Install](/img/ecommerce/woocommerce-plugin-install.png)
@@ -30,26 +30,26 @@ Entre em WooCommerce -> Settings > Payments.
 
 ![Payments](/img/ecommerce/woocommerce-payments.png)
 
-Clique em `Manage` no Plugin Woovi.
+### Clique em `Manage` no Plugin Woovi.
 
 - [ ] Cadastre um AppID do tipo API. Crie um appID [aqui](../apis/api-getting-started.md)
 - [ ] Customize o Título, Descrição e Texto de Botão de Pedido
 
 ![Setup](/img/ecommerce/woocommerce-setup.png)
 
-Após adicionar o seu appID, clique em `Configure now with one click` para configurarmos ou criar seu Webhook.
+### Após adicionar o seu appID, clique em `Configure now with one click` para configurarmos ou criar seu Webhook.
 
 - [ ] Ao clicar os campos, `Webhook Authorization` e `Webhook HMAC Secret Key` irão atualizar automaticamente e mostrar o status em `Webhook Status`.
 
-Caso não configure você pode acessar a plataforma, criar um webhook manualmente. Para isso:
+### Caso não configure você pode acessar a plataforma, criar um webhook manualmente. Para isso:
 
 - [ ] Crie uma senha para a integração do Webhook. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-- [ ] Cadastre a URL de Callback do WooCommerce na Woovi. Exemplo: <https://meusite.com.br/wc-api/WC_OpenPix_Pix_Gateway>
+- [ ] Cadastre a URL de Callback do WooCommerce na Woovi. Exemplo: <https://meusite.com.br/wc-api/WC_Woovi_Pix_Gateway>
 - [ ] Clique em `Configure now with one click` novamente, para configurar o Webhook com esses novos dados criados.
 
 ![Webhook](/img/ecommerce/woocommerce-gatilho.png)
 
-### 2.1 Customer
+### 2.2 Customer
 
 Para salvar o customer da order na sua cobrança Woovi é necessário que seja ativado um plugin que possibilite que o cliente informe o CPF/CNPJ no momento da compra.
 
@@ -104,3 +104,10 @@ Por padrão quando a cobrança da Openpix é paga, o status do pedido é alterad
 Basta clicar e selecionar qual status você quer que seja colocado no pedido quando a transação Pix for paga.
 
 Após esta alteração os novos pedidos quando forem pagos irão receber o valor desse campo em seu status.
+
+## 7. Como ver meus logs Woovi em minha loja WooCommerce/Wordpress
+Você pode visualizar os logs Woovi em sua loja através dos seguintes passos:
+
+- 1. Tenha acesso aos arquivos da loja
+- 2. Acesse o seguinte path: `/wp-content/uploads/wc_logs`
+- 3. Dentro de `wc_logs` você irá encontrar os arquivos de logs da openpix com o seguinte padrão de nome `woocommerce_openpix-2023-01-13-7d609d821235742dd8162bbb0ef84862`

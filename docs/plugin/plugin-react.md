@@ -35,7 +35,7 @@ import 'core-js/stable';
 ```jsx
 import 'core-js/stable';
 import { useState } from 'react';
-import { useOpenPix } from '@openpix/react';
+import { useWoovi } from '@openpix/react';
 import QRCode from 'qrcode.react';
 
 const App = () => {
@@ -46,7 +46,7 @@ const App = () => {
     console.log('charge was paid');
   }
 
-  const { chargeCreate } = useOpenPix({
+  const { chargeCreate } = useWoovi({
     appID: process.env.APP_ID,
     onPay,
   });
@@ -94,7 +94,7 @@ const App = () => {
 ```jsx
 import 'core-js/stable';
 import { useState } from 'react';
-import { useOpenPix } from '@openpix/react';
+import { useWoovi } from '@openpix/react';
 import QRCode from 'react-native-qrcode-svg';
 
 const App = () => {
@@ -105,7 +105,7 @@ const App = () => {
     console.log('charge was paid');
   }
 
-  const { chargeCreate } = useOpenPix({
+  const { chargeCreate } = useWoovi({
     appID: process.env.APP_ID,
     onPay,
   });

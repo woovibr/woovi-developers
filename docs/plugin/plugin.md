@@ -22,7 +22,7 @@ E deve ser utilizado quando a cobrança ainda precisa ser criada na Woovi.
 A primeira coisa é incluir a tag de script do plugin Woovi na parte inferior do arquivo html
 
 ```html
-<script src="https://plugin.openpix.com.br/v1/openpix.js" async>
+<script src="https://plugin.woovi.com/v1/openpix.js" async>
 ```
 
 O script pode ser importado dentro de um arquivo `.html`. Por exemplo, se seu aplicativo for um aplicativo em React, o script do Plugin Woovi será importado dentro de `index.html`.
@@ -33,11 +33,12 @@ Veja o exemplo abaixo:
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
+    <meta charset="UTF-8" />
     <title>Demo Woovi Plugin</title>
   </head>
   <body>
     <div id="root"></div>
-    <script src="https://plugin.openpix.com.br/v1/openpix.js" async></script>
+    <script src="https://plugin.woovi.com/v1/openpix.js" async></script>
   </body>
 </html>
 ```
@@ -46,8 +47,8 @@ Até este momento, nada deve acontecer, pois o plugin não foi inicializado.
 Para confirmar se o plugin foi inicializado corretamente, você pode acessar o console do seu navegador e buscar por esses logs
 
 ```
-[OpenPix] connecting, attemp 0
-[OpenPix] connected
+[Woovi] connecting, attemp 0
+[Woovi] connected
 ```
 
 ### Inicializando o plugin `Widget`
@@ -57,7 +58,7 @@ Insira a chave do seu [appID](./app-id) como abaixo:
 
 ```jsx
 window.$openpix = window.$openpix || []; // priorize o objeto já instanciado
-window.$openpix.push(['config', { appID: 'YourOpenPixAppId' }]);
+window.$openpix.push(['config', { appID: 'YourWooviAppId' }]);
 ```
 
 Agora seu plugin está pronto para ser consumido.
@@ -90,20 +91,21 @@ window.$openpix.push([
 <html lang="pt-BR">
 
   <head>
+    <meta charset="UTF-8" />
     <title>Demo Woovi Plugin</title>
   </head>
 
   <body>
-    <button onclick="displayOpenPixModal()">
+    <button onclick="displayWooviModal()">
       Clique para abrir o modal
     </button>
-    <script src="https://plugin.openpix.com.br/v1/openpix.js" async></script>
+    <script src="https://plugin.woovi.com/v1/openpix.js" async></script>
     <script>
-      function displayOpenPixModal() {
+      function displayWooviModal() {
         window.$openpix = window.$openpix || [];
 
         window.$openpix.push(['config', {
-          appID: 'yourOpenPixAppId',
+          appID: 'yourWooviAppId',
         }]);
 
         window.$openpix.push([
@@ -250,16 +252,17 @@ if(!!window.$openpix?.addEventListener) {
 <html lang="pt-BR">
 
   <head>
+    <meta charset="UTF-8" />
     <title>Demo Woovi Plugin</title>
   </head>
 
   <body>
-    <button onclick="displayOpenPixModal()">
+    <button onclick="displayWooviModal()">
       Clique para abrir o modal
     </button>
-    <script src="https://plugin.openpix.com.br/v1/openpix.js" async></script>
+    <script src="https://plugin.woovi.com/v1/openpix.js" async></script>
     <script>
-      function displayOpenPixModal() {
+      function displayWooviModal() {
         window.$openpix = window.$openpix || []; // priorize o objeto já instanciado
 
         window.$openpix.push(['config', {
@@ -319,12 +322,13 @@ ex: `?appID=<APPIDVALIDO>&correlationID=<CORRELATION-ID-VALIDO>&node=<DIV-PARA-I
 <html lang="pt-BR">
 
 <head>
+  <meta charset="UTF-8" />
   <title>Demo Woovi Plugin</title>
 </head>
 
 <body>
   <div id="openpix-order"></div> <!-- o node nesse caso é "openpix-order" -->
-  <script src="https://plugin.openpix.com.br/v1/openpix.js?appID=appID&correlationID=appID&node=openpix-order"></script>
+  <script src="https://plugin.woovi.com/v1/openpix.js?appID=appID&correlationID=appID&node=openpix-order"></script>
 </body>
 
 </html>
