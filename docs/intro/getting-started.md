@@ -18,7 +18,7 @@ Uma vez registrado na plataforma, você será capaz de convidar mais usuários p
 
 ## Configurando o Single Sign-On (SSO)
 
-OpenPix suporta múltiplos SSO identity providers (IdP). Um Identity Provider é um servidor que pode fornecer informações de identidade sobre os usuários da sua empresa. Por exemplo, o Google pode ser um fornecedor de identidade para empresas que utilizam a solução G Suite. Se a sua empresa está utilizando a solução G Suite, pode entrar automaticamente na Woovi utilizando a sua conta Google. então um servidor Google enviará a sua informação de identidade para esse site.
+Woovi suporta múltiplos SSO identity providers (IdP). Um Identity Provider é um servidor que pode fornecer informações de identidade sobre os usuários da sua empresa. Por exemplo, o Google pode ser um fornecedor de identidade para empresas que utilizam a solução G Suite. Se a sua empresa está utilizando a solução G Suite, pode entrar automaticamente na Woovi utilizando a sua conta Google. então um servidor Google enviará a sua informação de identidade para esse site.
 
 ### Azure Single Sign On
 
@@ -42,11 +42,11 @@ Se você se deparar com problemas utilizando a plataforma, por favor verifique o
 
 - Certifique-se de que possui uma lista de domínios permitidos da Woovi no seu servidor proxy, ou firewall interno. Os seus utilizadores devem poder acessar a todos os domínios e subdomínios.
   
-  > Tem que listar todos os domínios permitidos da Woovi *.openpix.com.br
+  > Tem que listar todos os domínios permitidos da Woovi *.woovi.com
 
 - Certifique-se de que não está bloqueando os e-mails do domínio da Woovi.
   
-  > Tem que listar todos os domínios permitidos da Openpix *.openpix.com.br em seu fornecedor de e-mail
+  > Tem que listar todos os domínios permitidos da Openpix *.woovi.com em seu fornecedor de e-mail
   
 - Não armazenar em cache
 

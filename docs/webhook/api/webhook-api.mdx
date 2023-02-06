@@ -13,7 +13,7 @@ Pela Openpix é possível criar webhooks para interceptar quando um pix for real
 
 Neste tutorial iremos descrever como criar um webhook para interceptar a chegada de um novo Pix via uma chamada API.
 
-Para cadastrar o webhook via API basta seguir nossa especifição para realizar um POST na [api de Webhook](https://developers.openpix.com.br/api#tag/webhook/paths/~1api~1openpix~1v1~1webhook/post).
+Para cadastrar o webhook via API basta seguir nossa especifição para realizar um POST na [api de Webhook](https://developers.woovi.com/api#tag/webhook/paths/~1api~1openpix~1v1~1webhook/post).
 
 <Tabs
 defaultValue="curl"
@@ -26,7 +26,7 @@ defaultValue="curl"
 <TabItem value="curl">
 
 ```jsx
-curl --location --request POST 'http://localhost:5001/api/openpix/v1/webhook' \
+curl --location --request POST 'http://api.woovi.com/api/openpix/v1/webhook' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: <appID>' \
 --data-raw '{
@@ -53,7 +53,7 @@ const createWebhook = async () => {
   };
 
   const response = await fetch(
-    'http://api.openpix.com.br/api/openpix/v1/webhook',
+    'http://api.woovi.com/api/openpix/v1/webhook',
     {
       method: 'POST',
       headers: {
@@ -76,4 +76,4 @@ const createWebhook = async () => {
 
 </Tabs>
 
-[Exemplos de payload do Webhook](../webhook-samples.mdx)
+[Exemplos de payload do Webhook](/docs/category/exemplos)

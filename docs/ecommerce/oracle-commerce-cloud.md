@@ -30,7 +30,7 @@ You are going to use ApplicationID and ApplicationSecret to create an Woovi appl
 Inside your OCC Admin instance, go to Settings -> Extensions
 Upload Woovi Cash Gateway Extension
 
-[OpenPix Cash Gateway Extension - version 1.0.0](pathname:///occ/openpix-cash-gateway-1.0.0.zip)
+[Woovi Cash Gateway Extension - version 1.0.0](pathname:///occ/openpix-cash-gateway-1.0.0.zip)
 
 The configuration should be similar as the above image.
 
@@ -57,7 +57,7 @@ Select countries where this payment gateway will be available (usually Brazil).
 ### Storefront configuration
 
 Download Woovi OSF OCC Widgets reference implementation 
-[OpenPix OCC Widgets - version 1.0.0](pathname:///occ/openpix-occ-widgets-1.0.0.zip)
+[Woovi OCC Widgets - version 1.0.0](pathname:///occ/openpix-occ-widgets-1.0.0.zip)
 
 Copy the code inside your OSF Workspace and Storefront App plugins components folder
 

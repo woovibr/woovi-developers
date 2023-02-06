@@ -111,7 +111,7 @@ payload {
     time: '2021-03-12T12:44:09.269Z',
     value: 1,
     transactionID: 'ea83401ed4834b3ea6f1f283b389af29',
-    infoPagador: 'OpenPix testing'
+    infoPagador: 'Woovi testing'
   }
 }
 ```
@@ -125,7 +125,7 @@ payload {
 
 <TabItem value='api'>
 
-Para cadastrar o webhook via API basta seguir nossa especifição para realizar um POST na [api de Webhook](https://developers.openpix.com.br/api#tag/webhook/paths/~1api~1openpix~1v1~1webhook/post).
+Para cadastrar o webhook via API basta seguir nossa especifição para realizar um POST na [api de Webhook](https://developers.woovi.com/api#tag/webhook/paths/~1api~1openpix~1v1~1webhook/post).
 
 <Tabs
 defaultValue="curl"
@@ -162,7 +162,7 @@ const createWebhook = async () => {
     "isActive": true
   }
 
-  const response = await fetch('http://api.openpix.com.br/api/openpix/v1/webhook', {
+  const response = await fetch('http://api.woovi.com/api/openpix/v1/webhook', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

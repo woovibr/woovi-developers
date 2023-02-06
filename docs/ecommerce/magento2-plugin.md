@@ -18,7 +18,7 @@ Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real c
 
 ## 1. Instale o Plugin Woovi na sua instância Magento2
 
-[OpenPix For Magento2](https://marketplace.magento.com/openpix-pix.html)
+[Woovi For Magento2](https://marketplace.magento.com/openpix-pix.html)
 
 ![Banner](/img/ecommerce/woocommerce-banner.png)
 ![Install](/img/ecommerce/magento2/magento2-marketplace-search.png)
@@ -117,7 +117,7 @@ Seu cliente poderá visualizar o pedido realizado via Pix dentro do detalhes do 
 ![Order](/img/ecommerce/magento2/m2-od-2.png)
 
 ## Atualizando o plugin
-Indicamos aos clientes OpenPix estar sempre atualizados com a última versão do plugin. Você pode identificar a mesma no step de instalação.
+Indicamos aos clientes Woovi estar sempre atualizados com a última versão do plugin. Você pode identificar a mesma no step de instalação.
 
 Caso seu plugin esteja desatualizado basta seguir os passos do mesmo step de instalação e atualizar os arquivos do plugin em seu ecommerce.
 

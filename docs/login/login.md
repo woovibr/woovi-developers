@@ -6,4 +6,4 @@ tags:
 - login
 ---
 
-Para acessar a sua conta Woovi acesse [Login](https://app.openpix.com.br/login)
+Para acessar a sua conta Woovi acesse [Login](https://app.woovi.com/login)

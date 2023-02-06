@@ -47,8 +47,8 @@ Veja em https://admin.google.com/AdminHome?hl=en#AppsList:serviceType=SAML_APPS
 
 ![saml-step](/img/step-3-google-admin.png)
 
-- ACS URL: https://api.openpix.com.br/saml2/login/callback
-- Entity ID (Entidade ID): https://api.openpix.com.br/saml2/metadata
+- ACS URL: https://api.woovi.com/saml2/login/callback
+- Entity ID (Entidade ID): https://api.woovi.com/saml2/metadata
 - Name ID (Nome do ID) : Basic Information, Primary Email
 - Name ID Format (Formato de ID de nome): EMAIL
 
@@ -56,5 +56,5 @@ Veja em https://admin.google.com/AdminHome?hl=en#AppsList:serviceType=SAML_APPS
 
 # Adicione metadata xml do IDP à sua organização Openpix
 
-Veja em https://yourcompany.openpix.com.br/home/company/settings/data
+Veja em https://yourcompany.woovi.com/home/company/settings/data
 ![saml-feedbackhouse](/img/login-saml-feedback.png)

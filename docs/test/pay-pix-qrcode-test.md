@@ -15,7 +15,7 @@ Exemplo:
 
 E também copiar o código do seu AppID, você irá encontrá-lo em `menu Administrador > API/Plugins`, clicar em seu respectivo `API/Plugin` criado e copiar o `AppID` no detalhe da aplicação.
 
-Mais infomações sobre o AppID aqui: https://developers.openpix.com.br/docs/plugin/app-id/
+Mais infomações sobre o AppID aqui: https://developers.woovi.com/docs/plugin/app-id/
 
 Exemplo:
 
@@ -24,7 +24,7 @@ Exemplo:
 E por fim já com todos os dados recolhidos você poderá rodar esse comando abaixo preenchido com os dados indicados já citados a cima e gerar uma transação de pagamento!
 
 ```jsx
-curl 'https://api.openpix.com.br/openpix/testing?identifier=<identifier>' -H 'Authorization: <appID>'
+curl 'https://api.woovi.com/openpix/testing?identifier=<identifier>' -H 'Authorization: <appID>'
 ```
 
 Para ver as transações geradas clique em `transações` para ver a transação do Pix QRCode do pagamento teste recebida. 

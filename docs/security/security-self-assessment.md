@@ -73,8 +73,8 @@ tags:
 | -  | - | 
 | Does your solution implement CORS Support? | Yes. <br/>Across all apps, and all domain properties. |
 | Do you have a process to discover and track security vulnerabilities and corrective measures in Open Source or 3rd party software your deliverables have a dependency on? | Yes. <br/>We have an internal Blue Team and Red Teams. Additional external third party security review, via independent partner every quarter |
-| Do you have a channel for external researchers to report security vulnerabilities to your directly? | Yes. <br/> via email at security@openpix.com.br or infosec@openpix.com.br |
-| Do you support Security.txt? | Yes.  https://openpix.com.br/.well-known/security.txt |
+| Do you have a channel for external researchers to report security vulnerabilities to your directly? | Yes. <br/> via email at security@woovi.com or infosec@woovi.com |
+| Do you support Security.txt? | Yes.  https://woovi.com/.well-known/security.txt |
 
 
 ## Customer Security
