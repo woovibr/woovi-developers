@@ -110,4 +110,4 @@ Você pode visualizar os logs Woovi em sua loja através dos seguintes passos:
 
 - 1. Tenha acesso aos arquivos da loja
 - 2. Acesse o seguinte path: `/wp-content/uploads/wc_logs`
-- 3. Dentro de `wc_logs` você irá encontrar os arquivos de logs da openpix com o seguinte padrão de nome `woocommerce_openpix-2023-01-13-7d609d821235742dd8162bbb0ef84862`
+- 3. Dentro de `wc_logs` você irá encontrar os arquivos de logs da woovi.com o seguinte padrão de nome `woocommerce_openpix-2023-01-13-7d609d821235742dd8162bbb0ef84862`
