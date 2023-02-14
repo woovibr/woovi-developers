@@ -3,12 +3,11 @@ info:
   title: Woovi
   description: >-
     A Woovi é uma Plataforma de Gestão de Pagamentos. Para utilizar nossa API
-    você deve
-    acessar  __[https://api.openpix.com.br/](https://api.openpix.com.br/)__ e
+    você deve acessar  __[https://api.woovi.com/](https://api.woovi.com/)__ e
     somente o mesmo. A Woovi não aceita subdominios para a API.
 
 
-    Veja como configurar seu acesso a nossa API [aqui](https://developers.openpix.com.br/docs/apis/api-getting-started).
+    Veja como configurar seu acesso a nossa API [aqui](https://developers.woovi.com/docs/apis/api-getting-started).
   version: 1.0.0
 servers:
   - url: https://api.woovi.com
@@ -324,158 +323,6 @@ paths:
                         value: '18476'
                       - key: Order
                         value: '302'
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-  '/api/openpix/v1/refund/{id}':
-    get:
-      tags:
-        - refund
-      summary: Get one refund
-      parameters:
-        - name: id
-          in: path
-          description: refund ID or correlation ID
-          required: true
-          schema:
-            type: string
-          examples:
-            id:
-              value: Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA==
-            correlationID:
-              value: fe7834b4060c488a9b0f89811be5f5cf
-      responses:
-        '200':
-          description: The refund retrieve using the given ID
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  refund:
-                    type: object
-                    $ref: '#/components/schemas/Refund'
-                example:
-                  refund:
-                    value: 100
-                    correlationID: 7777-6f71-427a-bf00-241681624586
-                    refundId: 11bf5b37e0b842e08dcfdc8c4aefc000
-                    returnIdentification: D09089356202108032000a543e325902
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-  /api/openpix/v1/refund:
-    get:
-      tags:
-        - refund
-      summary: Get a list of refunds
-      responses:
-        '200':
-          description: A list of refunds
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  refunds:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Refund'
-                  pageInfo:
-                    type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            message:
-                              type: string
-                            data:
-                              type: object
-                              properties:
-                                skip:
-                                  type: number
-                                limit:
-                                  type: number
-                      skip:
-                        type: number
-                      limit:
-                        type: number
-                      totalCount:
-                        type: number
-                      hasPreviousPage:
-                        type: boolean
-                      hasNextPage:
-                        type: boolean
-                example:
-                  pageInfo:
-                    skip: 0
-                    limit: 10
-                    totalCount: 20
-                    hasPreviousPage: false
-                    hasNextPage: true
-                  refunds:
-                    status: IN_PROCESSING
-                    value: 100
-                    correlationID: 9134e286-6f71-427a-bf00-241681624586
-                    refundId: 9134e2866f71427abf00241681624586
-                    time: 2021-03-02T17:28:51.882Z
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-    post:
-      tags:
-        - refund
-      summary: Create a new refund
-      description: Endpoint to create a new refund for a customer
-      requestBody:
-        description: Data to create a new refund
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/RefundPayload'
-            example:
-              transactionEndToEndId: 9134e286-6f71-427a-bf00-241681624586
-              correlationID: 9134e286-6f71-427a-bf00-241681624586
-              value: 100
-      responses:
-        '200':
-          description: The created Refund
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  refund:
-                    $ref: '#/components/schemas/Refund'
-                example:
-                  refund:
-                    status: IN_PROCESSING
-                    value: 100
-                    correlationID: 9134e286-6f71-427a-bf00-241681624586
-                    refundId: 9134e2866f71427abf00241681624586
-                    time: 2021-03-02T17:28:51.882Z
         '400':
           description: An error message
           content:
@@ -1266,44 +1113,6 @@ paths:
               responses:
                 '200':
                   description: Notificação recebida com sucesso
-  '/openpix/charge/brcode/image/{:id}.png?size=1024':
-    get:
-      tags:
-        - charge
-      summary: Get an image of Qr Code from a Charge
-      parameters:
-        - in: path
-          name: id
-          description: charge link payment ID
-          required: true
-          schema:
-            type: string
-          examples:
-            paymentLinkID:
-              value: fe7834b4060c488a9b0f89811be5f5cf
-        - in: query
-          name: size
-          description:
-            Size for the image. This size should be between 600 and 4096. if
-            the size parameter was not passed, the default value will be 1024.
-          required: false
-          schema:
-            type: string
-          examples:
-            size:
-              value: 768
-      responses:
-        '200':
-          description: The Qr Code image as MIME type
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
   '/api/openpix/v1/pixQrCode-static/{id}':
     get:
       tags:
@@ -1489,10 +1298,512 @@ paths:
                 properties:
                   error:
                     type: string
+  '/api/openpix/v1/refund/{id}':
+    get:
+      tags:
+        - refund
+      summary: Get one refund
+      parameters:
+        - name: id
+          in: path
+          description: refund ID or correlation ID
+          required: true
+          schema:
+            type: string
+          examples:
+            id:
+              value: Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA==
+            correlationID:
+              value: fe7834b4060c488a9b0f89811be5f5cf
+      responses:
+        '200':
+          description: The refund retrieve using the given ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refund:
+                    type: object
+                    $ref: '#/components/schemas/Refund'
+                example:
+                  refund:
+                    value: 100
+                    correlationID: 7777-6f71-427a-bf00-241681624586
+                    refundId: 11bf5b37e0b842e08dcfdc8c4aefc000
+                    returnIdentification: D09089356202108032000a543e325902
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/openpix/v1/refund:
+    get:
+      tags:
+        - refund
+      summary: Get a list of refunds
+      responses:
+        '200':
+          description: A list of refunds
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refunds:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Refund'
+                  pageInfo:
+                    type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                            data:
+                              type: object
+                              properties:
+                                skip:
+                                  type: number
+                                limit:
+                                  type: number
+                      skip:
+                        type: number
+                      limit:
+                        type: number
+                      totalCount:
+                        type: number
+                      hasPreviousPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
+                example:
+                  pageInfo:
+                    skip: 0
+                    limit: 10
+                    totalCount: 20
+                    hasPreviousPage: false
+                    hasNextPage: true
+                  refunds:
+                    status: IN_PROCESSING
+                    value: 100
+                    correlationID: 9134e286-6f71-427a-bf00-241681624586
+                    refundId: 9134e2866f71427abf00241681624586
+                    time: 2021-03-02T17:28:51.882Z
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    post:
+      tags:
+        - refund
+      summary: Create a new refund
+      description: Endpoint to create a new refund for a customer
+      requestBody:
+        description: Data to create a new refund
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/RefundPayload'
+            example:
+              transactionEndToEndId: 9134e286-6f71-427a-bf00-241681624586
+              correlationID: 9134e286-6f71-427a-bf00-241681624586
+              value: 100
+      responses:
+        '200':
+          description: The created Refund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refund:
+                    $ref: '#/components/schemas/Refund'
+                example:
+                  refund:
+                    status: IN_PROCESSING
+                    value: 100
+                    correlationID: 9134e286-6f71-427a-bf00-241681624586
+                    refundId: 9134e2866f71427abf00241681624586
+                    time: 2021-03-02T17:28:51.882Z
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  '/api/v1/subscriptions/{id}':
+    get:
+      tags:
+        - subscription
+      summary: Get one subscription
+      parameters:
+        - name: id
+          in: path
+          description: The globalID of the subscription.
+          required: true
+          schema:
+            type: string
+          example: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
+      responses:
+        '200':
+          description: The subscription retrieved using the given ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscription:
+                    type: object
+                    $ref: '#/components/schemas/Subscription'
+                example:
+                  subscription:
+                    globalID: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
+                    customer:
+                      name: Dan
+                      email: email0@example.com
+                      phone: '5511999999999'
+                      taxID:
+                        taxID: '31324227036'
+                        type: BR:CPF
+                    value: 100
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/subscriptions:
+    post:
+      tags:
+        - subscription
+      summary: Create a new Subscription
+      description: Endpoint to create a new Subcription
+      requestBody:
+        description: Data to create a new Subscription
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/SubscriptionPayload'
+            example:
+              value: 100
+              customer:
+                name: Dan
+                taxID: '31324227036'
+                email: email0@example.com
+                phone: '5511999999999'
+      responses:
+        '200':
+          description: The subscription created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscription:
+                    $ref: '#/components/schemas/Subscription'
+                example:
+                  subscription:
+                    globalID: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
+                    customer:
+                      name: Dan
+                      email: email0@example.com
+                      phone: '5511999999999'
+                      taxID:
+                        taxID: '31324227036'
+                        type: BR:CPF
+                    value: 100
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  '/api/v1/cashback-fidelity/balance/{taxID}':
+    get:
+      tags:
+        - cashback-fidelity
+      summary: Get the exclusive cashback amount an user still has to receive by taxID.
+      parameters:
+        - name: taxID
+          in: path
+          description: The raw tax ID from the customer you want to get the balance.
+          required: true
+          schema:
+            type: string
+          examples:
+            taxID:
+              value: '60151449000182'
+      responses:
+        '200':
+          description: Amount the user still has to receive.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: number
+                  status:
+                    type: string
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/cashback-fidelity:
+    post:
+      tags:
+        - cashback-fidelity
+      summary: Get or create cashback for a customer.
+      description: Create a new cashback exclusive for the customer with a given
+        taxID. If the customer already has a pending excluisve cashback, this
+        endpoint will return it instead.
+      requestBody:
+        description: Customer's taxID and the cash
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                taxID:
+                  type: string
+                  description: Customer taxID (CPF or CNPJ)
+                value:
+                  type: number
+                  description: Cashback value in centavos
+            example:
+              value: 100
+              taxID: 11111111111
+      responses:
+        '200':
+          description:
+            Didn't create a new cashback, returning previously existing
+            cashback information instead.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cashback:
+                    description: Object representing the existing cashback
+                    type: object
+                    properties:
+                      value:
+                        type: number
+                        description: Cashback value in centavos
+                  message:
+                    type: string
+                    description: String explaining what happened
+        '201':
+          description: New cashback created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cashback:
+                    description: Object representing the new cashback
+                    type: object
+                    properties:
+                      value:
+                        type: number
+                        description: Cashback value in centavos
+                  message:
+                    type: string
+                    description: String explaining what happened
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  '/api/openpix/v1/account/{accountId}':
+    get:
+      tags:
+        - account
+      summary: Get an Account
+      parameters:
+        - name: accountId
+          in: path
+          description: ID of the Account
+          required: true
+          schema:
+            type: string
+          example: 6290ccfd42831958a405debc
+      responses:
+        '200':
+          description: The Account retrieve using the given Account ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    type: object
+                    $ref: '#/components/schemas/CompanyBankAccount'
+              example:
+                account:
+                  accountId: 6290ccfd42831958a405debc
+                  isDefault: true
+                  balance:
+                    total: 129430
+                    blocked: 0
+                    available: 129430
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/openpix/v1/account/:
+    get:
+      tags:
+        - account
+      summary: Get a list of Accounts
+      responses:
+        '200':
+          description: A list of Accounts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accounts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CompanyBankAccount'
+              example:
+                accounts:
+                  - accountId: 6290ccfd42831958a405debc
+                    isDefault: true
+                    balance:
+                      total: 129430
+                      blocked: 0
+                      available: 129430
+                  - accountId: 6286b467a7910113577e00ce
+                    isDefault: false
+                    balance:
+                      total: 130
+                      blocked: 100
+                      available: 30
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  '/api/openpix/v1/account/{accountId}/withdraw':
+    post:
+      tags:
+        - account
+      summary: Withdraw from an Account
+      description:
+        An additional fee may be charged depending on the minimum free
+        withdrawal amount. See more about at
+        https://developers.openpix.com.br/docs/FAQ/faq-virtual-account/#onde-posso-consultar-as-taxas-da-minha-conta-virtual
+      parameters:
+        - name: accountId
+          in: path
+          description: ID of the Account
+          required: true
+          schema:
+            type: string
+          example: 6290ccfd42831958a405debc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: number
+                  description: Value in cents
+            example:
+              value: 7000
+      responses:
+        '200':
+          description: Withdraw and Acccount information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  withdraw:
+                    type: object
+                    properties:
+                      account:
+                        type: object
+                        $ref: '#/components/schemas/CompanyBankAccount'
+                      transaction:
+                        type: object
+                        $ref: '#/components/schemas/WithdrawTransaction'
+              example:
+                withdraw:
+                  account:
+                    accountId: 6290ccfd42831958a405debc
+                    isDefault: true
+                    balance:
+                      total: 122430
+                      blocked: 0
+                      available: 122430
+                  transaction:
+                    endToEndId: E23114447202205191817cx6VMrbwtw6
+                    transaction: 7000
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
   /api/openpix/v1/pay/confirm:
     post:
       tags:
-        - payment
+        - payment (request access)
       summary: Confirm a Payment
       description: Endpoint to confirm a payment
       requestBody:
@@ -1548,7 +1859,7 @@ paths:
   /api/openpix/v1/pay/pix-key:
     post:
       tags:
-        - payment
+        - payment (request access)
       summary: Init a payment using a Pix Key
       description: Endpoint to init a payment using a Pix Key
       requestBody:
@@ -1607,7 +1918,7 @@ paths:
   /api/openpix/v1/pay/qrcode:
     post:
       tags:
-        - payment
+        - payment (request access)
       summary: Init a payment using a QRCode
       description: Endpoint to init a payment using a QRCode
       requestBody:
@@ -1662,295 +1973,6 @@ paths:
                 type: object
                 properties:
                   error:
-                    type: string
-  '/api/openpix/v1/giftback/balance/{taxID}':
-    get:
-      tags:
-        - giftback
-      summary: Get Giftback balance of a Customer
-      description: Endpoint to get Giftback balance of a Customer
-      parameters:
-        - name: taxID
-          in: path
-          description: CPF of the Customer
-          required: true
-          schema:
-            type: string
-          example: '3132422703'
-      responses:
-        '200':
-          description: Customer information and balance in cents
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    type: object
-                    $ref: '#/components/schemas/Customer'
-                  balance:
-                    type: number
-                example:
-                  customer:
-                    name: Dan
-                    email: email0@example.com
-                    phone: '5511999999999'
-                    taxID:
-                      taxID: '31324227036'
-                      type: BR:CPF
-                    correlationID: fe7834b4060c488a9b0f89811be5f5cf
-                  balance: 3400
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-  /api/openpix/v1/giftback:
-    post:
-      tags:
-        - giftback
-      summary: Give Giftback to a Customer
-      description: Endpoint to give Giftback to a Customer
-      requestBody:
-        description: Data to give Giftback to a Customer
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - taxID
-                - value
-              properties:
-                taxID:
-                  type: string
-                  description: CPF of the Customer
-                value:
-                  type: string
-                  description: Value in cents of this Giftback
-              example:
-                taxID: '31324227036'
-                value: 100
-      responses:
-        '200':
-          description: Customer information and balance in cents
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    type: object
-                    $ref: '#/components/schemas/Customer'
-                  balance:
-                    type: number
-                example:
-                  customer:
-                    name: Dan
-                    email: email0@example.com
-                    phone: '5511999999999'
-                    taxID:
-                      taxID: '31324227036'
-                      type: BR:CPF
-                    correlationID: fe7834b4060c488a9b0f89811be5f5cf
-                  balance: 3400
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-  '/api/common/user/v1/users/{id}':
-    delete:
-      tags:
-        - users
-      summary: Delete one user
-      parameters:
-        - name: id
-          in: path
-          description: platform ID
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The user was deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  user:
-                    type: string
-                    description: user ID that was deleted
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
-    get:
-      tags:
-        - users
-      summary: Get one user
-      parameters:
-        - name: id
-          in: path
-          description: platform ID or email or correlation ID
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The user retrieve using the given ID
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  user:
-                    type: object
-                    $ref: '#/components/schemas/User'
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
-                  user:
-                    type: object
-                    $ref: '#/components/schemas/User'
-  /api/common/user/v1/users:
-    get:
-      tags:
-        - users
-      summary: Get a list of users
-      responses:
-        '200':
-          description: A list of users
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  users:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/User'
-                  pageInfo:
-                    type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            message:
-                              type: string
-                            data:
-                              type: object
-                              properties:
-                                skip:
-                                  type: number
-                                limit:
-                                  type: number
-                      skip:
-                        type: number
-                      limit:
-                        type: number
-                      totalCount:
-                        type: number
-                      hasPreviousPage:
-                        type: boolean
-                      hasNextPage:
-                        type: boolean
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
-  /api/common/user/v1/update-or-create:
-    post:
-      tags:
-        - users
-      summary: Create or Update multiple users
-      description: Endpoint to create or update multiple users
-      requestBody:
-        description: Data to create or update users
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                users:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/UserPayload'
-      responses:
-        '200':
-          description: A list of all users created/updated and possible errors
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        data:
-                          $ref: '#/components/schemas/UserPayload'
-                        message:
-                          type: string
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/User'
-        '400':
-          description: An error message of missing users
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
                     type: string
   /api/openpix/v1/partner/application:
     post:
@@ -2216,38 +2238,35 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/openpix/v1/account/{accountId}':
+  '/openpix/charge/brcode/image/{:id}.png?size=1024':
     get:
       tags:
-        - account
-      summary: Get an Account
+        - charge
+      summary: Get an image of Qr Code from a Charge
       parameters:
-        - name: accountId
-          in: path
-          description: ID of the Account
+        - in: path
+          name: id
+          description: charge link payment ID
           required: true
           schema:
             type: string
-          example: 6290ccfd42831958a405debc
+          examples:
+            paymentLinkID:
+              value: fe7834b4060c488a9b0f89811be5f5cf
+        - in: query
+          name: size
+          description:
+            Size for the image. This size should be between 600 and 4096. if
+            the size parameter was not passed, the default value will be 1024.
+          required: false
+          schema:
+            type: string
+          examples:
+            size:
+              value: 768
       responses:
         '200':
-          description: The Account retrieve using the given Account ID
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  account:
-                    type: object
-                    $ref: '#/components/schemas/CompanyBankAccount'
-              example:
-                account:
-                  accountId: 6290ccfd42831958a405debc
-                  isDefault: true
-                  balance:
-                    total: 129430
-                    blocked: 0
-                    available: 129430
+          description: The Qr Code image as MIME type
         '400':
           description: An error message
           content:
@@ -2257,37 +2276,126 @@ paths:
                 properties:
                   error:
                     type: string
-  /api/openpix/v1/account/:
-    get:
+  '/api/common/user/v1/users/{id}':
+    delete:
       tags:
-        - account
-      summary: Get a list of Accounts
+        - users
+      summary: Delete one user
+      parameters:
+        - name: id
+          in: path
+          description: platform ID
+          required: true
+          schema:
+            type: string
       responses:
         '200':
-          description: A list of Accounts
+          description: The user was deleted successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  accounts:
+                  status:
+                    type: string
+                  user:
+                    type: string
+                    description: user ID that was deleted
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+    get:
+      tags:
+        - users
+      summary: Get one user
+      parameters:
+        - name: id
+          in: path
+          description: platform ID or email or correlation ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The user retrieve using the given ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  user:
+                    type: object
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    $ref: '#/components/schemas/User'
+  /api/common/user/v1/users:
+    get:
+      tags:
+        - users
+      summary: Get a list of users
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  users:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CompanyBankAccount'
-              example:
-                accounts:
-                  - accountId: 6290ccfd42831958a405debc
-                    isDefault: true
-                    balance:
-                      total: 129430
-                      blocked: 0
-                      available: 129430
-                  - accountId: 6286b467a7910113577e00ce
-                    isDefault: false
-                    balance:
-                      total: 130
-                      blocked: 100
-                      available: 30
+                      $ref: '#/components/schemas/User'
+                  pageInfo:
+                    type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                            data:
+                              type: object
+                              properties:
+                                skip:
+                                  type: number
+                                limit:
+                                  type: number
+                      skip:
+                        type: number
+                      limit:
+                        type: number
+                      totalCount:
+                        type: number
+                      hasPreviousPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
         '400':
           description: An error message
           content:
@@ -2295,169 +2403,63 @@ paths:
               schema:
                 type: object
                 properties:
-                  error:
+                  status:
                     type: string
-  '/api/openpix/v1/account/{accountId}/withdraw':
+                  message:
+                    type: string
+  /api/common/user/v1/update-or-create:
     post:
       tags:
-        - account
-      summary: Withdraw from an Account
-      description:
-        An additional fee may be charged depending on the minimum free
-        withdrawal amount. See more about at
-        https://developers.openpix.com.br/docs/FAQ/faq-virtual-account/#onde-posso-consultar-as-taxas-da-minha-conta-virtual
-      parameters:
-        - name: accountId
-          in: path
-          description: ID of the Account
-          required: true
-          schema:
-            type: string
-          example: 6290ccfd42831958a405debc
+        - users
+      summary: Create or Update multiple users
+      description: Endpoint to create or update multiple users
       requestBody:
+        description: Data to create or update users
         required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                value:
-                  type: number
-                  description: Value in cents
-            example:
-              value: 7000
+                users:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UserPayload'
       responses:
         '200':
-          description: Withdraw and Acccount information
+          description: A list of all users created/updated and possible errors
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  withdraw:
-                    type: object
-                    properties:
-                      account:
-                        type: object
-                        $ref: '#/components/schemas/CompanyBankAccount'
-                      transaction:
-                        type: object
-                        $ref: '#/components/schemas/WithdrawTransaction'
-              example:
-                withdraw:
-                  account:
-                    accountId: 6290ccfd42831958a405debc
-                    isDefault: true
-                    balance:
-                      total: 122430
-                      blocked: 0
-                      available: 122430
-                  transaction:
-                    endToEndId: E23114447202205191817cx6VMrbwtw6
-                    transaction: 7000
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
+                  status:
                     type: string
-  '/api/v1/subscriptions/{id}':
-    get:
-      tags:
-        - subscription
-      summary: Get one subscription
-      parameters:
-        - name: id
-          in: path
-          description: The globalID of the subscription.
-          required: true
-          schema:
-            type: string
-          example: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
-      responses:
-        '200':
-          description: The subscription retrieved using the given ID
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  subscription:
-                    type: object
-                    $ref: '#/components/schemas/Subscription'
-                example:
-                  subscription:
-                    globalID: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
-                    customer:
-                      name: Dan
-                      email: email0@example.com
-                      phone: '5511999999999'
-                      taxID:
-                        taxID: '31324227036'
-                        type: BR:CPF
-                    value: 100
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
+                  message:
                     type: string
-  /api/v1/subscriptions:
-    post:
-      tags:
-        - subscription
-      summary: Create a new Subscription
-      description: Endpoint to create a new Subcription
-      requestBody:
-        description: Data to create a new Subscription
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/SubscriptionPayload'
-            example:
-              value: 100
-              customer:
-                name: Dan
-                taxID: '31324227036'
-                email: email0@example.com
-                phone: '5511999999999'
-      responses:
-        '200':
-          description: The subscription created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  subscription:
-                    $ref: '#/components/schemas/Subscription'
-                example:
-                  subscription:
-                    globalID: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
-                    customer:
-                      name: Dan
-                      email: email0@example.com
-                      phone: '5511999999999'
-                      taxID:
-                        taxID: '31324227036'
-                        type: BR:CPF
-                    value: 100
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          $ref: '#/components/schemas/UserPayload'
+                        message:
+                          type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
         '400':
-          description: An error message
+          description: An error message of missing users
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  error:
+                  status:
+                    type: string
+                  message:
                     type: string
 components:
   schemas:
@@ -2569,37 +2571,6 @@ components:
       required:
         - correlationID
         - value
-    Refund:
-      type: object
-      properties:
-        value:
-          type: number
-        status:
-          type: string
-          enum:
-            - IN_PROCESSING
-            - REFUNDED
-            - NOT_ACCOMPLISHED
-        correlationID:
-          type: string
-          description: Your correlation ID to keep track of this refund
-        refundId:
-          type: string
-          description: Unique refund ID for this pix refund
-        time:
-          type: string
-          description: Time of this refund
-    RefundPayload:
-      type: object
-      properties:
-        value:
-          type: number
-        transactionEndToEndId:
-          type: string
-          description: Your transaction ID, or endToEnd ID, to keep track of this refund
-        correlationID:
-          type: string
-          description: Your correlation ID, unique identifier refund
     Customer:
       type: object
       properties:
@@ -2754,18 +2725,6 @@ components:
         - OPENPIX:CHARGE_EXPIRED
         - OPENPIX:TRANSACTION_RECEIVED
         - OPENPIX:TRANSACTION_REFUND_RECEIVED
-    End:
-      type: string
-      format: date-time
-      title: End Date
-      description: End date used in the query. Complies with RFC 3339.
-      example: 2020-12-01T17:00:00Z
-    Start:
-      type: string
-      format: date-time
-      title: Start Date
-      description: Start date used in the query. Complies with RFC 3339.
-      example: 2020-01-01T00:00:00Z
     PixQrCode:
       type: object
       properties:
@@ -2816,6 +2775,99 @@ components:
       required:
         - name
         - identifier
+    Refund:
+      type: object
+      properties:
+        value:
+          type: number
+        status:
+          type: string
+          enum:
+            - IN_PROCESSING
+            - REFUNDED
+            - NOT_ACCOMPLISHED
+        correlationID:
+          type: string
+          description: Your correlation ID to keep track of this refund
+        refundId:
+          type: string
+          description: Unique refund ID for this pix refund
+        time:
+          type: string
+          description: Time of this refund
+    RefundPayload:
+      type: object
+      properties:
+        value:
+          type: number
+        transactionEndToEndId:
+          type: string
+          description: Your transaction ID, or endToEnd ID, to keep track of this refund
+        correlationID:
+          type: string
+          description: Your correlation ID, unique identifier refund
+    Subscription:
+      type: object
+      properties:
+        value:
+          type: number
+          description: Value in cents of the subscription
+        customer:
+          type: object
+          $ref: '#/components/schemas/Customer'
+    SubscriptionPayload:
+      type: object
+      properties:
+        customer:
+          type: object
+          description: Customer of this subscription
+          properties:
+            name:
+              type: string
+              description: Customer name
+            email:
+              type: string
+              description: Customer email
+            phone:
+              type: string
+              description: Customer phone
+            taxID:
+              type: string
+              description: Customer taxID (CPF or CNPJ)
+        value:
+          type: number
+          description: Value in cents of this subscription
+      required:
+        - customer
+        - value
+    CompanyBankAccount:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: ID of the Account
+        isDefault:
+          type: boolean
+        balance:
+          type: object
+          properties:
+            total:
+              type: number
+              description: Total amount in cents
+            blocked:
+              type: number
+              description: Blocked amount in cents
+            available:
+              type: number
+              description: Available amount in cents
+    WithdrawTransaction:
+      type: object
+      properties:
+        endToEndId:
+          type: string
+          description: ID of the Withdraw Transaction
+        value:
+          type: string
     PayPixKeyPayload:
       type: object
       properties:
@@ -2951,99 +3003,6 @@ components:
           enum:
             - PENDING
             - CONFIRMED
-    User:
-      type: object
-      properties:
-        _id:
-          type: string
-        updatedAt:
-          type: string
-        createdAt:
-          type: string
-        nick:
-          type: string
-        taxID:
-          type: string
-        company:
-          type: string
-        phoneNumbers:
-          type: string
-        active:
-          type: string
-        isBlocked:
-          type: string
-        name:
-          type: string
-        manager:
-          type: string
-        roles:
-          type: string
-        roleGroups:
-          type: string
-        emails:
-          type: string
-        lang:
-          type: string
-        journeySchedule:
-          type: string
-        tags:
-          type: string
-        costRevenueCenter:
-          type: string
-        correlationID:
-          type: string
-        gender:
-          type: string
-        birthDate:
-          type: string
-        admissionDate:
-          type: string
-        demissionDate:
-          type: string
-        businessDivision:
-          type: string
-        jobTitle:
-          type: string
-    UserPayload:
-      type: object
-      properties:
-        id:
-          type: string
-        emails:
-          type: array
-          items:
-            type: string
-        taxID:
-          type: string
-        name:
-          type: string
-        nick:
-          type: string
-        gender:
-          type: string
-        tags:
-          type: string
-        correlationID:
-          type: string
-        manager:
-          type: string
-        area:
-          type: string
-        phoneNumbers:
-          type: array
-          items:
-            type: string
-        birthDate:
-          type: string
-          format: date
-        admissionDate:
-          type: string
-          format: date
-        demissionDate:
-          type: string
-          format: date
-        password:
-          type: string
     ApplicationEnumTypePayload:
       type: string
       description:
@@ -3169,68 +3128,111 @@ components:
         clientSecret:
           type: string
           description: The secret of this client application.
-    CompanyBankAccount:
+    End:
+      type: string
+      format: date-time
+      title: End Date
+      description: End date used in the query. Complies with RFC 3339.
+      example: 2020-12-01T17:00:00Z
+    Start:
+      type: string
+      format: date-time
+      title: Start Date
+      description: Start date used in the query. Complies with RFC 3339.
+      example: 2020-01-01T00:00:00Z
+    User:
       type: object
       properties:
-        accountId:
+        _id:
           type: string
-          description: ID of the Account
-        isDefault:
-          type: boolean
-        balance:
-          type: object
-          properties:
-            total:
-              type: number
-              description: Total amount in cents
-            blocked:
-              type: number
-              description: Blocked amount in cents
-            available:
-              type: number
-              description: Available amount in cents
-    WithdrawTransaction:
-      type: object
-      properties:
-        endToEndId:
+        updatedAt:
           type: string
-          description: ID of the Withdraw Transaction
-        value:
+        createdAt:
           type: string
-    Subscription:
+        nick:
+          type: string
+        taxID:
+          type: string
+        company:
+          type: string
+        phoneNumbers:
+          type: string
+        active:
+          type: string
+        isBlocked:
+          type: string
+        name:
+          type: string
+        manager:
+          type: string
+        roles:
+          type: string
+        roleGroups:
+          type: string
+        emails:
+          type: string
+        lang:
+          type: string
+        journeySchedule:
+          type: string
+        tags:
+          type: string
+        costRevenueCenter:
+          type: string
+        correlationID:
+          type: string
+        gender:
+          type: string
+        birthDate:
+          type: string
+        admissionDate:
+          type: string
+        demissionDate:
+          type: string
+        businessDivision:
+          type: string
+        jobTitle:
+          type: string
+    UserPayload:
       type: object
       properties:
-        value:
-          type: number
-          description: Value in cents of the subscription
-        customer:
-          type: object
-          $ref: '#/components/schemas/Customer'
-    SubscriptionPayload:
-      type: object
-      properties:
-        customer:
-          type: object
-          description: Customer of this subscription
-          properties:
-            name:
-              type: string
-              description: Customer name
-            email:
-              type: string
-              description: Customer email
-            phone:
-              type: string
-              description: Customer phone
-            taxID:
-              type: string
-              description: Customer taxID (CPF or CNPJ)
-        value:
-          type: number
-          description: Value in cents of this subscription
-      required:
-        - customer
-        - value
+        id:
+          type: string
+        emails:
+          type: array
+          items:
+            type: string
+        taxID:
+          type: string
+        name:
+          type: string
+        nick:
+          type: string
+        gender:
+          type: string
+        tags:
+          type: string
+        correlationID:
+          type: string
+        manager:
+          type: string
+        area:
+          type: string
+        phoneNumbers:
+          type: array
+          items:
+            type: string
+        birthDate:
+          type: string
+          format: date
+        admissionDate:
+          type: string
+          format: date
+        demissionDate:
+          type: string
+          format: date
+        password:
+          type: string
   securitySchemes:
     AppID:
       type: apiKey
@@ -3243,13 +3245,31 @@ tags:
   - name: customer
     description: |
       Endpoint to manage Customer
-  - name: payment
+  - name: transactions
+    description: |
+      Endpoint to manage Transactions
+  - name: webhook
+    description: |
+      Endpoint to manage Webhooks
+  - name: pixQrCode
+    description: |
+      Endpoint to manage static QRCodes
+  - name: refund
+    description: |
+      Endpoint to manage Refunds
+  - name: subscription
+    description: |
+      Endpoint to manage Subscriptions
+  - name: cashback-fidelity
+    description: |
+      Endpoint to manage exclusive cashbacks
+  - name: account
+    description: |
+      Endpoint to manage Accounts
+  - name: payment (request access)
     description: |
       Endpoint to init a payment using a Pix Key or QRCode.<br />
   - name: partner (request access)
     description: |
       Partners integrate affiliated companies.<br/>
       They can register new companies, manage them, and earn money from them.
-  - name: subscription
-    description: |
-      Endpoint to manage Subscriptions
