@@ -14,17 +14,17 @@ const links = [
   },
   {
     title: 'E-commerces',
-    description: 'Integre a OpenPix com o seu e-commerce',
+    description: 'Integre a Woovi com o seu e-commerce',
     href: '/docs/category/e-commerce',
   },
   {
     title: 'Integrações',
-    description: 'Integre a OpenPix com as suas necessidades - WhatsApp, Telegram, Discord, etc',
+    description: 'Integre a Woovi com as suas necessidades - WhatsApp, Telegram, Discord, etc',
     href: '/docs/category/integra%C3%A7%C3%B5es',
   },
   {
     title: 'API',
-    description: 'Para você que quer integrar a OpenPix diretamente, fornecemos nossa API também',
+    description: 'Para você que quer integrar a Woovi diretamente, fornecemos nossa API também',
     href: '/api',
   },
 ];
