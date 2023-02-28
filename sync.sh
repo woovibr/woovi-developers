@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x #echo on
 
 cp -r ../openpix-developers/docs/* ./docs/.
 cp -r ../openpix-developers/static/* ./static/.
