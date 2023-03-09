@@ -1,6 +1,5 @@
 ---
 id: qrcode-static
-sidebar_position: 0
 title: QRCode Estático
 tags:
   - qrcode
