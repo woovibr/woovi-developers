@@ -1026,8 +1026,9 @@ paths:
             example:
               value: 100
               destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
-              correlationID: payment1
               comment: payment comment
+              correlationID: payment1
+              sourceAccountId: my-source-account-id
       responses:
         '200':
           description: Payment destination account information
@@ -1045,6 +1046,7 @@ paths:
                     destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
                     comment: payment comment
                     correlationID: payment1
+                    sourceAccountId: my-source-account-id
         '400':
           description: An error message
           content:
@@ -2185,6 +2187,14 @@ components:
         customer:
           type: object
           $ref: '#/components/schemas/Customer'
+        type:
+          type: string
+          enum:
+            - OVERDUE
+            - DYNAMIC
+          description:
+            Charge type is used to determine whether a charge will have a
+            deadline, fines and interests
         comment:
           type: string
         brCode:
@@ -2245,6 +2255,14 @@ components:
         value:
           type: number
           description: Value in cents of this charge
+        type:
+          type: string
+          enum:
+            - OVERDUE
+            - DYNAMIC
+          description:
+            Charge type is used to determine whether a charge will have a
+            deadline, fines and interests
         comment:
           type: string
           description: Comment to be added in infoPagador
@@ -2257,6 +2275,39 @@ components:
         customer:
           type: object
           $ref: '#/components/schemas/CustomerPayload'
+        daysForDueDate:
+          type: number
+          description:
+            Time in days until the charge hits the deadline so fines and
+            interests start applying. This property is only considered for
+            charges of type OVERDUE
+        daysAfterDueDate:
+          type: number
+          description:
+            Time in days that a charge is still payable after the deadline.
+            This property is only considered for charges of type OVERDUE
+        interests:
+          description:
+            Interests configuration. This property is only considered for
+            charges of type OVERDUE
+          type: object
+          properties:
+            value:
+              type: number
+              description:
+                Value in basis points of interests to be applied daily after the
+                charge hits the deadline
+        fines:
+          description:
+            Fines configuration. This property is only considered for charges
+            of type OVERDUE
+          type: object
+          properties:
+            value:
+              type: number
+              description:
+                Value in basis points of fines to be applied when the charge hits
+                the deadline
         additionalInfo:
           type: array
           description: Additional info of the charge
@@ -2480,9 +2531,17 @@ components:
         destinationAlias:
           type: string
           description: the pix key the payment should be sent to
+        correlationID:
+          type: string
+          description: an unique identifier for your payment
         comment:
           type: string
           description: the comment that will be send alongisde your payment
+        sourceAccountId:
+          type: string
+          description:
+            an optional id for the source account of the payment, if not
+            informed will assume the default account
     PaymentCreate:
       type: object
       properties:
@@ -2506,6 +2565,9 @@ components:
             - FAILED
             - CONFIRMED
             - DENIED
+        sourceAccountId:
+          type: string
+          description: the id of the payment source account
     PixQrCode:
       type: object
       properties:
