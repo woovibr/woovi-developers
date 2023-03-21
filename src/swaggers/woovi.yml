@@ -361,9 +361,9 @@ paths:
                     paymentLinkID: 7777-6f71-427a-bf00-241681624586
                     paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
                     globalID: Q2hhcmdlOjcxOTFmMWIwMjA0NmJmNWY1M2RjZmEwYg==
-                    qrCodeImage: https://api.openpix.dev/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     brCode:
-                      000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     additionalInfo:
                       - key: Product
@@ -467,9 +467,9 @@ paths:
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
                     paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.dev/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     brCode:
-                      000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     additionalInfo:
                       - key: Product
@@ -516,22 +516,57 @@ paths:
             schema:
               type: object
               $ref: '#/components/schemas/ChargePayload'
-            example:
-              correlationID: 9134e286-6f71-427a-bf00-241681624586
-              value: 100
-              comment: good
-              customer:
-                name: Dan
-                taxID: '31324227036'
-                email: email0@example.com
-                phone: '5511999999999'
-              additionalInfo:
-                - key: Product
-                  value: Pencil
-                - key: Invoice
-                  value: '18476'
-                - key: Order
-                  value: '302'
+            examples:
+              Charge:
+                value:
+                  correlationID: 9134e286-6f71-427a-bf00-241681624587
+                  value: 100
+                  comment: good
+                  customer:
+                    name: Dan
+                    taxID: '31324227036'
+                    email: email0@example.com
+                    phone: '5511999999999'
+                  additionalInfo:
+                    - key: Product
+                      value: Pencil
+                    - key: Invoice
+                      value: '18476'
+                    - key: Order
+                      value: '302'
+              Charge with Interests and Fines:
+                value:
+                  type: OVERDUE
+                  correlationID: 9134e286-6f71-427a-bf00-241681624587
+                  value: 100
+                  comment: good
+                  daysForDueDate: 5
+                  daysAfterDueDate: 5
+                  interests:
+                    value: 10
+                  fines:
+                    value: 20
+                  customer:
+                    name: Dan
+                    taxID: '31324227036'
+                    email: email0@example.com
+                    phone: '5511999999999'
+                    address:
+                      zipcode: '30421322'
+                      street: Street
+                      number: '100'
+                      neighborhood: Neighborhood
+                      city: Belo Horizonte
+                      state: MG
+                      complement: APTO
+                      country: BR
+                  additionalInfo:
+                    - key: Product
+                      value: Pencil
+                    - key: Invoice
+                      value: '18476'
+                    - key: Order
+                      value: '302'
       responses:
         '200':
           description:
@@ -563,13 +598,13 @@ paths:
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
                     paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.dev/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     expiresIn: 2592000
                     expiresDate: 2021-04-01T17:28:51.882Z
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
                     brCode:
-                      000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     additionalInfo:
                       - key: Product
@@ -1009,7 +1044,139 @@ paths:
                 properties:
                   error:
                     type: string
+  '/api/v1/payment/{id}':
+    get:
+      tags:
+        - payment (request access)
+      summary: Get one Payment
+      parameters:
+        - name: id
+          in: path
+          description: payment ID or correlation ID
+          required: true
+          schema:
+            type: string
+          examples:
+            paymentID:
+              value: Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA==
+            correlationID:
+              value: fe7834b4060c488a9b0f89811be5f5cf
+      responses:
+        '200':
+          description: The payment retrieved using the given ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment:
+                    type: object
+                    $ref: '#/components/schemas/Payment'
+                  transaction:
+                    type: object
+                    $ref: '#/components/schemas/PaymentTransaction'
+                example:
+                  payment:
+                    value: 100
+                    status: CONFIRMED
+                    destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
+                    comment: payment comment
+                    correlationID: payment1
+                    sourceAccountId: my-source-account-id
+                  transaction:
+                    value: 100
+                    endToEndId: transaction-end-to-end-id
+                    time: 2023-03-20T13:14:17.000Z
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
   /api/v1/payment:
+    get:
+      tags:
+        - payment (request access)
+      summary: Get a list of payments
+      responses:
+        '200':
+          description: A list of payments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        payment:
+                          type: object
+                          $ref: '#/components/schemas/Payment'
+                        transaction:
+                          type: object
+                          $ref: '#/components/schemas/PaymentTransaction'
+                  pageInfo:
+                    type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                            data:
+                              type: object
+                              properties:
+                                skip:
+                                  type: number
+                                limit:
+                                  type: number
+                      skip:
+                        type: number
+                      limit:
+                        type: number
+                      totalCount:
+                        type: number
+                      hasPreviousPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
+              example:
+                pageInfo:
+                  skip: 0
+                  limit: 10
+                  totalCount: 20
+                  hasPreviousPage: false
+                  hasNextPage: true
+                payments:
+                  payment:
+                    value: 100
+                    status: CONFIRMED
+                    destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
+                    comment: payment comment
+                    correlationID: payment1
+                    sourceAccountId: my-source-account-id
+                  transaction:
+                    value: 100
+                    endToEndId: transaction-end-to-end-id
+                    time: 2023-03-20T13:14:17.000Z
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     post:
       tags:
         - payment (request access)
@@ -1038,7 +1205,7 @@ paths:
                 type: object
                 properties:
                   payment:
-                    $ref: '#/components/schemas/PaymentCreate'
+                    $ref: '#/components/schemas/Payment'
                 example:
                   payment:
                     value: 100
@@ -1095,9 +1262,9 @@ paths:
                     identifier: zr7833b4060c488a9b0f89811
                     paymentLinkID: 7777-6f71-427a-bf00-241681624586
                     paymentLinkUrl: https://openpix.com.br/pay/fe7834b4060c488a9b0f89811be5f5cf
-                    qrCodeImage: https://api.openpix.dev/openpix/charge/brcode/image/fe7834b4060c488a9b0f89811be5f5cf.png
+                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/fe7834b4060c488a9b0f89811be5f5cf.png
                     brCode:
-                      000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
@@ -1169,9 +1336,9 @@ paths:
                     identifier: zr7833b4060c488a9b0f89811
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
                     paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.dev/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    qrCodeImage: https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     brCode:
-                      000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
@@ -1226,11 +1393,11 @@ paths:
                     identifier: zr7833b4060c488a9b0f89811
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
                     paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.dev/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    qrCodeImage: https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
                     brCode:
-                      000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
         '400':
           description: An error message
@@ -1428,6 +1595,7 @@ paths:
                         taxID: '31324227036'
                         type: BR:CPF
                     value: 100
+                    dayGenerateCharge: 5
         '400':
           description: An error message
           content:
@@ -1458,6 +1626,7 @@ paths:
                 taxID: '31324227036'
                 email: email0@example.com
                 phone: '5511999999999'
+              dayGenerateCharge: 15
       responses:
         '200':
           description: The subscription created
@@ -1479,6 +1648,7 @@ paths:
                         taxID: '31324227036'
                         type: BR:CPF
                     value: 100
+                    dayGenerateCharge: 5
         '400':
           description: An error message
           content:
@@ -1583,6 +1753,14 @@ paths:
           You can use the QrCode static ID or correlation ID or identifier
           field of QrCode static to get a list of QrCode related of this
           transaction
+        schema:
+          type: string
+        example: Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA
+      - in: query
+        name: withdrawal
+        description:
+          You can use the ID or EndToEndId of a withdrawal transaction to get
+          all transactions related to the withdrawal
         schema:
           type: string
         example: Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA
@@ -1915,7 +2093,7 @@ paths:
                           correlationID: 9134e286-6f71-427a-bf00-241681624586
                           transactionID: 9134e2866f71427abf00241681624586
                           brCode:
-                            000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                            000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                             Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                           createdAt: 2021-03-03T20:49:23.605Z
                           updatedAt: 2021-03-03T20:49:23.668Z
@@ -1926,7 +2104,7 @@ paths:
                             customer: 604002035cce3b60132343cb
                             correlationID: 9134e286-6f71-427a-bf00-241681624586
                             brCode:
-                              000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                              000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                               Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                             createdAt: 2021-03-03T21:39:15.831Z
                             updatedAt: 2021-03-03T21:39:15.896Z
@@ -2091,11 +2269,11 @@ paths:
                             identifier: 9134e2866f71427abf00241681624586
                             paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
                             paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                            qrCodeImage: https://api.openpix.dev/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                            qrCodeImage: https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                             createdAt: 2021-03-02T17:28:51.882Z
                             updatedAt: 2021-03-02T17:28:51.882Z
                             brCode:
-                              000201010212261060014br.gov.bcb.pix2584http://localhost:5001/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                              000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                               Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                           customer: null
                           time: 2020-09-09T20:15:00.358Z
@@ -2190,8 +2368,8 @@ components:
         type:
           type: string
           enum:
-            - OVERDUE
             - DYNAMIC
+            - OVERDUE
           description:
             Charge type is used to determine whether a charge will have a
             deadline, fines and interests
@@ -2258,8 +2436,8 @@ components:
         type:
           type: string
           enum:
-            - OVERDUE
             - DYNAMIC
+            - OVERDUE
           description:
             Charge type is used to determine whether a charge will have a
             deadline, fines and interests
@@ -2363,38 +2541,35 @@ components:
     CustomerPayload:
       type: object
       properties:
-        Customer:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        taxID:
+          type: string
+        correlationID:
+          type: string
+        address:
           type: object
           properties:
-            name:
+            zipcode:
               type: string
-            email:
+            street:
               type: string
-            phone:
+            number:
               type: string
-            taxID:
+            neighborhood:
               type: string
-            correlationID:
+            city:
               type: string
-            address:
-              type: object
-              properties:
-                zipcode:
-                  type: string
-                street:
-                  type: string
-                number:
-                  type: string
-                neighborhood:
-                  type: string
-                city:
-                  type: string
-                state:
-                  type: string
-                complement:
-                  type: string
-                country:
-                  type: string
+            state:
+              type: string
+            complement:
+              type: string
+            country:
+              type: string
           required:
             - name
     ApplicationEnumTypePayload:
@@ -2542,7 +2717,7 @@ components:
           description:
             an optional id for the source account of the payment, if not
             informed will assume the default account
-    PaymentCreate:
+    Payment:
       type: object
       properties:
         value:
@@ -2568,6 +2743,18 @@ components:
         sourceAccountId:
           type: string
           description: the id of the payment source account
+    PaymentTransaction:
+      type: object
+      properties:
+        value:
+          type: number
+          description: value of the transaction generated by the payment in cents
+        endToEndId:
+          type: string
+          description: endToEndId of the transaction generated by the payment
+        time:
+          type: string
+          description: time the transaction generated by the payment happened
     PixQrCode:
       type: object
       properties:
@@ -2661,6 +2848,9 @@ components:
         customer:
           type: object
           $ref: '#/components/schemas/Customer'
+        dayGenerateCharge:
+          type: number
+          description: Day of the month that the charges will be generated
     SubscriptionPayload:
       type: object
       properties:
@@ -2683,6 +2873,12 @@ components:
         value:
           type: number
           description: Value in cents of this subscription
+        dayGenerateCharge:
+          type: number
+          description: Day of the month that the charges will be generated. Maximun of 27.
+          minimum: 0
+          maximum: 27
+          default: 5
       required:
         - customer
         - value
@@ -2719,6 +2915,8 @@ components:
           enum:
             - PAYMENT
             - WITHDRAW
+            - REFUND
+            - FEE
         globalID:
           description: External ID of this transaction
         pixQrCode:
@@ -2798,12 +2996,15 @@ components:
         * **OPENPIX:TRANSACTION_RECEIVED** - New PIX transaction received
 
         * **OPENPIX:TRANSACTION_REFUND_RECEIVED** - New PIX transaction refund received or refunded
+
+        * **OPENPIX:MOVEMENT_CONFIRMED** - Payment confirmed is when the pix transaction related to the payment gets confirmed
       enum:
         - OPENPIX:CHARGE_CREATED
         - OPENPIX:CHARGE_COMPLETED
         - OPENPIX:CHARGE_EXPIRED
         - OPENPIX:TRANSACTION_RECEIVED
         - OPENPIX:TRANSACTION_REFUND_RECEIVED
+        - OPENPIX:MOVEMENT_CONFIRMED
     End:
       type: string
       format: date-time
