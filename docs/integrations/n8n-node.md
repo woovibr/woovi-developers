@@ -1,6 +1,6 @@
 ---
 id: n8n-with-woovi
-title: Integração N8N com Openpix
+title: Integração N8N com Woovi
 tags:
   - integration
   - n8n
@@ -37,13 +37,14 @@ Primeiro, dentro do N8N:
 2. Clique em Add Credential
 3. Selecione o tipo de credencial “Woovi API”
 4. Preencha o campo de API Key com o seu APP ID
-  4.1. Você pode encontrar o seu APP ID na aba de aplicações/plugins ou criar um novo [documentação](https://developers.woovi.com/docs/apis/api-getting-started)
+   4.1. Você pode encontrar o seu APP ID na aba de aplicações/plugins ou criar um novo [documentação](../apis/api-getting-started)
 
 ## Como criar cobrança usando N8N?
 
 Dentro do seu Workflow, você deve:
 
 1. Buscar pelo nó da Woovi
+   ![Woovi nodes](./__assets__/select-woovi-nodes.png)
 2. Selecionar a credencial que você criou
 3. Preencher os campos de value com o valor desejado da cobrança em centavos
 4. Preencher o campo de description com um correlationID único para cada cobrança
