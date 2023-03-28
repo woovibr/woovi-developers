@@ -38,7 +38,7 @@ module.exports = {
       title: 'Woovi Developers',
       logo: {
         alt: 'Woovi Developers',
-        src: 'img/logo.svg',
+        src: 'img/icons/woovi.svg',
       },
       items: [
         {
