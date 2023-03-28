@@ -1,24 +1,17 @@
 ---
 id: magento1-plugin
-title: Integrando a Woovi com Magento1
+title: Integrating Woovi with Magento1
 sidebar_label: Magento1 Woovi Plugin
-tags:
-  - magento1
-  - ecommerce
 ---
 
-### Plugin Pix para Magento1
+### Pix Plugin for Magento1
 
-## Resumo
+## Summary
 
-Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no Magento1, na Woovi. A plataforma Woovi efetua em tempo real a conciliação entre seu Banco e seu e-Commerce.
-Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real com QrCodes Pix, enviar Links de Pagamento, gerenciar cobranças incluindo extornos.
+This document details steps required to connect your Magento1 based e-Commerce platform to Woovi. The Woovi platform performs the reconciliation between your Bank and your e-Commerce in real time.
+After connecting your Woovi account it is possible to charge customers in real time with QrCodes Pix, send Payment Links, manage charges including refunds.
 
-> _Nota: Este documento espera que você já tenha um ambiente Magento1 ativo._
-
-## 1. Instale o Plugin Woovi na sua instância Magento1
-
-Faça o download da versão .zip do plugin pelo link abaixo:
+> _Note: This document expects you to already have an active Magento1 environment._
 
 ![Banner](/img/ecommerce/woocommerce-banner.png)
 [Download Woovi Magento1 Plugin - versão 1.2.9](pathname:///magento1/woovi_pix.1.2.9.zip) - Versão Atual
@@ -26,13 +19,115 @@ Faça o download da versão .zip do plugin pelo link abaixo:
 <details>
   <summary>Change Log</summary>
 
-#### 1.2.9 - 13/03/2022
+#### 1.2.9 - 07/03/2023
+
+- Update endpoints
+
+#### 1.2.8 - 28/06/2022
+
+- Improves on QRCode for email and checkout success
+
+#### 1.2.7 - 17/06/2022
+
+- Improves on QRCode size on emails
+
+#### 1.2.6 - 17/06/2022
+
+- Improves on order detail and order email
+
+#### 1.2.5 - 06/06/2022
+
+- Implements the new feature of giftback
+  - ![success-payment.png](/img/ecommerce/magento1/magento1-giftback-checkout-success.png)
+
+#### 1.2.0 - 21/02/2022
+
+- Implements the new UI for checkout success when generating a new order
+- Real-time inside of checkout success when paying the Order.
+  - When pay, the UI will update and will show that the order was paid.
+  - ![success-payment.png](/img/ecommerce/magento1/successPayment.png)
+
+#### 1.1.5 - 12/11/2021
+
+- OrderId added on Charge comment. Now will have "Store Name#123456"
+
+#### 1.1.4 - 08/11/2021
+
+- OrderId added on Woovi Charge additional info
+
+#### 1.1.3 - 19/10/2021
+
+- Improves for Webhook Auth to avoid Apache blocking authorization header
+
+#### 1.1.2 - 17/09/2021
+
+- Fix Typo on Success page for the line "Confirme as informações e finalize o pagamento."
+- Fix Email to send the Qr Code Image and the Pix Br Code
+- Improve for logs when generating a new order
+
+#### 1.1.1 - 16/09/2021
+
+- Improves for Payment Title
+- Improves for Webhook Validation. If webhook accuses an invalid header authorization, it will log on `~/var/log/woovi_webhooks.log` a message with information.
+- Improves for Webhook Validation. If webhook accuses an invalid header authorization, it will return a json like:
+
+```json
+{
+  "error": "Invalid Request",
+  "description": "Invalid authorization header: magent",
+  "field": "authorization header"
+}
+```
+
+#### 1.1.0 - 06/09/2021
+
+- New Button to select which status the order must be created
+
+#### 1.0.8 - 02/09/2021
+
+- Improves for customer CPF/CNPJ
+
+#### 1.0.7 - 02/09/2021
+
+- Sending platform plugin info on request header: magento plugin version, platform name
+- Validation for customer CPF/CNPJ
+
+#### 1.0.6 - 02/09/2021
+
+- Improves Customer Order Email: sending safe info
+- Minor updates
+
+#### 1.0.5 - 16/08/2021
+
+- Improves Invoice Email
+- Minor updates
+
+#### 1.0.4 - 28/07/2021
+
+- Add validation for Customer phone
+- Minor updates
+
+#### 1.0.3 - 26/07/2021
+
+- Customer improves: saving more fields on Woovi platform
+- Minor updates for customer
+
+#### 1.0.2 - 26/07/2021
+
+- Improve for comment characters length
+- Minor updates
+
+#### 1.0.1 - 01/07/2021
+
+- Minor updates
+
+#### 1.0.0 - 01/06/2021
 
 - Initial Version
 
 </details>
 
-Extraia o conteúdo do arquivo .zip e cole dentro da pasta root da sua loja Magento1. Geralmente a loja root é nomeada como `src` que faz referência à source. Caso sua loja seja diferente, procure pela pasta que contenha outras pastas como:
+Extract the contents of the .zip file and paste it into the root folder of your Magento1 store. Usually the root store is named `src` which references source. If your store is different, look for the folder that contains other folders like:
 
 - app
 - js
@@ -40,105 +135,107 @@ Extraia o conteúdo do arquivo .zip e cole dentro da pasta root da sua loja Mage
 - skin
 - var
 
-Assim como no exemplo abaixo:
+As in the example below:
 
 ![magento1-src-folder](/img/ecommerce/magento1/magento1-src-folder.png)
 
-Encontrando a pasta que contenha essas citadas basta realizar o seguinte:
+Finding the folder that contains those mentioned, just do the following:
 
-- Copiar os arquivos extraídos do .zip;
-- Colar dentro dessa pasta
+- Copy the extracted .zip files;
+- Paste into this folder
 
-## 2. Configurando o Plugin Magento1
+## 2. Configuring Magento1 Plugin
 
-Entre em Magento1 Admin -> System > Configuration > Sales (side menu) > Payment Methods
+Enter Magento1 Admin -> System > Configuration > Sales (side menu) > Payment Methods
 
 ![sales_pay_method.png](/img/ecommerce/magento1/sales_pay_method.png)
 
-Ao acessar `Payment Methods` você irá notar o Collapsible `Woovi - Pix`
+Upon accessing `Payment Methods` you will notice the Collapsible `Woovi - Pix`
 
 ![woovi_pay_tab.png](/img/ecommerce/magento1/woovi_pay_tab.png)
 
-- **App ID** Insira o AppID ou Cadastre um AppID do tipo Plugin. Crie um appID [aqui](../../apis/api-getting-started.md)
-- **Webhook Authorization** Crie uma senha para a integração do Webhook. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-  - Lembre-se: A URL a ser utilizada no webhook deverá ser: `https://yourstore/woovi/webhook` no momento em que cadastrá-lo na plataforma Woovi
-  - Lembre-se: A chave que você utilizar aqui deverá ser a mesma no momento em que cadastrá-la na plataforma Woovi.
-  - Crie um Webhook [aqui](#3-crie-o-webhook-dentro-da-plataforma-woovi).
-- **Enabled** Ativar/Desativar o plugin como método de pagamento
-- **Title** Título do método de pagamento em sua loja Magento1
+- **App ID** Insert AppID or Register a Plugin-type AppID. Create an appID [here](../apis/api-getting-started.md)
+- **Webhook Authorization** Create a password for the Webhook integration. Webhook is required to update the status of Orders in real time when the Pix charge is paid.
+  - Remember: The URL to be used in the webhook must be: `https://yourstore/woovi/webhook` when you register it on the Woovi platform
+  - Remember: The key you use here must be the same at the time you register it on the Woovi platform.
+  - Create a Webhook [here](#3-create-the-webhook-within-the-platform-woovi).
+- **Enabled** Enable/Disable the plugin as a payment method
+- **Title** Payment method title in your Magento1 store
 
-### 2.2 Configurando CPF/CNPJ para o Customer (opcional)
+### 2.2 Configuring CPF/CNPJ for Customer (optional)
 
-Para salvar o cpf/cnpj do customer da order na sua cobrança Woovi é necessário que seja ativado o campo `TaxVat` em sua loja Magento.
+To save the customer's cpf/cnpj of the order in your Woovi collection you need to activate the `TaxVat` field in your Magento store.
 
-Entre em Magento1 Admin -> System > Configuration > Customers (side menu) > Customer Configuration
+**Note: If you go without the configuration of this field, your charges will be saved without the same customer.**
+
+Enter Magento1 Admin -> System > Configuration > Customers (side menu) > Customer Configuration
 
 ![magento1-customer-sidemenu](/img/ecommerce/magento1/magento1-customer-sidemenu.png)
 
-Em `Show Tax/VAT Number` selecione o valor required:
+In `Show Tax/VAT Number` select the required value:
 
 ![magento1-customer-taxvat](/img/ecommerce/magento1/magento1-customer-taxvat.png)
 
-A partir de agora os clientes terão que preencher esse campo com o CPF ou CNPJ e o mesmo será usado para salvar o cliente na plataforma Woovi.
+From now on, customers will have to fill in this field with their CPF or CNPJ and it will be used to save the customer on the Woovi platform.
 
 ### 2.3 Giftback
 
-Importante lembrete sobre a feature de Giftback para magento 1. O plugin suporta a mesma mas para que os clientes sejam contemplados apenas os que utilizarem CPF em suas compras serão inseridos na mesma.
+Important reminder about the [Giftback](../giftback/what-is-giftback.md) feature for magento1. The plugin supports it, but for customers to be covered, only those who use CPF in their purchases will be included in it.
 
-> A versão minima do plugin Magento1 para consumir a feature giftback é a 1.2.5
+> **The minimum version of the Magento1 plugin to consume the giftback feature is 1.2.5**
 
-## 3. Crie o Webhook dentro da Plataforma Woovi
+## 3. Create the Webhook within the Woovi Platform
 
-Registre o Webhook que será responsável para atualizar sua loja Magento1 quando uma cobrança Pix for paga.
+Register the Webhook who will be responsible for updating your Magento1 store when a Pix charge is paid.
 
-Para realizar o registro de um novo Webhook siga os passos abaixo:
+To register a new Webhook follow the steps below:
 
-- Va até a plataforma Woovi e acesse: Admin -> API/Plugins -> Novo Webhook
-- Utilize a mesma senha cadastrada em sua loja Magento1. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-- A URL de Callback que deve ser utilizada no cadastro se encontra logo abaixo ao campo em que se registra a senha do webhook dentro da sua loja Magento1. O padrão é: `https://yourstore/woovi/webhook`
+- Go to the Woovi platform and access: Admin -> Settings -> API/Plugins -> New Webhook
+- Use the same password registered in your Magento1 store. Webhook is required to update the status of Orders in real time when the Pix charge is paid.
+- The Callback URL that must be used in the registration is found right below the field where the webhook password is registered within your Magento1 store. The default is: `https://yourstore/woovi/webhook`
 
 ![Webhook](/img/ecommerce/magento1/magento1-woovi-webhook.png)
 
-## 4. Realizar Pedido com Pix
+## 4. Place Order with Pix
 
-Escolha a opção de pagar o pedido usando Pix
+Choose the option to pay the order using Pix
 
 ![Pay Pix](/img/ecommerce/magento1/magento1-checkout-cart.png)
 
-Pague o Pix usando o app do seu banco.
+Pay Pix using your bank's app.
 
 ![Checkout Success](/img/ecommerce/magento1/successPayment.png)
 
-Valide que o status do Pedido mudou após o pagamento
+Validate Order status changed after payment
 
-## Expiração
+## Expiration
 
-A Woovi ira cuidar da expiração da cobrança Pix. Entretanto, é preciso que seja configurado em sua loja magento a expiração da order pois o mesmo cuidará de todo o processo.
+Woovi will handle Pix Charge expiration. However, it is necessary to configure the expiration of the order in your magento store, as it will take care of the entire process.
 
-Entretanto, o magento1 nao possui uma solução nativa para a mesma.
+However, magento1 does not have a native solution for it.
 
-Indicamos que a expiração/cancelamento da order no magento1 seja feito utilizando uma lib terceira para ajuda.
+We recommend that order expiration/cancellation in magento1 be done using a third-party lib for help.
 
-Uma vez tendo a lib terceira indicamos que seja seguido uma configuração semelhante abaixo:
+Once you have the third lib, we indicate that a similar configuration below is followed:
 
-- tempo de expiração da cobrança Woovi: 15 minutos
-- coloque os mesmos 15 minutos dentro da sua loja Magento.
+- Woovi billing expiration time: 15 minutes
+- put the same 15 minutes inside your Magento store.
 
 :::info
-No magento você pode utilizar a lib abaixo ou alguma de sua preferência:
+In magento you can use the lib below or any of your preference:
 
 - <https://meetanshi.com/magento-auto-cancel-order.html>
   :::
 
-## Atualizando o plugin
+## Updating the plugin
 
-Indicamos aos clientes Woovi estar sempre atualizados com a última versão do plugin. Você pode identificar a mesma no step de instalação.
+We advise Woovi customers to always be up to date with the latest version of the plugin. You can identify it in the installation step.
 
-Caso seu plugin esteja desatualizado basta seguir os passos do mesmo step de instalação e atualizar os arquivos do plugin em seu ecommerce.
+If your plugin is out of date, just follow the steps of the same installation step and update the plugin files in your ecommerce.
 
 ## Debug
 
-Para debugar o plugin Woovi temos dois arquivos e você encontra ambos dentro de `var/log`:
+To debug the Woovi plugin we have two files and both files you can find on `var/log`:
 
-- `woovi_exception.log`: arquivo que concentra logs referentes ao processo de criação de um novo pedido Magento e consequentemente a charge no lado da Woovi
-- `woovi_webhooks.log`: arquivo que concentra logs referentes ao processo de pagamento de um pedido. O webhook é chamado quando identificamos um novo Pix em sua conta e o mesmo trata de atualizar o status da order em sua loja Magento.
+- `woovi_exception.log`: file that concentrates logs referring to the process of creating a new Magento order and consequently the charge on the Woovi side
+- `woovi_webhooks.log`: file that gathers logs referring to the payment process of an order. The webhook is called when we identify a new Pix in your account and it takes care of updating the order status in your Magento store.
