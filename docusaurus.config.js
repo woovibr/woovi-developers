@@ -52,6 +52,14 @@ module.exports = {
             from: '/docs/ecommerce/magento2-plugin',
             to: '/docs/ecommerce/magento2/magento2-plugin',
           },
+          {
+            from: '/docs/ecommerce/oracle-commerce-cloud',
+            to: '/docs/ecommerce/oracle/occ-getting-started'
+          },
+          {
+            from: '/docs/getting-started',
+            to: '/docs/intro/getting-started'
+          }
         ],
       },
     ],
