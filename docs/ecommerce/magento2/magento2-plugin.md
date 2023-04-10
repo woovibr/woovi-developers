@@ -18,11 +18,11 @@ Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real c
 
 ## 1. Instale o Plugin Woovi na sua instância Magento2
 
-[Woovi For Magento2](https://marketplace.magento.com/openpix-pix.html)
+[Woovi For Magento2](https://marketplace.magento.com/woovi-pix.html)
 
 ![Banner](/img/ecommerce/woocommerce-banner.png)
 ![Install](/img/ecommerce/magento2/magento2-marketplace-search.png)
-[Download Woovi Magento2 Plugin - versão 2.0.6](pathname:///magento2/openpix_pix.2.0.6.zip) - Versão Atual
+[Download Woovi Magento2 Plugin - versão 2.0.10](pathname:///magento2/woovi_pix.2.0.10.zip) - Versão Atual
 
 ## 2. Configurando o Plugin Magento2
 
@@ -92,9 +92,9 @@ Para realizar o registro de um novo Webhook siga os passos abaixo:
 
 - Va até a plataforma Woovi e acesse: Admin -> API/Plugins -> Novo Webhook
 - Utilize a mesma senha cadastrada em sua store Magento2. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-- A URL de Callback que deve ser utilizada no cadastro se encontra logo abaixo ao campo em que se registra a senha do webhook dentro da sua Store Magento2. O padrão é: <https://youstore.com.br/openpix/index/webhook>
+- A URL de Callback que deve ser utilizada no cadastro se encontra logo abaixo ao campo em que se registra a senha do webhook dentro da sua Store Magento2. O padrão é: <https://youstore.com.br/woovi/index/webhook>
 
-![Webhook](/img/ecommerce/magento2/magento2-openpix-webhook.png)
+![Webhook](/img/ecommerce/magento2/magento2-woovi-webhook.png)
 
 ## 4. Realizar Pedido com Pix
 
@@ -138,4 +138,4 @@ Caso seu plugin esteja desatualizado basta seguir os passos do mesmo step de ins
 
 Para debugar o plugin Woovi temos o arquivo de log e você encontra dentro de `var/log`:
 
-- `openpix.log`: arquivo que concentra logs referentes ao processo de criação de um novo pedido Magento e consequentemente a charge no lado da Woovi e o processo de atualização da Order quando paga.
+- `woovi.log`: arquivo que concentra logs referentes ao processo de criação de um novo pedido Magento e consequentemente a charge no lado da Woovi e o processo de atualização da Order quando paga.
