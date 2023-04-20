@@ -2,6 +2,7 @@
 id: magento2-plugin
 title: Integrando a Woovi com Magento2
 sidebar_label: Magento2 Woovi Plugin
+sidebar_position: 0
 tags:
 - magento2
 - ecommerce
