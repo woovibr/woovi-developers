@@ -2727,8 +2727,9 @@ components:
               type: string
             country:
               type: string
-          required:
-            - name
+      required:
+        - name
+        - taxID
     ApplicationEnumTypePayload:
       type: string
       description:
