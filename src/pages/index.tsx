@@ -90,6 +90,14 @@ const cards = [
     to: 'https://app.woovi.com/home/applications/woocommerce/add',
   },
   {
+    title: 'WhatsApp',
+    content:
+      'Envie cobranças Pix por WhatsApp para seus clientes.',
+    icon: <FaWhatsapp color='#25d366' size={30} />,
+    docsTo: '/docs/whatsapp/whatsapp-how-to-activate',
+    to: 'https://app.woovi.com/home/applications/js/add',
+  },
+  {
     title: 'Plugin Javascript',
     content:
       'Pix para portais de cliente ou eCommerce Nativo. Gestão de QRCode Pix, integração de ordens e conciliação tempo real.',
