@@ -9,6 +9,7 @@ import {
   FaPhp,
   FaJava,
   FaPython,
+  FaWhatsapp,
 } from 'react-icons/fa';
 import { GrOracle } from 'react-icons/gr';
 import { SiNodedotjs, SiPowershell, SiWoo, SiDelphi } from 'react-icons/si';
@@ -36,12 +37,14 @@ const links = [
   },
   {
     title: 'Integrações',
-    description: 'Integre a Woovi com as suas necessidades - WhatsApp, Telegram, Discord, etc',
+    description:
+      'Integre a Woovi com as suas necessidades - WhatsApp, Telegram, Discord, etc',
     href: '/docs/category/integra%C3%A7%C3%B5es',
   },
   {
     title: 'API',
-    description: 'Para você que quer integrar a Woovi diretamente, fornecemos nossa API também',
+    description:
+      'Para você que quer integrar a Woovi diretamente, fornecemos nossa API também',
     href: '/api',
   },
 ];
@@ -54,12 +57,14 @@ const products = [
   },
   {
     title: 'Cashback fidelidade',
-    description: 'Uma % da compra na próxima compra que ele fizer na sua plataforma',
+    description:
+      'Uma % da compra na próxima compra que ele fizer na sua plataforma',
     href: '/docs/category/cashback-fidelidade',
   },
   {
     title: 'Maquininha Pix',
-    description: 'Imprima suas cobranças em um clique com a maquininha que você já tem',
+    description:
+      'Imprima suas cobranças em um clique com a maquininha que você já tem',
     href: '/docs/category/maquininha-pix',
   },
 ];
@@ -91,9 +96,8 @@ const cards = [
   },
   {
     title: 'WhatsApp',
-    content:
-      'Envie cobranças Pix por WhatsApp para seus clientes.',
-    icon: <FaWhatsapp color='#25d366' size={30} />,
+    content: 'Envie cobranças Pix por WhatsApp para seus clientes.',
+    icon: <FaWhatsapp color="#25d366" size={30} />,
     docsTo: '/docs/whatsapp/whatsapp-how-to-activate',
     to: 'https://app.woovi.com/home/applications/js/add',
   },
@@ -218,7 +222,8 @@ const cards = [
     content:
       'SocPanel. Crie Pix e integre com o SocPanel para receber pagamentos via Pix.',
     icon: <SocPanelIcon size={30} />,
-    docsTo: 'https://developers.openpix.com.br/docs/integrations/socpanel-openpix',
+    docsTo:
+      'https://developers.openpix.com.br/docs/integrations/socpanel-openpix',
   },
 ];
 
