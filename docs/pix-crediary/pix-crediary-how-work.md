@@ -24,7 +24,7 @@ O Pix Crediário da Woovi é uma ferramenta de gestão de crediário digital. Pr
 1. Va até a sidebar e selecione Cobranças
 2. Em cobranças no canto direito superior clique no botão Pix Crediário
     ![Steps acima exemplificados em uma imagem da plataforma](./__assets__/pix-crediary-how-work-1.png)
-3. Em seguida preencha o formulário para criação do Pix Credário
+3. Em seguida preencha o formulário para criação do Pix Crediário
    ![Formulário de criação do Pix Crediário dentro da plataforma](./__assets__/pix-crediary-how-work-form.png)
    1. **Cliente a ser cobrado**: obrigatório o preenchimento de um cliente com nome, cpf/cnpj, telefone e email.
    2. **Dados da cobrança**: informe o valor do Pix Crediário (obrigatório) e uma descriçao (opcional).
