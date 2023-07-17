@@ -5,6 +5,7 @@ title: Woovi Parcelado
 tags:
 - pix
 - installment
+- woovi parcelado
 ---
 
 ## Woovi Parcelado: Transforme suas vendas com o Woovi Parcelado!

@@ -5,6 +5,7 @@ title: Como Funciona o Woovi Parcelado?
 tags:
 - pix
 - installments
+- woovi parcelado
 ---
 
 ## Como funciona o Woovi Parcelado?
