@@ -1,13 +1,13 @@
 ---
 id: pix-crediary-faq
 sidebar_position: 2
-title: Perguntas Comuns
+title: Perguntas Frequentes
 tags:
 - pix
 - crediario
 ---
 
-## Perguntas Comuns - Pix Crediário
+## Perguntas Frequentes - Pix Crediário
 
 ## Posso criar um Pix Crediário para CPF ou CNPJ?
 Sim, você pode criar para pessoa física ou jurídica
