@@ -1,13 +1,13 @@
 {
-  "label": "Pix Crediário",
+  "label": "Woovi Parcelado",
   "collapsible": true,
   "collapsed": true,
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Pix Crediário general"
+    "title": "Woovi Parcelado general view"
   },
   "customProps": {
-    "description": "Pix Crediário documentation"
+    "description": "Woovi Parcelado documentation"
   }
 }
