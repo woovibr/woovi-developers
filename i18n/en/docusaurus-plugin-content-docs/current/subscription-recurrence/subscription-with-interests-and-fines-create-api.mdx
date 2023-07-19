@@ -1,34 +1,32 @@
 ---
-id: subscription-with-cobv-create-api
+id: subscription-with-interests-and-fines-create-api
 sidebar_position: 1
-title: Como criar uma Assinatura com COBV usando a API?
+title: How to Create a Subscription with interests and fines Using the API?
 tags:
   - subscription
-  - cobv
+  - interests
+  - fines
   - recurrence
   - api
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+To create a new subscription with interests and fines using the API, you need to make a POST call to the `/api/v1/subscriptions` endpoint.
 
-Para criar uma nova assinatura com COBV usando a API, você deverá fazer uma chamada POST para o _endpoint_ `/api/v1/subscriptions`.
+You can access the documentation for this endpoint [here](https://developers.openpix.com.br/api#tag/subscription/paths/~1api~1v1~1subscriptions/post).
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/subscription/paths/~1api~1v1~1subscriptions/post) a documentação referente a esse _endpoint_.
+As part of the request `body`, we expect the following items to be sent:
 
-Como parte do `body` da requisição, esperamos o envio dos seguintes itens:
+- **`value`**: The value of the subscription to be created, in cents.
+- **`customer`**: The customer of the subscription to be charged, along with their address. This field is [idempotent](../concepts/idempotence.md), which means that if you send data for a customer that already exists, we will use the existing customer instead of creating a new one.
+- **`chargeType`**: The type of charge you want to generate. In this case of interests and fines, you should specify the type `OVERDUE`.
 
-- **`value`**: O valor em centavos da assinatura a ser criada.
-- **`customer`**: O cliente da assinatura a ser cobrado com o endereço. Este campo é [idempotente](../concepts/idempotence.md), o que significa que se você enviar dados de um cliente que já exista, utilizaremos o existente ao invés de criar um novo.
-- **`chargeType`**: O tipo da cobrança que você quer gerar. Nesse caso da COBV, você informa o tipo `OVERDUE`.
+The `body` also accepts other **optional** fields:
 
-O body também aceita outros campos **opcionais**:
+- **`dayGenerateCharge`**: The day of the month on which charges will be generated. It should be a value from 0 to 27.
 
-- **`dayGenerateCharge`**: Dia do mês em que as cobranças serão geradas. Deve ser um valor de 0 a 27.
+## Example
 
-## Exemplo
-
-O body da sua requisição será semelhante a este exemplo:
+The `body` of your request will look similar to this example:
 
 ```json
 {
@@ -51,11 +49,10 @@ O body da sua requisição será semelhante a este exemplo:
   },
   "chargeType": "OVERDUE"
 }
-```
 
-Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisição será `2xx` e no `body` da resposta, retornaremos a assinatura criada.
+After making the request, if everything went well, the response's `status code` will be `2xx`, and in the response `body`, we will return the created subscription.
 
-Retornarmeros a seguinte resposta de exemplo:
+We'll return the following example response:
 
 ```json
 {
@@ -86,7 +83,7 @@ Retornarmeros a seguinte resposta de exemplo:
 }
 ```
 
-### Exemplos em código
+### Code Examples
 
 ```mdx-code-block
 <Tabs>
