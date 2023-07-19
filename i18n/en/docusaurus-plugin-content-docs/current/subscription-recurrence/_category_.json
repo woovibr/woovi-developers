@@ -1,0 +1,13 @@
+{
+  "label": "Subscriptions/Recurrence",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Subscriptions/Recurrence overview"
+  },
+  "customProps": {
+    "description": "Subscriptions/Recurrence documentation"
+  }
+}
