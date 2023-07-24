@@ -1,14 +1,15 @@
 ---
-id: magento2-plugin
-title: Integrando a Woovi com Magento2
-sidebar_label: Magento2 Woovi Pix Plugin
-sidebar_position: 0
+id: magento2-plugin-parcelado
+title: Integrando Woovi Parcelado com Magento2
+sidebar_label: Magento2 Woovi Parcelado Plugin
+sidebar_position: 1
 tags:
 - magento2
 - ecommerce
+- parcelado
 ---
 
-### Plugin Pix para Magento2
+### Plugin Woovi Parcelado para Magento2
 
 ## Resumo
 
@@ -17,7 +18,7 @@ Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real c
 
 > *Nota: Este documento espera que você já tenha um ambiente Magento2 ativo.*
 
-## 1. Instale o Plugin Woovi na sua instância Magento2
+## 1. Instale o Plugin Woovi Parcelado na sua instância Magento2
 
 [Woovi For Magento2](https://marketplace.magento.com/woovi-pix.html)
 
@@ -30,18 +31,16 @@ Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real c
 
 1. Configure o plugin Magento2 com apenas 1 clique seguindo a documentação [Magento2 OneClick](/docs/ecommerce/magento2/magento2-oneclick)
 
-2. Ative o plugin clicando em `Payment via Pix` no Plugin Woovi.
+2. Ative o plugin clicando em `Payment via Woovi Parcelado` no Plugin Woovi.
 
 - [ ] Ative ou Desative o Plugin
 - [ ] Customize o título do pagamento dentro da sua Store
 
-![Customize](./__assets__/magento2-customize.png)
+![Customize](./__assets__/magento2-woovi-parcelado-settings.png)
 
-### 2.2 Configurando CPF/CNPJ para o Customer (opcional)
+### 2.2 Configurando CPF/CNPJ para o Customer (required)
 
-Para salvar o cpf/cnpj do customer da order na sua cobrança Woovi é necessário que seja ativado o campo `TaxVat` em sua loja Magento.
-
-**Obs: Caso você siga sem a configuração deste campo suas cobranças serão salvas sem o cliente da mesma.**
+É obrigatório o envio do cliente com nome, cpf/cnpj, telefone e endereço com pleto. Para disponibilizar o cpf/cnpj do customer da order na sua cobrança Woovi é necessário que seja ativado o campo `TaxVat` em sua loja Magento.
 
 Entre em Magento2 Admin -> Stores > Configuration -> Customers -> Customer Configuration
 
@@ -55,29 +54,26 @@ Em seguida em `Name and Address Options` ative o campo `Show Tax/VAT Number`:
 
 ![magento2-customer-name-address-options.png](./__assets__/magento2-customer-name-address-options.png)
 
+Para finalizar modifique o endereço para que ele seja disponibilizado em 4 linhas
+
+![magento2-customer-address-4-lines.png](./__assets__/magento2-woovi-parcelado-address.png)
+
 A partir de agora os clientes terão que preencher esse campo com o CPF ou CNPJ e o mesmo será usado para salvar o cliente na plataforma Woovi.
 
-## 3. Crie o Webhook dentro da Plataforma Woovi
+## 5. Realizar Pedido com Pix
 
-Ao configurar a Store volte para a Plataforma Woovi e registre o Webhook que será responsável para atualizar sua Store Magento2 quando uma cobrança Pix for paga.
-
-Para realizar o registro de um novo Webhook siga os passos abaixo:
-
-- Va até a plataforma Woovi e acesse: Admin -> API/Plugins -> Novo Webhook
-- Utilize a mesma senha cadastrada em sua store Magento2. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-- A URL de Callback que deve ser utilizada no cadastro se encontra logo abaixo ao campo em que se registra a senha do webhook dentro da sua Store Magento2. O padrão é: <https://youstore.com.br/woovi/index/webhook>
-
-![Webhook](./__assets__/magento2-webhook-configuration.png)
-
-## 4. Realizar Pedido com Pix
-
-Escolha a opção de pagar o pedido usando Woovi Parcelado
+Escolha a opção de pagar o pedido à vista ou com Pix + Cartão de crédito
 
 ![Pay Pix](./__assets__/magento2-cart.png)
 
 Pague o Pix usando o app do seu banco.
-
 ![Order](./__assets__/magento2-order.png)
+
+Ao selecionar pagamento no pix à vista pague o qrcode.
+
+Ao selecionar pix + cartão de crédito insira os dados do cartão, pague o pix e o valor sera captura no cartão.
+
+![Order](./__assets__/magento2-order-2.png)
 
 Valide que o status do Pedido mudou após o pagamento
 
@@ -85,8 +81,7 @@ Valide que o status do Pedido mudou após o pagamento
 
 Seu cliente poderá visualizar o pedido realizado via Pix dentro do detalhes do pedido. Basta clicar no botão que irá aparecer dentro da pagina de detalhe do pedido "Clique aqui para ver seu QRCode"
 
-![Order information](./__assets__/magento2-order-info.png)
-![Order](./__assets__/magento2-order-detail.png)
+![Order](./__assets__/magento2-detail.png)
 ## Expiração
 
 A Woovi ira cuidar da expiração da cobrança Pix. Entretanto, é preciso que seja configurado em sua loja magento a expiração da order pois o mesmo cuidará de todo o processo.
@@ -98,7 +93,7 @@ Indicamos que a expiração/cancelamento da order no magento possua um tempo sem
 :::info
 No magento você pode utilizar o lifetime order seguindo a doc abaixo:
 - <https://docs.magento.com/user-guide/v2.3/sales/order-pending-payment-lifetime.html>
-:::
+  :::
 
 ## Atualizando o plugin
 Indicamos aos clientes Woovi estar sempre atualizados com a última versão do plugin. Você pode identificar a mesma no step de instalação.
