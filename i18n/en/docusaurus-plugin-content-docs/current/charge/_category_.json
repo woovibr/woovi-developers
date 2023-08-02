@@ -1,0 +1,13 @@
+{
+  "label": "Charge",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Charge Overview"
+  },
+  "customProps": {
+    "description": "Charge Documentation"
+  }
+}
