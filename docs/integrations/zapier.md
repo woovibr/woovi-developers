@@ -10,7 +10,7 @@ A [Zapier](https://zapier.com) é uma plataforma poderosa que viabiliza a integr
 
 Com o selo oficial da Woovi, [o nosso aplicativo](https://zapier.com/apps/woovi/integrations) está agora disponível na ampla gama de apps listados na Zapier. Isso abre a porta para a integração dos serviços de Pix com outras aplicações, incluindo, por exemplo, a capacidade de sincronizar dados com planilhas do Google e envio de notificações no Slack.
 
-## O que você pode alcançar?
+## O que você pode alcançar com o app da Woovi?
 
 Ao aproveitar o aplicativo da Woovi, você desbloqueia um universo de oportunidades. Aqui estão alguns exemplos de integrações práticas:
 
@@ -68,6 +68,7 @@ Ao apertar o botão _Test action_ você efetuará o teste dela:
 ![Botão para testar uma action](./__assets__/zapier-test-action-button.png)
 
 ### Como criar uma cobrança?
+
 Neste cenário de exemplo, faremos uso do Google Planilhas. Aqui, uma planilha de cobranças será configurada, onde cada nova linha inserida resultará na geração automática de uma cobrança.
 
 Em primeiro lugar, crie uma planilha com os seguintes campos e adicione uma nova linha:
@@ -88,7 +89,7 @@ Após isso, prossiga para a seção _Test_ para testar o seu fluxo.
 
 ### Como remover uma cobrança?
 
-![Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Delete a charge_ em fluxo do Zapier.
+![Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Delete a charge_ em seu fluxo do Zapier.
 
 Configure os campos da action na seção _Action_:
 
@@ -98,7 +99,7 @@ Como campo da action, temos o `id` que é onde você deve colocar o [`correlatio
 
 ### Como criar um cliente?
 
-![Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Create customer_ em fluxo do Zapier.
+![Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Create customer_ em seu fluxo do Zapier.
 
 Configure os campos da action na seção _Action_:
 
@@ -121,7 +122,19 @@ A action possui as seguintes entradas pro cliente:
 
 ### Como criar reembolso de uma cobrança?
 
+![Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Create a Charge Refund_ em seu fluxo do Zapier.
 
+Configure os campos da action na seção _Action_:
+
+![Configurando a action de criar um reembolso](./__assets__/zapier-create-charge-refund-action-configuration.png)
+
+A action possui as seguintes entradas:
+
+- `Refund CorrelationID`: Seu [`correlationID`](../concepts/correlation-id) para acompanhar este reembolso.
+- `Transaction End To End ID`: Seu ID de transação, ou ID `endToEnd`, para acompanhar esse reembolso.
+- `Value`: Valor do reembolso em centavos.
+
+### Como criar um cashback?
 
 ## Gatilhos
 ### Como configurar o webhook?
