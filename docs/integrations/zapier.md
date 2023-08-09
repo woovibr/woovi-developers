@@ -89,7 +89,7 @@ Após isso, prossiga para a seção _Test_ para testar o seu fluxo.
 
 ### Como remover uma cobrança?
 
-![Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Delete a charge_ em seu fluxo do Zapier.
+[Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Delete a charge_ em seu fluxo do Zapier.
 
 Configure os campos da action na seção _Action_:
 
@@ -99,7 +99,7 @@ Como campo da action, temos o `id` que é onde você deve colocar o [`correlatio
 
 ### Como criar um cliente?
 
-![Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Create customer_ em seu fluxo do Zapier.
+[Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Create customer_ em seu fluxo do Zapier.
 
 Configure os campos da action na seção _Action_:
 
@@ -122,7 +122,7 @@ A action possui as seguintes entradas pro cliente:
 
 ### Como criar reembolso de uma cobrança?
 
-![Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Create a Charge Refund_ em seu fluxo do Zapier.
+[Adicione uma action](#como-adicionar-uma-ação-da-woovi) com o evento _Create a Charge Refund_ em seu fluxo do Zapier.
 
 Configure os campos da action na seção _Action_:
 
