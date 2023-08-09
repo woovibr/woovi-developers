@@ -158,7 +158,7 @@ Selecione _New Webhook Event_ no campo de evento da trigger:
 
 Configure a trigger:
 
-![Configurando a trigger](./__assets__/zapier-trigger-configuration.md)
+![Configurando a trigger](./__assets__/zapier-trigger-configuration.png)
 
 A trigger possui as seguintes entradas:
 
