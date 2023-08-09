@@ -14,6 +14,7 @@ import {
 import { GrOracle } from 'react-icons/gr';
 import { SiNodedotjs, SiPowershell, SiWoo, SiDelphi } from 'react-icons/si';
 import { TbBrandCSharp, TbWebhook } from 'react-icons/tb';
+import { SiZapier } from 'react-icons/si';
 
 import Layout from '@theme/Layout';
 
@@ -202,6 +203,13 @@ const cards = [
       'Plug-in de integração n8n.io. Crie Pix e ouça eventos Pix diretamente em seus projetos n8n.',
     icon: <N8nIcon size={30} />,
     docsTo: '/docs/integrations/n8n-with-woovi',
+  },
+  {
+    title: 'Zapier',
+    content:
+      'App de integração com Zapier. Crie Pix e ouça eventos Pix diretamente em seus projetos Zapier.',
+    icon: <SiZapier size={30} color={'#ff4a00'} />,
+    docsTo: '/docs/integrations/zapier-with-woovi',
   },
   {
     title: 'Assine Online',
