@@ -53,7 +53,7 @@ Agora é necessário selecionar um evento, que diz qual ação tomar. Por exempl
 
 ![Selecionando o evento para criar uma cobrança](./__assets__/zapier-action-selecting-create-charge-event.png)
 
-Devemos estar na seção _Account_ no momento, onde a autenticação deve ser feita.
+Devemos estar na seção _Account_ no momento, onde a [autenticação](#autenticação) deve ser feita.
 
 Após a autenticação, é o momento de configurar sua action na seção _Action_, de acordo com o evento dela:
 
@@ -134,7 +134,46 @@ A action possui as seguintes entradas:
 - `Transaction End To End ID`: Seu ID de transação, ou ID `endToEnd`, para acompanhar esse reembolso.
 - `Value`: Valor do reembolso em centavos.
 
-### Como criar um cashback?
-
 ## Gatilhos
+
 ### Como configurar o webhook?
+
+Os webhooks permitem que diferentes sistemas se comuniquem em tempo real, transmitindo dados de forma automática e instantânea.
+
+É possível configurar um webhook no Zapier utilizando um trigger que é acionado sempre que uma cobrança for completamente paga, por exemplo.
+
+Para utilizar, crie um novo Zap e ative o [trigger](https://help.zapier.com/hc/en-us/articles/8496244568589-Types-of-triggers-in-Zaps) da Woovi.
+
+Ao criar um novo Zap, é possível encontrar o trigger da Woovi pesquisando por _woovi_:
+
+![Pesquisando pelo trigger](./__assets__/zapier-trigger-search.png)
+
+Selecione _New Webhook Event_ no campo de evento da trigger:
+
+![Selecionando o evento da trigger](./__assets__/zapier-trigger-selecting-event.png)
+
+[Realize a autenticação](#autenticação) na seção de _Account_.
+
+![Realizando a autenticação](./__assets__/zapier-trigger-auth.png)
+
+Configure a trigger:
+
+![Configurando a trigger](./__assets__/zapier-trigger-configuration.md)
+
+A trigger possui as seguintes entradas:
+
+- `Webhook Name`: Nome do seu webhook. Coloque aqui o nome da sua integração, por exemplo.
+- `Event Type`: Indica quando a trigger é ativada. No exemplo ela será ativada sempre quando uma cobrança for totalmente paga. Veja as possibilidades de eventos:
+  - `OPENPIX:CHARGE_CREATED` - Uma cobrança foi criada.
+  - `OPENPIX:CHARGE_COMPLETED` - Uma cobrança foi totalmente paga. 
+  - `OPENPIX:CHARGE_EXPIRED` - Uma cobrança não foi totalmente paga e expirou.
+  - `OPENPIX:TRANSACTION_RECEIVED` - Uma transação PIX foi recebida.
+  - `OPENPIX:TRANSACTION_REFUND_RECEIVED` - Novo reembolso de transação PIX recebido ou reembolsado.
+  - `OPENPIX:MOVEMENT_CONFIRMED` - A transação do pix referente ao pagamento é confirmada.
+  - `OPENPIX:MOVEMENT_FAILED` - Falha no pagamento é quando o pagamento é aprovado e ocorre um erro.
+  - `OPENPIX:MOVEMENT_REMOVED` - O pagamento foi removido por um usuário.
+- `Is Active?`: É necessário ativar esta opção para que o webhook funcione.
+
+Agora realize o teste de sua trigger na seção _Test_:
+
+![Testando a trigger](./__assets__/zapier-trigger-test.png)
