@@ -10,6 +10,7 @@ import {
   FaJava,
   FaPython,
   FaWhatsapp,
+  FaOpencart
 } from 'react-icons/fa';
 import { GrOracle } from 'react-icons/gr';
 import { SiNodedotjs, SiPowershell, SiWoo, SiDelphi } from 'react-icons/si';
@@ -232,6 +233,14 @@ const cards = [
     icon: <SocPanelIcon size={30} />,
     docsTo:
       'https://developers.openpix.com.br/docs/integrations/socpanel-openpix',
+  },
+  {
+    title: 'OpenCart',
+    content:
+      'Aumente suas vendas agora no OpenCart 3 recebendo pagamentos instantâneos com Pix!',
+    icon: <FaOpencart size={30} color={'#229ac8'} />,
+    docsTo: '/docs/ecommerce/opencart/opencart3-extension',
+    to: 'https://app.woovi.com/home/applications/opencart/add',
   },
 ];
 
