@@ -10,10 +10,12 @@ import {
   FaJava,
   FaPython,
   FaWhatsapp,
+  FaOpencart
 } from 'react-icons/fa';
 import { GrOracle } from 'react-icons/gr';
 import { SiNodedotjs, SiPowershell, SiWoo, SiDelphi } from 'react-icons/si';
 import { TbBrandCSharp, TbWebhook } from 'react-icons/tb';
+import { SiZapier } from 'react-icons/si';
 
 import Layout from '@theme/Layout';
 
@@ -204,6 +206,13 @@ const cards = [
     docsTo: '/docs/integrations/n8n-with-woovi',
   },
   {
+    title: 'Zapier',
+    content:
+      'App de integração com Zapier. Crie Pix e ouça eventos Pix diretamente em seus projetos Zapier.',
+    icon: <SiZapier size={30} color={'#ff4a00'} />,
+    docsTo: '/docs/integrations/zapier-with-woovi',
+  },
+  {
     title: 'Assine Online',
     content:
       'Assine Online. Crie Pix e envie um documento personalizado com dados da Woovi.',
@@ -224,6 +233,14 @@ const cards = [
     icon: <SocPanelIcon size={30} />,
     docsTo:
       'https://developers.openpix.com.br/docs/integrations/socpanel-openpix',
+  },
+  {
+    title: 'OpenCart',
+    content:
+      'Aumente suas vendas agora no OpenCart 3 recebendo pagamentos instantâneos com Pix!',
+    icon: <FaOpencart size={30} color={'#229ac8'} />,
+    docsTo: '/docs/ecommerce/opencart/opencart3-extension',
+    to: 'https://app.woovi.com/home/applications/opencart/add',
   },
 ];
 

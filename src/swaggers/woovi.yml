@@ -1185,11 +1185,11 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/PaymentApprovePayload'
+              $ref: "#/components/schemas/PaymentApprovePayload"
             example:
               correlationID: payment1
       responses:
-        '200':
+        "200":
           description: The approved payment
           content:
             application/json:
@@ -1198,13 +1198,13 @@ paths:
                 properties:
                   payment:
                     type: object
-                    $ref: '#/components/schemas/Payment'
+                    $ref: "#/components/schemas/Payment"
                   transaction:
                     type: object
-                    $ref: '#/components/schemas/PaymentTransaction'
+                    $ref: "#/components/schemas/PaymentTransaction"
                   destination:
                     type: object
-                    $ref: '#/components/schemas/PaymentDestination'
+                    $ref: "#/components/schemas/PaymentDestination"
                 example:
                   payment:
                     value: 100
@@ -1219,12 +1219,12 @@ paths:
                     time: 2023-03-20T13:14:17.000Z
                   destination:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
                     bank: A Bank
-                    branch: '1'
-                    account: '123456'
-        '400':
+                    branch: "1"
+                    account: "123456"
+        "400":
           description: An error message
           content:
             application/json:
@@ -1233,7 +1233,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/payment/{id}':
+  "/api/v1/payment/{id}":
     get:
       tags:
         - payment (request access)
@@ -1642,11 +1642,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  refund:
+                  pixTransactionRefund:
                     type: object
                     $ref: '#/components/schemas/Refund'
                 example:
-                  refund:
+                  pixTransactionRefund:
                     value: 100
                     correlationID: 7777-6f71-427a-bf00-241681624586
                     refundId: 11bf5b37e0b842e08dcfdc8c4aefc000
@@ -3370,7 +3370,7 @@ components:
       type: object
       properties:
         name:
-          type: number
+          type: string
         event:
           type: string
           description:
@@ -3390,7 +3390,7 @@ components:
         id:
           type: string
         name:
-          type: number
+          type: string
         event:
           type: string
           $ref: '#/components/schemas/WebhookEventEnum'
