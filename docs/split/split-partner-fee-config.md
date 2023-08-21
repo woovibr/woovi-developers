@@ -27,7 +27,7 @@ Ao usar a opção **Definir taxa personalizada** você poderá definir uma taxa 
 
 ![Configurar taxa fixa](/img/split/partner/fixed-fee.png)
 
-No Exemplo acima vemos para uma cobrança de R$ 100,00 e uma taxa fixa de R$ 5,00, ou seja, como no caso dessa conta de exemplo a tarifa Woovi seria R$ 0,50, a taxa final de parceiro seria R$ 4,50 ambas pagas automaticamente através da cobrança do afiliado.
+No Exemplo acima vemos para uma cobrança de R$ 100,00 e uma taxa fixa de R$ 5,00, ou seja, como no caso dessa conta de exemplo a tarifa Woovi seria R$ 0,50, parceiro receberia a taxa de R$ 4,50 ambas pagas automaticamente através da cobrança do afiliado.
 
 Extratos gerados em cada conta caso seja escolhido a taxa fixa (valores fictícios):
 
@@ -43,7 +43,7 @@ Extratos gerados em cada conta caso seja escolhido a taxa fixa (valores fictíci
 
 ![Configurar taxa percentual](/img/split/partner/percent-fee.png)
 
-No Exemplo acima vemos para uma cobrança de R$ 100,00 e uma taxa fixa de R$ 10,00, ou seja, como no caso dessa conta de exemplo a tarifa Woovi seria R$ 0,80 a taxa final de parceiro seria R$ 9,20 ambas pagas automaticamente através da cobrança do afiliado.
+No Exemplo acima vemos para uma cobrança de R$ 100,00 e uma percentual no valor de R$ 10,00, ou seja, como no caso dessa conta de exemplo a tarifa Woovi seria R$ 0,80 o parceiro receberia a taxa de R$ 9,20 ambas pagas automaticamente através da cobrança do afiliado.
 
 Extratos gerados em cada conta caso seja escolhido a taxa percentual (valores fictícios):
 
