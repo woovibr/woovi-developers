@@ -17,7 +17,7 @@ Se você é um cliente Woovi e deseja solicitar a funcionalidade de split partne
 
 ## Empresas afiliadas
 
-Temos algumas maneiras de associar uma empresa como afiliada a sua empresa via plataforma Woovi.
+Temos algumas maneiras de associar uma empresa como afiliada a sua empresa via plataforma Woovi acessando a aba **Minhas Empresas**.
 
 ![Adicionar empresas afiliadas](/img/split/partner/add-affiliates.png)
 
