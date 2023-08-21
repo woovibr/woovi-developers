@@ -1,6 +1,6 @@
 ---
 id: partner-config-fee
-title: Como confirgurar taxa de parceiro
+title: Como configurar taxa de parceiro
 sidebar_label: Configurando taxa de parceiro
 tags:
 - split
@@ -23,14 +23,34 @@ Caso escolha **Usar taxa padrão da plataforma** a taxa cobrada da empresa afili
 
 Ao usar a opção **Definir taxa personalizada** você poderá definir uma taxa personalizada para ser cobrada além do valor padrão da plataforma, os valores de cada tipo de taxa estarão detalhados abaixo para cada tipo de taxa.
 
-- Taxa de Valor Fixo:
+### Taxa de Valor Fixo
 
 ![Configurar taxa fixa](/img/split/partner/fixed-fee.png)
 
 No Exemplo acima vemos para uma cobrança de R$ 100,00 e uma taxa fixa de R$ 5,00, ou seja, como no caso dessa conta de exemplo a tarifa Woovi seria R$ 0,50, a taxa final de parceiro seria R$ 4,50 ambas pagas automaticamente através da cobrança do afiliado.
 
-- Taxa de Percentual:
+Extratos gerados em cada conta caso seja escolhido a taxa fixa (valores fictícios):
 
-![Configurar taxa fixa](/img/split/partner/percent-fee.png)
+**Extrato do parceiro:**
+
+![Extrato do parceiro por cobrança com fee percentual](/img/split/partner/partner-statement-fixedc.png)
+
+**Extrato do afiliado:**
+
+![Extrato do afiliado por cobrança com fee percentual](/img/split/partner/affiliate-sstatement-fixed.png)
+
+### Taxa de Percentual
+
+![Configurar taxa percentual](/img/split/partner/percent-fee.png)
 
 No Exemplo acima vemos para uma cobrança de R$ 100,00 e uma taxa fixa de R$ 10,00, ou seja, como no caso dessa conta de exemplo a tarifa Woovi seria R$ 0,80 a taxa final de parceiro seria R$ 9,20 ambas pagas automaticamente através da cobrança do afiliado.
+
+Extratos gerados em cada conta caso seja escolhido a taxa percentual (valores fictícios):
+
+**Extrato do parceiro:**
+
+![Extrato do parceiro por cobrança com fee percentual](/img/split/partner/partner-statement-percentage.png)
+
+**Extrato do afiliado:**
+
+![Extrato do afiliado por cobrança com fee percentual](/img/split/partner/affiliate-statement-percentage.png)
