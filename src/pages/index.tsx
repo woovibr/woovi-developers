@@ -235,11 +235,19 @@ const cards = [
       'https://developers.openpix.com.br/docs/integrations/socpanel-openpix',
   },
   {
-    title: 'OpenCart',
+    title: 'OpenCart 3',
     content:
       'Aumente suas vendas agora no OpenCart 3 recebendo pagamentos instantâneos com Pix!',
     icon: <FaOpencart size={30} color={'#229ac8'} />,
     docsTo: '/docs/ecommerce/opencart/opencart3-extension',
+    to: 'https://app.woovi.com/home/applications/opencart/add',
+  },
+  {
+    title: 'OpenCart 4',
+    content:
+      'Aumente suas vendas agora no OpenCart 4 recebendo pagamentos instantâneos com Pix!',
+    icon: <FaOpencart size={30} color={'#229ac8'} />,
+    docsTo: '/docs/ecommerce/opencart/opencart4-extension',
     to: 'https://app.woovi.com/home/applications/opencart/add',
   },
 ];
