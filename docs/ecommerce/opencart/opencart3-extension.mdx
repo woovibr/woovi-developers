@@ -102,13 +102,17 @@ Para instalar o método de pagamento Woovi Parcelado, siga os mesmos passos util
 
 ![Instalando Woovi Parcelado como método de pagamento](./__assets__/opencart3/install-woovi-parcelado-payment-method.png)
 
-## Configuração
+## Configuração dos métodos de pagamento
 
-Após acessar a página de configurações da extensão, é necessário ativar a extensão no checkout pressionando o botão _Status_:
+A nossa extensão oferece dois métodos de pagamento para a sua loja: Woovi Pix e Woovi Parcelado.
+
+Ambos os métodos de pagamento possuem as mesmas possibilidades de configuração.
+
+Após acessar a página de configurações da extensão, é necessário ativar o método de pagamento desejado no checkout, selecionando a opção "Enabled" (habilitado) no campo "Status" da seção "Edit Pix Settings" (editar configurações do Pix) ou "Edit Woovi Parcelado" (editar configurações do Woovi Parcelado):
 
 ![Página de configurações com o botão _Status_](./__assets__/opencart3/admin-settings-status.png)
 
-Tendo habilitado o botão Status, _Pix_ deverá aparecer como método de pagamento no checkout.
+Tendo habilitado o botão Status, o método de pagamento desejado deverá aparecer como método de pagamento no checkout.
 
 No entanto, é necessário integrar a extensão com a plataforma Woovi e isto pode ser feito adicionando a url de _webhook_ na plataforma.
 
@@ -128,24 +132,29 @@ Após isto, verifique se o _AppID_, um código que identifica sua loja, se encon
 
 ![Página de configurações com o AppID adicionado](./__assets__/opencart3/admin-settings-appid.png)
 
-Pronto, agora vamos aprender como utilizar o Pix no seu checkout.
+Pronto, agora vamos aprender como utilizar o Pix ou Woovi Parcelado no seu checkout.
 
-## Como utilizar o Pix no checkout
+## Como utilizar o Pix ou Woovi Parcelado no checkout
 
 Ao realizar uma compra em sua loja OpenCart, o cliente será redirecionado para a página de checkout.
 
-Nesta página, o cliente deverá inserir seu CPF ou CNPJ, que será utilizado para a cobrança Pix:
+Nesta página, o cliente deve inserir informações como CPF/CNPJ e o endereço dele, que será utilizado para a criação da cobrança.
 
-![Formulário de checkout com o CPF/CNPJ](./__assets__/opencart3/checkout-form-with-tax-id.png)
+![Formulário de checkout com campos adicionais](./__assets__/opencart3/checkout-form.png)
 
-Após isso, o cliente deve selecionar _Pix_ como método de pagamento (_Payment Method_):
+Após isso, o cliente deve selecionar o método de pagamento desejado: Pix ou Woovi Parcelado.
 
-![Selecionando Pix como método de pagamento](./__assets__/opencart3/checkout-payment-method-selector.png)
+![Selecionando o método de pagamento](./__assets__/opencart3/checkout-payment-method-selector.png)
 
-Ao confirmar a compra, o QR Code do Pix será exibido na página de sucesso, pronto para ser escaneado pelo seu cliente:
+Ao confirmar a compra utilizando o método de pagamento _Pix_, o QR Code do Pix será exibido na página de sucesso, pronto para ser escaneado pelo seu cliente:
 
 ![Página de sucesso do checkout](./__assets__/opencart3/checkout-success-js-plugin.png)
 ![QrCode do Pix na página de sucesso do checkout](./__assets__/opencart3/checkout-success-js-plugin-part2.png)
+
+Ao escolher o Woovi Parcelado como método de pagamento, um menu será exibido para possibilitar o pagamento por meio de Pix e/ou cartão de crédito:
+
+![Página de sucesso do checkout com Woovi Parcelado](./__assets__/opencart3/checkout-success-js-plugin-parcelado.png)
+![Menu de pagamento Woovi Parcelado na página de sucesso do checkout](./__assets__/opencart3/checkout-success-js-plugin-part2-parcelado.png)
 
 ## CPF/CNPJ
 
