@@ -156,26 +156,29 @@ Ao escolher o Woovi Parcelado como método de pagamento, um menu será exibido p
 ![Página de sucesso do checkout com Woovi Parcelado](./__assets__/opencart3/checkout-success-js-plugin-parcelado.png)
 ![Menu de pagamento Woovi Parcelado na página de sucesso do checkout](./__assets__/opencart3/checkout-success-js-plugin-part2-parcelado.png)
 
-## CPF/CNPJ
+## Campos adicionais
 
-O CPF/CNPJ utilizado nas cobranças do Pix pode ser obtido de duas formas:
+A extensão necessita dos seguintes campos adicionais:
+
+- CPF/CNPJ para ambos métodos de pagamento.
+- Rua, número, complemento e bairro para o método de pagamento Woovi Parcelado.
+
+Cada campo adicional é obtido de duas maneiras:
 
 - Através dos _custom fields_ (campos personalizados) do OpenCart.
 - Ou diretamente durante o checkout.
 
-Os custom fields são uma funcionalidade do OpenCart que permitem adicionar campos adicionais nos dados dos clientes.
+Durante a instalação, a extensão configura automaticamente os custom fields necessários para que os clientes possam inserir seu CPF/CNPJ e endereço durante o checkout:
 
-Durante a instalação, a extensão configura automaticamente o custom field necessário para que os clientes possam inserir seu CPF/CNPJ durante o registro:
+![Custom fields durante o registro](./__assets__/opencart3/checkout-form.png)
 
-![CPF/CNPJ durante o registro](./__assets__/opencart3/account-register-with-taxid.png)
+Caso deseje, é possível alterar o custom field utilizado ou até mesmo desativar essa configuração no painel de administração, selecionando a opção _None_ (Nenhum) em _Edit custom fields settings_:
 
-Caso deseje, é possível alterar o custom field utilizado ou até mesmo desativar essa configuração no painel de administração, selecionando a opção _None_ (Nenhum):
+![Configuração ou desativação do custom field](./__assets__/opencart3/admin-settings-custom-fields.png)
 
-![Configuração ou desativação do custom field](./__assets__/opencart3/admin-settings-custom-field.png)
+Se a extensão não puder encontrar um custom field, no checkout irá aparecer diretamente campos adicionais para que o cliente possa inserir seu CPF/CNPJ ou endereço, logo acima do botão de confirmação do pedido:
 
-Se a extensão não puder encontrar um custom field, no checkout irá aparecer diretamente um campo para que o cliente possa inserir seu CPF ou CNPJ, logo acima do botão de confirmação do pedido:
-
-![Campo CPF/CNPJ durante o checkout](./__assets__/opencart3/checkout-custom-field.png)
+![Campos adicionais durante o checkout](./__assets__/opencart3/checkout-additional-fields.png)
 
 ## Como configurar os status dos pedidos
 
