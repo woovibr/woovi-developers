@@ -1,7 +1,8 @@
 ---
-id: magento1-plugin
-title: Integrando a Woovi com Magento1
-sidebar_label: Magento1 Woovi Plugin
+id: magento1-oneclick
+title: Integrando a Woovi com Magento1 Em Um Clique
+sidebar_label: Magento1 Woovi 1-Click
+sidebar_position: 0
 tags:
   - magento1
   - ecommerce
@@ -9,55 +10,46 @@ tags:
 
 import Magento1Download from './__components__/magento1-download.mdx'
 
-### Plugin Pix para Magento1
+## Plugin Pix para Magento1
 
 ## Resumo
 
-Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no Magento1, na Woovi. A plataforma Woovi efetua em tempo real a conciliação entre seu Banco e seu e-Commerce.
-Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real com QrCodes Pix, enviar Links de Pagamento, gerenciar cobranças incluindo extornos.
+Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no Magento1, na Woovi.
 
-> _Nota: Este documento espera que você já tenha um ambiente Magento1 ativo._
+:::caution Atenção
+- Este documento espera que você já tenha um ambiente Magento1 ativo, e uma conta criada na Woovi.
+:::
 
-## 1. Instale o Plugin Woovi na sua instância Magento1
+:::tip Dica
+Para utilizar este tutorial é necessário ter uma versão acima da 1.4.0
+:::
+
+## Configurando o Plugin Magento1
+
+### 1. Instale o Plugin Woovi na sua instância Magento1
 
 <Magento1Download/>
 
-Extraia o conteúdo do arquivo .zip e cole dentro da pasta root da sua loja Magento1. Geralmente a loja root é nomeada como `src` que faz referência à source. Caso sua loja seja diferente, procure pela pasta que contenha outras pastas como:
+### 2. Acesse a configuração do Magento1
 
-- app
-- js
-- lib
-- skin
-- var
+Entre na plataforma da Woovi e [clique aqui](https://app.woovi.com/home/applications/magento1/add/oneclick) ou vá em `API/Plugins` > `Magento1` > `Adicionar`
 
-Assim como no exemplo abaixo:
+![Tutorial-box](/img/ecommerce/magento1/magento1-tutorial-box.png)
 
-![magento1-src-folder](/img/ecommerce/magento1/magento1-src-folder.png)
+### 2.1 Coloque o Link do seu site
 
-Encontrando a pasta que contenha essas citadas basta realizar o seguinte:
+Coloque a URL do seu site no campo
 
-- Copiar os arquivos extraídos do .zip;
-- Colar dentro dessa pasta
+![Oneclick-Input](/img/ecommerce/magento1/magento1-oneclick-input.png)
 
-## 2. Configurando o Plugin Magento1
+### 2.2 Clique em salvar
 
-Entre em Magento1 Admin -> System > Configuration > Sales (side menu) > Payment Methods
+Clique no botão de salvar, e assim que tiver sucesso na sua integração você verá a seguinte mensagem:
+![Oneclick-Success](/img/ecommerce/magento1/magento1-oneclick-success.png)
 
-![sales_pay_method.png](/img/ecommerce/magento1/sales_pay_method.png)
+## Configurações Avançadas
 
-Ao acessar `Payment Methods` você irá notar o Collapsible `Woovi - Pix`
-
-![woovi_pay_tab.png](/img/ecommerce/magento1/woovi_pay_tab.png)
-
-- **App ID** Insira o AppID ou Cadastre um AppID do tipo Plugin. Crie um appID [aqui](../../apis/api-getting-started.md)
-- **Webhook Authorization** Crie uma senha para a integração do Webhook. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-  - Lembre-se: A URL a ser utilizada no webhook deverá ser: `https://yourstore/woovi/webhook` no momento em que cadastrá-lo na plataforma Woovi
-  - Lembre-se: A chave que você utilizar aqui deverá ser a mesma no momento em que cadastrá-la na plataforma Woovi.
-  - Crie um Webhook [aqui](#3-crie-o-webhook-dentro-da-plataforma-woovi).
-- **Enabled** Ativar/Desativar o plugin como método de pagamento
-- **Title** Título do método de pagamento em sua loja Magento1
-
-### 2.2 Configurando CPF/CNPJ para o Customer (opcional)
+### Configurando CPF/CNPJ para o Customer (opcional)
 
 Para salvar o cpf/cnpj do customer da order na sua cobrança Woovi é necessário que seja ativado o campo `TaxVat` em sua loja Magento.
 
@@ -71,7 +63,7 @@ Em `Show Tax/VAT Number` selecione o valor required:
 
 A partir de agora os clientes terão que preencher esse campo com o CPF ou CNPJ e o mesmo será usado para salvar o cliente na plataforma Woovi.
 
-## 3. Crie o Webhook dentro da Plataforma Woovi
+### Crie o Webhook dentro da Plataforma Woovi
 
 Registre o Webhook que será responsável para atualizar sua loja Magento1 quando uma cobrança Pix for paga.
 
@@ -83,7 +75,7 @@ Para realizar o registro de um novo Webhook siga os passos abaixo:
 
 ![Webhook](/img/ecommerce/magento1/magento1-woovi-webhook.png)
 
-## 4. Realizar Pedido com Pix
+### Realizar Pedido com Pix
 
 Escolha a opção de pagar o pedido usando Pix
 
@@ -95,7 +87,7 @@ Pague o Pix usando o app do seu banco.
 
 Valide que o status do Pedido mudou após o pagamento
 
-## Expiração
+### Expiração
 
 A Woovi ira cuidar da expiração da cobrança Pix. Entretanto, é preciso que seja configurado em sua loja magento a expiração da order pois o mesmo cuidará de todo o processo.
 
@@ -114,13 +106,13 @@ No magento você pode utilizar a lib abaixo ou alguma de sua preferência:
 - <https://meetanshi.com/magento-auto-cancel-order.html>
 :::
 
-## Atualizando o plugin
+### Atualizando o plugin
 
 Indicamos aos clientes Woovi estar sempre atualizados com a última versão do plugin. Você pode identificar a mesma no step de instalação.
 
 Caso seu plugin esteja desatualizado basta seguir os passos do mesmo step de instalação e atualizar os arquivos do plugin em seu ecommerce.
 
-## Debug
+### Debug
 
 Para debugar o plugin Woovi temos dois arquivos e você encontra ambos dentro de `var/log`:
 
@@ -140,7 +132,7 @@ Para debugar o plugin Woovi temos dois arquivos e você encontra ambos dentro de
  - Customizar o título do método de pagamento Woovi Parcelado dentro da sua loja.
  - Alterar qual deve ser o status inicial dos pedidos ao realizar uma compra.
 
-![Configurações Woovi Parcelado](/img/ecommerce/magento1/woovi-parcelado-settings.png)
+![Configurações Woovi Parcelado](/img/ecommerce/magento1/magento1-parcelado-settings.png)
 
 ### Configurações do CPF/CNPJ e do endereço
 
