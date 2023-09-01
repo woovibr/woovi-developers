@@ -18,4 +18,19 @@ Realize os seguintes passos:
 
 ![Instructions](../__assets__/composer-instructions.png)
 
-6. Um exemplo de comando é `composer require woovi/pix:2.4.0`. Acesse também a [documentação do Magento2](https://experienceleague.adobe.com/docs/commerce-operations/installation-guide/tutorials/extensions.html) para mais detalhes.
+6. Não se esqueça de atualizar o arquivo `auth.json` seguindo as instruções do Magento acima. Exemplo de arquivo `auth.json`:
+
+```json
+{
+    "http-basic": {
+        "repo.magento.com": {
+            "username": "CHAVE PÚBLICA",
+            "password": "CHAVE PRIVADA"
+        }
+    }
+}
+```
+
+- A chave pública/privada pode ser obtida na página de access keys do Magento.
+
+7. Um exemplo de comando para instalar o nosso plugin é `composer require woovi/pix:2.4.0`. Acesse também a [documentação do Magento2](https://experienceleague.adobe.com/docs/commerce-operations/installation-guide/tutorials/extensions.html) para mais detalhes.
