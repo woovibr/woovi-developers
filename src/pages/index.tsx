@@ -77,7 +77,7 @@ const cards = [
     content:
       'Pix para Magento1. Gestão de QRCode Pix, integração de ordens e conciliação tempo real.',
     icon: <FaMagento color={'#f46f26'} size={30} />,
-    docsTo: '/docs/ecommerce/magento1/magento1-plugin',
+    docsTo: '/docs/ecommerce/magento1/magento1-oneclick',
     to: 'https://app.woovi.com/home/applications/magento1/add',
   },
   {
