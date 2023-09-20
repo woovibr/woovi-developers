@@ -27,7 +27,7 @@ Para pagar contas utilizando a sua empresa siga os passos abaixo:
 
 - Clique em `Solicitar`
 
-![pay-bills](./__assets__/pay-bills.png)
+![pay bills](./__assets__/pay-bills.png)
 
 ## 2. Aprovar o Envio de um Pagamento
 
@@ -38,4 +38,4 @@ Para pagar contas utilizando a sua empresa siga os passos abaixo:
 - Confira os dados informados
 - Clique em `Aprovar`
 
-![approve payment](/img/payment/approve-payment.png)
+![approve payment bill](./__assets__/approve-payment-bill.png)
