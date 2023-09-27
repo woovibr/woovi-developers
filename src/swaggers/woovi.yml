@@ -2760,6 +2760,48 @@ paths:
                 properties:
                   error:
                     type: string
+    post:
+      tags:
+        - sub account (request access)
+      summary: Create a subaccount
+      requestBody:
+        description: Data to create a new subAccount or retrieve existing one
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/SubAccountPayload'
+            examples:
+              SubAccount:
+                value:
+                  pixKey: 9134e286-6f71-427a-bf00-241681624587
+                  name: Test Account
+      responses:
+        '200':
+          description: The Subccount created or retrieved if exists using the given pix key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  SubAccount:
+                    type: object
+                    $ref: '#/components/schemas/SubAccount'
+                example:
+                  SubAccount:
+                    name: test-sub-account
+                    pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
+                    balance: 0
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 components:
   schemas:
     CompanyBankAccount:
@@ -3634,6 +3676,15 @@ components:
         comment:
           type: string
           description: The comment of the transaction
+    SubAccountPayload:
+      type: object
+      properties:
+        pixKey:
+          type: string
+          description: The pix key for the sub account
+        name:
+          type: string
+          description: Name of the sub account
   securitySchemes:
     AppID:
       type: apiKey
