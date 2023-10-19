@@ -133,3 +133,7 @@ Parabéns! Você configurou o BotConversa com a Woovi!
 
 Caso queira inserir dados e informações da resposta do webhook, assista o tutorial a seguir: 
 [Webhook disponibilizado para BotConversa ser acionado por outros sistemas sem intermediários](https://us06web.zoom.us/rec/play/3Xj5dcuBRDULOApuSKMPgwJa4eCmjzHkyBwRXvgR4OHDKq2FZwyiE-YZ3Rweygr4qn8kOOo74Zcyffc7.6-YttRdjMSm1VdNm?startTime=1664975296000&_x_zm_rtaid=PZVKWRNiRkeAYNHwBjDPnA.1673398847814.5bd6a02e3760d79e2115e1c2c8286b28&_x_zm_rhtaid=589).
+
+## 6. Materiais complementares da comunidade Woovi/OpenPix
+
+- [Como Gerar um PIX no WhatsApp com Woovi e BotConversa via Make](https://www.youtube.com/watch?v=5wdp1lCwyYY)
