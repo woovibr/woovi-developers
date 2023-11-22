@@ -14,6 +14,6 @@ Aqui está um comando cURL de exemplo:
 
 ```bash
 curl --request GET \
-  --url 'https://api.woovi.com/api/v1/charge?customer=ID-DO-CLIENTE' \
-  --header 'Authorization: SEU-APP-ID'
+  --url 'https://api.woovi.com/api/v1/charge?customer=correlation-id-do-cliente' \
+  --header 'Authorization: seu-app-id'
 ```
