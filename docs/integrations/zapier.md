@@ -131,8 +131,9 @@ Configure os campos da action na seção _Action_:
 A action possui as seguintes entradas:
 
 - `Refund CorrelationID`: Seu [`correlationID`](../concepts/correlation-id) para acompanhar este reembolso.
-- `Transaction End To End ID`: Seu ID de transação, ou ID `endToEnd`, para acompanhar esse reembolso.
+- `Charge Correlation ID`: O [correlationID](../concepts/correlation-id.md) da cobrança.
 - `Value`: Valor do reembolso em centavos.
+- `Comment`: Comentário da cobrança.
 
 ## Gatilhos
 
