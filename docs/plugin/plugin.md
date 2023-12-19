@@ -219,6 +219,7 @@ Os eventos disponiveis são
 - `CHARGE_COMPLETED`: quando a cobrança foi paga pelo cliente e deu baixa na Woovi.
 - `CHARGE_EXPIRED`: quando a cobrança foi expirada.
 - `ON_CLOSE`: quando o modal da cobrança foi fechado.
+- `ON_ERROR`: quando ocorre algum erro no plugin.
 
 ```jsx
 const logEvents = (e) => {
@@ -232,6 +233,10 @@ const logEvents = (e) => {
 
   if (e.type === 'ON_CLOSE') {
     console.log('o modal da cobrança foi fechado');
+  }
+
+  if (e.type === 'ON_ERROR') {
+    console.log('ocorreu um erro');
   }
 }
 
@@ -288,6 +293,10 @@ if(!!window.$openpix?.addEventListener) {
 
           if (e.type === 'ON_CLOSE') {
             console.log('o modal da cobrança foi fechado');
+          }
+
+          if (e.type === 'ON_ERROR') {
+            console.log('ocorreu um erro');
           }
         }
         
