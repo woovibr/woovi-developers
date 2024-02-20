@@ -2963,6 +2963,29 @@ components:
               type: number
               description: Value in basis points of fines to be applied when the charge hits
                 the deadline
+        discountSettings:
+          description: Discount settings for the charge. This property is only considered
+            for charges of type OVERDUE
+          type: object
+          properties:
+            modality:
+              type: string
+              enum:
+                - FIXED_VALUE_UNTIL_SPECIFIED_DATE
+                - PERCENTAGE_UNTIL_SPECIFIED_DATE
+              description: Modality of discount to be applied
+            discountFixedDate:
+              description: Absolute discounts applied to charge.
+              type: array
+              items:
+                type: object
+                properties:
+                  daysActive:
+                    type: number
+                    description: Days active for the discount
+                  value:
+                    type: number
+                    description: Value in cents of the discount
         additionalInfo:
           type: array
           description: Additional info of the charge
