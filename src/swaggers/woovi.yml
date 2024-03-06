@@ -2711,16 +2711,17 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: string
                   subaccounts:
                     type: array
                     items:
                       type: object
                       properties:
-                        payment:
-                          type: object
-                          $ref: "#/components/schemas/SubAccount"
+                        name:
+                          type: string
+                        pixKey:
+                          type: string
+                        balance:
+                          type: number
                   pageInfo:
                     type: object
                     properties:
@@ -2750,8 +2751,7 @@ paths:
                         type: boolean
               example:
                 subAccounts:
-                  subaccount:
-                    name: test-sub-account
+                  - name: test-sub-account
                     pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
                     balance: 100
                 pageInfo:
