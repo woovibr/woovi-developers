@@ -2576,6 +2576,28 @@ paths:
               responses:
                 "200":
                   description: Notificação recebida com sucesso
+  /api/v1/webhook/ips:
+    get:
+      tags:
+        - webhook
+      summary: Get a list of webhook IPs
+      responses:
+        "200":
+          description: A list of webhook IPs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ips:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  ips:
+                    - 189.51.60.9
+                    - 138.97.124.129
+                    - 177.71.136.66
   "/openpix/charge/brcode/image/{:id}.png?size=1024":
     get:
       tags:
