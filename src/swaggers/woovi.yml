@@ -1872,7 +1872,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The globalID of the subscription.
+          description: The globalID or correlationID of the subscription.
           required: true
           schema:
             type: string
