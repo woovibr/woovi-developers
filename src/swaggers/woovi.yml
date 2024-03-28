@@ -1900,6 +1900,8 @@ paths:
                         type: BR:CPF
                     value: 100
                     dayGenerateCharge: 5
+                    correlationID: subscription#1
+                    status: ACTIVE
         "400":
           description: An error message
           content:
@@ -3049,6 +3051,9 @@ components:
           type: string
         expiresIn:
           type: string
+        subscription:
+          type: object
+          $ref: "#/components/schemas/Subscription"
     ChargePayload:
       type: object
       properties:
@@ -3726,6 +3731,16 @@ components:
         dayGenerateCharge:
           type: number
           description: Day of the month that the charges will be generated
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - OVERDUE
+            - COMPLETED
+            - EXPIRED
+        correlationID:
+          type: string
+          description: Your correlation ID to keep track of this subscription
     SubscriptionPayload:
       type: object
       properties:

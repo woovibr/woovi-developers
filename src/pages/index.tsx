@@ -10,7 +10,7 @@ import {
   FaJava,
   FaPython,
   FaWhatsapp,
-  FaOpencart
+  FaOpencart,
 } from 'react-icons/fa';
 import { GrOracle } from 'react-icons/gr';
 import { SiNodedotjs, SiPowershell, SiWoo, SiDelphi } from 'react-icons/si';
