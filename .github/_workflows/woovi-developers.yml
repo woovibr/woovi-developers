@@ -1,4 +1,4 @@
-name: OpenPix Developers
+name: Woovi Developers
 
 on:
   release:
@@ -24,7 +24,7 @@ jobs:
         env:
           FILE: ./build/
           AWS_REGION: 'us-east-1'
-          S3_BUCKET: developers.openpix.com.br
+          S3_BUCKET: developers.woovi.com
           S3_KEY: ''
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
