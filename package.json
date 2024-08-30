@@ -25,6 +25,10 @@
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.1.1",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.9.1",
+    "@mdx-js/react": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
     "eslint": "^9.8.0",
@@ -38,6 +42,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.8.0",
+    "globals": "^15.9.0",
     "https-browserify": "^1.0.0",
     "husky": "^9.0.6",
     "lint-staged": "^15.2.0",
@@ -47,7 +52,6 @@
     "process": "0.11.10",
     "stream-http": "^3.2.0",
     "tty-browserify": "^0.0.1",
-    "@mdx-js/react": "^3.0.1",
     "typescript": "^5.0.4"
   },
   "scripts": {
@@ -56,7 +60,7 @@
     "build:ptbr": "docusaurus build --locale pt-BR",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
-    "i18n": "yarn write-translations --locale en",
+    "i18n": "pnpm write-translations --locale en",
     "publish-gh-pages": "docusaurus-publish",
     "rename-version": "docusaurus-rename-version",
     "serve": "docusaurus serve",
@@ -70,7 +74,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "yarn prettier",
+      "pnpm prettier",
       "eslint --fix"
     ],
     "*.yml": [
