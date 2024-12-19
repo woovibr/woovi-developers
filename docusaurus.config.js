@@ -24,7 +24,7 @@ module.exports = {
     //   rspackBundler: true,
     //   mdxCrossCompilerCache: true,
     // },
-    experimental_faster: false,
+    // experimental_faster: false,
   },
   i18n: {
     defaultLocale: 'pt-BR',

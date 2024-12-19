@@ -13,8 +13,8 @@ import {
   FaOpencart,
 } from 'react-icons/fa';
 import { GrOracle } from 'react-icons/gr';
-import { SiNodedotjs, SiPowershell, SiWoo, SiDelphi } from 'react-icons/si';
-import { TbBrandCSharp, TbWebhook } from 'react-icons/tb';
+import { SiNodedotjs, SiWoo, SiDelphi } from 'react-icons/si';
+import { TbBrandCSharp, TbWebhook, TbBrandPowershell } from 'react-icons/tb';
 import { SiZapier } from 'react-icons/si';
 
 import Layout from '@theme/Layout';
@@ -146,7 +146,7 @@ const cards = [
   {
     title: 'Shell',
     content: 'Criar cobranças Pix usando Shell',
-    icon: <SiPowershell color={'#787cb5'} size={30} />,
+    icon: <TbBrandPowershell color={'#787cb5'} size={30} />,
     docsTo:
       '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin.',
     to: 'https://app.woovi.com/home/applications/shell/add',
