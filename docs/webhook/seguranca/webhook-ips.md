@@ -10,9 +10,7 @@ tags:
 Esta página lista os endereços IP que a Woovi/OpenPix usa para enviar webhooks.
 
 ```
-189.51.60.9
-138.97.124.129
-177.71.136.66
+Para obter uma lista dos IPs que a Woovi Usa para enviar Webhooks basta entrar em contato com o time de suporte diretamente pelo chat da plataforma
 ```
 
-Você pode restrigir os seus Webhooks para somente aceitarem requests desses IPs
+Você pode usar a lista de IPs para adicionar regras no seu firewall e restrigir os seus Webhooks para somente aceitarem requests desses IPs
