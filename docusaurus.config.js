@@ -2,12 +2,12 @@ import { themes } from 'prism-react-renderer';
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
 
-const locales = ['pt-BR'];
+const locales = ['pt-BR', 'en'];
 
 const localeConfigs = {
-  // en: {
-  //   label: 'English',
-  // },
+  en: {
+    label: 'English',
+  },
   'pt-BR': {
     label: 'Português',
   },
@@ -48,7 +48,7 @@ module.exports = {
       { projectId: 'j6ihzvjzvu' },
     ],
     require.resolve('./webpack/sitePlugin'),
-    //require.resolve('@cmfcmf/docusaurus-search-local', { language: 'pt-BR' }),
+    require.resolve('@cmfcmf/docusaurus-search-local', { language: 'pt-BR' }),
     [
       '@docusaurus/plugin-client-redirects',
       {
@@ -75,8 +75,8 @@ module.exports = {
           },
           {
             from: '/docs/getting-started',
-            to: '/docs/intro/getting-started'
-          }
+            to: '/docs/intro/getting-started',
+          },
         ],
       },
     ],

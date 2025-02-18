@@ -1,0 +1,34 @@
+{
+  "title": {
+    "message": "Woovi Developers",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Woovi Developers",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Documentação": {
+    "message": "Documentação",
+    "description": "Navbar item with label Documentação"
+  },
+  "item.label.API": {
+    "message": "API",
+    "description": "Navbar item with label API"
+  },
+  "item.label.Plugin": {
+    "message": "Plugin",
+    "description": "Navbar item with label Plugin"
+  },
+  "item.label.Tags": {
+    "message": "Tags",
+    "description": "Navbar item with label Tags"
+  },
+  "item.label.Woovi": {
+    "message": "Woovi",
+    "description": "Navbar item with label Woovi"
+  },
+  "item.label.Github": {
+    "message": "Github",
+    "description": "Navbar item with label Github"
+  }
+}
