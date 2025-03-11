@@ -8,51 +8,71 @@ tags:
 ---
 
 Este documento irá ajudá-lo a começar a utilizar as APIs e Plugins da Woovi.
+## Criando uma nova chave de API/Plugin
 
-### Criando uma nova chave de API/Plugin
-
-Todas as solicitações de APIs/Plugins devem ser autenticadas com uma chave de API.
-
-Para usar APIs ou Plugin, você primeiro precisa criar uma nova chave de API ou um Plugin. Você pode criar chaves API e Plugins a qualquer momento na página de opções de API/Plugins da sua empresa (_precisa estar autenticado_).
+O primeiro passo para começar a integrar com a API é criar uma nova chave de API, para que possa ser feitas as requisições.
 
 ### Passo 1 - Criar um novo aplicativo
 
 Vá para `Api/Plugins` na barra lateral e clique em `Nova API/Plugin`.
 
-> **Importante**: para visualizar o sidebar API/Plugins é necessário ter a permissão de: ADMIN.
->
-> Caso você não possua uma das permissão solicite para o admin da sua plataforma a inserção da mesma para seu usuário.
->
-> O usuário admin pode seguir este tutorial para [atualizar permissões de usuários](/docs/FAQ/faq-users)
+:::caution
+Caso você não esteja visualizando o sidebar API/Plugins é necessário ter a permissão correta, veja com o admin da sua empresa.
+:::
 
-![appid-1](/img/appId-1.png)
+![appid-1](./__assets__/api-plugins.png)
 
-Dentro da tela de criação, coloque um nome para a integração, e selecione `API` ou `Plugin`
+### Passo 2 - Nome da integração
 
-> **API**: api para ser utilizada em um ambiente/servidor
-> 
-> **PLUGIN**: api para ser utilizada com nossos plugins ecommerce ou js
+Dentro da tela de criação, coloque um nome para a integração, e selecione `API` para integrações backend, ou `Plugin` para integrações frontend.
 
-![appid-2](/img/appId-2.png)
+![appid-2](./__assets__/new-api-plugin.png)
 
-Você será redirecionado para a tela de dados da `API/Plugin`, e basta copiar o AppID para utilizar em suas integrações.
+### Passo 3 - Criando uma nova chave de API/Plugin
 
-![appid-3](/img/appId-3.png)
+Clique em `Salvar` para criar a nova chave de API/Plugin.
 
+![appid-3](./__assets__/save-new-api.png)
 
-![AddNewApi](/img/apis/add-new-api.png)
+### Passo 4 - Colocando o fator de autenticação
 
-Para criar chaves de APIs e Plugins, você precisa ter permissões de `ADMIN`.
+Para que a API/Plugin possa ser utilizada, é necessário colocar um fator duplo de autenticação para garantir maior segurança na geração de chaves.
 
-### Guia de uso da API
+![appid-4](./__assets__/token-new-api.png)
 
-- Todas as `requests` e `responses` da API usam o formato JSON
-- Os IPs e certificados dos servidores backend da API mudam constantemente, não armazene em cache nem IPs do servidor nem certificados
-- Todas as solicitações (requests) devem ser criptografadas usando `https`
+### Passo 5 - Copiando o AppID
 
-### Segurança de chaves APIs
+Após criar a nova chave de API/Plugin, você pode copiar o AppID para utilizar em suas integrações.
 
-As chaves de API são extremamente poderosas, pois podem criar ou ler dados de sua empresa. A chave deve ser armazenada e compartilhada com cuidado extra.
+![appid-5](./__assets__/copy-appid-new-api.png)
+
+## Como utilizar a API
+
+Todas as `requests` e `responses` da API usam o formato JSON
+
+Para que a requisição seja válida, é necessário enviar o `AppID`/`Token` no header `Authorization` da requisição.
+
+```json
+{
+  "Authorization": "<AppID>"
+}
+```
+
+Exemplo:
+
+```bash
+curl --request GET \
+  --url https://api.openpix.com.br/api/v1/charge \
+  --header 'Authorization: SEU_APPID_AQUI'
+```
+
+## Restrições de APIs
+
+Os IPs e certificados dos servidores backend da API mudam constantemente, não armazene em cache nem IPs do servidor nem certificados
+
+Todas as solicitações (requests) devem ser criptografadas usando `https`
+
+As chaves de API são extremamente poderosas, pois podem criar ou ler dados de sua empresa, e devem ser armazenadas e compartilhadas com cuidado extra.
 
 Orientações da API:
 
@@ -61,7 +81,21 @@ Orientações da API:
 - Apenas gere chaves quando for necessário
 - Desative chaves não utilizadas
 
-### Restrições de APIs
+## AppID Inválido
 
-- Limites de tamanho de Header e Payload Size: Qualquer solicitação, independente do endpoint usado, não deve exceder 10 MB
-- Taxa de limite: Você não pode exceder 10 solicitações/segundo.
+Pode ocorrer de você receber uma resposta com o HTTP Status 401, que está relacionado à um appID inválido, sendo passado no header mencionado acima.
+
+```json
+{
+  "data": null,
+  "errors": [
+    {
+      "message": "appID inválido"
+    }
+  ]
+}
+```
+
+Caso seja inválido é retornado esse erro caso seja de appID inválido.
+
+Caso você obtenha esse erro, é recomendado gerar um novo appID dá sua aplicação, ou regerar o appID, caso já tenha uma aplicação criada, e adicionar novamente em seu sistema.
