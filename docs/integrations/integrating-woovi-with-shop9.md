@@ -1,5 +1,5 @@
 ---
-title: Integrando a Woovi com a Shop9
+title: Integrando a Woovi com a Shop Control 9
 tags:
   - integration
 ---
@@ -22,7 +22,7 @@ Essa documentação assume que você tenha preenchido alguns requisitos que são
 
 ### 3. Selecione a conta bancária correspondente
 
-Nesta etapa, é necessário selecionar a conta bancária previamente cadastrada na Shop9.
+Nesta etapa, é necessário selecionar a conta bancária previamente cadastrada na Shop Control 9.
 
 ![Shop9 Banck Account page](./__assets__/slide3-shop9.png)
 
