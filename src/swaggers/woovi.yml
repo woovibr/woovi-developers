@@ -2,23 +2,23 @@ openapi: 3.0.3
 info:
   title: Woovi
   description: >-
-    A OpenPix é uma Plataforma de Gestão de Pagamentos. 
+    A Woovi é uma Plataforma de Gestão de Pagamentos. 
 
      Para utilizar nossa API de Produção, utilize exclusivamente o seguinte endpoint: 
 
-     👉 __[https://api.openpix.com.br/](https://api.openpix.com.br/)__ 
+     👉 __[https://api.woovi.com/](https://api.woovi.com/)__ 
 
      Além disso, oferecemos também um ambiente de sandbox (ambiente de testes), ideal para desenvolvimento e validação de integrações sem impactar dados reais. 
 
      👉 __[https://api.woovi-sandbox.com/](https://api.woovi-sandbox.com/)__ 
 
-     Veja como configurar seu acesso a nossa API [aqui](https://developers.openpix.com.br/docs/apis/api-getting-started).
+     Veja como configurar seu acesso a nossa API [aqui](https://developers.woovi.com/docs/apis/api-getting-started).
   version: 1.0.0
 servers:
   - url: https://api.woovi.com
     description: API de Produção
   - url: https://api.woovi-sandbox.com
-    description: API de Testes
+    description: API de Teste
 security:
   - AppID: []
 paths:
