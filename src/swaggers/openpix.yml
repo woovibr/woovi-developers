@@ -2,21 +2,27 @@ openapi: 3.0.3
 info:
   title: OpenPix
   description: >-
-    A OpenPix é uma Plataforma de Gestão de Pagamentos. Para utilizar nossa API
-    você deve
-    acessar  __[https://api.openpix.com.br/](https://api.openpix.com.br/)__ e
-    somente o mesmo. A OpenPix não aceita subdominios para a API.
+    A OpenPix é uma Plataforma de Gestão de Pagamentos. 
 
+     Para utilizar nossa API de Produção, utilize exclusivamente o seguinte endpoint: 
 
-    Veja como configurar seu acesso a nossa API [aqui](https://developers.openpix.com.br/docs/apis/api-getting-started).
+     👉 __[https://api.openpix.com.br/](https://api.openpix.com.br/)__ 
+
+     Além disso, oferecemos também um ambiente de sandbox (ambiente de testes), ideal para desenvolvimento e validação de integrações sem impactar dados reais. 
+
+     👉 __[https://api.woovi-sandbox.com/](https://api.woovi-sandbox.com/)__ 
+
+     Veja como configurar seu acesso a nossa API [aqui](https://developers.openpix.com.br/docs/apis/api-getting-started).
   version: 1.0.0
 servers:
   - url: https://api.openpix.com.br
-    description: Production server
+    description: API de Produção
+  - url: https://api.woovi-sandbox.com
+    description: API de Testes
 security:
   - AppID: []
 paths:
-  '/api/v1/account/{accountId}':
+  "/api/v1/account/{accountId}":
     get:
       tags:
         - account
@@ -30,7 +36,7 @@ paths:
             type: string
           example: 6290ccfd42831958a405debc
       responses:
-        '200':
+        "200":
           description: The Account retrieve using the given Account ID
           content:
             application/json:
@@ -39,7 +45,7 @@ paths:
                 properties:
                   account:
                     type: object
-                    $ref: '#/components/schemas/CompanyBankAccount'
+                    $ref: "#/components/schemas/CompanyBankAccount"
               example:
                 account:
                   accountId: 6290ccfd42831958a405debc
@@ -48,7 +54,7 @@ paths:
                     total: 129430
                     blocked: 0
                     available: 129430
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -63,7 +69,7 @@ paths:
         - account
       summary: Get a list of Accounts
       responses:
-        '200':
+        "200":
           description: A list of Accounts
           content:
             application/json:
@@ -73,7 +79,7 @@ paths:
                   accounts:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CompanyBankAccount'
+                      $ref: "#/components/schemas/CompanyBankAccount"
               example:
                 accounts:
                   - accountId: 6290ccfd42831958a405debc
@@ -88,7 +94,7 @@ paths:
                       total: 130
                       blocked: 100
                       available: 30
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -97,13 +103,124 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/account/{accountId}/withdraw':
+  /api/v1/account-register:
+    post:
+      tags:
+        - account register
+      summary: Register a new account
+      description: Creates a new account registration with the provided details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                officialName:
+                  type: string
+                  description: Official name of the company
+                tradeName:
+                  type: string
+                  description: Trade name of the company
+                taxID:
+                  type: string
+                  description: Tax ID of the company
+                annualRevenue:
+                  type: number
+                  description: Annual revenue of the company
+              required:
+                - officialName
+                - tradeName
+                - taxID
+                - annualRevenue
+            examples:
+              ValidAccountRegister:
+                value:
+                  officialName: Company Official Name
+                  tradeName: Company Trade Name
+                  taxID: "12345678901234"
+                  annualRevenue: 1000000
+      responses:
+        "200":
+          description: Account successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  officialName:
+                    type: string
+                    example: Company Official Name
+                  tradeName:
+                    type: string
+                    example: Company Trade Name
+                  taxID:
+                    type: object
+                    properties:
+                      taxID:
+                        type: string
+                        example: "12345678901234"
+                      type:
+                        type: string
+                        example: BR_CNPJ
+                  status:
+                    type: string
+                    example: PENDING
+        "400":
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                MissingAuthorization:
+                  value:
+                    error: Invalid Authorization header
+                CompanyNotFound:
+                  value:
+                    error: Company not found
+                ValidationError:
+                  value:
+                    error:
+                      - code: too_small
+                        minimum: 1
+                        type: string
+                        inclusive: true
+                        exact: false
+                        message: Official name is required
+                        path:
+                          - officialName
+        "403":
+          description: Forbidden action
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: This feature is not enabled for your company. Contact us to active.
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Internal server error
+  "/api/v1/account/{accountId}/withdraw":
     post:
       tags:
         - account
       summary: Withdraw from an Account
-      description:
-        An additional fee may be charged depending on the minimum free
+      description: An additional fee may be charged depending on the minimum free
         withdrawal amount. See more about at
         https://developers.openpix.com.br/docs/FAQ/faq-virtual-account/#onde-posso-consultar-as-taxas-da-minha-conta-virtual
       parameters:
@@ -127,7 +244,7 @@ paths:
             example:
               value: 7000
       responses:
-        '200':
+        "200":
           description: Withdraw and Acccount information
           content:
             application/json:
@@ -139,10 +256,10 @@ paths:
                     properties:
                       account:
                         type: object
-                        $ref: '#/components/schemas/CompanyBankAccount'
+                        $ref: "#/components/schemas/CompanyBankAccount"
                       transaction:
                         type: object
-                        $ref: '#/components/schemas/WithdrawTransaction'
+                        $ref: "#/components/schemas/WithdrawTransaction"
               example:
                 withdraw:
                   account:
@@ -155,7 +272,7 @@ paths:
                   transaction:
                     endToEndId: E23114447202205191817cx6VMrbwtw6
                     transaction: 7000
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -164,7 +281,182 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/cashback-fidelity/balance/{taxID}':
+  /api/v1/application:
+    delete:
+      tags:
+        - application
+      summary: Delete an application
+      description: Deactivates an application by setting isActive to false and adding
+        a removedAt timestamp
+      requestBody:
+        description: Data identifying the application to delete
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  description: The client ID of the application to delete
+              required:
+                - clientId
+            examples:
+              Application:
+                value:
+                  clientId: client_123abc
+      responses:
+        "200":
+          description: Application successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates the operation was successful
+              example:
+                success: true
+        "400":
+          description: Validation error or other client error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+              examples:
+                ValidationError:
+                  value:
+                    error: Validation error
+                    details:
+                      - field: clientId
+                        message: Application client ID is required
+                CannotDeleteMaster:
+                  value:
+                    error: You cannot delete a master application
+        "404":
+          description: Application not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Application not found
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Internal server error
+    post:
+      tags:
+        - application
+      summary: Create a new application
+      description: Creates a new application for a company
+      requestBody:
+        description: Data to create a new application
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApplicationPayload"
+            examples:
+              Application:
+                value:
+                  accountId: 507f1f77bcf86cd799439011
+                  application:
+                    name: Test API
+                    type: API
+      responses:
+        "201":
+          description: Application successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  application:
+                    $ref: "#/components/schemas/Application"
+              example:
+                application:
+                  name: Test API
+                  isActive: true
+                  type: API
+                  clientId: client_123abc
+                  clientSecret: secret_456def
+                  appID: app_789ghi
+                  companyBankAccount: 507f1f77bcf86cd799439011
+        "400":
+          description: Validation error or other client error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+              examples:
+                ValidationError:
+                  value:
+                    error: Validation error
+                    details:
+                      - field: accountId
+                        message: Company bank account ID is required
+                NoMasterApplication:
+                  value:
+                    error: Only MASTER application can create other application types
+        "403":
+          description: Forbidden - Missing required feature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: You need feature BAAS to access this endpoint
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Internal server error
+  "/api/v1/cashback-fidelity/balance/{taxID}":
     get:
       tags:
         - cashback-fidelity
@@ -178,9 +470,9 @@ paths:
             type: string
           examples:
             taxID:
-              value: '60151449000182'
+              value: "60151449000182"
       responses:
-        '200':
+        "200":
           description: Amount the user still has to receive.
           content:
             application/json:
@@ -191,7 +483,7 @@ paths:
                     type: number
                   status:
                     type: string
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -226,9 +518,8 @@ paths:
               value: 100
               taxID: 11111111111
       responses:
-        '200':
-          description:
-            Didn't create a new cashback, returning previously existing
+        "200":
+          description: Didn't create a new cashback, returning previously existing
             cashback information instead.
           content:
             application/json:
@@ -245,7 +536,7 @@ paths:
                   message:
                     type: string
                     description: String explaining what happened
-        '201':
+        "201":
           description: New cashback created successfully
           content:
             application/json:
@@ -262,7 +553,7 @@ paths:
                   message:
                     type: string
                     description: String explaining what happened
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -271,7 +562,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/openpix/charge/brcode/image/{:id}.png?size=1024':
+  "/openpix/charge/brcode/image/{:id}.png?size=1024":
     get:
       tags:
         - charge
@@ -288,8 +579,7 @@ paths:
               value: fe7834b4060c488a9b0f89811be5f5cf
         - in: query
           name: size
-          description:
-            Size for the image. This size should be between 600 and 4096. if
+          description: Size for the image. This size should be between 600 and 4096. if
             the size parameter was not passed, the default value will be 1024.
           required: false
           schema:
@@ -298,9 +588,9 @@ paths:
             size:
               value: 768
       responses:
-        '200':
+        "200":
           description: The Qr Code image as MIME type
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -309,7 +599,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/charge/{id}':
+  "/api/v1/charge/{id}":
     delete:
       tags:
         - charge
@@ -317,8 +607,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description:
-            charge ID or correlation ID. You will need URI encoding if your
+          description: charge ID or correlation ID. You will need URI encoding if your
             correlation ID has characters outside the ASCII set or reserved
             characters (%, \#, /).
           required: true
@@ -330,7 +619,7 @@ paths:
             correlationID:
               value: fe7834b4060c488a9b0f89811be5f5cf
       responses:
-        '200':
+        "200":
           description: The charge deleted
           content:
             application/json:
@@ -345,7 +634,7 @@ paths:
                 example:
                   status: OK
                   id: fe7834b4060c488a9b0f89811be5f5cf
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -361,8 +650,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description:
-            correlation ID. You will need URI encoding if your correlation ID
+          description: correlation ID. You will need URI encoding if your correlation ID
             has characters outside the ASCII set or reserved characters (%, \#,
             /).
           required: true
@@ -378,11 +666,11 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/ChargePatchPayload'
+              $ref: "#/components/schemas/ChargePatchPayload"
             example:
               expiresDate: 2021-04-01T17:28:51.882Z
       responses:
-        '200':
+        "200":
           description: The charge was updated to new expiration date
           content:
             application/json:
@@ -403,30 +691,29 @@ paths:
                     customer:
                       name: Dan
                       email: email0@example.com
-                      phone: '5511999999999'
+                      phone: "5511999999999"
                       taxID:
-                        taxID: '31324227036'
+                        taxID: "31324227036"
                         type: BR:CPF
                     value: 100
                     comment: good
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
-                    paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    paymentLinkUrl: https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
+                    qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     expiresIn: 2592000
                     expiresDate: 2021-04-01T17:28:51.882Z
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
-                    brCode:
-                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                    brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     additionalInfo:
                       - key: Product
                         value: Pencil
                       - key: Invoice
-                        value: '18476'
+                        value: "18476"
                       - key: Order
-                        value: '302'
+                        value: "302"
                     paymentMethods:
                       pix:
                         method: PIX_COB
@@ -437,11 +724,10 @@ paths:
                         value: 200
                         status: ACTIVE
                         txId: 9134e286-6f71-427a-bf00-241681624586
-                        brCode:
-                          000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                        brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                           Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-                        qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-        '400':
+                        qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+        "400":
           description: An error message
           content:
             application/json:
@@ -457,8 +743,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description:
-            charge ID or correlation ID. You will need URI encoding if your
+          description: charge ID or correlation ID. You will need URI encoding if your
             correlation ID has characters outside the ASCII set or reserved
             characters (%, \#, /).
           required: true
@@ -466,7 +751,7 @@ paths:
             type: string
           example: fe7834b4060c488a9b0f89811be5f5cf
       responses:
-        '200':
+        "200":
           description: The charge retrieve using the given ID
           content:
             application/json:
@@ -475,34 +760,33 @@ paths:
                 properties:
                   charge:
                     type: object
-                    $ref: '#/components/schemas/Charge'
+                    $ref: "#/components/schemas/Charge"
                 example:
                   charge:
                     status: ACTIVE
                     customer:
                       name: Dan
                       email: email0@example.com
-                      phone: '5511999999999'
+                      phone: "5511999999999"
                       taxID:
-                        taxID: '31324227036'
+                        taxID: "31324227036"
                         type: BR:CPF
                     value: 100
                     comment: good
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     paymentLinkID: 7777-6f71-427a-bf00-241681624586
-                    paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
+                    paymentLinkUrl: https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
                     globalID: Q2hhcmdlOjcxOTFmMWIwMjA0NmJmNWY1M2RjZmEwYg==
-                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-                    brCode:
-                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                    qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     additionalInfo:
                       - key: Product
                         value: Pencil
                       - key: Invoice
-                        value: '18476'
+                        value: "18476"
                       - key: Order
-                        value: '302'
+                        value: "302"
                     expiresIn: 2592000
                     expiresDate: 2021-04-01T17:28:51.882Z
                     createdAt: 2021-03-02T17:28:51.882Z
@@ -517,11 +801,10 @@ paths:
                         value: 200
                         status: ACTIVE
                         txId: 9134e286-6f71-427a-bf00-241681624586
-                        brCode:
-                          000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                        brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                           Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-                        qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-        '400':
+                        qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+        "400":
           description: An error message
           content:
             application/json:
@@ -539,11 +822,11 @@ paths:
         - in: query
           name: start
           schema:
-            $ref: '#/components/schemas/Start'
+            $ref: "#/components/schemas/Start"
         - in: query
           name: end
           schema:
-            $ref: '#/components/schemas/End'
+            $ref: "#/components/schemas/End"
         - name: status
           in: query
           schema:
@@ -557,8 +840,13 @@ paths:
           in: query
           schema:
             type: string
+        - name: subscription
+          description: Subscription Correlation ID
+          in: query
+          schema:
+            type: string
       responses:
-        '200':
+        "200":
           description: A list of charges
           content:
             application/json:
@@ -568,7 +856,7 @@ paths:
                   charges:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Charge'
+                      $ref: "#/components/schemas/Charge"
                   pageInfo:
                     type: object
                     properties:
@@ -608,26 +896,25 @@ paths:
                     customer:
                       name: Dan
                       email: email0@example.com
-                      phone: '5511999999999'
+                      phone: "5511999999999"
                       taxID:
-                        taxID: '31324227036'
+                        taxID: "31324227036"
                         type: BR:CPF
                     value: 100
                     comment: good
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
-                    paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-                    brCode:
-                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                    paymentLinkUrl: https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
+                    qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     additionalInfo:
                       - key: Product
                         value: Pencil
                       - key: Invoice
-                        value: '18476'
+                        value: "18476"
                       - key: Order
-                        value: '302'
+                        value: "302"
                     expiresIn: 2592000
                     expiresDate: 2021-04-01T17:28:51.882Z
                     createdAt: 2021-03-02T17:28:51.882Z
@@ -642,11 +929,10 @@ paths:
                         value: 200
                         status: ACTIVE
                         txId: 9134e286-6f71-427a-bf00-241681624586
-                        brCode:
-                          000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                        brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                           Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-                        qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-        '400':
+                        qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+        "400":
           description: An error message
           content:
             application/json:
@@ -662,8 +948,7 @@ paths:
       parameters:
         - in: query
           name: return_existing
-          description:
-            Make the endpoint idempotent, will return an existent charge if
+          description: Make the endpoint idempotent, will return an existent charge if
             already has a one with the correlationID
           required: false
           schema:
@@ -679,7 +964,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/ChargePayload'
+              $ref: "#/components/schemas/ChargePayload"
             examples:
               Charge:
                 value:
@@ -688,16 +973,16 @@ paths:
                   comment: good
                   customer:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                   additionalInfo:
                     - key: Product
                       value: Pencil
                     - key: Invoice
-                      value: '18476'
+                      value: "18476"
                     - key: Order
-                      value: '302'
+                      value: "302"
               Charge with Interests and Fines:
                 value:
                   type: OVERDUE
@@ -712,13 +997,13 @@ paths:
                     value: 20
                   customer:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     address:
-                      zipcode: '30421322'
+                      zipcode: "30421322"
                       street: Street
-                      number: '100'
+                      number: "100"
                       neighborhood: Neighborhood
                       city: Belo Horizonte
                       state: MG
@@ -728,9 +1013,9 @@ paths:
                     - key: Product
                       value: Pencil
                     - key: Invoice
-                      value: '18476'
+                      value: "18476"
                     - key: Order
-                      value: '302'
+                      value: "302"
               Charge with Split Internal Transfer:
                 value:
                   correlationID: 9134e286-6f71-427a-bf00-241681624587
@@ -738,13 +1023,13 @@ paths:
                   comment: good
                   customer:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     address:
-                      zipcode: '30421322'
+                      zipcode: "30421322"
                       street: Street
-                      number: '100'
+                      number: "100"
                       neighborhood: Neighborhood
                       city: Belo Horizonte
                       state: MG
@@ -754,9 +1039,9 @@ paths:
                     - key: Product
                       value: Pencil
                     - key: Invoice
-                      value: '18476'
+                      value: "18476"
                     - key: Order
-                      value: '302'
+                      value: "302"
                   splits:
                     - value: 10
                       pixKey: 676bd1f8-93cb-4354-b094-5587179d56ad
@@ -767,13 +1052,13 @@ paths:
                   comment: good
                   customer:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     address:
-                      zipcode: '30421322'
+                      zipcode: "30421322"
                       street: Street
-                      number: '100'
+                      number: "100"
                       neighborhood: Neighborhood
                       city: Belo Horizonte
                       state: MG
@@ -783,17 +1068,16 @@ paths:
                     - key: Product
                       value: Pencil
                     - key: Invoice
-                      value: '18476'
+                      value: "18476"
                     - key: Order
-                      value: '302'
+                      value: "302"
                   splits:
                     - value: 10
                       pixKey: 676bd1f8-93cb-4354-b094-5587179d56ad
-                      splitType: SPLIT_SUB_ACCOUINT
+                      splitType: SPLIT_SUB_ACCOUNT
       responses:
-        '200':
-          description:
-            Charge ID and also the generated Dynamic BR Code to be rendered as
+        "200":
+          description: Charge ID and also the generated Dynamic BR Code to be rendered as
             a QRCode
           content:
             application/json:
@@ -801,7 +1085,7 @@ paths:
                 type: object
                 properties:
                   charge:
-                    $ref: '#/components/schemas/Charge'
+                    $ref: "#/components/schemas/Charge"
                   correlationID:
                     type: string
                   brCode:
@@ -812,30 +1096,29 @@ paths:
                     customer:
                       name: Dan
                       email: email0@example.com
-                      phone: '5511999999999'
+                      phone: "5511999999999"
                       taxID:
-                        taxID: '31324227036'
+                        taxID: "31324227036"
                         type: BR:CPF
                     value: 100
                     comment: good
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
-                    paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    paymentLinkUrl: https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
+                    qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     expiresIn: 2592000
                     expiresDate: 2021-04-01T17:28:51.882Z
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
-                    brCode:
-                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                    brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     additionalInfo:
                       - key: Product
                         value: Pencil
                       - key: Invoice
-                        value: '18476'
+                        value: "18476"
                       - key: Order
-                        value: '302'
+                        value: "302"
                     paymentMethods:
                       pix:
                         method: PIX_COB
@@ -846,11 +1129,10 @@ paths:
                         value: 200
                         status: ACTIVE
                         txId: 9134e286-6f71-427a-bf00-241681624586
-                        brCode:
-                          000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                        brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                           Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-                        qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-        '400':
+                        qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+        "400":
           description: An error message
           content:
             application/json:
@@ -859,7 +1141,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/charge/{id}/refund':
+  "/api/v1/charge/{id}/refund":
     get:
       tags:
         - charge refund
@@ -868,8 +1150,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description:
-            The correlation ID of the charge. You will need URI encoding if
+          description: The correlation ID of the charge. You will need URI encoding if
             your correlation ID has characters outside the ASCII set or reserved
             characters (%, \#, /).
           required: true
@@ -881,7 +1162,7 @@ paths:
             random-string:
               value: fe7834b4060c488a9b0f89811be5f5cf
       responses:
-        '200':
+        "200":
           description: A list of refunds
           content:
             application/json:
@@ -891,7 +1172,7 @@ paths:
                   refunds:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ChargeRefund'
+                      $ref: "#/components/schemas/ChargeRefund"
                 example:
                   refunds:
                     - status: IN_PROCESSING
@@ -905,7 +1186,7 @@ paths:
                       endToEndId: E23114447202304181057pOhPMsp2pJZ
                       time: 2021-03-05T14:49:02.922Z
                       comment: Comentário do reembolso
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -922,8 +1203,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description:
-            The correlation ID of the charge. You will need URI encoding if
+          description: The correlation ID of the charge. You will need URI encoding if
             your correlation ID has characters outside the ASCII set or reserved
             characters (%, \#, /).
           required: true
@@ -941,13 +1221,13 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/ChargeRefundPayload'
+              $ref: "#/components/schemas/ChargeRefundPayload"
             example:
               correlationID: a273e72c-9547-4c75-a213-3b0a2735b8d5
               value: 100
               comment: Comentário do reembolso
       responses:
-        '200':
+        "200":
           description: The created Refund
           content:
             application/json:
@@ -955,7 +1235,7 @@ paths:
                 type: object
                 properties:
                   refund:
-                    $ref: '#/components/schemas/ChargeRefund'
+                    $ref: "#/components/schemas/ChargeRefund"
                 example:
                   refund:
                     status: IN_PROCESSING
@@ -964,7 +1244,7 @@ paths:
                     endToEndId: E23114447202304181826HJNwY577YDX
                     time: 2023-03-02T17:28:51.882Z
                     comment: Comentário do reembolso
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -973,7 +1253,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/customer/{id}':
+  "/api/v1/customer/{id}":
     get:
       tags:
         - customer
@@ -981,16 +1261,18 @@ paths:
       parameters:
         - name: id
           in: path
-          description: correlation ID
+          description: Correlation ID or Tax ID
           required: true
           schema:
             type: string
           examples:
             correlationID:
               value: fe7834b4060c488a9b0f89811be5f5cf
+            taxID:
+              value: 123456789
       responses:
-        '200':
-          description: The customer retrieve using the given ID
+        "200":
+          description: The customer retrieved using the given ID
           content:
             application/json:
               schema:
@@ -998,17 +1280,17 @@ paths:
                 properties:
                   customer:
                     type: object
-                    $ref: '#/components/schemas/Customer'
+                    $ref: "#/components/schemas/Customer"
                 example:
                   customer:
                     name: Dan
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     taxID:
-                      taxID: '31324227036'
+                      taxID: "31324227036"
                       type: BR:CPF
                     correlationID: fe7834b4060c488a9b0f89811be5f5cf
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1023,7 +1305,7 @@ paths:
         - customer
       summary: Get a list of customers
       responses:
-        '200':
+        "200":
           description: A list of customers
           content:
             application/json:
@@ -1033,7 +1315,7 @@ paths:
                   customers:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Customer'
+                      $ref: "#/components/schemas/Customer"
                   pageInfo:
                     type: object
                     properties:
@@ -1072,11 +1354,11 @@ paths:
                     customer:
                       name: Dan
                       email: email0@example.com
-                      phone: '5511999999999'
+                      phone: "5511999999999"
                       taxID:
-                        taxID: '31324227036'
+                        taxID: "31324227036"
                         type: BR:CPF
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1097,24 +1379,24 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/CustomerPayload'
+              $ref: "#/components/schemas/CustomerPayload"
             example:
               name: Dan
-              taxID: '31324227036'
+              taxID: "31324227036"
               email: email0@example.com
-              phone: '5511999999999'
+              phone: "5511999999999"
               correlationID: 9134e286-6f71-427a-bf00-241681624586
               address:
-                zipcode: '30421322'
+                zipcode: "30421322"
                 street: Street
-                number: '100'
+                number: "100"
                 neighborhood: Neighborhood
                 city: Belo Horizonte
                 state: MG
                 complement: APTO
                 country: BR
       responses:
-        '200':
+        "200":
           description: Customer ID
           content:
             application/json:
@@ -1122,25 +1404,25 @@ paths:
                 type: object
                 properties:
                   customer:
-                    $ref: '#/components/schemas/Customer'
+                    $ref: "#/components/schemas/Customer"
                 example:
                   customer:
                     name: Dan
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     taxID:
-                      taxID: '31324227036'
+                      taxID: "31324227036"
                       type: BR:CPF
                     address:
-                      zipcode: '30421322'
+                      zipcode: "30421322"
                       street: Street
-                      number: '100'
+                      number: "100"
                       neighborhood: Neighborhood
                       city: Belo Horizonte
                       state: MG
                       complement: APTO
                       country: BR
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1149,7 +1431,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/customer/{correlationID}':
+  "/api/v1/customer/{correlationID}":
     patch:
       tags:
         - customer
@@ -1172,22 +1454,22 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/CustomerPatchPayload'
+              $ref: "#/components/schemas/CustomerPatchPayload"
             example:
               name: Dan
               email: email0@example.com
-              phone: '5511999999999'
+              phone: "5511999999999"
               address:
-                zipcode: '30421322'
+                zipcode: "30421322"
                 street: Street
-                number: '100'
+                number: "100"
                 neighborhood: Neighborhood
                 city: Belo Horizonte
                 state: MG
                 complement: APTO
                 country: BR
       responses:
-        '200':
+        "200":
           description: Customer ID
           content:
             application/json:
@@ -1195,25 +1477,25 @@ paths:
                 type: object
                 properties:
                   customer:
-                    $ref: '#/components/schemas/Customer'
+                    $ref: "#/components/schemas/Customer"
                 example:
                   customer:
                     name: Dan
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     taxID:
-                      taxID: '31324227036'
+                      taxID: "31324227036"
                       type: BR:CPF
                     address:
-                      zipcode: '30421322'
+                      zipcode: "30421322"
                       street: Street
-                      number: '100'
+                      number: "100"
                       neighborhood: Neighborhood
                       city: Belo Horizonte
                       state: MG
                       complement: APTO
                       country: BR
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1222,7 +1504,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/dispute/{id}':
+  "/api/v1/dispute/{id}":
     get:
       tags:
         - dispute
@@ -1233,12 +1515,11 @@ paths:
           required: true
           schema:
             type: string
-          description:
-            The id must be the endToEndId of the transaction that originated
+          description: The id must be the endToEndId of the transaction that originated
             the Dispute
           example: Ea9c291526ae54b4cb41d9909bdf6d792
       responses:
-        '200':
+        "200":
           description: The dispute retrieve using endToEndId
           content:
             application/json:
@@ -1271,8 +1552,7 @@ paths:
                         type: string
                         description: Reason provided to justify the dispute.
                       endToEndId:
-                        description:
-                          The endToEndId of the dispute (Is the same of the endToEndId
+                        description: The endToEndId of the dispute (Is the same of the endToEndId
                           transaction related).
                         type: string
               example:
@@ -1280,11 +1560,11 @@ paths:
                   status: ACCEPTED
                   name: John Doe
                   email: john.doe@example.com
-                  phoneNumber: '+5511999999999'
+                  phoneNumber: "+5511999999999"
                   value: 10000
                   disputeReason: Product not received
                   endToEndId: E7d401907cacd4d7fb9290345b93deac7
-        '400':
+        "400":
           description: Bad request
           content:
             application/json:
@@ -1295,7 +1575,7 @@ paths:
                     type: string
               example:
                 error: Dispute not found
-        '500':
+        "500":
           description: Internal server error
           content:
             application/json:
@@ -1315,13 +1595,13 @@ paths:
         - in: query
           name: start
           schema:
-            $ref: '#/components/schemas/Start'
+            $ref: "#/components/schemas/Start"
         - in: query
           name: end
           schema:
-            $ref: '#/components/schemas/End'
+            $ref: "#/components/schemas/End"
       responses:
-        '200':
+        "200":
           description: A list of disputes
           content:
             application/json:
@@ -1331,7 +1611,7 @@ paths:
                   disputes:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Dispute'
+                      $ref: "#/components/schemas/Dispute"
                   pageInfo:
                     type: object
                     properties:
@@ -1370,12 +1650,12 @@ paths:
                     - disputeReason: Dispute reason test
                       email: jorge@test.com
                       name: Seu Jorge
-                      phoneNumber: '+551199999999'
+                      phoneNumber: "+551199999999"
                       status: IN_REVIEW
                       value: 100
                       createdAt: 2021-03-02T17:28:51.882Z
                       updatedAt: 2021-03-02T17:28:51.882Z
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1411,12 +1691,12 @@ paths:
                       type: string
                       description: The name you want to give your application
                     type:
-                      $ref: '#/components/schemas/ApplicationEnumTypePayload'
+                      $ref: "#/components/schemas/ApplicationEnumTypePayload"
                   required:
                     - name
                     - type
                 taxID:
-                  $ref: '#/components/schemas/TaxIDObjectPayload'
+                  $ref: "#/components/schemas/TaxIDObjectPayload"
                   required:
                     - taxID
                     - type
@@ -1425,10 +1705,10 @@ paths:
                 name: MyAPIAccess
                 type: API
               taxID:
-                taxID: '65914571000187'
+                taxID: "65914571000187"
                 type: BR:CNPJ
       responses:
-        '200':
+        "200":
           description: >
             Our "idempotence output", if you get this HTTP code, it's an
             application
@@ -1440,8 +1720,8 @@ paths:
                 type: object
                 properties:
                   application:
-                    $ref: '#/components/schemas/PartnerApplicationPayload'
-        '201':
+                    $ref: "#/components/schemas/PartnerApplicationPayload"
+        "201":
           description: >
             A new application has been registered. It'll be identified by the
             name that you give to it
@@ -1453,8 +1733,8 @@ paths:
                 type: object
                 properties:
                   application:
-                    $ref: '#/components/schemas/PartnerApplicationPayload'
-        '400':
+                    $ref: "#/components/schemas/PartnerApplicationPayload"
+        "400":
           description: An error message
           content:
             application/json:
@@ -1463,7 +1743,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '403':
+        "403":
           description: You are unauthorized to use this endpoint.
           content:
             application/json:
@@ -1472,7 +1752,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/partner/company/{taxID}':
+  "/api/v1/partner/company/{taxID}":
     get:
       tags:
         - partner (request access)
@@ -1486,9 +1766,9 @@ paths:
             type: string
           examples:
             taxID:
-              value: '60151449000182'
+              value: "60151449000182"
       responses:
-        '200':
+        "200":
           description: The preregistration retrieved by the tax ID.
           content:
             application/json:
@@ -1499,17 +1779,17 @@ paths:
                     type: object
                     properties:
                       preRegistration:
-                        $ref: '#/components/schemas/PreRegistrationObjectPayload'
+                        $ref: "#/components/schemas/PreRegistrationObjectPayload"
                       user:
-                        $ref: '#/components/schemas/PreRegistrationUserObject'
+                        $ref: "#/components/schemas/PreRegistrationUserObject"
                       company:
-                        $ref: '#/components/schemas/CompanyObjectPayload'
+                        $ref: "#/components/schemas/CompanyObjectPayload"
                       account:
-                        $ref: '#/components/schemas/AccountObjectPayload'
+                        $ref: "#/components/schemas/AccountObjectPayload"
                     required:
                       - preRegistration
                       - user
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1524,7 +1804,7 @@ paths:
         - partner (request access)
       summary: Get every preregistration that is managed by you.
       responses:
-        '200':
+        "200":
           description: A list with preregistrations.
           content:
             application/json:
@@ -1537,13 +1817,13 @@ paths:
                       type: object
                       properties:
                         preRegistration:
-                          $ref: '#/components/schemas/PreRegistrationObjectPayload'
+                          $ref: "#/components/schemas/PreRegistrationObjectPayload"
                         user:
-                          $ref: '#/components/schemas/PreRegistrationUserObject'
+                          $ref: "#/components/schemas/PreRegistrationUserObject"
                         company:
-                          $ref: '#/components/schemas/CompanyObjectPayload'
+                          $ref: "#/components/schemas/CompanyObjectPayload"
                         account:
-                          $ref: '#/components/schemas/AccountObjectPayload'
+                          $ref: "#/components/schemas/AccountObjectPayload"
                       required:
                         - preRegistration
                         - user
@@ -1574,7 +1854,7 @@ paths:
                         type: boolean
                       hasNextPage:
                         type: boolean
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1599,21 +1879,24 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/PreRegistrationPayloadObject'
+              $ref: "#/components/schemas/PreRegistrationPayloadObject"
             example:
               preRegistration:
                 name: Example LLC
                 taxID:
-                  taxID: '11111111111111'
+                  taxID: "11111111111111"
                   type: BR:CNPJ
                 website: examplellc.com
               user:
                 firstName: John
                 lastName: Doe
                 email: johndoe@examplellc.com
-                phone: '+5511912345678'
+                phone: "+5511912345678"
+                taxID:
+                  taxID: "1111111111"
+                  type: BR:CPF
       responses:
-        '200':
+        "200":
           description: >
             Payload with a pre registration data.
 
@@ -1623,14 +1906,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PreRegistrationPayloadObject'
-        '201':
+                $ref: "#/components/schemas/PreRegistrationPayloadObject"
+        "201":
           description: A new preregistration that is related to you has been created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PreRegistrationPayloadObject'
-        '400':
+                $ref: "#/components/schemas/PreRegistrationPayloadObject"
+        "400":
           description: An error message
           content:
             application/json:
@@ -1639,7 +1922,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '403':
+        "403":
           description: You are unauthorized to use this endpoint.
           content:
             application/json:
@@ -1661,11 +1944,11 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/PaymentApprovePayload'
+              $ref: "#/components/schemas/PaymentApprovePayload"
             example:
               correlationID: payment1
       responses:
-        '200':
+        "200":
           description: The approved payment
           content:
             application/json:
@@ -1674,13 +1957,13 @@ paths:
                 properties:
                   payment:
                     type: object
-                    $ref: '#/components/schemas/Payment'
+                    $ref: "#/components/schemas/Payment"
                   transaction:
                     type: object
-                    $ref: '#/components/schemas/PaymentTransaction'
+                    $ref: "#/components/schemas/PaymentTransaction"
                   destination:
                     type: object
-                    $ref: '#/components/schemas/PaymentDestination'
+                    $ref: "#/components/schemas/PaymentDestination"
                 example:
                   payment:
                     value: 100
@@ -1694,12 +1977,12 @@ paths:
                     time: 2023-03-20T13:14:17.000Z
                   destination:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
                     bank: A Bank
-                    branch: '1'
-                    account: '123456'
-        '400':
+                    branch: "1"
+                    account: "123456"
+        "400":
           description: An error message
           content:
             application/json:
@@ -1708,7 +1991,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/payment/{id}':
+  "/api/v1/payment/{id}":
     get:
       tags:
         - payment (request access)
@@ -1726,7 +2009,7 @@ paths:
             correlationID:
               value: fe7834b4060c488a9b0f89811be5f5cf
       responses:
-        '200':
+        "200":
           description: The payment retrieved using the given ID
           content:
             application/json:
@@ -1735,13 +2018,13 @@ paths:
                 properties:
                   payment:
                     type: object
-                    $ref: '#/components/schemas/Payment'
+                    $ref: "#/components/schemas/Payment"
                   transaction:
                     type: object
-                    $ref: '#/components/schemas/PaymentTransaction'
+                    $ref: "#/components/schemas/PaymentTransaction"
                   destination:
                     type: object
-                    $ref: '#/components/schemas/PaymentDestination'
+                    $ref: "#/components/schemas/PaymentDestination"
                 example:
                   payment:
                     value: 100
@@ -1756,12 +2039,12 @@ paths:
                     time: 2023-03-20T13:14:17.000Z
                   destination:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
                     bank: A Bank
-                    branch: '1'
-                    account: '123456'
-        '400':
+                    branch: "1"
+                    account: "123456"
+        "400":
           description: An error message
           content:
             application/json:
@@ -1776,7 +2059,7 @@ paths:
         - payment (request access)
       summary: Get a list of payments
       responses:
-        '200':
+        "200":
           description: A list of payments
           content:
             application/json:
@@ -1792,13 +2075,13 @@ paths:
                       properties:
                         payment:
                           type: object
-                          $ref: '#/components/schemas/Payment'
+                          $ref: "#/components/schemas/Payment"
                         transaction:
                           type: object
-                          $ref: '#/components/schemas/PaymentTransaction'
+                          $ref: "#/components/schemas/PaymentTransaction"
                         destination:
                           type: object
-                          $ref: '#/components/schemas/PaymentDestination'
+                          $ref: "#/components/schemas/PaymentDestination"
                   pageInfo:
                     type: object
                     properties:
@@ -1847,12 +2130,12 @@ paths:
                     time: 2023-03-20T13:14:17.000Z
                   destination:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
                     bank: A Bank
-                    branch: '1'
-                    account: '123456'
-        '400':
+                    branch: "1"
+                    account: "123456"
+        "400":
           description: An error message
           content:
             application/json:
@@ -1873,7 +2156,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/PaymentCreatePayload'
+              $ref: "#/components/schemas/PaymentCreatePayload"
             examples:
               pixKey:
                 summary: Pix Key
@@ -1886,11 +2169,11 @@ paths:
               qrCode:
                 summary: QR Code
                 value:
-                  qrCode: 000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009SaoPaulo62360532867ba5173c734202ac659721306b38c963044BCA
+                  qrCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009SaoPaulo62360532867ba5173c734202ac659721306b38c963044BCA
                   comment: payment comment
                   correlationID: payment1
       responses:
-        '200':
+        "200":
           description: Payment destination account information
           content:
             application/json:
@@ -1898,7 +2181,7 @@ paths:
                 type: object
                 properties:
                   payment:
-                    $ref: '#/components/schemas/Payment'
+                    $ref: "#/components/schemas/Payment"
               examples:
                 pixKey:
                   summary: Pix Key
@@ -1918,12 +2201,11 @@ paths:
                       status: CREATED
                       destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
                       destinationAliasType: RANDOM
-                      qrCode:
-                        000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                      qrCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                         Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                       comment: payment comment
                       correlationID: payment1
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1932,7 +2214,79 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/qrcode-static/{id}':
+  "/api/v1/pix-keys/{pixKey}":
+    delete:
+      tags:
+        - pixkey
+      summary: Delete a Pix key
+      description: Deletes a specific Pix key
+      parameters:
+        - name: pixKey
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The Pix key to delete
+      responses:
+        "204":
+          description: Pix key deleted successfully
+        "400":
+          description: You need to link a Bank Account to this API
+        "401":
+          description: Your IP is not in the allowed list
+        "403":
+          description: Your Authorization APP_ID must be configured to be MASTER or API
+        "404":
+          description: Pix key not found
+  /api/v1/pix-keys:
+    get:
+      tags:
+        - pixkey
+      summary: Get all Pix keys
+      description: Retrieves a list of all Pix keys
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pixKeys:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PixKey"
+        "400":
+          description: You need to link a Bank Account to this API
+        "401":
+          description: Your IP is not in the allowed list
+        "403":
+          description: Your Authorization APP_ID must be configured to be MASTER or API
+    post:
+      tags:
+        - pixkey
+      summary: Create a new Pix key
+      description: Creates a new Pix key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PixKeyCreate"
+      responses:
+        "201":
+          description: Pix key created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PixKey"
+        "400":
+          description: You need to link a Bank Account to this API
+        "401":
+          description: Your IP is not in the allowed list
+        "403":
+          description: Your Authorization APP_ID must be configured to be MASTER or API
+  "/api/v1/qrcode-static/{id}":
     get:
       tags:
         - pixQrCode
@@ -1952,7 +2306,7 @@ paths:
             identifier:
               value: zr7833b4060c488a9b0f89811
       responses:
-        '200':
+        "200":
           description: The pixQrCode retrieve using the given ID
           content:
             application/json:
@@ -1961,7 +2315,7 @@ paths:
                 properties:
                   pixQrCode:
                     type: object
-                    $ref: '#/components/schemas/PixQrCode'
+                    $ref: "#/components/schemas/PixQrCode"
                 example:
                   pixQrCode:
                     name: pix qrcode static
@@ -1970,14 +2324,13 @@ paths:
                     correlationID: fe7834b4060c488a9b0f89811be5f5cf
                     identifier: zr7833b4060c488a9b0f89811
                     paymentLinkID: 7777-6f71-427a-bf00-241681624586
-                    paymentLinkUrl: https://openpix.com.br/pay/fe7834b4060c488a9b0f89811be5f5cf
-                    qrCodeImage: https://api.openpix.com.br/openpix/charge/brcode/image/fe7834b4060c488a9b0f89811be5f5cf.png
-                    brCode:
-                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                    paymentLinkUrl: https://woovi.com/pay/fe7834b4060c488a9b0f89811be5f5cf
+                    qrCodeImage: https://api.woovi.com/openpix/charge/brcode/image/fe7834b4060c488a9b0f89811be5f5cf.png
+                    brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -1992,7 +2345,7 @@ paths:
         - pixQrCode
       summary: Get a list of Pix QrCodes
       responses:
-        '200':
+        "200":
           description: A list of pixQrCodes
           content:
             application/json:
@@ -2002,7 +2355,7 @@ paths:
                   pixQrCodes:
                     type: array
                     items:
-                      $ref: '#/components/schemas/PixQrCode'
+                      $ref: "#/components/schemas/PixQrCode"
                   pageInfo:
                     type: object
                     properties:
@@ -2044,14 +2397,13 @@ paths:
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     identifier: zr7833b4060c488a9b0f89811
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
-                    paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-                    brCode:
-                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                    paymentLinkUrl: https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
+                    qrCodeImage: https://api.woovi.com/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2072,16 +2424,15 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/PixQrCodePayload'
+              $ref: "#/components/schemas/PixQrCodePayload"
             example:
               name: my-qr-code
               correlationID: 9134e286-6f71-427a-bf00-241681624586
               value: 100
               comment: good
       responses:
-        '200':
-          description:
-            PixQrCode ID and also the generated Dynamic BR Code to be rendered
+        "200":
+          description: PixQrCode ID and also the generated Dynamic BR Code to be rendered
             as a QRCode
           content:
             application/json:
@@ -2089,7 +2440,7 @@ paths:
                 type: object
                 properties:
                   pixQrCode:
-                    $ref: '#/components/schemas/PixQrCode'
+                    $ref: "#/components/schemas/PixQrCode"
                   correlationID:
                     type: string
                   brCode:
@@ -2101,14 +2452,13 @@ paths:
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     identifier: zr7833b4060c488a9b0f89811
                     paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
-                    paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                    qrCodeImage: https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                    paymentLinkUrl: https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
+                    qrCodeImage: https://api.woovi.com/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     createdAt: 2021-03-02T17:28:51.882Z
                     updatedAt: 2021-03-02T17:28:51.882Z
-                    brCode:
-                      000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                    brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2117,7 +2467,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/transaction/{id}':
+  "/api/v1/transaction/{id}":
     get:
       tags:
         - transactions
@@ -2125,14 +2475,13 @@ paths:
       parameters:
         - name: id
           in: path
-          description:
-            you can use the transaction id from openpix or the endToEndId of
+          description: you can use the transaction id from openpix or the endToEndId of
             transaction from bank
           required: true
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The transaction retrieve using the given ID
           content:
             application/json:
@@ -2141,23 +2490,23 @@ paths:
                 properties:
                   transaction:
                     type: object
-                    $ref: '#/components/schemas/Transaction'
+                    $ref: "#/components/schemas/Transaction"
               example:
                 transaction:
                   customer:
                     name: Dan
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     taxID:
-                      taxID: '31324227036'
+                      taxID: "31324227036"
                       type: BR:CPF
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                   payer:
                     name: Dan
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     taxID:
-                      taxID: '31324227036'
+                      taxID: "31324227036"
                       type: BR:CPF
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                   charge:
@@ -2179,7 +2528,7 @@ paths:
                   type: PAYMENT
                   endToEndId: E18236120202012032010s0133872GZA
                   globalID: UGl4VHJhbnNhY3Rpb246NzE5MWYxYjAyMDQ2YmY1ZjUzZGNmYTBi
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2193,23 +2542,21 @@ paths:
       - in: query
         name: start
         schema:
-          $ref: '#/components/schemas/Start'
+          $ref: "#/components/schemas/Start"
       - in: query
         name: end
         schema:
-          $ref: '#/components/schemas/End'
+          $ref: "#/components/schemas/End"
       - in: query
         name: charge
-        description:
-          You can use the charge ID or correlation ID or transaction ID of
+        description: You can use the charge ID or correlation ID or transaction ID of
           charge to get a list of transactions related of this transaction
         schema:
           type: string
         example: Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA
       - in: query
         name: pixQrCode
-        description:
-          You can use the QrCode static ID or correlation ID or identifier
+        description: You can use the QrCode static ID or correlation ID or identifier
           field of QrCode static to get a list of QrCode related of this
           transaction
         schema:
@@ -2217,8 +2564,7 @@ paths:
         example: Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA
       - in: query
         name: withdrawal
-        description:
-          You can use the ID or EndToEndId of a withdrawal transaction to get
+        description: You can use the ID or EndToEndId of a withdrawal transaction to get
           all transactions related to the withdrawal
         schema:
           type: string
@@ -2228,7 +2574,7 @@ paths:
         - transactions
       summary: Get a list of transactions
       responses:
-        '200':
+        "200":
           description: A list of transactions
           content:
             application/json:
@@ -2240,7 +2586,7 @@ paths:
                   transactions:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Transaction'
+                      $ref: "#/components/schemas/Transaction"
                   pageInfo:
                     type: object
                     properties:
@@ -2279,17 +2625,17 @@ paths:
                   customer:
                     name: Dan
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     taxID:
-                      taxID: '31324227036'
+                      taxID: "31324227036"
                       type: BR:CPF
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                   payer:
                     name: Dan
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     taxID:
-                      taxID: '31324227036'
+                      taxID: "31324227036"
                       type: BR:CPF
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                   charge:
@@ -2309,7 +2655,7 @@ paths:
                   time: 2021-03-03T12:33:00.536Z
                   transactionID: transactionID
                   endToEndId: E18236120202012032010s0133872GZA
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2318,7 +2664,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/refund/{id}':
+  "/api/v1/refund/{id}":
     get:
       tags:
         - refund
@@ -2336,7 +2682,7 @@ paths:
             correlationID:
               value: fe7834b4060c488a9b0f89811be5f5cf
       responses:
-        '200':
+        "200":
           description: The refund retrieve using the given ID
           content:
             application/json:
@@ -2345,7 +2691,7 @@ paths:
                 properties:
                   pixTransactionRefund:
                     type: object
-                    $ref: '#/components/schemas/Refund'
+                    $ref: "#/components/schemas/Refund"
                 example:
                   pixTransactionRefund:
                     value: 100
@@ -2353,7 +2699,7 @@ paths:
                     refundId: 11bf5b37e0b842e08dcfdc8c4aefc000
                     returnIdentification: D09089356202108032000a543e325902
                     comment: Comentário do reembolso
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2368,7 +2714,7 @@ paths:
         - refund
       summary: Get a list of refunds
       responses:
-        '200':
+        "200":
           description: A list of refunds
           content:
             application/json:
@@ -2378,7 +2724,7 @@ paths:
                   refunds:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Refund'
+                      $ref: "#/components/schemas/Refund"
                   pageInfo:
                     type: object
                     properties:
@@ -2420,7 +2766,7 @@ paths:
                       refundId: 9134e2866f71427abf00241681624586
                       time: 2021-03-02T17:28:51.882Z
                       comment: Comentário do reembolso
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2441,14 +2787,14 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/RefundPayload'
+              $ref: "#/components/schemas/RefundPayload"
             example:
               transactionEndToEndId: 9134e286-6f71-427a-bf00-241681624586
               correlationID: 9134e286-6f71-427a-bf00-241681624586
               value: 100
               comment: Comentário do reembolso
       responses:
-        '200':
+        "200":
           description: The created Refund
           content:
             application/json:
@@ -2456,7 +2802,7 @@ paths:
                 type: object
                 properties:
                   refund:
-                    $ref: '#/components/schemas/Refund'
+                    $ref: "#/components/schemas/Refund"
                 example:
                   refund:
                     status: IN_PROCESSING
@@ -2465,7 +2811,7 @@ paths:
                     refundId: 9134e2866f71427abf00241681624586
                     time: 2021-03-02T17:28:51.882Z
                     comment: Comentário do reembolso
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2474,13 +2820,121 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/subaccount/{id}/withdraw':
+  "/api/v1/receipt/{EndToEndId}":
+    get:
+      tags:
+        - receipt
+      summary: Get a PDF document related to a payment transaction formatted as a
+        receipt.
+      parameters:
+        - name: EndToEndId
+          in: path
+          description: The EndToEndId from the payment transaction to export.
+          required: true
+          schema:
+            type: string
+          examples:
+            endToEndId:
+              value: E12345678202406201221abcdef12345
+      responses:
+        "200":
+          description: Exported transaction as a receipt in PDF format.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    description: The name of the exported PDF file.
+                    example: file.pdf
+        "400":
+          description: An error occurred due to a bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized access.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: The specified EndToEndId was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/api/v1/receipt/{receiptType}/{EndToEndId}":
+    get:
+      tags:
+        - receipt
+      summary: Get a PDF document related to a payment transaction formatted as a
+        receipt by type (pix-in, pix-out or pix-refund).
+      parameters:
+        - name: ReceiptType
+          in: path
+          description: The ReceiptType from the payment transaction to export.
+          required: true
+          schema:
+            type: string
+            enum:
+              - pix-in
+              - pix-out
+              - pix-refund
+          examples:
+            pix-in:
+              value: pix-in
+            pix-out:
+              value: pix-out
+            pix-refund:
+              value: pix-refund
+        - name: EndToEndId
+          in: path
+          description: The EndToEndId from the payment transaction to export.
+          required: true
+          schema:
+            type: string
+          examples:
+            endToEndId:
+              value: E12345678202406201221abcdef12345
+      responses:
+        "200":
+          description: Exported transaction as a receipt in PDF format.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    description: The name of the exported PDF file.
+                    example: file.pdf
+        "400":
+          description: An error occurred due to a bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized access.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: The specified EndToEndId was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/api/v1/subaccount/{id}/withdraw":
     post:
       tags:
         - sub account (request access)
       summary: Withdraw from a Sub Account
-      description:
-        Withdraw from a Sub Account and return the withdrawal transaction
+      description: Withdraw from a Sub Account and return the withdrawal transaction
         information
       parameters:
         - name: id
@@ -2490,8 +2944,20 @@ paths:
           schema:
             type: string
           example: destination@test.com
+      requestBody:
+        description: Data to make a withdraw partial
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/SubAccountWithdrawPayload"
+            examples:
+              SubAccount:
+                value:
+                  value: 1000
       responses:
-        '200':
+        "200":
           description: Withdrawal Transaction information
           content:
             application/json:
@@ -2503,7 +2969,7 @@ paths:
                     properties:
                       account:
                         type: object
-                        $ref: '#/components/schemas/transaction'
+                        $ref: "#/components/schemas/transaction"
               example:
                 transaction:
                   status: CREATED
@@ -2511,7 +2977,7 @@ paths:
                   correlationID: TESTING1323
                   destinationAlias: pixKeyTest@test.com
                   comment: testing-transaction
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2520,10 +2986,70 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/subaccount/{id}':
+  "/api/v1/subaccount/{id}":
+    delete:
+      tags:
+        - sub account
+      summary: Delete a Sub Account
+      description: Deletes a Sub Account if it has no remaining balance
+      parameters:
+        - name: id
+          in: path
+          description: Pix key registered to the subaccount
+          required: true
+          schema:
+            type: string
+          example: destination@test.com
+      responses:
+        "200":
+          description: Sub Account successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  pixKey:
+                    type: string
+                    example: destination@test.com
+        "400":
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                MissingAuthorization:
+                  value:
+                    error: Invalid Authorization header
+                CompanyNotFound:
+                  value:
+                    error: Company not found
+                SubAccountNotFound:
+                  value:
+                    error: "Subaccount not found: destination@test.com"
+                NonZeroBalance:
+                  value:
+                    error: Only subaccount without balance can be removed
+        "403":
+          description: Forbidden action
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: This feature is not enabled for your company
     get:
       tags:
-        - sub account (request access)
+        - sub account
       summary: Get subaccount details
       parameters:
         - name: id
@@ -2536,7 +3062,7 @@ paths:
             id:
               value: c4249323-b4ca-43f2-8139-8232aab09b93
       responses:
-        '200':
+        "200":
           description: The Subccount retrieve using the given pix key
           content:
             application/json:
@@ -2545,13 +3071,13 @@ paths:
                 properties:
                   SubAccount:
                     type: object
-                    $ref: '#/components/schemas/SubAccount'
+                    $ref: "#/components/schemas/SubAccount"
                 example:
                   SubAccount:
                     name: test-sub-account
                     pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
                     balance: 100
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2566,7 +3092,7 @@ paths:
         - sub account (request access)
       summary: Get a list of subaccounts
       responses:
-        '200':
+        "200":
           description: A list of subaccounts
           content:
             application/json:
@@ -2622,7 +3148,7 @@ paths:
                   totalCount: 20
                   hasPreviousPage: false
                   hasNextPage: true
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2633,7 +3159,7 @@ paths:
                     type: string
     post:
       tags:
-        - sub account (request access)
+        - sub account
       summary: Create a subaccount
       requestBody:
         description: Data to create a new subAccount or retrieve existing one
@@ -2642,14 +3168,14 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/SubAccountPayload'
+              $ref: "#/components/schemas/SubAccountPayload"
             examples:
               SubAccount:
                 value:
                   pixKey: 9134e286-6f71-427a-bf00-241681624587
                   name: Test Account
       responses:
-        '200':
+        "200":
           description: The Subccount created or retrieved if exists using the given pix key
           content:
             application/json:
@@ -2658,12 +3184,12 @@ paths:
                 properties:
                   SubAccount:
                     type: object
-                    $ref: '#/components/schemas/SubAccount'
+                    $ref: "#/components/schemas/SubAccount"
                 example:
                   SubAccount:
                     name: test-sub-account
                     pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2672,6 +3198,99 @@ paths:
                 properties:
                   error:
                     type: string
+  "/api/v1/subaccount/{id}/debit":
+    post:
+      tags:
+        - sub account
+      summary: Debit from a Sub Account and send to the main account
+      description: Transfers the amount from the subaccount to the main account.
+      parameters:
+        - name: id
+          in: path
+          description: Pix key registered to the subaccount
+          required: true
+          schema:
+            type: string
+          example: subaccount@test.com
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: number
+                  description: Amount to debit from the account
+                description:
+                  type: string
+                  description: Optional description for the debit operation
+              required:
+                - value
+            examples:
+              ValidDebit:
+                value:
+                  value: 50
+                  description: Monthly payment
+      responses:
+        "200":
+          description: Sub Account successfully debited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pixKey:
+                    type: string
+                    example: subaccount@test.com
+                  value:
+                    type: number
+                    example: 50
+                  description:
+                    type: string
+                    example: Monthly payment
+                  success:
+                    type: string
+                    example: Sub-account withdrawal has been successfully debited, 50
+        "400":
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                MissingAuthorization:
+                  value:
+                    error: Invalid Authorization header
+                CompanyNotFound:
+                  value:
+                    error: Company not found
+                SubAccountNotFound:
+                  value:
+                    error: "Subaccount not found: subaccount@test.com"
+                ZeroBalance:
+                  value:
+                    error: Transfer just work with subaccount with balance
+                NegativeValue:
+                  value:
+                    error: Value must be positive
+                InsufficientBalance:
+                  value:
+                    error: Account does not have enough balance to complete the operation
+        "403":
+          description: Forbidden action
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: This feature is not enabled for your company
   /api/v1/subaccount/transfer:
     post:
       tags:
@@ -2685,7 +3304,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/SubAccountTransferPayload'
+              $ref: "#/components/schemas/SubAccountTransferPayload"
             examples:
               SubAccount:
                 value:
@@ -2695,13 +3314,13 @@ paths:
                   toPixKey: 3143da48-2bc7-49a4-89bd-4e22f73bfb0c
                   toPixKeyType: RANDOM
       responses:
-        '200':
+        "200":
           description: Transfer response success
           content:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/SubAccountTransferResponsePayload'
+                $ref: "#/components/schemas/SubAccountTransferResponsePayload"
               example:
                 value: 65
                 destinationSubaccount:
@@ -2712,7 +3331,7 @@ paths:
                   name: test-sub-account-2
                   pixKey: 3143da48-2bc7-49a4-89bd-4e22f73bfb0c
                   balance: 100
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2721,7 +3340,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/subscriptions/{id}':
+  "/api/v1/subscriptions/{id}":
     get:
       tags:
         - subscription
@@ -2735,7 +3354,7 @@ paths:
             type: string
           example: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
       responses:
-        '200':
+        "200":
           description: The subscription retrieved using the given ID
           content:
             application/json:
@@ -2744,22 +3363,22 @@ paths:
                 properties:
                   subscription:
                     type: object
-                    $ref: '#/components/schemas/Subscription'
+                    $ref: "#/components/schemas/Subscription"
                 example:
                   subscription:
                     globalID: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
                     customer:
                       name: Dan
                       email: email0@example.com
-                      phone: '5511999999999'
+                      phone: "5511999999999"
                       taxID:
-                        taxID: '31324227036'
+                        taxID: "31324227036"
                         type: BR:CPF
                     value: 100
                     dayGenerateCharge: 5
                     correlationID: subscription#1
                     status: ACTIVE
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2781,29 +3400,29 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/SubscriptionPayload'
+              $ref: "#/components/schemas/SubscriptionPayload"
             examples:
               Subscription:
                 value:
                   value: 100
                   customer:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                   dayGenerateCharge: 15
               Subscription with Interests and Fines:
                 value:
                   value: 100
                   customer:
                     name: Dan
-                    taxID: '31324227036'
+                    taxID: "31324227036"
                     email: email0@example.com
-                    phone: '5511999999999'
+                    phone: "5511999999999"
                     address:
-                      zipcode: '30421322'
+                      zipcode: "30421322"
                       street: Street
-                      number: '100'
+                      number: "100"
                       neighborhood: Neighborhood
                       city: Belo Horizonte
                       state: MG
@@ -2812,7 +3431,7 @@ paths:
                   dayGenerateCharge: 15
                   chargeType: OVERDUE
       responses:
-        '200':
+        "200":
           description: The subscription created
           content:
             application/json:
@@ -2820,20 +3439,20 @@ paths:
                 type: object
                 properties:
                   subscription:
-                    $ref: '#/components/schemas/Subscription'
+                    $ref: "#/components/schemas/Subscription"
                 example:
                   subscription:
                     globalID: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
                     customer:
                       name: Dan
                       email: email0@example.com
-                      phone: '5511999999999'
+                      phone: "5511999999999"
                       taxID:
-                        taxID: '31324227036'
+                        taxID: "31324227036"
                         type: BR:CPF
                     value: 100
                     dayGenerateCharge: 5
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2855,13 +3474,13 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/TransferCreatePayload'
+              $ref: "#/components/schemas/TransferCreatePayload"
             example:
               value: 100
               fromPixKey: from@openpix.com.br
               toPixKey: to@openpix.com.br
       responses:
-        '200':
+        "200":
           description: Transfer transaction information
           content:
             application/json:
@@ -2869,13 +3488,13 @@ paths:
                 type: object
                 properties:
                   transaction:
-                    $ref: '#/components/schemas/TransferTransaction'
+                    $ref: "#/components/schemas/TransferTransaction"
                 example:
                   transaction:
                     value: 100
                     time: 2023-06-22T15:33:27.165Z,
                     correlationID: c782e0ac-833d-4a89-9e73-9b60b2b41d3a
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2884,7 +3503,7 @@ paths:
                 properties:
                   error:
                     type: string
-  '/api/v1/webhook/{id}':
+  "/api/v1/webhook/{id}":
     delete:
       tags:
         - webhook
@@ -2903,7 +3522,7 @@ paths:
             id:
               value: fe7834b4060c488a9b0f89811be5f5cf
       responses:
-        '200':
+        "200":
           description: Webhook ID and also the status code
           content:
             application/json:
@@ -2912,7 +3531,7 @@ paths:
                 properties:
                   status:
                     type: string
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -2936,7 +3555,7 @@ paths:
         - webhook
       summary: Get a list of webhooks
       responses:
-        '200':
+        "200":
           description: A list of webhooks
           content:
             application/json:
@@ -2946,7 +3565,7 @@ paths:
                   webhooks:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Webhook'
+                      $ref: "#/components/schemas/Webhook"
                   pageInfo:
                     type: object
                     properties:
@@ -2988,7 +3607,7 @@ paths:
                       isActive: true
                       createdAt: 2021-03-02T22:29:10.720Z
                       updatedAt: 2021-03-02T22:29:10.720Z
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -3012,7 +3631,7 @@ paths:
               properties:
                 webhook:
                   type: object
-                  $ref: '#/components/schemas/WebhookPayload'
+                  $ref: "#/components/schemas/WebhookPayload"
               example:
                 webhook:
                   name: webhookName
@@ -3021,7 +3640,7 @@ paths:
                   authorization: openpix
                   isActive: true
       responses:
-        '200':
+        "200":
           description: Webhook created specific event when receives a new pix transaction
           content:
             application/json:
@@ -3030,7 +3649,7 @@ paths:
                 properties:
                   webhook:
                     type: object
-                    $ref: '#/components/schemas/Webhook'
+                    $ref: "#/components/schemas/Webhook"
                 example:
                   webhook:
                     id: V2ViaG9vazo2MDNlYmUxZWRlYjkzNWU4NmQyMmNmMTg=
@@ -3041,7 +3660,7 @@ paths:
                     event: OPENPIX:TRANSACTION_RECEIVED
                     createdAt: 2021-03-02T22:29:10.720Z
                     updatedAt: 2021-03-02T22:29:10.720Z
-        '400':
+        "400":
           description: An error message
           content:
             application/json:
@@ -3052,7 +3671,7 @@ paths:
                     type: string
       callbacks:
         receivedPix:
-          '{$request.body#/webhook.url}':
+          "{$request.body#/webhook.url}":
             post:
               description: >
                 Pix - O callback vai ser acionado sempre que um Pix for recebido
@@ -3065,22 +3684,22 @@ paths:
                       properties:
                         charge:
                           type: object
-                          $ref: '#/components/schemas/Charge'
+                          $ref: "#/components/schemas/Charge"
                         pix:
                           type: object
                           properties:
                             pixQrCode:
                               type: object
-                              $ref: '#/components/schemas/PixQrCode'
+                              $ref: "#/components/schemas/PixQrCode"
                             charge:
                               type: object
-                              $ref: '#/components/schemas/Charge'
+                              $ref: "#/components/schemas/Charge"
                             customer:
                               type: object
-                              $ref: '#/components/schemas/Customer'
+                              $ref: "#/components/schemas/Customer"
                             payer:
                               type: object
-                              $ref: '#/components/schemas/Customer'
+                              $ref: "#/components/schemas/Customer"
                             time:
                               type: string
                             value:
@@ -3110,15 +3729,14 @@ paths:
                           customer:
                             name: Julio
                             email: email0@example.com
-                            phone: '5511999999999'
+                            phone: "5511999999999"
                             taxID:
-                              taxID: '31928282008'
+                              taxID: "31928282008"
                               type: BR:CPF
                             correlationID: 9134e286-6f71-427a-bf00-241681624586
                           correlationID: 9134e286-6f71-427a-bf00-241681624586
                           transactionID: 9134e2866f71427abf00241681624586
-                          brCode:
-                            000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                          brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                             Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                           createdAt: 2021-03-03T20:49:23.605Z
                           updatedAt: 2021-03-03T20:49:23.668Z
@@ -3128,25 +3746,24 @@ paths:
                             status: COMPLETED
                             customer: 604002035cce3b60132343cb
                             correlationID: 9134e286-6f71-427a-bf00-241681624586
-                            brCode:
-                              000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                            brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                               Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                             createdAt: 2021-03-03T21:39:15.831Z
                             updatedAt: 2021-03-03T21:39:15.896Z
                           customer:
                             name: Julio
                             email: email0@example.com
-                            phone: '5511999999999'
+                            phone: "5511999999999"
                             taxID:
-                              taxID: '31928282008'
+                              taxID: "31928282008"
                               type: BR:CPF
                             correlationID: 9134e286-6f71-427a-bf00-241681624586
                           payer:
                             name: Julio
                             email: email0@example.com
-                            phone: '5511999999999'
+                            phone: "5511999999999"
                             taxID:
-                              taxID: '31928282008'
+                              taxID: "31928282008"
                               type: BR:CPF
                             correlationID: 9134e286-6f71-427a-bf00-241681624586
                           time: 2020-09-09T20:15:00.358Z
@@ -3156,15 +3773,15 @@ paths:
                           raw:
                             endToEndId: 9134e2866f71427abf00241681624586
                             txid: 9134e2866f71427abf00241681624586
-                            valor: '99.99'
+                            valor: "99.99"
                             horario: 2020-09-09T20:15:00.358Z
                             infoPagador: conta
                         pixQrCode: null
               responses:
-                '200':
+                "200":
                   description: Notificação recebida com sucesso
         receivedPixDetached:
-          '{$request.body#/webhook.url}':
+          "{$request.body#/webhook.url}":
             post:
               description: >
                 Pix Avulso - O callback vai ser acionado sempre que um Pix for
@@ -3182,16 +3799,16 @@ paths:
                           properties:
                             pixQrCode:
                               type: object
-                              $ref: '#/components/schemas/PixQrCode'
+                              $ref: "#/components/schemas/PixQrCode"
                             charge:
                               type: object
-                              $ref: '#/components/schemas/Charge'
+                              $ref: "#/components/schemas/Charge"
                             customer:
                               type: object
-                              $ref: '#/components/schemas/Customer'
+                              $ref: "#/components/schemas/Customer"
                             payer:
                               type: object
-                              $ref: '#/components/schemas/Customer'
+                              $ref: "#/components/schemas/Customer"
                             time:
                               type: string
                             value:
@@ -3228,14 +3845,14 @@ paths:
                           raw:
                             endToEndId: 9134e2866f71427abf00241681624586
                             txid: 9134e2866f71427abf00241681624586
-                            valor: '99.99'
+                            valor: "99.99"
                             horario: 2020-09-09T20:15:00.358Z
                             infoPagador: conta
               responses:
-                '200':
+                "200":
                   description: Notificação recebida com sucesso
         receivedPixQrCode:
-          '{$request.body#/webhook.url}':
+          "{$request.body#/webhook.url}":
             post:
               description: >
                 Pix QrCode - O callback vai ser acionado sempre que um Pix
@@ -3253,13 +3870,13 @@ paths:
                           properties:
                             pixQrCode:
                               type: object
-                              $ref: '#/components/schemas/PixQrCode'
+                              $ref: "#/components/schemas/PixQrCode"
                             charge:
                               type: object
-                              $ref: '#/components/schemas/Charge'
+                              $ref: "#/components/schemas/Charge"
                             payer:
                               type: object
-                              $ref: '#/components/schemas/Customer'
+                              $ref: "#/components/schemas/Customer"
                             time:
                               type: string
                             value:
@@ -3283,7 +3900,7 @@ paths:
                                   type: string
                         pixQrCode:
                           type: object
-                          $ref: '#/components/schemas/PixQrCode'
+                          $ref: "#/components/schemas/PixQrCode"
                       example:
                         charge: null
                         pix:
@@ -3293,12 +3910,11 @@ paths:
                             correlationID: 9134e286-6f71-427a-bf00-241681624586
                             identifier: 9134e2866f71427abf00241681624586
                             paymentLinkID: 7777a23s-6f71-427a-bf00-241681624586
-                            paymentLinkUrl: https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586
-                            qrCodeImage: https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
+                            paymentLinkUrl: https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
+                            qrCodeImage: https://api.woovi.com/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                             createdAt: 2021-03-02T17:28:51.882Z
                             updatedAt: 2021-03-02T17:28:51.882Z
-                            brCode:
-                              000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
+                            brCode: 000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                               Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                           customer: null
                           time: 2020-09-09T20:15:00.358Z
@@ -3308,11 +3924,11 @@ paths:
                           raw:
                             endToEndId: 9134e2866f71427abf00241681624586
                             txid: 9134e2866f71427abf00241681624586
-                            valor: '99.99'
+                            valor: "99.99"
                             horario: 2020-09-09T20:15:00.358Z
                             infoPagador: conta
               responses:
-                '200':
+                "200":
                   description: Notificação recebida com sucesso
   /api/v1/webhook/ips:
     get:
@@ -3320,7 +3936,7 @@ paths:
         - webhook
       summary: Get a list of webhook IPs
       responses:
-        '200':
+        "200":
           description: A list of webhook IPs
           content:
             application/json:
@@ -3366,6 +3982,135 @@ components:
           description: ID of the Withdraw Transaction
         value:
           type: string
+    AccountRegister:
+      type: object
+      properties:
+        officialName:
+          type: string
+          description: Official name of the company
+        tradeName:
+          type: string
+          description: Trade name of the company
+        taxID:
+          type: object
+          properties:
+            taxID:
+              type: string
+              description: The tax ID value
+            type:
+              type: string
+              description: The type of tax ID
+        status:
+          type: string
+          description: Status of the account registration
+        annualRevenue:
+          type: number
+          description: Annual revenue of the company
+    AccountRegisterPayload:
+      type: object
+      required:
+        - officialName
+        - tradeName
+        - taxID
+        - annualRevenue
+      properties:
+        officialName:
+          type: string
+          description: Official name of the company
+        tradeName:
+          type: string
+          description: Trade name of the company
+        taxID:
+          type: string
+          description: Tax ID of the company
+        annualRevenue:
+          type: number
+          description: Annual revenue of the company
+    AccountRegisterResponse:
+      type: object
+      properties:
+        officialName:
+          type: string
+          description: Official name of the company
+        tradeName:
+          type: string
+          description: Trade name of the company
+        taxID:
+          type: object
+          properties:
+            taxID:
+              type: string
+              description: The tax ID value
+            type:
+              type: string
+              description: The type of tax ID
+        status:
+          type: string
+          description: Status of the account registration
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          oneOf:
+            - type: string
+              description: Error message
+            - type: array
+              description: Validation errors
+              items:
+                type: object
+    Application:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the application
+        isActive:
+          type: boolean
+          description: Whether the application is active
+        type:
+          type: string
+          description: Type of the application (API, POS, PLUGIN, CHECKOUT)
+          enum:
+            - API
+            - POS
+            - PLUGIN
+            - CHECKOUT
+            - MASTER
+        clientId:
+          type: string
+          description: Client ID for authentication
+        clientSecret:
+          type: string
+          description: Client secret for authentication
+        appID:
+          type: string
+          description: Unique application identifier
+        companyBankAccount:
+          type: string
+          description: ID of the linked company bank account
+    ApplicationPayload:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: The ID of the company bank account
+        application:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the application
+            type:
+              type: string
+              description: Type of the application (API)
+              enum:
+                - API
+    ApplicationDeletePayload:
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: The client ID of the application to delete
     Charge:
       type: object
       properties:
@@ -3373,15 +4118,14 @@ components:
           type: number
         customer:
           type: object
-          $ref: '#/components/schemas/Customer'
+          $ref: "#/components/schemas/Customer"
         type:
           type: string
           enum:
             - DYNAMIC
             - OVERDUE
             - BOLETO
-          description:
-            Charge type is used to determine whether a charge will have a
+          description: Charge type is used to determine whether a charge will have a
             deadline, fines and interests
         comment:
           type: string
@@ -3405,8 +4149,7 @@ components:
         globalID:
           description: External ID of this charge
         transactionID:
-          description:
-            unique uuid used as the txid from Pix into the provider from your
+          description: unique uuid used as the txid from Pix into the provider from your
             openpix account. This field link the charge with the transaction
             when paid.
         identifier:
@@ -3436,7 +4179,7 @@ components:
           type: string
         subscription:
           type: object
-          $ref: '#/components/schemas/Subscription'
+          $ref: "#/components/schemas/Subscription"
         paymentMethods:
           type: object
           properties:
@@ -3485,8 +4228,7 @@ components:
           enum:
             - DYNAMIC
             - OVERDUE
-          description:
-            Charge type is used to determine whether a charge will have a
+          description: Charge type is used to determine whether a charge will have a
             deadline, fines and interests
         comment:
           type: string
@@ -3499,43 +4241,36 @@ components:
           description: Expiration date of the charge. Only in ISO 8601 format.
         customer:
           type: object
-          $ref: '#/components/schemas/CustomerPayload'
+          $ref: "#/components/schemas/CustomerPayload"
         daysForDueDate:
           type: number
-          description:
-            Time in days until the charge hits the deadline so fines and
+          description: Time in days until the charge hits the deadline so fines and
             interests start applying. This property is only considered for
             charges of type OVERDUE
         daysAfterDueDate:
           type: number
-          description:
-            Time in days that a charge is still payable after the deadline.
+          description: Time in days that a charge is still payable after the deadline.
             This property is only considered for charges of type OVERDUE
         interests:
-          description:
-            Interests configuration. This property is only considered for
+          description: Interests configuration. This property is only considered for
             charges of type OVERDUE
           type: object
           properties:
             value:
               type: number
-              description:
-                Value in basis points of interests to be applied daily after the
+              description: Value in basis points of interests to be applied daily after the
                 charge hits the deadline
         fines:
-          description:
-            Fines configuration. This property is only considered for charges
+          description: Fines configuration. This property is only considered for charges
             of type OVERDUE
           type: object
           properties:
             value:
               type: number
-              description:
-                Value in basis points of fines to be applied when the charge hits
+              description: Value in basis points of fines to be applied when the charge hits
                 the deadline
         discountSettings:
-          description:
-            Discount settings for the charge. This property is only considered
+          description: Discount settings for the charge. This property is only considered
             for charges of type OVERDUE
           type: object
           properties:
@@ -3580,8 +4315,7 @@ components:
           description: Pix key of the subaccount to receive the charge
         splits:
           type: array
-          description:
-            This is the array that will configure how will be splitted the
+          description: This is the array that will configure how will be splitted the
             value of the charge
           items:
             type: object
@@ -3594,8 +4328,7 @@ components:
                 description: the pixKey of the company bank account that will receive this split
               splitType:
                 type: string
-                description:
-                  The type of the split. Each of these ones will be processed in
+                description: The type of the split. Each of these ones will be processed in
                   specific way. [See
                   here](https://developers.openpix.com.br/docs/splits/split-introduction)
                   how each one will be processed.
@@ -3692,8 +4425,7 @@ components:
             country:
               type: string
     CustomerPayload:
-      description:
-        Customer field is not required. However, if you decide to send it,
+      description: Customer field is not required. However, if you decide to send it,
         you must send at least one of the following combinations, name + taxID
         or name + email or name + phone.
       oneOf:
@@ -3856,8 +4588,7 @@ components:
           description: Reason provided to justify the dispute.
         endToEndId:
           type: string
-          description:
-            The endToEndId of the dispute (Is the same of the endToEndId
+          description: The endToEndId of the dispute (Is the same of the endToEndId
             transaction related).
         createdAt:
           type: string
@@ -3893,8 +4624,7 @@ components:
           description: Reason provided to justify the dispute.
         endToEndId:
           type: string
-          description:
-            The endToEndId of the dispute (Is the same of the endToEndId
+          description: The endToEndId of the dispute (Is the same of the endToEndId
             transaction related).
       required:
         - name
@@ -3911,8 +4641,7 @@ components:
       example: 2020-12-01T17:00:00Z
     ApplicationEnumTypePayload:
       type: string
-      description:
-        Type of the application that you want to register. Each of this has
+      description: Type of the application that you want to register. Each of this has
         some kind of permissions.
       enum:
         - API
@@ -3923,13 +4652,13 @@ components:
       properties:
         taxID:
           type: string
-          description:
-            The tax identifier of your account holder. This should be a raw
+          description: The tax identifier of your account holder. This should be a raw
             string with only digits.
         type:
           type: string
           enum:
             - BR:CNPJ
+            - BR:CPF
     PreRegistrationUserObject:
       type: object
       properties:
@@ -3960,24 +4689,26 @@ components:
             it'll receive a SMS confirming that is a real person.
 
             We're accept only values that matches the E.164 standard, that follows this pattern: [+][country code][local phone number].
+        taxID:
+          $ref: "#/components/schemas/TaxIDObjectPayload"
       required:
         - firstName
         - lastName
         - email
         - phone
+        - taxID
     PreRegistrationObject:
       type: object
       properties:
         name:
           type: string
-          description:
-            The name of this preregistration. It'll be related as your company
+          description: The name of this preregistration. It'll be related as your company
             name too.
         website:
           type: string
           description: A website that is related to this preregistration.
         taxID:
-          $ref: '#/components/schemas/TaxIDObjectPayload'
+          $ref: "#/components/schemas/TaxIDObjectPayload"
       required:
         - name
         - taxID
@@ -3985,16 +4716,15 @@ components:
       type: object
       properties:
         preRegistration:
-          $ref: '#/components/schemas/PreRegistrationObject'
+          $ref: "#/components/schemas/PreRegistrationObject"
         user:
-          $ref: '#/components/schemas/PreRegistrationUserObject'
+          $ref: "#/components/schemas/PreRegistrationUserObject"
     AccountObjectPayload:
       type: object
       properties:
         clientId:
           type: string
-          description:
-            The client ID from the company bank account that is related to this
+          description: The client ID from the company bank account that is related to this
             preregistration/company.
     CompanyObjectPayload:
       type: object
@@ -4006,17 +4736,16 @@ components:
           type: string
           description: The name of the company that is related to this preregistration.
         taxID:
-          $ref: '#/components/schemas/TaxIDObjectPayload'
+          $ref: "#/components/schemas/TaxIDObjectPayload"
     PreRegistrationObjectPayload:
       type: object
       properties:
         name:
           type: string
-          description:
-            When the preregistration will turn a company, this will be the name
+          description: When the preregistration will turn a company, this will be the name
             of the company that this preregistration is related.
         taxID:
-          $ref: '#/components/schemas/TaxIDObjectPayload'
+          $ref: "#/components/schemas/TaxIDObjectPayload"
     PartnerApplicationPayload:
       type: object
       properties:
@@ -4027,7 +4756,7 @@ components:
           type: boolean
           description: Current status of your application.
         type:
-          $ref: '#/components/schemas/ApplicationEnumTypePayload'
+          $ref: "#/components/schemas/ApplicationEnumTypePayload"
         clientId:
           type: string
           description: The ID of this client application.
@@ -4154,6 +4883,32 @@ components:
         account:
           type: string
           description: the payment destination bank account
+    PixKey:
+      type: object
+      properties:
+        key:
+          type: string
+        type:
+          type: string
+          enum:
+            - CPF
+            - CNPJ
+            - EMAIL
+            - PHONE
+            - EVP
+    PixKeyCreate:
+      type: object
+      required:
+        - key
+        - type
+      properties:
+        key:
+          type: string
+        type:
+          type: string
+          enum:
+            - CNPJ
+            - EVP
     PixQrCode:
       type: object
       properties:
@@ -4202,7 +4957,7 @@ components:
       properties:
         charge:
           type: object
-          $ref: '#/components/schemas/Charge'
+          $ref: "#/components/schemas/Charge"
         value:
           type: number
         time:
@@ -4217,13 +4972,13 @@ components:
           type: string
         customer:
           type: object
-          $ref: '#/components/schemas/Customer'
+          $ref: "#/components/schemas/Customer"
         withdraw:
           type: object
-          $ref: '#/components/schemas/PixWithdrawTransaction'
+          $ref: "#/components/schemas/PixWithdrawTransaction"
         payer:
           type: object
-          $ref: '#/components/schemas/Customer'
+          $ref: "#/components/schemas/Customer"
         type:
           type: string
           description: Pix Transaction type
@@ -4236,7 +4991,7 @@ components:
           description: External ID of this transaction
         pixQrCode:
           type: object
-          $ref: '#/components/schemas/PixQrCode'
+          $ref: "#/components/schemas/PixQrCode"
     PixWithdrawTransaction:
       type: object
       properties:
@@ -4254,7 +5009,7 @@ components:
           type: string
         payer:
           type: object
-          $ref: '#/components/schemas/Customer'
+          $ref: "#/components/schemas/Customer"
         type:
           type: string
     Refund:
@@ -4295,6 +5050,13 @@ components:
           type: string
           description: Comment of this refund. Maximum length of 140 characters.
           maximum: 140
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
     Start:
       type: string
       format: date-time
@@ -4340,6 +5102,12 @@ components:
         name:
           type: string
           description: Name of the sub account
+    SubAccountWithdrawPayload:
+      type: object
+      properties:
+        value:
+          type: number
+          description: Value of the withdrawal in cents if want to make a partial withdrawal
     SubAccountTransferPayload:
       required:
         - value
@@ -4421,7 +5189,7 @@ components:
           description: Value in cents of the subscription
         customer:
           type: object
-          $ref: '#/components/schemas/Customer'
+          $ref: "#/components/schemas/Customer"
         dayGenerateCharge:
           type: number
           description: Day of the month that the charges will be generated
@@ -4522,8 +5290,7 @@ components:
           enum:
             - DYNAMIC
             - OVERDUE
-          description:
-            The charge type is used to determine whether charges generated by
+          description: The charge type is used to determine whether charges generated by
             the subscription will have fines and interests
           default: DYNAMIC
         dayDue:
@@ -4546,8 +5313,7 @@ components:
           description: value of the transfer in cents
         fromPixKey:
           type: string
-          description:
-            the pix key of the account the value of the transfer will come out
+          description: the pix key of the account the value of the transfer will come out
             from
         toPixKey:
           type: string
@@ -4571,11 +5337,10 @@ components:
           type: string
         event:
           type: string
-          description:
-            The event to listen to. If omitted, the webhook will be registered
+          description: The event to listen to. If omitted, the webhook will be registered
             to listen the OPENPIX:TRANSACTION_RECEIVED. Event called when a new
             pix transactions is received
-          $ref: '#/components/schemas/WebhookEventEnum'
+          $ref: "#/components/schemas/WebhookEventEnum"
         url:
           type: string
         authorization:
@@ -4591,7 +5356,7 @@ components:
           type: string
         event:
           type: string
-          $ref: '#/components/schemas/WebhookEventEnum'
+          $ref: "#/components/schemas/WebhookEventEnum"
         url:
           type: string
         authorization:
@@ -4642,6 +5407,11 @@ tags:
   - name: account
     description: |
       Endpoint to manage Accounts
+  - name: account register
+    description: Endpoint to manage account registrations.
+  - name: application
+    description: |
+      Endpoints to manage applications for authentication and API access.
   - name: cashback-fidelity
     description: |
       Endpoint to manage exclusive cashbacks
@@ -4664,6 +5434,9 @@ tags:
   - name: payment (request access)
     description: |
       Endpoint to init a payment using a Pix Key.
+  - name: pixkey
+    description: |
+      Endpoint to manage Pix Keys
   - name: pixQrCode
     description: |
       Endpoint to manage static QRCodes
@@ -4673,7 +5446,11 @@ tags:
   - name: refund
     description: |
       Endpoint to manage Refunds
-  - name: sub account (request access)
+  - name: receipt
+    description: >
+      Get a pdf document related to a payment transaction formated in a receipt
+      style.
+  - name: sub account
     description: |
       Endpoint to manage sub accounts.
   - name: subscription

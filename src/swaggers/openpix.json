@@ -2,13 +2,17 @@
   "openapi": "3.0.3",
   "info": {
     "title": "OpenPix",
-    "description": "A OpenPix é uma Plataforma de Gestão de Pagamentos. Para utilizar nossa API você deve acessar  __[https://api.openpix.com.br/](https://api.openpix.com.br/)__ e somente o mesmo. A OpenPix não aceita subdominios para a API.\n\nVeja como configurar seu acesso a nossa API [aqui](https://developers.openpix.com.br/docs/apis/api-getting-started).",
+    "description": "A OpenPix é uma Plataforma de Gestão de Pagamentos. \n\n Para utilizar nossa API de Produção, utilize exclusivamente o seguinte endpoint: \n\n 👉 __[https://api.openpix.com.br/](https://api.openpix.com.br/)__ \n\n Além disso, oferecemos também um ambiente de sandbox (ambiente de testes), ideal para desenvolvimento e validação de integrações sem impactar dados reais. \n\n 👉 __[https://api.woovi-sandbox.com/](https://api.woovi-sandbox.com/)__ \n\n Veja como configurar seu acesso a nossa API [aqui](https://developers.openpix.com.br/docs/apis/api-getting-started).",
     "version": "1.0.0"
   },
   "servers": [
     {
       "url": "https://api.openpix.com.br",
-      "description": "Production server"
+      "description": "API de Produção"
+    },
+    {
+      "url": "https://api.woovi-sandbox.com",
+      "description": "API de Testes"
     }
   ],
   "security": [
@@ -146,6 +150,178 @@
         }
       }
     },
+    "/api/v1/account-register": {
+      "post": {
+        "tags": [
+          "account register"
+        ],
+        "summary": "Register a new account",
+        "description": "Creates a new account registration with the provided details",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "officialName": {
+                    "type": "string",
+                    "description": "Official name of the company"
+                  },
+                  "tradeName": {
+                    "type": "string",
+                    "description": "Trade name of the company"
+                  },
+                  "taxID": {
+                    "type": "string",
+                    "description": "Tax ID of the company"
+                  },
+                  "annualRevenue": {
+                    "type": "number",
+                    "description": "Annual revenue of the company"
+                  }
+                },
+                "required": [
+                  "officialName",
+                  "tradeName",
+                  "taxID",
+                  "annualRevenue"
+                ]
+              },
+              "examples": {
+                "ValidAccountRegister": {
+                  "value": {
+                    "officialName": "Company Official Name",
+                    "tradeName": "Company Trade Name",
+                    "taxID": "12345678901234",
+                    "annualRevenue": 1000000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account successfully registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "officialName": {
+                      "type": "string",
+                      "example": "Company Official Name"
+                    },
+                    "tradeName": {
+                      "type": "string",
+                      "example": "Company Trade Name"
+                    },
+                    "taxID": {
+                      "type": "object",
+                      "properties": {
+                        "taxID": {
+                          "type": "string",
+                          "example": "12345678901234"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "BR_CNPJ"
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "PENDING"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingAuthorization": {
+                    "value": {
+                      "error": "Invalid Authorization header"
+                    }
+                  },
+                  "CompanyNotFound": {
+                    "value": {
+                      "error": "Company not found"
+                    }
+                  },
+                  "ValidationError": {
+                    "value": {
+                      "error": [
+                        {
+                          "code": "too_small",
+                          "minimum": 1,
+                          "type": "string",
+                          "inclusive": true,
+                          "exact": false,
+                          "message": "Official name is required",
+                          "path": [
+                            "officialName"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "This feature is not enabled for your company. Contact us to active."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/account/{accountId}/withdraw": {
       "post": {
         "tags": [
@@ -238,6 +414,286 @@
                       "type": "string"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/application": {
+      "delete": {
+        "tags": [
+          "application"
+        ],
+        "summary": "Delete an application",
+        "description": "Deactivates an application by setting isActive to false and adding a removedAt timestamp",
+        "requestBody": {
+          "description": "Data identifying the application to delete",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clientId": {
+                    "type": "string",
+                    "description": "The client ID of the application to delete"
+                  }
+                },
+                "required": [
+                  "clientId"
+                ]
+              },
+              "examples": {
+                "Application": {
+                  "value": {
+                    "clientId": "client_123abc"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Application successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates the operation was successful"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or other client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "ValidationError": {
+                    "value": {
+                      "error": "Validation error",
+                      "details": [
+                        {
+                          "field": "clientId",
+                          "message": "Application client ID is required"
+                        }
+                      ]
+                    }
+                  },
+                  "CannotDeleteMaster": {
+                    "value": {
+                      "error": "You cannot delete a master application"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Application not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Application not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "application"
+        ],
+        "summary": "Create a new application",
+        "description": "Creates a new application for a company",
+        "requestBody": {
+          "description": "Data to create a new application",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationPayload"
+              },
+              "examples": {
+                "Application": {
+                  "value": {
+                    "accountId": "507f1f77bcf86cd799439011",
+                    "application": {
+                      "name": "Test API",
+                      "type": "API"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Application successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "application": {
+                      "$ref": "#/components/schemas/Application"
+                    }
+                  }
+                },
+                "example": {
+                  "application": {
+                    "name": "Test API",
+                    "isActive": true,
+                    "type": "API",
+                    "clientId": "client_123abc",
+                    "clientSecret": "secret_456def",
+                    "appID": "app_789ghi",
+                    "companyBankAccount": "507f1f77bcf86cd799439011"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or other client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "ValidationError": {
+                    "value": {
+                      "error": "Validation error",
+                      "details": [
+                        {
+                          "field": "accountId",
+                          "message": "Company bank account ID is required"
+                        }
+                      ]
+                    }
+                  },
+                  "NoMasterApplication": {
+                    "value": {
+                      "error": "Only MASTER application can create other application types"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Missing required feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "You need feature BAAS to access this endpoint"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Internal server error"
                 }
               }
             }
@@ -603,13 +1059,13 @@
                       "comment": "good",
                       "correlationID": "9134e286-6f71-427a-bf00-241681624586",
                       "paymentLinkID": "7777a23s-6f71-427a-bf00-241681624586",
-                      "paymentLinkUrl": "https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586",
-                      "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
+                      "paymentLinkUrl": "https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586",
+                      "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
                       "expiresIn": 2592000,
                       "expiresDate": "2021-04-01T17:28:51.882Z",
                       "createdAt": "2021-03-02T17:28:51.882Z",
                       "updatedAt": "2021-03-02T17:28:51.882Z",
-                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                       "additionalInfo": [
                         {
                           "key": "Product",
@@ -634,8 +1090,8 @@
                           "value": 200,
                           "status": "ACTIVE",
                           "txId": "9134e286-6f71-427a-bf00-241681624586",
-                          "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
-                          "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png"
+                          "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                          "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png"
                         }
                       }
                     }
@@ -707,10 +1163,10 @@
                       "comment": "good",
                       "correlationID": "9134e286-6f71-427a-bf00-241681624586",
                       "paymentLinkID": "7777-6f71-427a-bf00-241681624586",
-                      "paymentLinkUrl": "https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586",
+                      "paymentLinkUrl": "https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586",
                       "globalID": "Q2hhcmdlOjcxOTFmMWIwMjA0NmJmNWY1M2RjZmEwYg==",
-                      "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
-                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                      "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
+                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                       "additionalInfo": [
                         {
                           "key": "Product",
@@ -739,8 +1195,8 @@
                           "value": 200,
                           "status": "ACTIVE",
                           "txId": "9134e286-6f71-427a-bf00-241681624586",
-                          "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
-                          "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png"
+                          "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                          "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png"
                         }
                       }
                     }
@@ -803,6 +1259,14 @@
           {
             "name": "customer",
             "description": "Customer Correlation ID",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subscription",
+            "description": "Subscription Correlation ID",
             "in": "query",
             "schema": {
               "type": "string"
@@ -889,9 +1353,9 @@
                       "comment": "good",
                       "correlationID": "9134e286-6f71-427a-bf00-241681624586",
                       "paymentLinkID": "7777a23s-6f71-427a-bf00-241681624586",
-                      "paymentLinkUrl": "https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586",
-                      "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
-                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                      "paymentLinkUrl": "https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586",
+                      "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
+                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                       "additionalInfo": [
                         {
                           "key": "Product",
@@ -920,8 +1384,8 @@
                           "value": 200,
                           "status": "ACTIVE",
                           "txId": "9134e286-6f71-427a-bf00-241681624586",
-                          "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
-                          "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png"
+                          "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                          "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png"
                         }
                       }
                     }
@@ -1134,7 +1598,7 @@
                       {
                         "value": 10,
                         "pixKey": "676bd1f8-93cb-4354-b094-5587179d56ad",
-                        "splitType": "SPLIT_SUB_ACCOUINT"
+                        "splitType": "SPLIT_SUB_ACCOUNT"
                       }
                     ]
                   }
@@ -1177,13 +1641,13 @@
                       "comment": "good",
                       "correlationID": "9134e286-6f71-427a-bf00-241681624586",
                       "paymentLinkID": "7777a23s-6f71-427a-bf00-241681624586",
-                      "paymentLinkUrl": "https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586",
-                      "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
+                      "paymentLinkUrl": "https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586",
+                      "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
                       "expiresIn": 2592000,
                       "expiresDate": "2021-04-01T17:28:51.882Z",
                       "createdAt": "2021-03-02T17:28:51.882Z",
                       "updatedAt": "2021-03-02T17:28:51.882Z",
-                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                       "additionalInfo": [
                         {
                           "key": "Product",
@@ -1208,8 +1672,8 @@
                           "value": 200,
                           "status": "ACTIVE",
                           "txId": "9134e286-6f71-427a-bf00-241681624586",
-                          "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
-                          "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png"
+                          "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                          "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png"
                         }
                       }
                     }
@@ -1413,7 +1877,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "correlation ID",
+            "description": "Correlation ID or Tax ID",
             "required": true,
             "schema": {
               "type": "string"
@@ -1421,13 +1885,16 @@
             "examples": {
               "correlationID": {
                 "value": "fe7834b4060c488a9b0f89811be5f5cf"
+              },
+              "taxID": {
+                "value": 123456789
               }
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "The customer retrieve using the given ID",
+            "description": "The customer retrieved using the given ID",
             "content": {
               "application/json": {
                 "schema": {
@@ -2333,7 +2800,11 @@
                   "firstName": "John",
                   "lastName": "Doe",
                   "email": "johndoe@examplellc.com",
-                  "phone": "+5511912345678"
+                  "phone": "+5511912345678",
+                  "taxID": {
+                    "taxID": "1111111111",
+                    "type": "BR:CPF"
+                  }
                 }
               }
             }
@@ -2733,7 +3204,7 @@
                 "qrCode": {
                   "summary": "QR Code",
                   "value": {
-                    "qrCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009SaoPaulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                    "qrCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009SaoPaulo62360532867ba5173c734202ac659721306b38c963044BCA",
                     "comment": "payment comment",
                     "correlationID": "payment1"
                   }
@@ -2777,7 +3248,7 @@
                         "status": "CREATED",
                         "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
                         "destinationAliasType": "RANDOM",
-                        "qrCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                        "qrCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                         "comment": "payment comment",
                         "correlationID": "payment1"
                       }
@@ -2801,6 +3272,119 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/pix-keys/{pixKey}": {
+      "delete": {
+        "tags": [
+          "pixkey"
+        ],
+        "summary": "Delete a Pix key",
+        "description": "Deletes a specific Pix key",
+        "parameters": [
+          {
+            "name": "pixKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The Pix key to delete"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Pix key deleted successfully"
+          },
+          "400": {
+            "description": "You need to link a Bank Account to this API"
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Your Authorization APP_ID must be configured to be MASTER or API"
+          },
+          "404": {
+            "description": "Pix key not found"
+          }
+        }
+      }
+    },
+    "/api/v1/pix-keys": {
+      "get": {
+        "tags": [
+          "pixkey"
+        ],
+        "summary": "Get all Pix keys",
+        "description": "Retrieves a list of all Pix keys",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pixKeys": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PixKey"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "You need to link a Bank Account to this API"
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Your Authorization APP_ID must be configured to be MASTER or API"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "pixkey"
+        ],
+        "summary": "Create a new Pix key",
+        "description": "Creates a new Pix key",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PixKeyCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pix key created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PixKey"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "You need to link a Bank Account to this API"
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Your Authorization APP_ID must be configured to be MASTER or API"
           }
         }
       }
@@ -2854,9 +3438,9 @@
                       "correlationID": "fe7834b4060c488a9b0f89811be5f5cf",
                       "identifier": "zr7833b4060c488a9b0f89811",
                       "paymentLinkID": "7777-6f71-427a-bf00-241681624586",
-                      "paymentLinkUrl": "https://openpix.com.br/pay/fe7834b4060c488a9b0f89811be5f5cf",
-                      "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/fe7834b4060c488a9b0f89811be5f5cf.png",
-                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                      "paymentLinkUrl": "https://woovi.com/pay/fe7834b4060c488a9b0f89811be5f5cf",
+                      "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/fe7834b4060c488a9b0f89811be5f5cf.png",
+                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                       "createdAt": "2021-03-02T17:28:51.882Z",
                       "updatedAt": "2021-03-02T17:28:51.882Z"
                     }
@@ -2961,9 +3545,9 @@
                       "correlationID": "9134e286-6f71-427a-bf00-241681624586",
                       "identifier": "zr7833b4060c488a9b0f89811",
                       "paymentLinkID": "7777a23s-6f71-427a-bf00-241681624586",
-                      "paymentLinkUrl": "https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586",
-                      "qrCodeImage": "https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
-                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                      "paymentLinkUrl": "https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586",
+                      "qrCodeImage": "https://api.woovi.com/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
+                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                       "createdAt": "2021-03-02T17:28:51.882Z",
                       "updatedAt": "2021-03-02T17:28:51.882Z"
                     }
@@ -3038,11 +3622,11 @@
                       "correlationID": "9134e286-6f71-427a-bf00-241681624586",
                       "identifier": "zr7833b4060c488a9b0f89811",
                       "paymentLinkID": "7777a23s-6f71-427a-bf00-241681624586",
-                      "paymentLinkUrl": "https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586",
-                      "qrCodeImage": "https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
+                      "paymentLinkUrl": "https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586",
+                      "qrCodeImage": "https://api.woovi.com/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
                       "createdAt": "2021-03-02T17:28:51.882Z",
                       "updatedAt": "2021-03-02T17:28:51.882Z",
-                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA"
+                      "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA"
                     }
                   }
                 }
@@ -3585,6 +4169,177 @@
         }
       }
     },
+    "/api/v1/receipt/{EndToEndId}": {
+      "get": {
+        "tags": [
+          "receipt"
+        ],
+        "summary": "Get a PDF document related to a payment transaction formatted as a receipt.",
+        "parameters": [
+          {
+            "name": "EndToEndId",
+            "in": "path",
+            "description": "The EndToEndId from the payment transaction to export.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "endToEndId": {
+                "value": "E12345678202406201221abcdef12345"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exported transaction as a receipt in PDF format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "description": "The name of the exported PDF file.",
+                      "example": "file.pdf"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error occurred due to a bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The specified EndToEndId was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/receipt/{receiptType}/{EndToEndId}": {
+      "get": {
+        "tags": [
+          "receipt"
+        ],
+        "summary": "Get a PDF document related to a payment transaction formatted as a receipt by type (pix-in, pix-out or pix-refund).",
+        "parameters": [
+          {
+            "name": "ReceiptType",
+            "in": "path",
+            "description": "The ReceiptType from the payment transaction to export.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pix-in",
+                "pix-out",
+                "pix-refund"
+              ]
+            },
+            "examples": {
+              "pix-in": {
+                "value": "pix-in"
+              },
+              "pix-out": {
+                "value": "pix-out"
+              },
+              "pix-refund": {
+                "value": "pix-refund"
+              }
+            }
+          },
+          {
+            "name": "EndToEndId",
+            "in": "path",
+            "description": "The EndToEndId from the payment transaction to export.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "endToEndId": {
+                "value": "E12345678202406201221abcdef12345"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exported transaction as a receipt in PDF format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "description": "The name of the exported PDF file.",
+                      "example": "file.pdf"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error occurred due to a bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The specified EndToEndId was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/subaccount/{id}/withdraw": {
       "post": {
         "tags": [
@@ -3604,6 +4359,25 @@
             "example": "destination@test.com"
           }
         ],
+        "requestBody": {
+          "description": "Data to make a withdraw partial",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/SubAccountWithdrawPayload"
+              },
+              "examples": {
+                "SubAccount": {
+                  "value": {
+                    "value": 1000
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Withdrawal Transaction information",
@@ -3654,9 +4428,105 @@
       }
     },
     "/api/v1/subaccount/{id}": {
+      "delete": {
+        "tags": [
+          "sub account"
+        ],
+        "summary": "Delete a Sub Account",
+        "description": "Deletes a Sub Account if it has no remaining balance",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pix key registered to the subaccount",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "destination@test.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sub Account successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "pixKey": {
+                      "type": "string",
+                      "example": "destination@test.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingAuthorization": {
+                    "value": {
+                      "error": "Invalid Authorization header"
+                    }
+                  },
+                  "CompanyNotFound": {
+                    "value": {
+                      "error": "Company not found"
+                    }
+                  },
+                  "SubAccountNotFound": {
+                    "value": {
+                      "error": "Subaccount not found: destination@test.com"
+                    }
+                  },
+                  "NonZeroBalance": {
+                    "value": {
+                      "error": "Only subaccount without balance can be removed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "This feature is not enabled for your company"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
-          "sub account (request access)"
+          "sub account"
         ],
         "summary": "Get subaccount details",
         "parameters": [
@@ -3830,7 +4700,7 @@
       },
       "post": {
         "tags": [
-          "sub account (request access)"
+          "sub account"
         ],
         "summary": "Create a subaccount",
         "requestBody": {
@@ -3887,6 +4757,153 @@
                       "type": "string"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subaccount/{id}/debit": {
+      "post": {
+        "tags": [
+          "sub account"
+        ],
+        "summary": "Debit from a Sub Account and send to the main account",
+        "description": "Transfers the amount from the subaccount to the main account.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pix key registered to the subaccount",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "subaccount@test.com"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "description": "Amount to debit from the account"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Optional description for the debit operation"
+                  }
+                },
+                "required": [
+                  "value"
+                ]
+              },
+              "examples": {
+                "ValidDebit": {
+                  "value": {
+                    "value": 50,
+                    "description": "Monthly payment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sub Account successfully debited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pixKey": {
+                      "type": "string",
+                      "example": "subaccount@test.com"
+                    },
+                    "value": {
+                      "type": "number",
+                      "example": 50
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Monthly payment"
+                    },
+                    "success": {
+                      "type": "string",
+                      "example": "Sub-account withdrawal has been successfully debited, 50"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingAuthorization": {
+                    "value": {
+                      "error": "Invalid Authorization header"
+                    }
+                  },
+                  "CompanyNotFound": {
+                    "value": {
+                      "error": "Company not found"
+                    }
+                  },
+                  "SubAccountNotFound": {
+                    "value": {
+                      "error": "Subaccount not found: subaccount@test.com"
+                    }
+                  },
+                  "ZeroBalance": {
+                    "value": {
+                      "error": "Transfer just work with subaccount with balance"
+                    }
+                  },
+                  "NegativeValue": {
+                    "value": {
+                      "error": "Value must be positive"
+                    }
+                  },
+                  "InsufficientBalance": {
+                    "value": {
+                      "error": "Account does not have enough balance to complete the operation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "This feature is not enabled for your company"
                 }
               }
             }
@@ -4547,7 +5564,7 @@
                             },
                             "correlationID": "9134e286-6f71-427a-bf00-241681624586",
                             "transactionID": "9134e2866f71427abf00241681624586",
-                            "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                            "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                             "createdAt": "2021-03-03T20:49:23.605Z",
                             "updatedAt": "2021-03-03T20:49:23.668Z"
                           },
@@ -4557,7 +5574,7 @@
                               "status": "COMPLETED",
                               "customer": "604002035cce3b60132343cb",
                               "correlationID": "9134e286-6f71-427a-bf00-241681624586",
-                              "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+                              "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
                               "createdAt": "2021-03-03T21:39:15.831Z",
                               "updatedAt": "2021-03-03T21:39:15.896Z"
                             },
@@ -4784,11 +5801,11 @@
                               "correlationID": "9134e286-6f71-427a-bf00-241681624586",
                               "identifier": "9134e2866f71427abf00241681624586",
                               "paymentLinkID": "7777a23s-6f71-427a-bf00-241681624586",
-                              "paymentLinkUrl": "https://openpix.com.br/pay/9134e286-6f71-427a-bf00-241681624586",
-                              "qrCodeImage": "https://api.openpix.com.br/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
+                              "paymentLinkUrl": "https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586",
+                              "qrCodeImage": "https://api.woovi.com/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png",
                               "createdAt": "2021-03-02T17:28:51.882Z",
                               "updatedAt": "2021-03-02T17:28:51.882Z",
-                              "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA"
+                              "brCode": "000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA"
                             },
                             "customer": null,
                             "time": "2020-09-09T20:15:00.358Z",
@@ -4895,6 +5912,191 @@
           },
           "value": {
             "type": "string"
+          }
+        }
+      },
+      "AccountRegister": {
+        "type": "object",
+        "properties": {
+          "officialName": {
+            "type": "string",
+            "description": "Official name of the company"
+          },
+          "tradeName": {
+            "type": "string",
+            "description": "Trade name of the company"
+          },
+          "taxID": {
+            "type": "object",
+            "properties": {
+              "taxID": {
+                "type": "string",
+                "description": "The tax ID value"
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of tax ID"
+              }
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the account registration"
+          },
+          "annualRevenue": {
+            "type": "number",
+            "description": "Annual revenue of the company"
+          }
+        }
+      },
+      "AccountRegisterPayload": {
+        "type": "object",
+        "required": [
+          "officialName",
+          "tradeName",
+          "taxID",
+          "annualRevenue"
+        ],
+        "properties": {
+          "officialName": {
+            "type": "string",
+            "description": "Official name of the company"
+          },
+          "tradeName": {
+            "type": "string",
+            "description": "Trade name of the company"
+          },
+          "taxID": {
+            "type": "string",
+            "description": "Tax ID of the company"
+          },
+          "annualRevenue": {
+            "type": "number",
+            "description": "Annual revenue of the company"
+          }
+        }
+      },
+      "AccountRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "officialName": {
+            "type": "string",
+            "description": "Official name of the company"
+          },
+          "tradeName": {
+            "type": "string",
+            "description": "Trade name of the company"
+          },
+          "taxID": {
+            "type": "object",
+            "properties": {
+              "taxID": {
+                "type": "string",
+                "description": "The tax ID value"
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of tax ID"
+              }
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the account registration"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Error message"
+              },
+              {
+                "type": "array",
+                "description": "Validation errors",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Application": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the application"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the application is active"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the application (API, POS, PLUGIN, CHECKOUT)",
+            "enum": [
+              "API",
+              "POS",
+              "PLUGIN",
+              "CHECKOUT",
+              "MASTER"
+            ]
+          },
+          "clientId": {
+            "type": "string",
+            "description": "Client ID for authentication"
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "Client secret for authentication"
+          },
+          "appID": {
+            "type": "string",
+            "description": "Unique application identifier"
+          },
+          "companyBankAccount": {
+            "type": "string",
+            "description": "ID of the linked company bank account"
+          }
+        }
+      },
+      "ApplicationPayload": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "The ID of the company bank account"
+          },
+          "application": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the application"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the application (API)",
+                "enum": [
+                  "API"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "ApplicationDeletePayload": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "description": "The client ID of the application to delete"
           }
         }
       },
@@ -5651,7 +6853,8 @@
           "type": {
             "type": "string",
             "enum": [
-              "BR:CNPJ"
+              "BR:CNPJ",
+              "BR:CPF"
             ]
           }
         }
@@ -5674,13 +6877,17 @@
           "phone": {
             "type": "string",
             "description": "The user's phone number, need to be a validated phone number because it'll receive a SMS confirming that is a real person.\nWe're accept only values that matches the E.164 standard, that follows this pattern: [+][country code][local phone number].\n"
+          },
+          "taxID": {
+            "$ref": "#/components/schemas/TaxIDObjectPayload"
           }
         },
         "required": [
           "firstName",
           "lastName",
           "email",
-          "phone"
+          "phone",
+          "taxID"
         ]
       },
       "PreRegistrationObject": {
@@ -5941,6 +7148,43 @@
           }
         }
       },
+      "PixKey": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "CPF",
+              "CNPJ",
+              "EMAIL",
+              "PHONE",
+              "EVP"
+            ]
+          }
+        }
+      },
+      "PixKeyCreate": {
+        "type": "object",
+        "required": [
+          "key",
+          "type"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "CNPJ",
+              "EVP"
+            ]
+          }
+        }
+      },
       "PixQrCode": {
         "type": "object",
         "properties": {
@@ -6142,6 +7386,17 @@
           }
         }
       },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
       "Start": {
         "type": "string",
         "format": "date-time",
@@ -6201,6 +7456,15 @@
           "name": {
             "type": "string",
             "description": "Name of the sub account"
+          }
+        }
+      },
+      "SubAccountWithdrawPayload": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Value of the withdrawal in cents if want to make a partial withdrawal"
           }
         }
       },
@@ -6583,6 +7847,14 @@
       "description": "Endpoint to manage Accounts\n"
     },
     {
+      "name": "account register",
+      "description": "Endpoint to manage account registrations."
+    },
+    {
+      "name": "application",
+      "description": "Endpoints to manage applications for authentication and API access.\n"
+    },
+    {
       "name": "cashback-fidelity",
       "description": "Endpoint to manage exclusive cashbacks\n"
     },
@@ -6611,6 +7883,10 @@
       "description": "Endpoint to init a payment using a Pix Key.\n"
     },
     {
+      "name": "pixkey",
+      "description": "Endpoint to manage Pix Keys\n"
+    },
+    {
       "name": "pixQrCode",
       "description": "Endpoint to manage static QRCodes\n"
     },
@@ -6623,7 +7899,11 @@
       "description": "Endpoint to manage Refunds\n"
     },
     {
-      "name": "sub account (request access)",
+      "name": "receipt",
+      "description": "Get a pdf document related to a payment transaction formated in a receipt style.\n"
+    },
+    {
+      "name": "sub account",
       "description": "Endpoint to manage sub accounts.\n"
     },
     {
