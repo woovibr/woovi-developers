@@ -1,6 +1,6 @@
 ---
 id: test-environment
-title: Acessando o Ambiente de teste OpenPix
+title: Acessando o Ambiente de teste Woovi
 sidebar_label: Ambiente de teste
 tags:
 - flow
@@ -9,7 +9,7 @@ tags:
 - test environment
 ---
 
-A plataforma OpenPix foi desenvolvida com o objetivo de simplificar e gerenciar totalmente geração, cobrança, liquidação e conciliação em tempo real de pagamentos instantâneos usando Pix. Proporcionando ao mesmo tempo ótima experiência de programção atentendo requisitos de máximos de segurança. Esta documentação visa auxiliar os programadores e administradores de sistemas na configuração adequada da plataforma, especialmente em relação ao método de pagamento Pix.
+A plataforma Woovi foi desenvolvida com o objetivo de simplificar e gerenciar totalmente geração, cobrança, liquidação e conciliação em tempo real de pagamentos instantâneos usando Pix. Proporcionando ao mesmo tempo ótima experiência de programção atentendo requisitos de máximos de segurança. Esta documentação visa auxiliar os programadores e administradores de sistemas na configuração adequada da plataforma, especialmente em relação ao método de pagamento Pix.
 
 *Utilizar métodos automatizados tais como Single-Sign-On e APIs são preferenciais, uma vez que proporcionam uma melhor experiência ao usuário, aumentam a segurança e automatizam os processos.*
 
