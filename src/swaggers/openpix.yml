@@ -103,7 +103,160 @@ paths:
                 properties:
                   error:
                     type: string
+  /api/v1/account:
+    post:
+      tags:
+        - account
+      summary: Create a new Account
+      description: Creates a new bank account for the company. Requires the bank
+        account feature to be enabled.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                companyBankAccount:
+                  type: object
+                  $ref: "#/components/schemas/CompanyBankAccount"
+      responses:
+        "200":
+          description: The created Account information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    type: object
+                    $ref: "#/components/schemas/CompanyBankAccount"
+              example:
+                account:
+                  accountId: 6290ccfd42831958a405debc
+                  isDefault: true
+                  balance:
+                    total: 129430
+                    blocked: 0
+                    available: 129430
+        "400":
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Bank account feature is not enabled
+        "403":
+          description: Forbidden - Wrong API type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Wrong API type
   /api/v1/account-register:
+    get:
+      tags:
+        - account register
+      summary: Get account register by Tax ID
+      description: Retrieves an existing account registration by Tax ID
+      parameters:
+        - name: taxID
+          in: query
+          required: true
+          description: Tax ID of the company to retrieve
+          schema:
+            type: string
+            example: "12345678901234"
+      responses:
+        "200":
+          description: Account register found and returned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  officialName:
+                    type: string
+                    example: Company Official Name
+                  tradeName:
+                    type: string
+                    example: Company Trade Name
+                  type:
+                    type: string
+                    example: BAAS
+                  taxID:
+                    type: object
+                    properties:
+                      taxID:
+                        type: string
+                        example: "12345678901234"
+                      type:
+                        type: string
+                        example: BR_CNPJ
+                  status:
+                    type: string
+                    example: PENDING
+        "400":
+          description: Bad request - validation error or missing authorization
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    oneOf:
+                      - type: string
+                      - type: array
+                        items:
+                          type: object
+              examples:
+                MissingAuthorization:
+                  value:
+                    error: Invalid Authorization header
+                CompanyNotFound:
+                  value:
+                    error: Company not found
+                ValidationError:
+                  value:
+                    error:
+                      - code: too_small
+                        minimum: 1
+                        type: string
+                        inclusive: true
+                        exact: false
+                        message: Tax ID is required
+                        path:
+                          - taxID
+        "404":
+          description: Account register not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Account register not found
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Internal server error
     post:
       tags:
         - account register
@@ -119,27 +272,187 @@ paths:
                 officialName:
                   type: string
                   description: Official name of the company
+                  minLength: 1
                 tradeName:
                   type: string
                   description: Trade name of the company
+                  minLength: 1
                 taxID:
                   type: string
                   description: Tax ID of the company
-                annualRevenue:
-                  type: number
-                  description: Annual revenue of the company
+                  minLength: 1
+                documents:
+                  type: array
+                  description: Company documents
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        description: Document URL
+                        minLength: 1
+                      type:
+                        type: string
+                        enum:
+                          - SOCIAL_CONTRACT
+                          - ATA
+                          - BYLAWS
+                representatives:
+                  type: array
+                  description: Company representatives (sócio)
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - birthDate
+                      - email
+                      - taxID
+                      - address
+                    properties:
+                      name:
+                        type: string
+                        description: Representative name
+                        minLength: 1
+                      documents:
+                        type: array
+                        items:
+                          type: object
+                          required:
+                            - url
+                            - type
+                          properties:
+                            url:
+                              type: string
+                              description: Document URL
+                              minLength: 1
+                            type:
+                              type: string
+                              enum:
+                                - IDENTITY_FRONT
+                                - IDENTITY_BACK
+                                - CNH_FRONT
+                                - CNH_BACK
+                                - PICTURE
+                      birthDate:
+                        type: string
+                        description: Representative birth date
+                        minLength: 1
+                      email:
+                        type: string
+                        description: Representative email
+                        format: email
+                      type:
+                        type: string
+                        enum:
+                          - ADMIN
+                      taxID:
+                        type: string
+                        description: Representative tax ID
+                        minLength: 1
+                      address:
+                        type: object
+                        required:
+                          - zipcode
+                          - street
+                          - number
+                          - neighborhood
+                          - city
+                          - state
+                          - taxID
+                        properties:
+                          zipcode:
+                            type: string
+                            description: Address zip code
+                            minLength: 1
+                          street:
+                            type: string
+                            description: Street name
+                            minLength: 1
+                          number:
+                            type: string
+                            description: Street number
+                            minLength: 1
+                          neighborhood:
+                            type: string
+                            description: Neighborhood
+                            minLength: 1
+                          city:
+                            type: string
+                            description: City
+                            minLength: 1
+                          state:
+                            type: string
+                            description: State
+                            minLength: 1
+                          complement:
+                            type: string
+                            description: Address complement
+                          taxID:
+                            type: string
+                            description: Tax ID
+                            minLength: 1
+                billingAddress:
+                  type: object
+                  required:
+                    - zipcode
+                    - street
+                    - number
+                    - neighborhood
+                    - city
+                  properties:
+                    zipcode:
+                      type: string
+                      description: Billing address zip code
+                      minLength: 1
+                    street:
+                      type: string
+                      description: Street name
+                      minLength: 1
+                    number:
+                      type: string
+                      description: Street number
+                      minLength: 1
+                    neighborhood:
+                      type: string
+                      description: Neighborhood
+                      minLength: 1
+                    city:
+                      type: string
+                      description: City
+                      minLength: 1
               required:
                 - officialName
                 - tradeName
                 - taxID
-                - annualRevenue
+                - billingAddress
             examples:
               ValidAccountRegister:
                 value:
                   officialName: Company Official Name
                   tradeName: Company Trade Name
                   taxID: "12345678901234"
-                  annualRevenue: 1000000
+                  billingAddress:
+                    zipcode: "12345678"
+                    street: Test Street
+                    number: "123"
+                    neighborhood: Test Neighborhood
+                    city: Test City
+                  representatives:
+                    - name: John Doe
+                      birthDate: 1990-01-01
+                      email: john@example.com
+                      taxID: "12345678901"
+                      type: ADMIN
+                      address:
+                        zipcode: "12345678"
+                        street: Test Street
+                        number: "123"
+                        neighborhood: Test Neighborhood
+                        city: Test City
+                        state: ST
+                        taxID:
+                          taxID: "12345678901"
+                          type: BR_CPF
       responses:
         "200":
           description: Account successfully registered
@@ -160,12 +473,15 @@ paths:
                       taxID:
                         type: string
                         example: "12345678901234"
-                      type:
-                        type: string
-                        example: BR_CNPJ
                   status:
                     type: string
                     example: PENDING
+                  requestedDocuments:
+                    type: array
+                    items:
+                      type: string
+                  missingDocumentsDescription:
+                    type: string
         "400":
           description: An error message
           content:
@@ -174,7 +490,20 @@ paths:
                 type: object
                 properties:
                   error:
-                    type: string
+                    oneOf:
+                      - type: string
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            message:
+                              type: string
+                            path:
+                              type: array
+                              items:
+                                type: string
               examples:
                 MissingAuthorization:
                   value:
@@ -189,7 +518,6 @@ paths:
                         minimum: 1
                         type: string
                         inclusive: true
-                        exact: false
                         message: Official name is required
                         path:
                           - officialName
@@ -599,6 +927,72 @@ paths:
                 properties:
                   error:
                     type: string
+  "/api/image/qrcode/base64/{:id}":
+    get:
+      tags:
+        - charge
+      summary: Get a base64 encoded QR Code image from a Charge
+      parameters:
+        - in: path
+          name: id
+          description: charge ID, payment link ID, or QR code ID
+          required: true
+          schema:
+            type: string
+          examples:
+            paymentLinkID:
+              value: fe7834b4060c488a9b0f89811be5f5cf
+        - in: query
+          name: size
+          description: Size for the image. This size should be between 600 and 4096. If
+            the size parameter is not passed, the default value will be 1024.
+          required: false
+          schema:
+            type: string
+          examples:
+            size:
+              value: 768
+      responses:
+        "200":
+          description: The QR Code image as base64 string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  imageBase64:
+                    type: string
+                    description: Base64 encoded PNG image with data URL format
+                    example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...
+        "400":
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: not found
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: Failed to generate QR code
   "/api/v1/charge/{id}":
     delete:
       tags:
@@ -1244,6 +1638,45 @@ paths:
                     endToEndId: E23114447202304181826HJNwY577YDX
                     time: 2023-03-02T17:28:51.882Z
                     comment: Comentário do reembolso
+        "400":
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/company:
+    get:
+      tags:
+        - company
+      summary: Get a Company
+      responses:
+        "200":
+          description: The Company retrieved from the application ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  company:
+                    type: object
+                    properties:
+                      officialName:
+                        type: string
+                      tradeName:
+                        type: string
+                      taxID:
+                        type: string
+                      correlationID:
+                        type: string
+              example:
+                company:
+                  officialName: Company Official Name
+                  tradeName: Company Trade Name
+                  taxID: "12345678901234"
+                  correlationID: corr-123456
         "400":
           description: An error message
           content:
@@ -2214,12 +2647,97 @@ paths:
                 properties:
                   error:
                     type: string
+  "/api/v1/pix-keys/{pixKey}/check":
+    get:
+      tags:
+        - pixKey
+      summary: Check data from a Pix key
+      description: Get data from a Pix key if it exists
+      parameters:
+        - name: pixKey
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The Pix key to check
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PixKeyCheck"
+        "400":
+          description: You need to link a Bank Account to this API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "401":
+          description: Your IP is not in the allowed list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "403":
+          description: Your account does not have the permission to use this endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "404":
+          description: Pix key does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "429":
+          description: Too many requests, you had too many 404
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/pix-keys/:pixKey/default:
+    post:
+      tags:
+        - pixKey
+      summary: Set a pix key as default
+      description: Set a pix key as default
+      parameters:
+        - name: pixKey
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The pix key to set as default
+      responses:
+        "200":
+          description: Pix key set as default successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PixKey"
   "/api/v1/pix-keys/{pixKey}":
     delete:
       tags:
-        - pixkey
+        - pixKey
       summary: Delete a Pix key
-      description: Deletes a specific Pix key
+      description: Deletes a specific Pix key, you cannot delete the default pix key
       parameters:
         - name: pixKey
           in: path
@@ -2241,7 +2759,7 @@ paths:
   /api/v1/pix-keys:
     get:
       tags:
-        - pixkey
+        - pixKey
       summary: Get all Pix keys
       description: Retrieves a list of all Pix keys
       responses:
@@ -2256,6 +2774,9 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/PixKey"
+                  account:
+                    type: object
+                    $ref: "#/components/schemas/CompanyBankAccount"
         "400":
           description: You need to link a Bank Account to this API
         "401":
@@ -2264,7 +2785,7 @@ paths:
           description: Your Authorization APP_ID must be configured to be MASTER or API
     post:
       tags:
-        - pixkey
+        - pixKey
       summary: Create a new Pix key
       description: Creates a new Pix key
       requestBody:
@@ -4058,6 +4579,8 @@ components:
               description: Validation errors
               items:
                 type: object
+          type: string
+          description: Error message
     Application:
       type: object
       properties:
@@ -4242,6 +4765,10 @@ components:
         customer:
           type: object
           $ref: "#/components/schemas/CustomerPayload"
+        ensureSameTaxID:
+          type: boolean
+          description: true to ensure that the payer taxID must be the same as the
+            customer taxID.
         daysForDueDate:
           type: number
           description: Time in days until the charge hits the deadline so fines and
@@ -4387,6 +4914,26 @@ components:
           maximum: 140
       required:
         - correlationID
+    Company:
+      type: object
+      properties:
+        officialName:
+          type: string
+          description: Official name of the company
+        tradeName:
+          type: string
+          description: Trade name of the company
+        taxID:
+          type: string
+          description: Tax ID of the company
+        correlationID:
+          type: string
+          description: Correlation ID of the company
+    CompanyResponse:
+      type: object
+      properties:
+        company:
+          $ref: "#/components/schemas/Company"
     Customer:
       type: object
       properties:
@@ -4896,6 +5443,8 @@ components:
             - EMAIL
             - PHONE
             - EVP
+        isDefault:
+          type: boolean
     PixKeyCreate:
       type: object
       required:
@@ -4909,6 +5458,26 @@ components:
           enum:
             - CNPJ
             - EVP
+    PixKeyCheck:
+      type: object
+      properties:
+        pixKey:
+          type: string
+        type:
+          type: string
+          enum:
+            - CPF
+            - CNPJ
+            - EMAIL
+            - PHONE
+            - EVP
+        owner:
+          type: object
+          properties:
+            name:
+              type: string
+            taxID:
+              type: string
     PixQrCode:
       type: object
       properties:
@@ -4929,6 +5498,9 @@ components:
           description: Payment Link ID, used on payment link and to retrieve qrcode image
         paymentLinkUrl:
           description: Payment Link URL to be shared with customers
+        pixKey:
+          type: string
+          description: The pix key that this qrcode is associated with
         qrCodeImage:
           description: QRCode image link URL
         createdAt:
@@ -5421,6 +5993,9 @@ tags:
   - name: charge refund
     description: |
       Endpoint to manage charge refunds
+  - name: company
+    description: |
+      Endpoint to manage Company information
   - name: customer
     description: |
       Endpoint to manage Customer
@@ -5434,7 +6009,7 @@ tags:
   - name: payment (request access)
     description: |
       Endpoint to init a payment using a Pix Key.
-  - name: pixkey
+  - name: pixKey
     description: |
       Endpoint to manage Pix Keys
   - name: pixQrCode
