@@ -5123,6 +5123,146 @@
         }
       }
     },
+    "/api/v1/statement": {
+      "get": {
+        "tags": [
+          "statement"
+        ],
+        "summary": "Get statement by company",
+        "description": "Retrieves the statement/ledger entries for a company's bank account",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Statement retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Unique identifier for the ledger entry",
+                        "example": "507f1f77bcf86cd799439011"
+                      },
+                      "time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time of the transaction",
+                        "example": "2023-12-01T10:30:00.000Z"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Description of the transaction",
+                        "example": "Payment received from customer"
+                      },
+                      "balance": {
+                        "type": "number",
+                        "description": "Account balance after this transaction",
+                        "example": 1500.5
+                      },
+                      "value": {
+                        "type": "number",
+                        "description": "Transaction amount",
+                        "example": 100
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of transaction",
+                        "example": "CREDIT"
+                      },
+                      "transactionId": {
+                        "type": "string",
+                        "description": "Transaction tracking ID",
+                        "example": "txn_123456789"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error or missing authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingAuthorization": {
+                    "value": {
+                      "error": "Invalid Authorization header"
+                    }
+                  },
+                  "CompanyNotFound": {
+                    "value": {
+                      "error": "Company not found"
+                    }
+                  },
+                  "CompanyBankAccountNotFound": {
+                    "value": {
+                      "error": "Company bank account not found"
+                    }
+                  },
+                  "NotWooviAccount": {
+                    "value": {
+                      "error": "Company bank account not woovi account"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authorization token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/subaccount/{id}/withdraw": {
       "post": {
         "tags": [
