@@ -14,7 +14,7 @@ Este documento irá ajuda-lo a entender os principais conçeitos de baas
 #### O que é o BAAS da Woovi?
 BaaS significa Bank as a Service, ou seja, “Banco como Serviço”. Com o BaaS da Woovi, sua empresa pode oferecer serviços bancários e financeiros como se fosse um banco, mas sem precisar ser uma instituição financeira. A Woovi fornece toda a estrutura necessária — tecnologia, regulamentação, segurança e APIs — para que sua empresa crie contas digitais personalizadas para seus clientes, com a sua marca.
 
-*Em outras palavras:*
+**Em outras palavras:**
 
 Você pode criar contas bancárias digitais dentro do seu próprio sistema, com saldo, Pix, extrato e muito mais, como se estivesse oferecendo uma conta bancária real. A diferença é que tudo isso é feito por trás com a infraestrutura da Woovi, que já está conectada ao Banco Central e segue todas as regras exigidas.
 
