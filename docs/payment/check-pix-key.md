@@ -7,6 +7,12 @@ tags:
 
 Este documento irá ajudá-lo a validar chave pix.
 
+Uma chave pix é como se fosse um dominio DNS que aponta para uma conta no banco central, você paga para esta conta, e não diretamente para a chave
+
+Logo é nescessario ter acesso ao numero da conta no banco central para realizar uma transação
+
+Esse endpoint tem a função de validar esse vinculo com o banco central
+
 - O novo endpoint  de verificação de chave de pix retornará os dados sobre uma chave de pix:
 ```json
 curl -X POST "https://api.woovi.com/api/v1/pix-keys/{pix-key}/check" \
@@ -23,6 +29,7 @@ curl -X POST "https://api.woovi.com/api/v1/pix-keys/{pix-key}/check" \
 
 ```json
 {
+    "pixKeyEndToEndId": "...",
     "pixKey": "...",
     "type": "...",
     "owne": {
