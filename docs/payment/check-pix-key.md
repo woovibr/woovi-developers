@@ -13,6 +13,7 @@ Logo é nescessario ter acesso ao numero da conta no banco central para realizar
 
 Esse endpoint tem a função de validar esse vinculo com o banco central
 
+![diagram sequencial checagem de chave pix](./__assets__/sequenceDiagrama_checagem_de_chave_pix.png)
 - O novo endpoint  de verificação de chave de pix retornará os dados sobre uma chave de pix:
 ```json
 curl -X POST "https://api.woovi.com/api/v1/pix-keys/{pix-key}/check" \
