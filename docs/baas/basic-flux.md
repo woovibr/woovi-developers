@@ -31,7 +31,62 @@ Assim estamos prontos para iniciar a sequencia de integração
     curl -X POST "https://api.woovi.com/api/v1/account-register" \
       -H "Authorization: <apiMasterKey>" \
       -H "Content-Type: application/json" 
+        --data-raw '
+{
+  "officialName": "<razão social>",
+  "tradeName": "<nome fantasia>",
+  "taxID": "<cnpj>",
+  "billingAddress": {
+    "zipcode": "<cpf>",
+    "street": "<rua>",
+    "number": "<numero>",
+    "neighborhood": "<bairro>",
+    "city": "<cidade>",
+    "state": "<sigla estado>"
+  },
+  "documents": [
+    {
+      "url": "<url documento contrato social>",
+      "type": "SOCIAL_CONTRACT"
+    },
+    {
+      "url": "<url estatuto social>",
+      "type": "BYLAWS"
+    }
+  ],
+  "representatives": [
+    {
+      "name": "<nome socio 1>",
+      "birthDate": "<nacimento>",
+      "email": "<email>",
+      "taxID": "<cnpj>",
+      "phone": "<phone>",
+      "address": {
+        "zipcode": "<cep>",
+        "street": "<rua>",
+        "number": "<numero>",
+        "neighborhood": "<bairro>",
+        "city": "<cidade>",
+        "state": "<sigla estado>",
+        "taxID": "<cnpj>",
+        "complement": "<complemento'>"
+      },
+      "documents": [
+        {
+          "url": "<url cnh>",
+          "type": "CNH"
+        },
+        {
+          "url": "<url foto de perfil>",
+          "type": "PICTURE"
+        }
+      ],
+      "type": "ADMIN"
+    }
+  ]
+}'
  ```
+
  * Caso tudo ocorra corretamente, um código 201 será retornado.
  * No corpo da resposta terá:
   ```JSON
@@ -154,9 +209,9 @@ Assim estamos prontos para iniciar a sequencia de integração
  ```JSON
   {
     "pixKey": {
-        "pixKey": "<chavePix>",
+        "pixKey": "",
         "type": "EVP",
-        "isDefault": <isDefault>
+        "isDefault": false
     }
   }
  ```
