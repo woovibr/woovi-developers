@@ -7,7 +7,7 @@ tags:
 
 ## 1. É necessario que você tenha uma API
 
-Caso você não tenha, temos essa documentação que lhe ensina como criar uma [API](https://developers.openpix.com.br/en/docs/apis/getting-started-api).
+Caso você não tenha, temos essa documentação que lhe ensina como criar uma [API](https://developers.woovi.com/docs/apis/api-getting-started).
 
 Após criar a API basta seguir o passo a passo.
 
