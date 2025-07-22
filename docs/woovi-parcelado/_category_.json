@@ -1,13 +1,13 @@
 {
-  "label": "Woovi Parcelado",
+  "label": "woovi Parcelado",
   "collapsible": true,
   "collapsed": true,
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Woovi Parcelado visão geral"
+    "title": "woovi Parcelado visão geral"
   },
   "customProps": {
-    "description": "Woovi Parcelado documentação"
+    "description": "woovi Parcelado documentação"
   }
 }

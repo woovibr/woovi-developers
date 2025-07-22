@@ -1,0 +1,77 @@
+---
+id: easydigitaldownloads
+title: Como integrar o Pix em sua loja EasyDigitalDownloads
+sidebar_label: EasyDigitalDownloads
+tags:
+  - ecommerce
+  - plugin
+  - extension
+  - wordpress
+  - easydigitaldownloads
+---
+
+import Embed from 'react-embed';
+
+Converta mais utilizando woovi na sua loja que utilize o plugin WordPress EasyDigitalDownloads.
+
+## Como instalar
+
+:::caution Pré-requisitos
+
+- Instalação WordPress
+- Plugin EasyDigitalDownloads
+  :::
+
+Acesse a página de [lançamentos](https://github.com/criskell/woovi-easy-digital-downloads/releases/latest) no GitHub e baixe o arquivo ZIP `woovi-easy-digital-downloads.zip` da última versão.
+
+Em seu painel de administração, acesse a página de "Adicionar plugin" e clique em enviar plugin. Aperte o botão de escolher arquivo e selecione o arquivo ZIP:
+
+![Enviando um plugin](./__assets__/edd-wp-add-plugin.png)
+
+Prossiga para a página de plugins em "Plugins instalados" e ative o plugin "woovi EasyDigitalDownloads"
+
+## Como configurar
+
+### Como criar a integração com API
+
+Acesse a página de configurações do plugin EasyDigitalDownloads em Downloads > Settings (Configurações).
+
+Vá na aba Pagamentos > woovi.
+
+Nesta página é necessário informar seu [AppID](../plugin/app-id) da woovi. Veja [como criar uma nova integração do tipo plugin](../apis/getting-started-api).
+
+Tendo seu App ID, cole ele no campo "App ID" e clique em Salvar alterações:
+
+![Página de configurações](./__assets__/edd-configure.png)
+
+Veja que a URL de webhook está informada nesta página.
+
+### Como criar o webhook
+
+Para que os status dos pedidos sejam atualizados e o download seja liberado ao efetuar o pagamento PIX, é necessário configurar o webhook na plataforma da woovi.
+
+Vá até a plataforma e acesse [API/Plugins > Novo Webhook](https://app.woovi.com/home/applications/webhook/create):
+
+![Página de criação de webhooks](./__assets__/edd-woovi-create-webhook.png)
+
+Informe o nome do webhook, selecione o evento "Cobrança paga - woovi:CHARGE_COMPLETED" e insira a URL do seu webhook de acordo com o que foi informado na página de configurações do plugin seguindo o formato `https://<url-do-seu-site>/wp-json/edd-woovi-gateway-webhook/v1/callback`.
+
+Salve o webhook e sua configuração estará pronta.
+
+## Como fazer uma compra
+
+Realize a compra de um produto e na página de checkout selecione o método de pagamento woovi:
+
+![Página de checkout](./__assets__/edd-checkout.png)
+
+Na tela de confirmação irá aparecer o QRCode da woovi:
+
+![Página de confirmação](./__assets__/edd-confirmation.png)
+
+Após efetuar o pagamento o download será liberado para o cliente:
+
+![Página de download](./__assets__/edd-download-open.png)
+
+## Vídeo demonstrativo
+
+<Embed url="https://www.youtube.com/watch?v=fzhGMOcpcSI" />
