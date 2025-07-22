@@ -1,5 +1,5 @@
 ---
-title: Integrando a Woovi com a Shop Control 9
+title: Integrando a woovi com a Shop Control 9
 tags:
   - integration
 ---
@@ -8,7 +8,7 @@ tags:
 
 Essa documentação assume que você tenha preenchido alguns requisitos que são:
 
-1. Ter uma aplicação criada na Woovi. Caso ainda não tenha feito, você pode criar uma seguindo [este tutorial](../apis/api-getting-started.md).
+1. Ter uma aplicação criada na woovi. Caso ainda não tenha feito, você pode criar uma seguindo [este tutorial](../apis/api-getting-started.md).
 
 :::
 
@@ -28,6 +28,6 @@ Nesta etapa, é necessário selecionar a conta bancária previamente cadastrada 
 
 ### 4. Cadastro do AppID
 
-Agora, dirija-se à seção `PIX`, localize o campo `API KEY`, insira o AppID previamente gerado na plataforma Woovi e finalize clicando em `GRAVAR`.
+Agora, dirija-se à seção `PIX`, localize o campo `API KEY`, insira o AppID previamente gerado na plataforma woovi e finalize clicando em `GRAVAR`.
 
 ![Shop9 pix api page](./__assets__/slide4-shop9.png)

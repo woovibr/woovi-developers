@@ -1,0 +1,63 @@
+---
+id: woocommerce-plugin
+title: Integrando a woovi com WooCommerce
+sidebar_label: WooCommerce woovi Plugin
+tags:
+  - ecommerce
+  - woocommerce
+  - plugin
+---
+
+import WooOneClick from './__components__/woocommerce-oneclick.mdx';
+
+## Plugin Pix para WooCommerce
+
+:::caution Atenção
+Este documento está depreciado, para acessar a documentação atualizada [clique aqui](/docs/ecommerce/woocommerce/woocommerce-oneclick)
+:::
+
+:::caution Atenção
+Este documento espera que você já tenha um ambiente WooCommerce ativo, e uma conta criada na woovi
+Caso não tenha acesso à plataforma registre-se [aqui](https://app.woovi.com/register?src=wordpress-docs)
+:::
+
+## Resumo
+
+Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no WooCommerce, na woovi. A plataforma woovi efetua em tempo real a conciliação entre seu Banco e seu e-Commerce.
+Após conectar a sua conta na woovi é possível cobrar clientes em tempo real com QrCodes Pix, enviar Links de Pagamento, gerenciar cobranças incluindo extornos.
+
+## 1. Instale o Plugin woovi na sua instância WooCommerce
+
+[woovi For WooCommerce](https://wordpress.org/plugins/woovi-for-woocommerce/)
+
+![Banner](/img/ecommerce/woocommerce-banner.png)
+![Install](/img/ecommerce/woocommerce-plugin-install.png)
+
+## 2. Configurando o Plugin WooCommerce
+
+Entre em WooCommerce -> Settings > Payments.
+
+![Payments](/img/ecommerce/woocommerce-payments.png)
+
+### Clique em `Manage` no Plugin woovi
+
+- [ ] Cadastre um AppID do tipo API. Crie um appID [aqui](../apis/getting-started-api)
+- [ ] Customize o Título, Descrição e Texto de Botão de Pedido
+
+![Setup](/img/ecommerce/woocommerce-setup.png)
+
+### Após adicionar o seu appID, clique em `Configure now with one click` para configurarmos ou criar seu Webhook
+
+- [ ] Ao clicar os campos, `Webhook Authorization` e `Webhook HMAC Secret Key` irão atualizar automaticamente e mostrar o status em `Webhook Status`.
+
+### Caso não configure você pode acessar a plataforma, criar um webhook manualmente. Para isso
+
+- [ ] Crie uma senha para a integração do Webhook. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
+- [ ] Cadastre a URL de Callback do WooCommerce na woovi. Exemplo: [https://meusite.com.br/wc-api/WC_woovi_Pix_Gateway](https://meusite.com.br/wc-api/WC_woovi_Pix_Gateway)
+- [ ] Clique em `Configure now with one click` novamente, para configurar o Webhook com esses novos dados criados.
+
+![Webhook](/img/ecommerce/woocommerce-gatilho.png)
+
+## Instale o Plugin woovi na sua instância WooCommerce utilizando one click
+
+<WooOneClick />
