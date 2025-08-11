@@ -1,0 +1,13 @@
+{
+  "label": "Pix Automático",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Pix Automa'tico visão geral"
+  },
+  "customProps": {
+    "description": "Pix Automático documentação"
+  }
+}
