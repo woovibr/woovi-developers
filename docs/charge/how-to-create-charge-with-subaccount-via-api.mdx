@@ -48,7 +48,7 @@ Antes de criar uma cobrança Pix com uma subconta atrelada, você precisa ter um
   <TabItem value="shell-curl" label="Shell + cURL" default>
 
 ```sh
-  curl 'https://api.woovi.com.br/api/v1/charge' -X POST \
+  curl 'https://api.woovi.com/api/v1/charge' -X POST \
       -H "Accept: application/json" \
       -H "Content-Type: application/json" \
       -H "user-agent: node-fetch" \
@@ -63,7 +63,7 @@ Antes de criar uma cobrança Pix com uma subconta atrelada, você precisa ter um
   <TabItem value="javascript" label="JavaScript + Fetch" default>
 
 ```js
-fetch('https://api.woovi.com.br/api/v1/charge', {
+fetch('https://api.woovi.com/api/v1/charge', {
   method: 'POST',
   body: JSON.stringify({
     correlationID: 'c782e0ac-833d-4a89-9e73-9b60b2b41d3a',

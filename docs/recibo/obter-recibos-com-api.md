@@ -11,10 +11,10 @@ Documentação técnica da estrutura do endpoint de recibo:
 https://developers.woovi.com.br/api#tag/receipt/paths/~1api~1v1~1receipt~1%7BEndToEndId%7D/get
 
 Modelo de requisição:  
-https://api.woovi.com.br/api/v1/receipt/:receiptType/:endToEndId
+https://api.woovi.com/api/v1/receipt/:receiptType/:endToEndId
 
 Exemplo de uso:  
-https://api.woovi.com.br/api/v1/receipt/pix-in/E2202312345678901234567890123456
+https://api.woovi.com/api/v1/receipt/pix-in/E2202312345678901234567890123456
 
 ### Como obter um endToEndId via dashboard
 
@@ -40,11 +40,11 @@ Veja mais sobre tipos na seção de [Explicando Tipos](#explicando-tipos) abaixo
 > Neste guia, estarei utilizando o Postman como cliente HTTP.
 2) Crie uma nova requisição e adicione a URL de exemplo no campo onde há um espaço vazio ao lado da palavra GET.  
    ![](./__assets__/get-receipt-via-api/create-new-request.png)
-> URL de exemplo: https://api.woovi.com.br/api/v1/receipt/:receiptType/:endToEndId
+> URL de exemplo: https://api.woovi.com/api/v1/receipt/:receiptType/:endToEndId
 3) Substitua onde está `:receiptType` pelo tipo de recibo que você está querendo buscar (pix-in, pix-out ou pix-refund).
 4) Substitua onde está `:endToEndId` pelo endToEndId dos seus recebimentos, pagamentos ou reembolsos.
 5) Feito isso, você terá uma URL semelhante ao exemplo abaixo:
-> https://api.woovi.com.br/api/v1/receipt/pix-in/E2202312345678901234567890123456
+> https://api.woovi.com/api/v1/receipt/pix-in/E2202312345678901234567890123456
 6) Agora precisamos configurar nosso appID para autenticação via API. Para isso, clique na aba "Headers" e crie novos campos de chave e valor. Defina a chave com o valor "Authorization" e, no valor dessa chave, coloque seu appID.  
    ![](./__assets__/get-receipt-via-api/header-authorization.png)
 7) Com a configuração do appID de autorização feita, podemos realizar uma chamada à API clicando no botão azul "Send" no Postman.

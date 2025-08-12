@@ -24,7 +24,7 @@ Exemplo:
 E por fim já com todos os dados recolhidos você poderá rodar esse comando abaixo preenchido com os dados indicados já citados a cima e gerar uma transação de pagamento!
 
 ```jsx
-curl 'https://api.woovi.com.br/woovi/testing?identifier=<identifier>' -H 'Authorization: <appID>'
+curl 'https://api.woovi.com/woovi/testing?identifier=<identifier>' -H 'Authorization: <appID>'
 ```
 
 Para ver as transações geradas clique em `transações` para ver a transação do Pix QRCode do pagamento teste recebida. 

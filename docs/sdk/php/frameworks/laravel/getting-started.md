@@ -48,7 +48,7 @@ Esse arquivo é utilizado para armazenar configurações e não é enviado para 
 Adicione essas duas configurações em seu arquivo `.env`:
 ```bash
 woovi_APP_ID="COLOQUE SEU APP ID AQUI"
-woovi_BASE_URI="https://api.woovi.com.br"
+woovi_BASE_URI="https://api.woovi.com"
 ```
 
 Após esse passo, limpe o [cache de configurações](https://laravel.com/docs/10.x/configuration#configuration-caching):
@@ -89,7 +89,7 @@ class wooviServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Client::class, function () {
             $appId = env('woovi_APP_ID');
-            $baseUri = env('woovi_BASE_URI', 'https://api.woovi.com.br');
+            $baseUri = env('woovi_BASE_URI', 'https://api.woovi.com');
 
             return Client::create($appId, $baseUri);
         });
