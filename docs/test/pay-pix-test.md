@@ -24,5 +24,5 @@ Exemplo:
 E por fim já com todos os dados recolhidos você poderá rodar esse comando abaixo preenchido com os dados indicados já citados a cima e efetuar o pagamento !
 
 ```jsx
-curl 'https://api.woovi.com.br/woovi/testing?transactionID=<identifier>' -H 'Authorization: <appID>' \
+curl 'https://api.woovi.com/woovi/testing?transactionID=<identifier>' -H 'Authorization: <appID>' \
 ```

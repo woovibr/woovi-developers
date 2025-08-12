@@ -53,7 +53,7 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
   <TabItem value="shell-curl" label="Shell + cURL" default>
 
 ```sh
-  curl 'https://api.woovi.com.br/api/v1/transfer' -X POST \
+  curl 'https://api.woovi.com/api/v1/transfer' -X POST \
       -H "Accept: application/json" \
       -H "Content-Type: application/json" \
       -H "user-agent: node-fetch" \
@@ -64,7 +64,7 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
   <TabItem value="javascript" label="JavaScript + Fetch" default>
 
 ```js
-fetch('https://api.woovi.com.br/api/v1/transfer', {
+fetch('https://api.woovi.com/api/v1/transfer', {
   method: 'POST',
   body: JSON.stringify({
     value: 100,

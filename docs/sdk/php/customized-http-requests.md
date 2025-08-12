@@ -19,8 +19,8 @@ Veja como utilizar:
 use woovi\PhpSdk\Request;
 
 /**
- * Se a URI base for https://api.woovi.com.br, então a requisição terá
- *  - A URI como https://api.woovi.com.br/api/v1/example-endpoint?query1=10&query2=true
+ * Se a URI base for https://api.woovi.com, então a requisição terá
+ *  - A URI como https://api.woovi.com/api/v1/example-endpoint?query1=10&query2=true
  *  - Método POST, para criar um recurso, por exemplo
  *  - Corpo como um array que irá ser convertido para uma string JSON
  */
@@ -62,7 +62,7 @@ $requestTransport = new RequestTransport(
     // Seu app ID
     $appId,
 
-    // URI base (por ex.: https://api.woovi.com.br)
+    // URI base (por ex.: https://api.woovi.com)
     // Somente o protocolo e o domínio são permitidos na URI base.
     // Não coloque caminhos como /api/v1
     $baseUri,
@@ -96,6 +96,6 @@ $client = new Client($requestTransport);
 O método `create` aceita uma URI base no segundo parâmetro:
 
 ```php
-Client::create("seu appid", "https://api.woovi.com.br");
+Client::create("seu appid", "https://api.woovi.com");
 Client::create("seu appid", "https://api.woovi.com");
 ```
