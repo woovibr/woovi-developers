@@ -29,7 +29,7 @@ Você pode integrar a woovi com o N8N utilizando o nó HTTP Request nativo do N8
 3. Configure o nó com as seguintes propriedades:
    - Authentication: Matennha em "none"
    - Method: POST
-   - URL: `https://api.woovi.com.br/api/v1/charge`
+   - URL: `https://api.woovi.com/api/v1/charge`
    - Send Headers: true
     - Adicione o header "Authorization" com seu `appID`
    - Send Body: true
@@ -55,7 +55,7 @@ Ao clicar em "Test step" você receberá uma saida similar a esta confirmando a 
 2. Configure o nó com as seguintes propriedades:
    - Authentication: Mantenha em "none"
    - Method: GET
-   - URL: `https://api.woovi.com.br/api/v1/charge/MEU_CORRELATION_ID`
+   - URL: `https://api.woovi.com/api/v1/charge/MEU_CORRELATION_ID`
     - Substituia na URL o `MEU_CORRELATION_ID` pelo seu id de correlação
    - Send Headers: true
     - Adicione o header "Authorization" com seu `appID`
@@ -72,7 +72,7 @@ Ao clicar em "Test step" você receberá uma saida similar a esta confirmando a 
 2. Configure o nó com as seguintes propriedades:
    - Authentication: Mantenha em "none"
    - Method: POST
-   - URL: `https://api.woovi.com.br/api/v1/charge/MEU_CORRELATION_ID/refund`
+   - URL: `https://api.woovi.com/api/v1/charge/MEU_CORRELATION_ID/refund`
     - Substituia na URL o `MEU_CORRELATION_ID` pelo seu id de correlação
    - Send Headers: true
     - Adicione o header "Authorization" com seu `appID`

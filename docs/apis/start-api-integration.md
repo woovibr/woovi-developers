@@ -62,7 +62,7 @@ Exemplo:
 
 ```bash
 curl --request GET \
-  --url https://api.woovi.com.br/api/v1/charge \
+  --url https://api.woovi.com/api/v1/charge \
   --header 'Authorization: SEU_APPID_AQUI'
 ```
 

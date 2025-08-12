@@ -40,7 +40,7 @@ Nessa parte, vamos utilizar a API da woovi de criação de cobrança (segue o [l
 
 Aqui está um exemplo da URL e o corpo da requisição:
 
-- **URL**: `https://api.woovi.com.br/api/v1/charge`
+- **URL**: `https://api.woovi.com/api/v1/charge`
 - **Body**:
   ```json
   {

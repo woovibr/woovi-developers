@@ -101,7 +101,7 @@ Para saber mais sobre as especificações do nosso endpoint você pode acessar [
 
 ![](./__assets__/how-to-integrate-as-woovi-partner/postman-get-affilliates.png)
 
-1. Troque `BASE_URL` pela URL de produção `https://api.woovi.com.br`
+1. Troque `BASE_URL` pela URL de produção `https://api.woovi.com`
 3. Adicione o header `Authorization` da requisição e troque `API_TOKEN` pelo seu `appID`.
 
 Caso ainda não tenha um `appID`, recomenda-mos fortemente você consultar nossa documenta de [começando uma integração](../apis/api-getting-started.md)
@@ -113,7 +113,7 @@ Para saber mais sobre as especificações do nosso endpoint você pode acessar [
 
 ![](./__assets__/how-to-integrate-as-woovi-partner/postman-get-affiliate-by-taxID.png)
 
-1. Troque `BASE_URL` pela URL de produção `https://api.woovi.com.br`
+1. Troque `BASE_URL` pela URL de produção `https://api.woovi.com`
 2. Troque os números pelo seu que estão definidos na URL pelo CNPJ do seu afiliado
 3. Adicione o header `Authorization` da requisição e troque `API_TOKEN` pelo seu `appID`.
 

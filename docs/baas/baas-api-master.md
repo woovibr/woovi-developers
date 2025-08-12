@@ -25,13 +25,13 @@ Primeiro vá na plataforma em API/PLUGINS
 
 E crie uma api MASTER
 
-Logo após isso acesse no endpoint https://api.woovi.com.br/api/v1/application [application post](https://developers.woovi.com.br/en/api#tag/application/paths/~1api~1v1~1application/post)
+Logo após isso acesse no endpoint https://api.woovi.com/api/v1/application [application post](https://developers.woovi.com.br/en/api#tag/application/paths/~1api~1v1~1application/post)
 
 e use o AppId da API mestre para criar o AppId da conta que você selecionou. 
 
 é necessário ter o AccountId da conta a qual você quer criar a api. Para isso use o endpoint: 
 
-https://api.woovi.com.br/api/v1/account/ [application get](https://api.woovi.com.br/api/v1/account/)
+https://api.woovi.com/api/v1/account/ [application get](https://api.woovi.com/api/v1/account/)
 
 em api/v1/application
 
