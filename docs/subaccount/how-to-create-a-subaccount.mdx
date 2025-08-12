@@ -31,7 +31,7 @@ A chave PIX será checada antes de criar a subconta. Caso a chave não exista, a
   <TabItem value="shell-curl" label="Shell + cURL" default>
 
 ```sh
-  curl 'https://api.woovi.com.br/api/v1/subaccount' -X POST \
+  curl 'https://api.openpix.com.br/api/v1/subaccount' -X POST \
       -H "Accept: application/json" \
       -H "Content-Type: application/json" \
       -H "Authorization": "app_id"
@@ -42,7 +42,7 @@ A chave PIX será checada antes de criar a subconta. Caso a chave não exista, a
   <TabItem value="javascript" label="JavaScript + Fetch" default>
 
 ```js
-fetch('https://api.woovi.com.br/api/v1/subaccount', {
+fetch('https://api.openpix.com.br/api/v1/subaccount', {
   method: 'POST',
   body: JSON.stringify({
     name: "subaccount#1",

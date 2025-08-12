@@ -183,7 +183,7 @@ app.post('/webhook', (request, response) => {
     const fromPixKey = webhookResponse.charge.subaccount.pixKey;
 
     // Requsição que fará a transferência do valor entre subcontas.
-    const response = await fetch(`https://api.woovi.com.br/api/v1/subaccount/transfer`, {
+    const response = await fetch(`https://api.openpix.com.br/api/v1/subaccount/transfer`, {
       method: 'POST',
       "headers": {
         "Content-Type": "application/json",
