@@ -1,7 +1,7 @@
 ---
 id: what-is-the-fee-charged-by-woovi
 sidebar_position: 7
-title: Qual a taxa cobrada pela Woovi?
+title: Qual a taxa cobrada pela woovi?
 tags:
   - pix
   - pix-machine
@@ -14,7 +14,7 @@ tags:
   - imprimir
 ---
 
-A taxa cobrada pela Woovi nas transações com a Maquininha PIX é de 0.8% para cada transação, sendo a taxa mínima cobrada de R$0,50 centavos e a taxa máxima cobrada sendo de R$5,00 reais.
+A taxa cobrada pela woovi nas transações com a Maquininha PIX é de 0.8% para cada transação, sendo a taxa mínima cobrada de R$0,50 centavos e a taxa máxima cobrada sendo de R$5,00 reais.
 
 Exemplo 1: se você vender R$50,00 reais para seu cliente, o cálculo será de R$50,00 x 0.8%, que resulta em R$0,40 centavos, porém você pagará R$0,50 centavos, por ser a taxa mínima.
 
