@@ -7,7 +7,7 @@ tags:
   - api
 ---
 
-### Assinatura
+### Assinatura (Subscription)
 
 A assinatura é a entidade mais abrangente, que pode ser do tipo `PIX_RECURRING`. A assinatura poderá ter os seguintes status:
 
@@ -28,7 +28,7 @@ Caso o Pix Recurring seja cancelado ou rejeitado. Ainda é possível cobrar a as
 - `CANCELED`: Cancelado pelo usuário
 - `REJECTED`: Autorização removida pelo consumidor
 
-### COBR
+### COBR (Cobrança Recorrente)
 
 As cobranças serão criadas para efetuar o débito automático.
 
