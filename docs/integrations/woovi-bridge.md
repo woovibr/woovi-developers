@@ -1,13 +1,13 @@
 ---
 id: woovi-bridge
-title: Integração Woovi Bridge
+title: Integração woovi Bridge
 tags:
   - api
 ---
 
-## O que é a Woovi Bridge?
+## O que é a woovi Bridge?
 
-O Woovi Bridge permite que aplicações sem urls/endpoints expostos na internet recebam webhook localmente.
+O woovi Bridge permite que aplicações sem urls/endpoints expostos na internet recebam webhook localmente.
 - Casos de uso: PDV, sistemas embarcados, IoT.
 
 ### Como as informações são mandadas?
@@ -109,7 +109,7 @@ Pressione a tecla Windows + R. Ou seja, pressione a tecla Windows e ao mesmo tem
 Nessa caixa de texto você só precisa colocar: %programdata%
  - Pressione ENTER.
 
-Procure a pasta `Woovi` e entre nela.
+Procure a pasta `woovi` e entre nela.
 Nessa pasta terá dois arquivos, abra o arquivo `config.yaml`
 
 ![folder-2](./__assets__/config-woovi.png)

@@ -1,6 +1,6 @@
 ---
 id: assine-online-with-woovi
-title: Integração Woovi com Assine Online
+title: Integração woovi com Assine Online
 tags:
   - integration
   - n8n
@@ -12,10 +12,10 @@ tags:
 A Assine Online é uma plataforma que disponibiliza uma solução de assinatura digital para empresas.
 Os usuários podem assinar documentos usando seu telefone celular ou computador.
 
-## Como integrar a Assine Online com a Woovi?
+## Como integrar a Assine Online com a woovi?
 
-Para integrar a Assine Online com a Woovi, você deve:
+Para integrar a Assine Online com a woovi, você deve:
 
 1. Criar uma conta na Assine Online
 2. Crie uma aplicação na Assine Online [aqui](https://developers.assine.online/docs/starting/#criando-um-aplicativo)
-3. Entre em contato com o suporte da Woovi para realizar a integração
+3. Entre em contato com o suporte da woovi para realizar a integração

@@ -1,6 +1,6 @@
 ---
 id: how-to-integrate-as-woovi-partner
-title: Como integrar como parceiro da Woovi?
+title: Como integrar como parceiro da woovi?
 tags:
   - partnership
   - partner
@@ -37,7 +37,7 @@ Você pode fazer a criação da nova empresa através da nossa API, para saber m
 
 ## Pré-registro de conta de um Afiliado
 
-1) Após enviar o link para seu afiliado ou você clicar em novas empresa, ele/você poderá cadastrar na Woovi, essa conta será vinculado a sua empresa
+1) Após enviar o link para seu afiliado ou você clicar em novas empresa, ele/você poderá cadastrar na woovi, essa conta será vinculado a sua empresa
 > É importante que o afiliado preenchas todas as informações obrigatórias do formulário, aceite os termos e clique em continuar para seguir com a criação da conta de afiliado
 
 ![](./__assets__/how-to-integrate-as-woovi-partner/create-company-with-affiliate-link.png)
@@ -52,7 +52,7 @@ Um link de validação será enviado para o email do afiliado cadastrado, após 
 
 ![](./__assets__/how-to-integrate-as-woovi-partner/validate-phone-number-affiliate-account.png)
 
-3) Após o afiliado se cadastrar, ele terá acesso a uma conta na Woovi como seu afiliado
+3) Após o afiliado se cadastrar, ele terá acesso a uma conta na woovi como seu afiliado
 > Solicite para ele completar os dados de cadastrado dele, para que ele finaliza por completo o cadastro
 
 ![](./__assets__/how-to-integrate-as-woovi-partner/affiliate-home-screen.png)

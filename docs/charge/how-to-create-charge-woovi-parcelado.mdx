@@ -1,6 +1,6 @@
 ---
 id: how-to-create-charge-woovi-parcelado
-title: Como usar a API para criar uma cobrança com Woovi Parcelado?
+title: Como usar a API para criar uma cobrança com woovi Parcelado?
 tags:
   - concept
   - api
@@ -10,15 +10,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 :::info
-Para a ultilização dessa funcionalidade é necessário possuir a funcionalidade Woovi Parcelado. Solicite o acesso via chat pela plataforma pelo <a href="https://app.woovi.com/home/charges/pix-credit-card" target="_blank">link</a>.
+Para a ultilização dessa funcionalidade é necessário possuir a funcionalidade woovi Parcelado. Solicite o acesso via chat pela plataforma pelo <a href="https://app.woovi.com/home/charges/pix-credit-card" target="_blank">link</a>.
 :::
 
-Para criar uma cobrança Pix com Woovi Parcelado, você utiliza o _endpoint_ `/api/v1/charge` da API.
+Para criar uma cobrança Pix com woovi Parcelado, você utiliza o _endpoint_ `/api/v1/charge` da API.
 
 Você pode acessar [aqui](https://developers.woovi.com/api#tag/charge/paths/~1api~1v1~1charge/post)
 a documentação referente a esse _endpoint_.
 
-Os campos obrigatórios para criar uma cobrança Pix com Woovi Parcelado são os seguintes:
+Os campos obrigatórios para criar uma cobrança Pix com woovi Parcelado são os seguintes:
 
 - **`value`**: O valor em centavos da cobrança Pix a ser criado.
 - **`correlationID`**: Um identificador único para a cobrança Pix. [CorrelationID](../concepts/correlation-id)
@@ -33,7 +33,7 @@ O body da sua requisição será semelhante a este exemplo:
 {
   "correlationID": "63c533c0-3bb2-4847-a568-e2270e99aad8",
   "value": 1500,
-  "comment": "Woovi Parcelado",
+  "comment": "woovi Parcelado",
   "type": "PIX_CREDIT",
   "customer": {
     "name": "Dan ",
@@ -42,7 +42,7 @@ O body da sua requisição será semelhante a este exemplo:
     "email": "test@woovi.com",
     "address": {
       "zipcode": "13142514",
-      "street": "Rua Woovi",
+      "street": "Rua woovi",
       "number": "2019",
       "neighborhood": "Casa",
       "city": "Sao Paulo",
@@ -57,11 +57,11 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
 
 ## Renderizando a cobrança
 
-Para que o fluxo funcione por completo após a crição da cobrança com Woovi Parcelado é necessário que a mesma seja renderizada utilizando o link de pagamento da mesma ou o nosso Plugin Js.
+Para que o fluxo funcione por completo após a crição da cobrança com woovi Parcelado é necessário que a mesma seja renderizada utilizando o link de pagamento da mesma ou o nosso Plugin Js.
 
 ### Renderizando a cobrança - Link de Pagamento
 
-Renderizar sua cobrança Woovi Parcelado com o link de pagamento é a forma mais simples de executar o fluxo por completo. Basta pegar o campo `paymentLinkUrl` e abrir em uma nova aba no navegador.
+Renderizar sua cobrança woovi Parcelado com o link de pagamento é a forma mais simples de executar o fluxo por completo. Basta pegar o campo `paymentLinkUrl` e abrir em uma nova aba no navegador.
 
 ### Renderizando a cobrança - Plugin Js
 
@@ -74,7 +74,7 @@ Siga os steps abaixo:
 
 - **appID**: appID da sua loja, importante que o mesmo seja do tipo PLUGIN. Veja como criar um appID do tipo Plugin [aqui](/docs/apis/api-getting-started)
 - **correlationID**: correlationID da cobrança
-- **node**: o node representa o nó em seu HTML que ira receber nosso plugin injetado. `<div id="openpix-order"></div> <!-- o node nesse caso é "openpix-order" -->`
+- **node**: o node representa o nó em seu HTML que ira receber nosso plugin injetado. `<div id="woovi-order"></div> <!-- o node nesse caso é "woovi-order" -->`
 
 ```html<!DOCTYPE html>
 <!DOCTYPE html>
@@ -82,12 +82,12 @@ Siga os steps abaixo:
 
 <head>
   <meta charset="UTF-8" />
-  <title>Demo Woovi Plugin</title>
+  <title>Demo woovi Plugin</title>
 </head>
 
 <body>
-  <div id="openpix-order"></div> <!-- o node nesse caso é "openpix-order" -->
-  <script src="https://plugin.woovi.com/v1/openpix.js?appID=appID&correlationID=appID&node=openpix-order"></script>
+  <div id="woovi-order"></div> <!-- o node nesse caso é "woovi-order" -->
+  <script src="https://plugin.woovi.com/v1/woovi.js?appID=appID&correlationID=appID&node=woovi-order"></script>
 </body>
 
 </html>
@@ -103,7 +103,7 @@ Siga os steps abaixo:
       -H "Accept: application/json" \
       -H "Content-Type: application/json" \
       -H "user-agent: node-fetch" \
-      --data-binary '{"correlationID":"63c533c0-3bb2-4847-a568-e2270e99aad8","value":1500,"comment":"Woovi Parcelado","type":"PIX_CREDIT","customer":{"name":"Dan ","taxID":"12345678900","phone":"+5519912345678","email":"test@woovi.com","address":{"zipcode":"13142514","street":"Rua Woovi","number":"2019","neighborhood":"Casa","city":"Sao Paulo","state":"SP","complement":"Brooklin"}}}'
+      --data-binary '{"correlationID":"63c533c0-3bb2-4847-a568-e2270e99aad8","value":1500,"comment":"woovi Parcelado","type":"PIX_CREDIT","customer":{"name":"Dan ","taxID":"12345678900","phone":"+5519912345678","email":"test@woovi.com","address":{"zipcode":"13142514","street":"Rua woovi","number":"2019","neighborhood":"Casa","city":"Sao Paulo","state":"SP","complement":"Brooklin"}}}'
 ```
 
   </TabItem>
@@ -123,7 +123,7 @@ fetch('https://api.woovi.com/api/v1/charge', {
       email: 'test@woovi.com',
       address: {
         zipcode: '13142514',
-        street: 'Rua Woovi',
+        street: 'Rua woovi',
         number: '2019',
         neighborhood: 'Casa',
         city: 'Sao Paulo',
