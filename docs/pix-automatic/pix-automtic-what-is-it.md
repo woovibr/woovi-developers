@@ -24,7 +24,7 @@ As jornadas são as diferentes maneiras de se utilizar o Pix Automático definid
 
 ### Jornada 1 | Autorização via Push Notification
 
-Na joranda 1 o recebor envia uma notificação ao usuário, convidando-o para entrar em uma recorrência.
+Na jornada 1 o recebor envia uma notificação ao usuário, convidando-o para entrar em uma recorrência.
 
 ### Jornada 2 | Autorização via QRCode
 
@@ -42,7 +42,7 @@ Na jornada 4, o recebedor enviará ao consumidor um QRCode que será responsáve
 
 Ao criar uma assinatura você poderá definir sua política em caso de falha na cobrança. No momento existem duas opções:
 
-1. NON_PERMITED: Sem novas retentativas
-2. THREE_RETRIES_7_DAYS: Será feita até 3 novas cobranças no período de 7 dias
+1. `NON_PERMITED`: Sem novas retentativas
+2. `THREE_RETRIES_7_DAYS`: Será feita até 3 novas cobranças no período de 7 dias
 
 Se ao final das retentativas não for possível cobrar o usuário, a assinatura será cancelada.
