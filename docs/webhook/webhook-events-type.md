@@ -40,9 +40,17 @@ Os eventos de transação são enviados quando uma transação é recebida.
 
 Esse evento é enviado qunado uma transação é recebida, seja ela de uma cobrança ou de um QR code estático.
 
-### OPENPIX:TRANSACTION_REFUND_RECEIVED
+### OPENPIX:TRANSACTION_REFUND_RECEIVED (DEPRECATED)
 
 Esse evento é enviado quando é realizado o reembolso de uma transação.
+
+### PIX_TRANSACTION_REFUND_RECEIVED_CONFIRMED
+
+Esse evento é enviado quando uma transação de reembolso é recebida e confirmada.
+
+### PIX_TRANSACTION_REFUND_SENT_CONFIRMED
+
+Esse evento é enviado quando uma transação de reembolso é enviada e confirmada.
 
 ## Eventos de Pagamento Instantâneo
 

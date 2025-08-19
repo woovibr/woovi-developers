@@ -1,0 +1,145 @@
+---
+id: webhook-refund-received-confirmed
+title: Payload de Confirmação de Reembolso Pix Recebido
+tags:
+  - webhook
+  - header
+  - api
+---
+
+## Payloads de Reembolso
+
+Os webhooks do tipo `PIX_TRANSACTION_REFUND_RECEIVED_CONFIRMED` enviam objetos com os seguintes campos no seu payload:
+
+- `event`: O tipo de Evento realizado
+- `refundTransaction`: Detalhes da transação de reembolso enviada
+- `originalTransaction`: Detalhes da transação original que está sendo reembolsada
+- `company`: Empresa a que a Transação pertence
+- `account`: Detalhes da conta que a Transação pertence
+
+## Exemplo
+
+```json
+{
+  "event": "PIX_TRANSACTION_REFUND_RECEIVED_CONFIRMED",
+  "refundTransaction": {
+    "value": 10001,
+    "time": "2025-08-14T21:31:49.755Z",
+    "endToEndId": "D548114172025081421318FbVaF2LTWr",
+    "status": "CONFIRMED",
+    "type": "REFUND",
+    "debitParty": {
+      "pixKey": {
+        "pixKey": "swap.homolog@contaswap.com",
+        "type": "EMAIL"
+      },
+      "account": {
+        "branch": "0001",
+        "account": "00000000000000000221",
+        "accountType": "TRAN"
+      },
+      "psp": {
+        "id": "54811417",
+        "name": "WOOVI IP LTDA."
+      },
+      "holder": {
+        "taxID": {
+          "taxID": "47960950000121",
+          "type": "BR:CNPJ"
+        }
+      }
+    },
+    "creditParty": {
+      "account": {
+        "branch": "001",
+        "account": "73519",
+        "accountType": "TRAN"
+      },
+      "psp": {
+        "id": "31680151",
+        "name": "SWAP IP S.A."
+      },
+      "holder": {
+        "name": "Sapataria Xiq Bom",
+        "taxID": {
+          "taxID": "06888687000120",
+          "type": "BR:CNPJ"
+        }
+      }
+    },
+    "createdAt": "2025-08-14T21:31:49.821Z",
+    "partial": false,
+    "globalID": "UGl4VHJhbnNhY3Rpb246Njg5ZTU1YzVkNDEzYTJhYzZmMWRlMDcz"
+  },
+  "originalTransaction": {
+    "payer": {
+      "name": "Sapataria Xiq Bom",
+      "taxID": {
+        "taxID": "06888687000120",
+        "type": "BR:CNPJ"
+      },
+      "correlationID": "862adf9d-aae6-407e-86ba-5948d87ed591"
+    },
+    "value": 10001,
+    "time": "2025-08-14T15:43:33.000Z",
+    "endToEndId": "E31680151202508141543GVL7OCT44VU",
+    "status": "CONFIRMED",
+    "type": "PAYMENT",
+    "debitParty": {
+      "account": {
+        "branch": "001",
+        "account": "73519",
+        "accountType": "TRAN"
+      },
+      "psp": {
+        "id": "31680151",
+        "name": "SWAP IP S.A."
+      },
+      "holder": {
+        "name": "Sapataria Xiq Bom",
+        "taxID": {
+          "taxID": "06888687000120",
+          "type": "BR:CNPJ"
+        }
+      }
+    },
+    "creditParty": {
+      "pixKey": {
+        "pixKey": "swap.homolog@contaswap.com",
+        "type": "EMAIL"
+      },
+      "account": {
+        "branch": "0001",
+        "account": "00000000000000000221",
+        "accountType": "TRAN"
+      },
+      "psp": {
+        "id": "54811417",
+        "name": "WOOVI IP LTDA."
+      },
+      "holder": {
+        "taxID": {
+          "taxID": "47960950000121",
+          "type": "BR:CNPJ"
+        }
+      }
+    },
+    "createdAt": "2025-08-14T15:43:33.396Z",
+    "globalID": "UGl4VHJhbnNhY3Rpb246Njg5ZTA0MjVmMzE2MmMzZjE4MzVmMmM5"
+  },
+  "company": {
+    "id": "6762e45c55eb2e0a3b3cbc44",
+    "name": "MAGAZINE LUIZA S/A",
+    "nameFriendly": "MAGAZINE LUIZA",
+    "correlationID": "f7b21ff8-a0b0-4e6a-929c-c5c483174578"
+  },
+  "account": {
+    "id": "67a4bb7a7c9720a18b10648a",
+    "name": "Conta 8084",
+    "status": "OPEN",
+    "code": "54811417",
+    "branch": "0001",
+    "account": "00000000000000000221"
+  }
+}
+```
