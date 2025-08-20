@@ -1,15 +1,15 @@
 ---
-id: payment-flux
-title: Fluxo Básico de Pagamento
+id: payment-flow
+title: Fluxo de Pagamento consultando chave pix
 tags:
   - api
 ---
 
 ### Fluxo básico de Pagamento
 
-Este documento irá ajudar a entender como criar e aprovar um pagamento pix na woovi
+Este documento irá ajudar a entender como criar e aprovar um pagamento pix na openpix
 
-![diagrama sequencial fluxo basico de pagamento woovi](./__assets__/sequenceDiagrama_fluxo_de_pagamento.png)
+![diagrama sequencial fluxo basico de pagamento openpix](./__assets__/sequenceDiagrama_fluxo_de_pagamento.png)
 
 ### 1. Checar chave pix e obter pixKeyEndToEndId
   * para checar uma chave pix veja: [Verificação de chave pix](./check-pix-key.md)
@@ -21,7 +21,7 @@ Este documento irá ajudar a entender como criar e aprovar um pagamento pix na w
  * Utilize o appId para autenticar a requisição
  * Faça a requisição
  ```JSON
-    curl -X POST "https://api.woovi.com/api/v1/payment" \
+    curl -X POST "https://api.openpix.com/api/v1/payment" \
       -H "Authorization: <appId>" \
       -H "Content-Type: application/json" 
       --data-raw '{
@@ -57,7 +57,7 @@ Este documento irá ajudar a entender como criar e aprovar um pagamento pix na w
  * Utilize o appId para autenticar a requisição
  * Faça a requisição
  ```JSON
-    curl -X POST "https://api.woovi.com/api/v1/payment/approve" \
+    curl -X POST "https://api.openpix.com/api/v1/payment/approve" \
       -H "Authorization: <appId>" \
       -H "Content-Type: application/json" 
       --data-raw '{
