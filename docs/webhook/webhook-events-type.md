@@ -52,6 +52,10 @@ Esse evento é enviado quando uma transação de reembolso é recebida e confirm
 
 Esse evento é enviado quando uma transação de reembolso é enviada e confirmada.
 
+### PIX_TRANSACTION_REFUND_SENT_REJECTED
+
+Esse evento é enviado quando uma transação de reembolso é enviada mas é rejeitada.
+
 ## Eventos de Pagamento Instantâneo
 
 ### OPENPIX:MOVEMENT_CONFIRMED
