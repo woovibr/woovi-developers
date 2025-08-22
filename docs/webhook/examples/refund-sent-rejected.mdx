@@ -1,6 +1,6 @@
 ---
 id: webhook-refund-sent-rejected
-title: Payload de Confirmação de Reembolso Pix Enviado
+title: Payload de Rejeição de Reembolso Pix Enviado
 tags:
   - webhook
   - header
@@ -16,7 +16,7 @@ Os webhooks do tipo `PIX_TRANSACTION_REFUND_SENT_REJECTED` enviam objetos com os
 - `originalTransaction`: Detalhes da transação original que está sendo reembolsada
 - `company`: Empresa a que a Transação pertence
 - `account`: Detalhes da conta que a Transação pertence
-- `error`: Detalhes do motivo pela qual o Estorno foi rejeitado
+- `error`: Detalhes do motivo pela qual o Estorno foi rejeitado - [Códigos de erro de pagamento](https://developers.openpix.com.br/en/docs/flows/error-codes-payment)
 
 ## Exemplo
 
