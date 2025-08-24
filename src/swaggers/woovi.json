@@ -4597,13 +4597,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "installment": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/Installment"
-                    }
-                  },
                   "example": {
                     "installment": {
                       "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=",

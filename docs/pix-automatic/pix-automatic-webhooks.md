@@ -1,17 +1,21 @@
 ---
 id: pix-automatic-webhooks
-sidebar_position: 5
+sidebar_position: 6
 title: Webhooks
 tags:
   - pix-automatic
   - api
 ---
 
-## Pix Recurring
+## Pix Automátio WEB HOOKS
 
-- PIX_AUTOMATIC_APPROVED: Quando o pix automático é aprovado. Ele ocorre quando o consumidor lê o QRCode e aprova a recorrência em seu banco. Após disso o status é alterado para APPROVED.
+O Objeto que retorna nos webhooks do PIX_AUTOMATIC é o uma Assinatura, dentro dele tem acesso ao pix automático dentro do objeto (`pixRecurring`).
 
-O Objeto que retorna nos webhooks do PIX_RECURRING é o PaymentSubscription, dentro dele tem acesso ao pix recurring.
+### PIX_AUTOMATIC_APPROVED
+
+Quando o pix automático é aprovado. Ele ocorre quando o consumidor lê o QRCode e aprova a recorrência em seu banco. Após disso o status é alterado para APPROVED.
+
+Caso você esteja usando a jornada 3 (`PAYMENT_ON_APPROVAL`), vale lembrar que quando receber o webhook, a primeira parcela já foi paga.
 
 ```json
 {
@@ -53,8 +57,9 @@ O Objeto que retorna nos webhooks do PIX_RECURRING é o PaymentSubscription, den
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGE4ODMyMWQ2NWNiMmQ1MDdhMmVlMjk="
 }
 ```
+### PIX_AUTOMATIC_REJECTED
 
-- PIX_AUTOMATIC_REJECTED: Quando o consumidor recusa a recorrência em seu aplicativo do banco. o Status é alterado para REJECTED.
+Quando o consumidor recusa a recorrência em seu aplicativo do banco. o Status é alterado para REJECTED.
 
 ```json
 {
@@ -97,12 +102,17 @@ O Objeto que retorna nos webhooks do PIX_RECURRING é o PaymentSubscription, den
 }
 ```
 
-## COBR
+## COBR WEB HOOKS
 
-PIX_AUTOMATIC_COBR_CREATED: Quando o COBR é criado. Por padrão ele é criado 4 dias antes da data de cobrança. Após ser criado, é feita uma requisição para o banco do consumidor para ele ser aprovado ou rejeitado. Após o COBR ser criado, em poucos instantes deverá receber a confirmação se foi aceito ou rejeitado.
+O Objeto que retorna nos webhooks do `COBR` é a parcela na qual a cobrança será feita, dentro dele tem acesso ao cobr.
 
-O objeto principal de retorno dos webhooks do COBR é o PaymentSubscriptionInstallment, dentro desse objeto você tem o acesso ao `*COBR*` relacionado
+A primeira cobrança da jornada 3 (`PAYMENT_ON_APPROVAL`), que é realizada no momento da leitura do QR Code, não é considerado um COBR, logo não acionará os hooks relacionados ao COBR.
 
+### PIX_AUTOMATIC_COBR_CREATED
+
+Quando o COBR é criado. Por padrão ele é criado 4 dias antes da data de cobrança. Após ser criado, é feita uma requisição para o banco do consumidor para ele ser aprovado ou rejeitado. Após o COBR ser criado, em poucos instantes deverá receber a confirmação se foi aceito ou rejeitado.
+
+O objeto principal de retorno dos webhooks do COBR é o PaymentSubscriptionInstallment, dentro desse objeto você tem o acesso ao `COBR` relacionado.
 
 ```json
 {
@@ -125,7 +135,9 @@ O objeto principal de retorno dos webhooks do COBR é o PaymentSubscriptionInsta
 }
 ```
 
-PIX_AUTOMATIC_COBR_APPROVED: Quando o COBR é aprovado pelo banco do cliente, nesse caso a cobrança irá ser feita na data especificada em `*dateGenerateCharge*`.
+### PIX_AUTOMATIC_COBR_APPROVED
+
+Quando o COBR é aprovado pelo banco do cliente, nesse caso a cobrança irá ser feita na data especificada em `dateGenerateCharge`.
 
 ```json
 {
@@ -148,11 +160,38 @@ PIX_AUTOMATIC_COBR_APPROVED: Quando o COBR é aprovado pelo banco do cliente, ne
 }
 ```
 
-PIX_AUTOMATIC_COBR_REJECTED: Quando o COBR é rejeitado pelo banco de cliente. O tipo do erro aparece no campo `*rejectCode*` do payload. Nessa situação, poderemos realizar a retentativa de cobrança. Entre em contato com o suporte.
+### PIX_AUTOMATIC_COBR_COMPLETED
+
+Quando o COBR é pago pelo consumidor.
 
 ```json
 {
-  "event": "PIX_AUTOMATIC_COBR_APPROVED",
+  "event": "PIX_AUTOMATIC_COBR_COMPLETED",
+  "dateGenerateCharge": "2025-08-24T12:00:00.000Z",
+  "expiration": 259200,
+  "installmentNumber": 1,
+  "value": 100,
+  "status": "COMPLETED",
+  "createdAt": "2025-08-22T14:48:02.697Z",
+  "cobr": {
+    "identifierId": "01K3942Y0DFEK73H541ZADVK0P",
+    "recurrencyId": "RN5481141720250822YHKirVyWBjF",
+    "installmentId": "68a88322d65cb2d507a2ee3b",
+    "status": "COMPLETED",
+    "value": 100,
+    "createdAt": "2025-08-22T14:49:22.702Z"
+  },
+  "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
+}
+```
+
+### PIX_AUTOMATIC_COBR_REJECTED
+
+Quando o COBR é rejeitado pelo banco de cliente. O tipo do erro aparece no campo `rejectCode` do payload.
+
+```json
+{
+  "event": "PIX_AUTOMATIC_COBR_REJECTED",
   "dateGenerateCharge": "2025-08-24T12:00:00.000Z",
   "expiration": 259200,
   "installmentNumber": 1,

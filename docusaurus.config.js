@@ -14,6 +14,11 @@ const localeConfigs = {
 };
 
 module.exports = {
+  
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   future: {
     // experimental_faster: true,
     // experimental_faster: {
