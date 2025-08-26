@@ -86,6 +86,27 @@ no objeto COBR vc tem acesso ao status da cobrança.
 
 GET `/api/v1/installments/{id}`
 
+```json
+{
+  "dateGenerateCharge": "2025-08-24T12:00:00.000Z",
+  "expiration": 259200,
+  "installmentNumber": 1,
+  "value": 100,
+  "status": "ACTIVE",
+  "createdAt": "2025-08-22T14:48:02.697Z",
+  "cobr": {
+    "identifierId": "01K3942Y0DFEK73H541ZADVK0P",
+    "recurrencyId": "RN5481141720250822YHKirVyWBjF",
+    "installmentId": "68a88322d65cb2d507a2ee3b",
+    "status": "ACTIVE",
+    "value": 100,
+    "createdAt": "2025-08-22T14:49:22.702Z"
+  },
+  "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmM5MWE5NTY1M2VmMjQzYjY2OTk=",
+  "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
+}
+```
+
 ### Listar todas as parcelas de uma assinatura
 
 GET `/api/v1/subscriptions/{id}/installments`
