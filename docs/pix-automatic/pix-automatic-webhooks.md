@@ -131,6 +131,7 @@ O objeto principal de retorno dos webhooks do COBR é o PaymentSubscriptionInsta
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
+  "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
 }
 ```
@@ -156,6 +157,7 @@ Quando o COBR é aprovado pelo banco do cliente, nesse caso a cobrança irá ser
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
+  "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
 }
 ```
@@ -181,6 +183,7 @@ Quando o COBR é pago pelo consumidor.
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
+  "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
 }
 ```
@@ -206,8 +209,8 @@ Quando o COBR é rejeitado pelo banco de cliente. O tipo do erro aparece no camp
     "rejectCode": "DTED"
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z",
-    
   },
+  "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
 }
 ```
