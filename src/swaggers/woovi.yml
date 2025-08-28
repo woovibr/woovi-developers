@@ -6290,7 +6290,7 @@ paths:
 
             response = http.request(request)
             puts response.read_body
-  /api/v1/fraud-validation/{pixKey}/pix-key:
+  /api/v1/fraud-validation/pix-key/{pixKey}:
     get:
       tags:
         - fraudValidation
@@ -6428,7 +6428,7 @@ paths:
         '403':
           description: Your Authorization APP_ID must be configured to be MASTER or API
       x-codeSamples: []
-  /api/v1/fraud-validation/{taxId}/taxId:
+  /api/v1/fraud-validation/taxId/{taxId}:
     get:
       tags:
         - fraudValidation
