@@ -6290,6 +6290,243 @@ paths:
 
             response = http.request(request)
             puts response.read_body
+  /api/v1/fraud-validation/{pixKey}/pix-key:
+    get:
+      tags:
+        - fraudValidation
+      summary: Validate fraud markers for a Pix key
+      parameters:
+        - name: pixKey
+          in: path
+          required: true
+          description: Pix key to be verified (email, phone, EVP, CPF/CNPJ etc.)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixKeyFraudValidationResponse'
+              examples:
+                ok:
+                  value:
+                    success: true
+                    data:
+                      keyStatistics:
+                        fraudMarkers:
+                          watermark: 2025-08-04T17:18:21.716Z
+                          applicationFrauds:
+                            d90: '1'
+                            m12: '1'
+                            m60: '1'
+                          muleAccounts:
+                            d90: '0'
+                            m12: '0'
+                            m60: '0'
+                          scammerAccounts:
+                            d90: '11'
+                            m12: '10'
+                            m60: '10'
+                          otherFrauds:
+                            d90: '0'
+                            m12: '0'
+                            m60: '0'
+                          unknownFrauds:
+                            d90: '0'
+                            m12: '0'
+                            m60: '0'
+                          totalFraudTransactionAmount:
+                            d90: '723'
+                            m12: '723'
+                            m60: '723'
+                          distinctFraudReporters:
+                            d90: '1'
+                            m12: '1'
+                            m60: '1'
+                        infractionReports:
+                          watermark: 2025-08-04T17:18:21.756Z
+                          openReports: '2'
+                          openReportsDistinctReporters: '1'
+                          rejectedReports:
+                            d90: '3'
+                            m12: '3'
+                            m60: '3'
+                      ownerStatistics:
+                        fraudMarkers:
+                          watermark: 2025-08-04T17:18:21.716Z
+                          applicationFrauds:
+                            d90: '1'
+                            m12: '5'
+                            m60: '5'
+                          muleAccounts:
+                            d90: '0'
+                            m12: '1'
+                            m60: '1'
+                          scammerAccounts:
+                            d90: '15'
+                            m12: '21'
+                            m60: '21'
+                          otherFrauds:
+                            d90: '0'
+                            m12: '0'
+                            m60: '0'
+                          unknownFrauds:
+                            d90: '0'
+                            m12: '0'
+                            m60: '0'
+                          totalFraudTransactionAmount:
+                            d90: '1023'
+                            m12: '1517'
+                            m60: '1517'
+                          distinctFraudReporters:
+                            d90: '1'
+                            m12: '1'
+                            m60: '1'
+                        infractionReports:
+                          watermark: 2025-08-04T17:18:21.756Z
+                          openReports: '2'
+                          openReportsDistinctReporters: '1'
+                          rejectedReports:
+                            d90: '3'
+                            m12: '32'
+                            m60: '32'
+        '400':
+          description: Bad request (business rule / validation failed)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingBankAccount:
+                  value:
+                    success: false
+                    error: You need to link a Bank Account to this API
+                invalidBankCode:
+                  value:
+                    success: false
+                    error: Invalid bank code
+                missingMediator:
+                  value:
+                    success: false
+                    error: Missing mediator
+                missingFee:
+                  value:
+                    success: false
+                    error: Missing fraud validation fee
+                notFound:
+                  value:
+                    success: false
+                    error: Pix key not found
+                dictError:
+                  value:
+                    success: false
+                    error: Error getting pix key fraud
+        '401':
+          description: Your IP is not in the allowed list
+        '403':
+          description: Your Authorization APP_ID must be configured to be MASTER or API
+      x-codeSamples: []
+  /api/v1/fraud-validation/{taxId}/taxId:
+    get:
+      tags:
+        - fraudValidation
+      summary: Validate fraud markers for a Tax ID
+      parameters:
+        - name: taxId
+          in: path
+          required: true
+          description: Tax ID to be verified (CPF/CNPJ)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixKeyFraudValidationResponse'
+              examples:
+                ok:
+                  value:
+                    success: true
+                    data:
+                      ownerStatistics:
+                        fraudMarkers:
+                          watermark: 2025-08-04T17:18:21.716Z
+                          applicationFrauds:
+                            d90: '1'
+                            m12: '5'
+                            m60: '5'
+                          muleAccounts:
+                            d90: '0'
+                            m12: '1'
+                            m60: '1'
+                          scammerAccounts:
+                            d90: '15'
+                            m12: '21'
+                            m60: '21'
+                          otherFrauds:
+                            d90: '0'
+                            m12: '0'
+                            m60: '0'
+                          unknownFrauds:
+                            d90: '0'
+                            m12: '0'
+                            m60: '0'
+                          totalFraudTransactionAmount:
+                            d90: '1023'
+                            m12: '1517'
+                            m60: '1517'
+                          distinctFraudReporters:
+                            d90: '1'
+                            m12: '1'
+                            m60: '1'
+                        infractionReports:
+                          watermark: 2025-08-04T17:18:21.756Z
+                          openReports: '2'
+                          openReportsDistinctReporters: '1'
+                          rejectedReports:
+                            d90: '3'
+                            m12: '32'
+                            m60: '32'
+        '400':
+          description: Bad request (business rule / validation failed)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingBankAccount:
+                  value:
+                    success: false
+                    error: You need to link a Bank Account to this API
+                invalidBankCode:
+                  value:
+                    success: false
+                    error: Invalid bank code
+                missingMediator:
+                  value:
+                    success: false
+                    error: Missing mediator
+                missingFee:
+                  value:
+                    success: false
+                    error: Missing fraud validation fee
+                notFound:
+                  value:
+                    success: false
+                    error: Pix key not found
+                dictError:
+                  value:
+                    success: false
+                    error: Error getting pix key fraud
+        '401':
+          description: Your IP is not in the allowed list
+        '403':
+          description: Your Authorization APP_ID must be configured to be MASTER or API
+      x-codeSamples: []
   /api/v1/installments/{id}:
     get:
       tags:
@@ -6449,6 +6686,14 @@ paths:
       tags:
         - subscription
       summary: Get a list of installments by subscription
+      parameters:
+        - name: id
+          in: path
+          description: The globalID of the installment.
+          required: true
+          schema:
+            type: string
+          example: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
       responses:
         '200':
           description: A list of installments
@@ -6473,7 +6718,128 @@ paths:
                 properties:
                   error:
                     type: string
-      x-codeSamples: []
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/installments',
+              headers: {
+                Authorization: 'REPLACE_KEY_VALUE'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/installments \
+              --header 'Authorization: REPLACE_KEY_VALUE'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/installments",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => [
+                "Authorization: REPLACE_KEY_VALUE"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            headers = { 'Authorization': "REPLACE_KEY_VALUE" }
+
+
+            conn.request("GET",
+            "/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/installments",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/installments\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/installments")
+              .get()
+              .addHeader("Authorization", "REPLACE_KEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/installments")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Get.new(url)
+
+            request["Authorization"] = 'REPLACE_KEY_VALUE'
+
+
+            response = http.request(request)
+
+            puts response.read_body
   /api/v1/partner/application:
     post:
       tags:
@@ -8262,152 +8628,6 @@ paths:
           description: Your Authorization APP_ID must be configured to be MASTER or API
         '404':
           description: Pix key not found
-      x-codeSamples: []
-  /api/v1/pix-keys/{pixKey}/fraud-validation:
-    get:
-      tags:
-        - pixKey
-      summary: Validate fraud markers for a Pix key
-      description: >
-        Charges the FRAUD_VALIDATE_FEE from the linked account and queries DICT
-        (BACEN) to obtain fraud marker statistics for the provided Pix key,
-        returning a parsed summary. Requires a linked Woovi bank account and
-        valid token.
-      operationId: getPixKeyFraudValidation
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: pixKey
-          in: path
-          required: true
-          description: Pix key to be verified (email, phone, EVP, CPF/CNPJ etc.)
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PixKeyFraudValidationResponse'
-              examples:
-                ok:
-                  value:
-                    success: true
-                    data:
-                      keyStatistics:
-                        fraudMarkers:
-                          watermark: 2025-08-04T17:18:21.716Z
-                          applicationFrauds:
-                            d90: '1'
-                            m12: '1'
-                            m60: '1'
-                          muleAccounts:
-                            d90: '0'
-                            m12: '0'
-                            m60: '0'
-                          scammerAccounts:
-                            d90: '11'
-                            m12: '10'
-                            m60: '10'
-                          otherFrauds:
-                            d90: '0'
-                            m12: '0'
-                            m60: '0'
-                          unknownFrauds:
-                            d90: '0'
-                            m12: '0'
-                            m60: '0'
-                          totalFraudTransactionAmount:
-                            d90: '723'
-                            m12: '723'
-                            m60: '723'
-                          distinctFraudReporters:
-                            d90: '1'
-                            m12: '1'
-                            m60: '1'
-                        infractionReports:
-                          watermark: 2025-08-04T17:18:21.756Z
-                          openReports: '2'
-                          openReportsDistinctReporters: '1'
-                          rejectedReports:
-                            d90: '3'
-                            m12: '3'
-                            m60: '3'
-                      ownerStatistics:
-                        fraudMarkers:
-                          watermark: 2025-08-04T17:18:21.716Z
-                          applicationFrauds:
-                            d90: '1'
-                            m12: '5'
-                            m60: '5'
-                          muleAccounts:
-                            d90: '0'
-                            m12: '1'
-                            m60: '1'
-                          scammerAccounts:
-                            d90: '15'
-                            m12: '21'
-                            m60: '21'
-                          otherFrauds:
-                            d90: '0'
-                            m12: '0'
-                            m60: '0'
-                          unknownFrauds:
-                            d90: '0'
-                            m12: '0'
-                            m60: '0'
-                          totalFraudTransactionAmount:
-                            d90: '1023'
-                            m12: '1517'
-                            m60: '1517'
-                          distinctFraudReporters:
-                            d90: '1'
-                            m12: '1'
-                            m60: '1'
-                        infractionReports:
-                          watermark: 2025-08-04T17:18:21.756Z
-                          openReports: '2'
-                          openReportsDistinctReporters: '1'
-                          rejectedReports:
-                            d90: '3'
-                            m12: '32'
-                            m60: '32'
-        '400':
-          description: Bad request (business rule / validation failed)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                missingBankAccount:
-                  value:
-                    success: false
-                    error: You need to link a Bank Account to this API
-                invalidBankCode:
-                  value:
-                    success: false
-                    error: Invalid bank code
-                missingMediator:
-                  value:
-                    success: false
-                    error: Missing mediator
-                missingFee:
-                  value:
-                    success: false
-                    error: Missing fraud validation fee
-                notFound:
-                  value:
-                    success: false
-                    error: Pix key not found
-                dictError:
-                  value:
-                    success: false
-                    error: Error getting pix key fraud
-        '401':
-          description: Your IP is not in the allowed list
-        '403':
-          description: Your Authorization APP_ID must be configured to be MASTER or API
       x-codeSamples: []
   /api/v1/pix-keys:
     get:
@@ -12225,6 +12445,157 @@ paths:
 
             request.body =
             "{\"value\":0,\"fromPixKey\":\"string\",\"fromPixKeyType\":\"CPF\",\"toPixKey\":\"string\",\"toPixKeyType\":\"CPF\",\"correlationID\":\"string\"}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
+  /api/v1/subscriptions/{id}/cancel:
+    put:
+      tags:
+        - subscription
+      summary: Cancel an Subscription
+      parameters:
+        - name: id
+          in: path
+          description: The globalID or correlationID of the subscription.
+          required: true
+          schema:
+            type: string
+          example: UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=
+      responses:
+        '200':
+          description: The subscription retrieved using the given ID
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'PUT',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cancel',
+              headers: {
+                Authorization: 'REPLACE_KEY_VALUE'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request PUT \
+              --url https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cancel \
+              --header 'Authorization: REPLACE_KEY_VALUE'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cancel",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "PUT",
+              CURLOPT_HTTPHEADER => [
+                "Authorization: REPLACE_KEY_VALUE"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            headers = { 'Authorization': "REPLACE_KEY_VALUE" }
+
+
+            conn.request("PUT",
+            "/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cancel",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cancel\"\n\n\treq, _ := http.NewRequest(\"PUT\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cancel")
+              .put(null)
+              .addHeader("Authorization", "REPLACE_KEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cancel")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Put.new(url)
+
+            request["Authorization"] = 'REPLACE_KEY_VALUE'
 
 
             response = http.request(request)
