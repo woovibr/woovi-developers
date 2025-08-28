@@ -9,7 +9,7 @@ tags:
 
 ## Pix Automátio WEB HOOKS
 
-O Objeto que retorna nos webhooks do PIX_AUTOMATIC é o uma Assinatura, dentro dele tem acesso ao pix automático dentro do objeto (`pixRecurring`).
+O Objeto que retorna nos webhooks do PIX_AUTOMATIC é uma Assinatura, dentro dele tem acesso ao pix automático dentro do objeto (`pixRecurring`).
 
 ### PIX_AUTOMATIC_APPROVED
 

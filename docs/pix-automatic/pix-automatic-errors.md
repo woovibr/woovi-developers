@@ -1,5 +1,5 @@
 ---
-id: pix-api-routes
+id: pix-api-errors
 sidebar_position: 8
 title: Erros
 tags:
