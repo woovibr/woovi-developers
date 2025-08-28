@@ -124,3 +124,6 @@ GET `/api/v1/subscriptions/{id}/installments`
 }
 ```
 
+### Cancelar uma Assintarua
+
+PUT `/api/v1/subscriptions/{id}/cancel`
