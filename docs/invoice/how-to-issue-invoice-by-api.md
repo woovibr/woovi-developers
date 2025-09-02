@@ -16,10 +16,10 @@ POST /api/invoices
 
 ## Autenticação
 
-Use o header `Authorization` com o token Bearer:
+Use o header `Authorization` com o token:
 
 ```http
-Authorization: Bearer <seu_token>
+Authorization: <seu_token>
 ```
 
 ## Request Body
