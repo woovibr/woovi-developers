@@ -48,6 +48,10 @@ Esse evento é enviado quando é realizado o reembolso de uma transação.
 
 Esse evento é enviado quando uma transação de reembolso é recebida e confirmada.
 
+### PIX_TRANSACTION_REFUND_RECEIVED_REJECTED
+
+Esse evento é enviado quando uma transação de reembolso é recebida mas é rejeitada.
+
 ### PIX_TRANSACTION_REFUND_SENT_CONFIRMED
 
 Esse evento é enviado quando uma transação de reembolso é enviada e confirmada.

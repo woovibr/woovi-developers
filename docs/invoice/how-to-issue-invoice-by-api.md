@@ -3,9 +3,9 @@ title: Criar Nota Fiscal de serviço via API
 sidebar_label: Emissão de NFSe por API
 slug: /api/invoices/create
 tags:
-	•	invoice
-	•	integration
-	•	api
+  - invoice
+  - integration
+  - api
 ---
 
 ## Endpoint
