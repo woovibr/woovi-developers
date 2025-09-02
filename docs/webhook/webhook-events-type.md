@@ -48,17 +48,25 @@ Esse evento é enviado quando é realizado o reembolso de uma transação.
 
 Esse evento é enviado quando uma transação de reembolso é recebida e confirmada.
 
+[Ver exemplo de payload →](/docs/webhook/examples/webhook-refund-received-confirmed)
+
 ### PIX_TRANSACTION_REFUND_RECEIVED_REJECTED
 
 Esse evento é enviado quando uma transação de reembolso é recebida mas é rejeitada.
+
+[Ver exemplo de payload →](/docs/webhook/examples/webhook-refund-received-rejected)
 
 ### PIX_TRANSACTION_REFUND_SENT_CONFIRMED
 
 Esse evento é enviado quando uma transação de reembolso é enviada e confirmada.
 
+[Ver exemplo de payload →](/docs/webhook/examples/webhook-refund-sent-confirmed)
+
 ### PIX_TRANSACTION_REFUND_SENT_REJECTED
 
 Esse evento é enviado quando uma transação de reembolso é enviada mas é rejeitada.
+
+[Ver exemplo de payload →](/docs/webhook/examples/webhook-refund-sent-rejected)
 
 ## Eventos de Pagamento Instantâneo
 
