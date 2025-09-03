@@ -63,22 +63,44 @@ flowchart LR
     B[ACTIVE] -->E(CANCELED)
 ```
 
-### Cobrança Recorrente (COBR) 
+### Cobrança Recorrente (CobR) 
 
 As cobranças que serão criadas para debitar automaticamente do cliente.
 
-Por padrão ele é criado 4 dias antes da data de cobrança. Após ser criado, é feita uma requisição para o banco do consumidor para ele ser aprovado ou rejeitado. Após o COBR ser criado, em poucos instantes deverá receber a confirmação se foi aceito ou rejeitado.
+Por padrão ele é criado 4 dias antes da data de cobrança. Após ser criado, é feita uma requisição para o banco do consumidor para ele ser aprovado ou rejeitado.
 
 - `CREATED`: Status padrão de quando é criada
 - `ACTIVE`: Cobrança aceita pelo banco do consumidor
 - `CONCLUDED`: Cobrança realizada com sucesso
-- `REJECTED`: Cobrança rejeitada pelo banco do consumidor
+- `FAILED_TRY`: Tentativa de cobrança falhou
+- `REJECTED`: Cobrança rejeitada pelo banco do consumidor, ela só mudará para esse status em duas situações: 
+    - Após uma tentativa falhar e a cobrança atingir sua data de expiração, caso o retryPolicy seja `THREE_RETRIES_7_DAYS`
+    - Após uma tentativa falhar e a cobrança não ser paga na data determinada, caso o retryPolicy seja `NON_PERMITED` 
 - `CANCELED`: Cobrança cancelada 
 
 ```mermaid
 flowchart LR
     A[CREATED] -->B(ACTIVE)
+    A[CREATED] --> F[FAILED_TRY]
+    F[FAILED_TRY] --> D(REJECTED)
     B[ACTIVE] -->C(CONCLUDED)
-    B[ACTIVE] -->D(REJECTED)
     B[ACTIVE] -->E(CANCELED)
+```
+
+### Retentativa Cobrança Recorrente (CobRTry) 
+
+Sempre que uma cobrança for criada, também será criada uma tentativa de cobrança, caso ela falhe, dependendo da opção definida na assinatura (`retryPolicy`), poderão ser feitas novas tentativas de cobrança.
+
+Cada retentativa possui um status próprio, somente é possível realizar uma nova retentativa caso a última seja rejeitada
+
+- `REQUESTED`: Status padrão de quando é criada, simboliza que foi feito uma nova tentativa de cobrança
+- `SCHEDULED`: Quando a tentativa de cobrança é aceita com sucesso pelo banco
+- `PAID`: Quando a tentativa de cobrança é paga pelo banco
+- `REJECTED`: Quando a tentativa de cobrança é rejeitada pelo banco, nessa situação poderão ser feitas novas tentativas
+
+```mermaid
+flowchart LR
+    A[REQUESTED] -->B(SCHEDULED)
+    B[SCHEDULED] -->C(PAID)
+    A[REQUESTED] -->D(REJECTED)
 ```
