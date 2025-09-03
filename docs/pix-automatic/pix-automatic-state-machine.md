@@ -83,6 +83,7 @@ flowchart LR
     A[CREATED] -->B(ACTIVE)
     A[CREATED] --> F[FAILED_TRY]
     F[FAILED_TRY] --> D(REJECTED)
+    F[FAILED_TRY] --> B(ACTIVE)
     B[ACTIVE] -->C(CONCLUDED)
     B[ACTIVE] -->E(CANCELED)
 ```
@@ -90,6 +91,9 @@ flowchart LR
 ### Retentativa Cobrança Recorrente (CobRTry) 
 
 Sempre que uma cobrança for criada, também será criada uma tentativa de cobrança, caso ela falhe, dependendo da opção definida na assinatura (`retryPolicy`), poderão ser feitas novas tentativas de cobrança.
+
+- `THREE_RETRIES_7_DAYS` serão feitas até 3 retentativas: a primeira um dia após data da cobrança, outra na data intermediária entre a data da cobrançca e data de expiração, e a última tentativa será feita na data de expiração.
+- `NON_PERMITED` não serão feitas retentativas.
 
 Cada retentativa possui um status próprio, somente é possível realizar uma nova retentativa caso a última seja rejeitada
 
