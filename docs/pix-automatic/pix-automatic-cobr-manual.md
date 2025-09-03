@@ -24,3 +24,5 @@ no body da requisição é opcional enviar o novo valor em centavos.
   "value": 100
 }
 ```
+
+Você pode ver em mais detalhes pelo [link](https://developers.woovi.com/api#tag/CobR)
