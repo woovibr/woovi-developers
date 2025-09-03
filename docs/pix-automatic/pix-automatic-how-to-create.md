@@ -16,12 +16,18 @@ Como parte do `body` da requisição, esperamos o envio dos seguintes itens:
 - **`value`**: O valor em centavos da assinatura a ser criada.
 - **`customer`**: O cliente da assinatura a ser cobrado. É obrigatório o envio do endereço do cliente. Este campo é [idempotente](../concepts/idempotence.md), o que significa que se você enviar dados de um cliente que já exista, utilizaremos o existente ao invés de criar um novo.
 - **`type`**: Deve ser definido como `PIX_RECURRING`
-- **`journey`**: Deve ser baseado em qual jornada escolheu utilizar ( `PUSH_NOTIFICATION`: Jornada 1, `ONLY_RECURRENCY`: Jornada 2,  `PAYMENT_ON_APPROVAL`: Jornada 3, `PAYMENT_WITH_OFFER_TO_RECURRENCY`: Jornada 4),
-- **`retryPolicy`**: Qual Política de rententativa deve ser adotada ( `NON_PERMITED`: Sem política de retentativas, `THREE_RETRIES_7_DAYS`: 3 Retentativas em até 7 dias )
 - **`dayGenerateCharge`**: Dia do mês em que as cobranças serão geradas. 
+- **`dayDue`**: Quantos dias para expirar cobrança. 
 **Caso seja escolhido a jornada 3 (``PAYMENT_ON_APPROVAL``) a data da cobrança deve ser o dia atual**. 
 Outra observação desse campo, caso o valor seja inferior ao dia atual, a primeira cobrança ocorrerá apenas no próximo mês
 - **`comment`**: A descrição da cobrança aparecerá para o seu cliente ao ler o qrcode no aplicativo do banco.
+- **`frequency`**: A frequência da recorrência.
+
+Dentro do objeto `pixRecurringOptions` você precisa definir alguns parâmetros exclusivos do pix automático:
+
+- **`journey`**: Deve ser baseado em qual jornada escolheu utilizar ( `PUSH_NOTIFICATION`: Jornada 1, `ONLY_RECURRENCY`: Jornada 2,  `PAYMENT_ON_APPROVAL`: Jornada 3, `PAYMENT_WITH_OFFER_TO_RECURRENCY`: Jornada 4),
+- **`retryPolicy`**: Qual Política de rententativa deve ser adotada ( `NON_PERMITED`: Sem política de retentativas, `THREE_RETRIES_7_DAYS`: 3 Retentativas em até 7 dias )
+- **`minimunValue`** (Opcional): Caso sua cobrança tenha valor variável, você pode definir o valor mínimo a que deve ser aceito.
 
 ## Exemplo
 

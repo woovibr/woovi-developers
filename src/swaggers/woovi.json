@@ -4913,6 +4913,196 @@
         "x-codeSamples": []
       }
     },
+    "/api/v1/installments/{id}/cobr": {
+      "post": {
+        "tags": [
+          "CobR"
+        ],
+        "summary": "Create a new Cobr Manually",
+        "description": "Create a new Cobr Manually.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The globalID of the installment.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM="
+          }
+        ],
+        "requestBody": {
+          "description": "Data to create a new Cobr",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "description": "Valor da cobrança (Opcional)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The subscription created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr',\n  headers: {\n    Authorization: 'REPLACE_KEY_VALUE',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({value: 0}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr \\\n  --header 'Authorization: REPLACE_KEY_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"value\":0}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'value' => 0\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: REPLACE_KEY_VALUE\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"value\\\":0}\"\n\nheaders = {\n    'Authorization': \"REPLACE_KEY_VALUE\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr\"\n\n\tpayload := strings.NewReader(\"{\\\"value\\\":0}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"value\\\":0}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr\")\n  .post(body)\n  .addHeader(\"Authorization\", \"REPLACE_KEY_VALUE\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'REPLACE_KEY_VALUE'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"value\\\":0}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/installments/{id}/cobr/retry": {
+      "post": {
+        "tags": [
+          "CobR"
+        ],
+        "summary": "Create a new Retry Manually",
+        "description": "Create a new Retry Manually.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The globalID of the installment.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM="
+          }
+        ],
+        "requestBody": {
+          "description": "Data to create a new Cobr",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "description": "Valor da cobrança (Opcional)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The subscription created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr/retry',\n  headers: {\n    Authorization: 'REPLACE_KEY_VALUE',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({value: 0}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr/retry \\\n  --header 'Authorization: REPLACE_KEY_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"value\":0}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr/retry\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'value' => 0\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: REPLACE_KEY_VALUE\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"value\\\":0}\"\n\nheaders = {\n    'Authorization': \"REPLACE_KEY_VALUE\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr/retry\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr/retry\"\n\n\tpayload := strings.NewReader(\"{\\\"value\\\":0}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"value\\\":0}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr/retry\")\n  .post(body)\n  .addHeader(\"Authorization\", \"REPLACE_KEY_VALUE\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/installments/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/cobr/retry\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'REPLACE_KEY_VALUE'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"value\\\":0}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
     "/api/v1/installments/{id}": {
       "get": {
         "tags": [
@@ -5082,6 +5272,123 @@
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=/installments\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'REPLACE_KEY_VALUE'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
+      }
+    },
+    "/api/v1/invoice/{invoiceId}/cancel": {
+      "post": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Cancel an invoice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice canceled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "examples": {
+                  "ok": {
+                    "value": {
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "notConfirmed": {
+                    "value": {
+                      "error": "Cannot cancel a not confirmed invoice"
+                    }
+                  },
+                  "cancelError": {
+                    "value": {
+                      "error": "Unable to cancel invoice"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Forbidden - Missing required feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "missingFeature": {
+                    "value": {
+                      "error": "You need feature Invoice to access this endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "invoiceNotFound": {
+                    "value": {
+                      "error": "Invoice not found"
+                    }
+                  },
+                  "integrationNotFound": {
+                    "value": {
+                      "error": "Integration not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
       }
     },
     "/api/v1/invoice": {
@@ -5336,7 +5643,63 @@
                   "type": "object",
                   "properties": {
                     "invoice": {
-                      "type": "object"
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "number"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "billingDate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "statusRaw": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "correlationID": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "charge": {
+                          "type": "object",
+                          "properties": {
+                            "correlationID": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "number"
+                            },
+                            "status": {
+                              "type": "string"
+                            },
+                            "paidAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "date": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -5394,7 +5757,7 @@
             "description": "Your IP is not in the allowed list"
           },
           "403": {
-            "description": "Your Authorization APP_ID must be configured to be MASTER or API",
+            "description": "Forbidden - Missing required feature",
             "content": {
               "application/json": {
                 "schema": {
@@ -5441,6 +5804,214 @@
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/invoice\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'REPLACE_KEY_VALUE'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"description\\\":\\\"string\\\",\\\"billingDate\\\":\\\"2019-08-24T14:15:22Z\\\",\\\"charge\\\":\\\"string\\\",\\\"value\\\":0,\\\"customerId\\\":\\\"string\\\",\\\"customer\\\":{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"address\\\":{\\\"country\\\":\\\"string\\\",\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\"}}}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
+      }
+    },
+    "/api/v1/invoice/{invoiceId}/pdf": {
+      "get": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Get invoice PDF document",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF file",
+            "headers": {
+              "Content-Disposition": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "inline; filename=\"invoice.pdf\""
+              }
+            },
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Forbidden - Missing required feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "missingFeature": {
+                    "value": {
+                      "error": "You need feature Invoice to access this endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "notFound": {
+                    "value": {
+                      "error": "Invoice not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error while generating documents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "documentError": {
+                    "value": {
+                      "error": "Error while getting invoice documents"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
+      }
+    },
+    "/api/v1/invoice/{invoiceId}/xml": {
+      "get": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Get invoice XML document",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "XML file",
+            "headers": {
+              "Content-Disposition": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "inline; filename=\"invoice.xml\""
+              }
+            },
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Forbidden - Missing required feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "missingFeature": {
+                    "value": {
+                      "error": "You need feature Invoice to access this endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "notFound": {
+                    "value": {
+                      "error": "Invoice not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error while generating documents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "documentError": {
+                    "value": {
+                      "error": "Error while getting invoice documents"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
       }
     },
     "/api/v1/partner/application": {
@@ -12984,13 +13555,51 @@
               "value": {
                 "type": "number"
               },
-              "createdAt": {
-                "type": "string"
+              "tries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "tryStatus": {
+                      "type": "string"
+                    },
+                    "finalityPurpose": {
+                      "type": "string"
+                    },
+                    "rejectCode": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    },
+                    "requestedExecutionDate": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
               },
               "paymentDate": {
                 "type": "string"
               },
+              "chargeDate": {
+                "type": "string"
+              },
+              "expiryDate": {
+                "type": "string"
+              },
               "description": {
+                "type": "string"
+              },
+              "createdAt": {
                 "type": "string"
               }
             }
@@ -13197,6 +13806,10 @@
     {
       "name": "subscription",
       "description": "Endpoint to manage Subscriptions\n"
+    },
+    {
+      "name": "CobR",
+      "description": "Endpoint to manually create and retry CobR from Pix Automatic\n"
     },
     {
       "name": "transfer (request access)",
