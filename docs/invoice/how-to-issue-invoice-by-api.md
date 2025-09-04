@@ -1,7 +1,6 @@
 ---
 title: Criar Nota Fiscal de serviço via API
 sidebar_label: Emissão de NFSe por API
-slug: /api/invoices/create
 tags:
   - invoice
   - integration
@@ -11,18 +10,10 @@ tags:
 ## Endpoint
 
 ```http
-POST /api/invoices
+POST /api/v1/invoice
 ```
+Você encontra a documentação mais detalhada desse endpoint nas [documentações de api]('https://developers.woovi.com/en/api#tag/invoice/paths/~1api~1v1~1invoice~1%7BinvoiceId%7D~1pdf/get')
 
-## Autenticação
-
-Use o header `Authorization` com o token:
-
-```http
-Authorization: <seu_token>
-```
-
-## Request Body
 
 A API aceita dois formatos de payload, sempre exigindo dados de cobrança **ou** valor, e um cliente (via `customerId` ou objeto `customer`).
 
@@ -89,23 +80,42 @@ A API aceita dois formatos de payload, sempre exigindo dados de cobrança **ou**
 * `Charge not found`
 * `Customer address is invalid`
 
-## Exemplo curl
+### Exemplos em código
 
-```bash
-curl -X POST "https://api.seusistema.com/api/invoices" \
-  -H "Authorization: Bearer $API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "description": "Mensalidade Premium",
-    "billingDate": "2025-08-31T23:59:59.000Z",
-    "charge": "ch_abc",
-    "customerId": "cus_123"
-  }'
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+ curl --request POST \
+     --url https://api.woovi.com/api/v1/invoice \
+     --header 'Authorization: {AUTHORIZATION TOKEN}' \
+     --header 'content-type: application/json'\
+      -d '{
+        "description": "Mensalidade Premium",
+        "billingDate": "2025-08-31T23:59:59.000Z",
+        "charge": "ch_abc",
+        "customerId": "cus_123"
+      }'
 ```
 
-## Observações
+</TabItem>
+<TabItem value="javascript" label="JavaScript + Fetch" default>
 
-* É necessário que a integração NFe esteja **ativa** e com status **CONFIGURED**.
-* Apenas **uma nota por cobrança** pode ser emitida.
-* Caso a emissão falhe, é permitido tentar novamente.
-* Ao enviar um objeto `customer`, o sistema cria ou atualiza o cadastro.
+```js
+fetch('https://api.woovi.com/api/v1/invoice', {
+  method: 'POST',
+  headers: {
+    Authorization: {AUTHORIZATION TOKEN},
+    'Content-Type': 'application/json',
+  },
+  body: {
+    description: "Mensalidade Premium",
+    billingDate: "2025-08-31T23:59:59.000Z",
+    charge: "ch_abc",
+    customerId: "cus_123"
+  }
+}).then(async (res) => res.json)
+```
+
+  </TabItem>
+</Tabs>
