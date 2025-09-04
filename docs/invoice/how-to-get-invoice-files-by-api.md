@@ -1,6 +1,6 @@
 ---
 title: Como encontrar arquivos da nota fiscal
-sidebar_label: Emissão de NFSe por API
+sidebar_label: Arquivos da nota fiscal por api
 tags:
   - invoice
   - integration
@@ -57,7 +57,7 @@ fetch('https://api.woovi.com/api/v1/invoice/{id}/pdf', {
     if (contentType?.includes('application/json')) {
       return res.json();
     }
-    
+
     return res.text();
   })
 ```
