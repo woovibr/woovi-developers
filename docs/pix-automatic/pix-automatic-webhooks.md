@@ -108,6 +108,11 @@ O Objeto que retorna nos webhooks do `COBR` é a parcela na qual a cobrança ser
 
 A primeira cobrança da jornada 3 (`PAYMENT_ON_APPROVAL`), que é realizada no momento da leitura do QR Code, não é considerado um COBR, logo não acionará os hooks relacionados ao COBR.
 
+O campo `globalID` representa o id único da parcela.
+o campo `paymentSubscriptionGlobalID` representa o id único da assinatura
+
+Dentro do objeto cobr você tem acesso ao `identifierId` que é o identificador único da cobrança recorrente.
+
 ### PIX_AUTOMATIC_COBR_CREATED
 
 Quando o COBR é criado. Por padrão ele é criado 4 dias antes da data de cobrança. Após ser criado, é feita uma requisição para o banco do consumidor para ele ser aprovado ou rejeitado. Após o COBR ser criado, em poucos instantes deverá receber a confirmação se foi aceito ou rejeitado.
@@ -126,8 +131,17 @@ O objeto principal de retorno dos webhooks do COBR é o PaymentSubscriptionInsta
   "cobr": {
     "identifierId": "01K3942Y0DFEK73H541ZADVK0P",
     "recurrencyId": "RN5481141720250822YHKirVyWBjF",
-    "installmentId": "68a88322d65cb2d507a2ee3b",
     "status": "CREATED",
+    "tries": [
+      {
+        "tryStatus": "REQUESTED",
+        "value": 1,
+        "finalityPurpose": "AGND",
+        "requestedExecutionDate": "2025-09-05T12:00:00.000Z",
+        "createdAt": "2025-09-04T03:01:58.543Z",
+        "updatedAt": "2025-09-04T03:04:03.921Z",
+      }
+    ],
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
@@ -152,8 +166,17 @@ Quando o COBR é aprovado pelo banco do cliente, nesse caso a cobrança irá ser
   "cobr": {
     "identifierId": "01K3942Y0DFEK73H541ZADVK0P",
     "recurrencyId": "RN5481141720250822YHKirVyWBjF",
-    "installmentId": "68a88322d65cb2d507a2ee3b",
     "status": "ACTIVE",
+    "tries": [
+      {
+        "tryStatus": "SCHEDULED",
+        "value": 1,
+        "finalityPurpose": "AGND",
+        "requestedExecutionDate": "2025-09-05T12:00:00.000Z",
+        "createdAt": "2025-09-04T03:01:58.543Z",
+        "updatedAt": "2025-09-04T03:04:03.921Z",
+      }
+    ],
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
@@ -178,8 +201,17 @@ Quando o COBR é pago pelo consumidor.
   "cobr": {
     "identifierId": "01K3942Y0DFEK73H541ZADVK0P",
     "recurrencyId": "RN5481141720250822YHKirVyWBjF",
-    "installmentId": "68a88322d65cb2d507a2ee3b",
     "status": "COMPLETED",
+    "tries": [
+      {
+        "tryStatus": "PAID",
+        "value": 1,
+        "finalityPurpose": "AGND",
+        "requestedExecutionDate": "2025-09-05T12:00:00.000Z",
+        "createdAt": "2025-09-04T03:01:58.543Z",
+        "updatedAt": "2025-09-04T03:04:03.921Z",
+      }
+    ],
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
@@ -191,6 +223,7 @@ Quando o COBR é pago pelo consumidor.
 ### PIX_AUTOMATIC_COBR_REJECTED
 
 Quando o COBR é rejeitado pelo banco de cliente. O tipo do erro aparece no campo `rejectCode` do payload.
+Esse webhook é disparado apenas uma vez, após todas as tentativas de cobranças serem realizadas. 
 
 ```json
 {
@@ -204,13 +237,102 @@ Quando o COBR é rejeitado pelo banco de cliente. O tipo do erro aparece no camp
   "cobr": {
     "identifierId": "01K3942Y0DFEK73H541ZADVK0P",
     "recurrencyId": "RN5481141720250822YHKirVyWBjF",
-    "installmentId": "68a88322d65cb2d507a2ee3b",
     "status": "REJECTED",
+    "tries": [
+      {
+        "tryStatus": "REJECTED",
+        "value": 1,
+        "finalityPurpose": "AGND",
+        "requestedExecutionDate": "2025-09-05T12:00:00.000Z",
+        "createdAt": "2025-09-04T03:01:58.543Z",
+        "updatedAt": "2025-09-04T03:04:03.921Z",
+        "rejectCode": "DTED"
+      }
+    ],
     "rejectCode": "DTED"
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z",
   },
   "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
+}
+```
+
+## COBR TRY WEB HOOKS
+
+Representam uma tentativa de cobrança
+
+### PIX_AUTOMATIC_COBR_TRY_REQUESTED
+
+Quando uma nova tentatva de cobrança é realizada, apenas o ocorre se o `retryPolicy` for igual a `THREE_RETRIES_7_DAYS`.
+Quando um cobr é criado também é criado uma nova tentativa de cobrança, porém não enviamos esse webhook nesse caso, visto que o evento do PIX_AUTOMATIC_COBR_CREATED já é emitido.
+
+```json
+{
+  "event": "PIX_AUTOMATIC_COBR_TRY_REJECTED",
+  "dateGenerateCharge": "2025-09-05T12:00:00.000Z",
+  "expiration": 1209600,
+  "installmentNumber": 2,
+  "value": 1,
+  "status": "SCHEDULED",
+  "createdAt": "2025-09-04T03:00:20.372Z",
+  "cobr": {
+    "identifierId": "01K49ARZMETSD7XJ2H86HV188H",
+    "recurrencyId": "RN5481141720250811Vs0a16RIRVm",
+    "status": "CREATED",
+    "tries": [
+      {
+        "tryStatus": "REQUESTED",
+        "value": 1,
+        "finalityPurpose": "AGND",
+        "requestedExecutionDate": "2025-09-05T12:00:00.000Z",
+        "createdAt": "2025-09-04T03:01:58.543Z",
+        "updatedAt": "2025-09-04T03:04:03.921Z",
+        "rejectCode": "FBRD"
+      }
+    ],
+    "value": 1,
+    "description": "comment",
+    "createdAt": "2025-09-04T03:01:58.543Z"
+  },
+  "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2ODlhNTA1NmVjY2NkZTViMzdmYzE0MDE=",
+  "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YjkwMGM0ZDE5ZTBlY2QwMmQ2NzViMg=="
+}
+```
+
+### PIX_AUTOMATIC_COBR_TRY_REJECTED
+
+Quando uma cobrança do pix automática é rejeitada pelo banco do pagador.
+
+```json
+{
+  "event": "PIX_AUTOMATIC_COBR_TRY_REJECTED",
+  "dateGenerateCharge": "2025-09-05T12:00:00.000Z",
+  "expiration": 1209600,
+  "installmentNumber": 2,
+  "value": 1,
+  "status": "CANCELED",
+  "createdAt": "2025-09-04T03:00:20.372Z",
+  "cobr": {
+    "identifierId": "01K49ARZMETSD7XJ2H86HV188H",
+    "recurrencyId": "RN5481141720250811Vs0a16RIRVm",
+    "status": "FAILED_TRY",
+    "tries": [
+      {
+        "tryStatus": "REJECTED",
+        "value": 1,
+        "finalityPurpose": "AGND",
+        "requestedExecutionDate": "2025-09-05T12:00:00.000Z",
+        "createdAt": "2025-09-04T03:01:58.543Z",
+        "updatedAt": "2025-09-04T03:04:03.921Z",
+        "rejectCode": "FBRD"
+      }
+    ],
+    "value": 1,
+    "description": "comment",
+    "createdAt": "2025-09-04T03:01:58.543Z"
+  },
+  "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2ODlhNTA1NmVjY2NkZTViMzdmYzE0MDE=",
+  "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YjkwMGM0ZDE5ZTBlY2QwMmQ2NzViMg=="
 }
 ```
