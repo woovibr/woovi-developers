@@ -11,6 +11,8 @@ tags:
 
 O Objeto que retorna nos webhooks do PIX_AUTOMATIC é uma Assinatura, dentro dele tem acesso ao pix automático dentro do objeto (`pixRecurring`).
 
+O campo `globalID` representa o id único da assinatura, ele deverá ser usado nos endoints relacionado com assinatura.
+
 ### PIX_AUTOMATIC_APPROVED
 
 Quando o pix automático é aprovado. Ele ocorre quando o consumidor lê o QRCode e aprova a recorrência em seu banco. Após disso o status é alterado para APPROVED.
@@ -116,8 +118,6 @@ Dentro do objeto cobr você tem acesso ao `identifierId` que é o identificador 
 ### PIX_AUTOMATIC_COBR_CREATED
 
 Quando o COBR é criado. Por padrão ele é criado 4 dias antes da data de cobrança. Após ser criado, é feita uma requisição para o banco do consumidor para ele ser aprovado ou rejeitado. Após o COBR ser criado, em poucos instantes deverá receber a confirmação se foi aceito ou rejeitado.
-
-O objeto principal de retorno dos webhooks do COBR é o PaymentSubscriptionInstallment, dentro desse objeto você tem o acesso ao `COBR` relacionado.
 
 ```json
 {
