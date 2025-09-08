@@ -1,7 +1,7 @@
 ---
 id: pix-automatic-webhooks
-sidebar_position: 6
-title: Webhooks
+sidebar_position: 5.1
+title: Listagem dos Webhooks
 tags:
   - pix-automatic
   - api
@@ -11,13 +11,13 @@ tags:
 
 O Objeto que retorna nos webhooks do PIX_AUTOMATIC é uma Assinatura, dentro dele tem acesso ao pix automático dentro do objeto (`pixRecurring`).
 
-O campo `globalID` representa o id único da assinatura, ele deverá ser usado nos endoints relacionado com assinatura.
+O campo `globalID` representa o id único da assinatura, ele deverá ser usado nos endpoints relacionados com assinatura.
 
 ### PIX_AUTOMATIC_APPROVED
 
 Quando o pix automático é aprovado. Ele ocorre quando o consumidor lê o QRCode e aprova a recorrência em seu banco. Após disso o status é alterado para APPROVED.
 
-Caso você esteja usando a jornada 3 (`PAYMENT_ON_APPROVAL`), vale lembrar que quando receber o webhook, a primeira parcela já foi paga.
+Caso você esteja usando a jornada 3 (`PAYMENT_ON_APPROVAL`), vale lembrar que quando receber o webhook, a primeira parcela já foi paga, você também receberá o webhook de `COBR_COMPLETED`.
 
 ```json
 {
@@ -112,12 +112,13 @@ A primeira cobrança da jornada 3 (`PAYMENT_ON_APPROVAL`), que é realizada no m
 
 O campo `globalID` representa o id único da parcela.
 o campo `paymentSubscriptionGlobalID` representa o id único da assinatura
+o campo `correlationID` representa o seu identificador único que foi enviado ao criar a assinatura
 
 Dentro do objeto cobr você tem acesso ao `identifierId` que é o identificador único da cobrança recorrente.
 
 ### PIX_AUTOMATIC_COBR_CREATED
 
-Quando o COBR é criado. Por padrão ele é criado 4 dias antes da data de cobrança. Após ser criado, é feita uma requisição para o banco do consumidor para ele ser aprovado ou rejeitado. Após o COBR ser criado, em poucos instantes deverá receber a confirmação se foi aceito ou rejeitado.
+Quando o COBR é criado. Por padrão ele é criado 4 dias antes da data de cobrança. Após ser criado, é feita uma requisição para o banco do consumidor para ele ser aprovado ou rejeitado. Após o COBR ser criado, você poderá receber o webhook `PIX_AUTOMATIC_COBR_TRY_REJECTED` caso tenha falha na tentativa de cobrança ou `PIX_AUTOMATIC_COBR_APPROVED` caso a cobrança seja aprovada.
 
 ```json
 {
@@ -145,6 +146,7 @@ Quando o COBR é criado. Por padrão ele é criado 4 dias antes da data de cobra
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
+  "correlationID": "9134e286-6f71-427a-bf00-100000000005",
   "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
 }
@@ -180,6 +182,7 @@ Quando o COBR é aprovado pelo banco do cliente, nesse caso a cobrança irá ser
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
+  "correlationID": "9134e286-6f71-427a-bf00-100000000005",
   "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
 }
@@ -215,6 +218,7 @@ Quando o COBR é pago pelo consumidor.
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z"
   },
+  "correlationID": "9134e286-6f71-427a-bf00-100000000005",
   "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
 }
@@ -253,6 +257,7 @@ Esse webhook é disparado apenas uma vez, após todas as tentativas de cobrança
     "value": 100,
     "createdAt": "2025-08-22T14:49:22.702Z",
   },
+  "correlationID": "9134e286-6f71-427a-bf00-100000000005",
   "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGFjYmNkNGE5NTY1M2VmMjQzYjY2Zjc=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YTg4MzIyZDY1Y2IyZDUwN2EyZWUzYg=="
 }
@@ -295,6 +300,7 @@ Quando um cobr é criado também é criado uma nova tentativa de cobrança, por�
     "description": "comment",
     "createdAt": "2025-09-04T03:01:58.543Z"
   },
+  "correlationID": "9134e286-6f71-427a-bf00-100000000005",
   "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2ODlhNTA1NmVjY2NkZTViMzdmYzE0MDE=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YjkwMGM0ZDE5ZTBlY2QwMmQ2NzViMg=="
 }
@@ -332,6 +338,7 @@ Quando uma cobrança do pix automática é rejeitada pelo banco do pagador.
     "description": "comment",
     "createdAt": "2025-09-04T03:01:58.543Z"
   },
+  "correlationID": "9134e286-6f71-427a-bf00-100000000005",
   "paymentSubscriptionGlobalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2ODlhNTA1NmVjY2NkZTViMzdmYzE0MDE=",
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YjkwMGM0ZDE5ZTBlY2QwMmQ2NzViMg=="
 }
