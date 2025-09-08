@@ -13607,6 +13607,9 @@
           "paymentSubscriptionGlobalID": {
             "type": "string"
           },
+          "correlationID": {
+            "type": "string"
+          },
           "globalID": {
             "type": "string"
           }

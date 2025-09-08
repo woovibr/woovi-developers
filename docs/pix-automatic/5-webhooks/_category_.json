@@ -1,0 +1,13 @@
+{
+  "label": "Webhooks",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Webhooks"
+  },
+  "customProps": {
+    "description": "Webhooks do Pix Automático"
+  }
+}
