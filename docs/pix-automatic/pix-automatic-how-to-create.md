@@ -27,7 +27,7 @@ Dentro do objeto `pixRecurringOptions` você precisa definir alguns parâmetros 
 
 - **`journey`**: Deve ser baseado em qual jornada escolheu utilizar ( `PUSH_NOTIFICATION`: Jornada 1, `ONLY_RECURRENCY`: Jornada 2,  `PAYMENT_ON_APPROVAL`: Jornada 3, `PAYMENT_WITH_OFFER_TO_RECURRENCY`: Jornada 4),
 - **`retryPolicy`**: Qual Política de rententativa deve ser adotada ( `NON_PERMITED`: Sem política de retentativas, `THREE_RETRIES_7_DAYS`: 3 Retentativas em até 7 dias )
-- **`minimunValue`** (Opcional): Caso sua cobrança tenha valor variável, você pode definir o valor mínimo a que deve ser aceito.
+- **`minimumValue`** (Opcional): Caso sua cobrança tenha valor variável, você pode definir o valor mínimo a que deve ser aceito.
 
 ## Exemplo
 
