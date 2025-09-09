@@ -7319,6 +7319,7 @@ paths:
                         billingDate: 2024-10-04T16:45:51.058Z
                         status: CONFIRMED
                         statusRaw: null
+                        correlationID: INV-123
                         customer:
                           correlationID: 6f46c15a-f471-4d54-bb28-207fe2568f69
                           name: Gabriel
@@ -7478,6 +7479,8 @@ paths:
                 billingDate:
                   type: string
                   format: date-time
+                correlationID:
+                  type: string
                 charge:
                   type: string
                 value:
@@ -7525,9 +7528,11 @@ paths:
                 - required:
                     - billingDate
                     - value
+                    - correlationID
                 - required:
                     - billingDate
                     - charge
+                    - correlationID
       responses:
         '201':
           description: Invoice created successfully
@@ -7648,6 +7653,7 @@ paths:
             req.write(JSON.stringify({
               description: 'string',
               billingDate: '2019-08-24T14:15:22Z',
+              correlationID: 'string',
               charge: 'string',
               value: 0,
               customerId: 'string',
@@ -7672,7 +7678,7 @@ paths:
               --url https://api.woovi.com/api/v1/invoice \
               --header 'Authorization: REPLACE_KEY_VALUE' \
               --header 'content-type: application/json' \
-              --data '{"description":"string","billingDate":"2019-08-24T14:15:22Z","charge":"string","value":0,"customerId":"string","customer":{"taxID":"string","name":"string","email":"user@example.com","phone":"string","address":{"country":"string","zipcode":"string","street":"string","number":"string","state":"string"}}}'
+              --data '{"description":"string","billingDate":"2019-08-24T14:15:22Z","correlationID":"string","charge":"string","value":0,"customerId":"string","customer":{"taxID":"string","name":"string","email":"user@example.com","phone":"string","address":{"country":"string","zipcode":"string","street":"string","number":"string","state":"string"}}}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -7690,6 +7696,7 @@ paths:
               CURLOPT_POSTFIELDS => json_encode([
                 'description' => 'string',
                 'billingDate' => '2019-08-24T14:15:22Z',
+                'correlationID' => 'string',
                 'charge' => 'string',
                 'value' => 0,
                 'customerId' => 'string',
@@ -7732,7 +7739,7 @@ paths:
 
 
             payload =
-            "{\"description\":\"string\",\"billingDate\":\"2019-08-24T14:15:22Z\",\"charge\":\"string\",\"value\":0,\"customerId\":\"string\",\"customer\":{\"taxID\":\"string\",\"name\":\"string\",\"email\":\"user@example.com\",\"phone\":\"string\",\"address\":{\"country\":\"string\",\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"state\":\"string\"}}}"
+            "{\"description\":\"string\",\"billingDate\":\"2019-08-24T14:15:22Z\",\"correlationID\":\"string\",\"charge\":\"string\",\"value\":0,\"customerId\":\"string\",\"customer\":{\"taxID\":\"string\",\"name\":\"string\",\"email\":\"user@example.com\",\"phone\":\"string\",\"address\":{\"country\":\"string\",\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"state\":\"string\"}}}"
 
 
             headers = {
@@ -7751,7 +7758,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice\"\n\n\tpayload := strings.NewReader(\"{\\\"description\\\":\\\"string\\\",\\\"billingDate\\\":\\\"2019-08-24T14:15:22Z\\\",\\\"charge\\\":\\\"string\\\",\\\"value\\\":0,\\\"customerId\\\":\\\"string\\\",\\\"customer\\\":{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"address\\\":{\\\"country\\\":\\\"string\\\",\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\"}}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice\"\n\n\tpayload := strings.NewReader(\"{\\\"description\\\":\\\"string\\\",\\\"billingDate\\\":\\\"2019-08-24T14:15:22Z\\\",\\\"correlationID\\\":\\\"string\\\",\\\"charge\\\":\\\"string\\\",\\\"value\\\":0,\\\"customerId\\\":\\\"string\\\",\\\"customer\\\":{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"address\\\":{\\\"country\\\":\\\"string\\\",\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\"}}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -7760,7 +7767,7 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"description\":\"string\",\"billingDate\":\"2019-08-24T14:15:22Z\",\"charge\":\"string\",\"value\":0,\"customerId\":\"string\",\"customer\":{\"taxID\":\"string\",\"name\":\"string\",\"email\":\"user@example.com\",\"phone\":\"string\",\"address\":{\"country\":\"string\",\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"state\":\"string\"}}}");
+            "{\"description\":\"string\",\"billingDate\":\"2019-08-24T14:15:22Z\",\"correlationID\":\"string\",\"charge\":\"string\",\"value\":0,\"customerId\":\"string\",\"customer\":{\"taxID\":\"string\",\"name\":\"string\",\"email\":\"user@example.com\",\"phone\":\"string\",\"address\":{\"country\":\"string\",\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"state\":\"string\"}}}");
 
             Request request = new Request.Builder()
               .url("https://api.woovi.com/api/v1/invoice")
@@ -7792,7 +7799,7 @@ paths:
             request["content-type"] = 'application/json'
 
             request.body =
-            "{\"description\":\"string\",\"billingDate\":\"2019-08-24T14:15:22Z\",\"charge\":\"string\",\"value\":0,\"customerId\":\"string\",\"customer\":{\"taxID\":\"string\",\"name\":\"string\",\"email\":\"user@example.com\",\"phone\":\"string\",\"address\":{\"country\":\"string\",\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"state\":\"string\"}}}"
+            "{\"description\":\"string\",\"billingDate\":\"2019-08-24T14:15:22Z\",\"correlationID\":\"string\",\"charge\":\"string\",\"value\":0,\"customerId\":\"string\",\"customer\":{\"taxID\":\"string\",\"name\":\"string\",\"email\":\"user@example.com\",\"phone\":\"string\",\"address\":{\"country\":\"string\",\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"state\":\"string\"}}}"
 
 
             response = http.request(request)
@@ -14144,7 +14151,7 @@ paths:
               dayDue: 7,
               correlationID: 'string',
               additionalInfo: [{key: 'string', value: 'string'}],
-              pixRecurringOptions: {retryPolicy: 'NON_PERMITED', journey: 'PAYMENT_ON_APPROVAL', minimunValue: 0}
+              pixRecurringOptions: {retryPolicy: 'NON_PERMITED', journey: 'PAYMENT_ON_APPROVAL', minimumValue: 0}
             }));
             req.end();
         - lang: Shell + Curl
@@ -14153,7 +14160,7 @@ paths:
               --url https://api.woovi.com/api/v1/subscriptions \
               --header 'Authorization: REPLACE_KEY_VALUE' \
               --header 'content-type: application/json' \
-              --data '{"customer":{"name":"string","email":"string","phone":"string","taxID":"string","address":{"zipcode":"string","street":"string","number":"string","neighborhood":"string","city":"string","state":"string","complement":"string","country":"string"}},"value":0,"comment":"string","dayGenerateCharge":5,"frequency":"WEEKLY","type":"PIX_RECURRING","dayDue":7,"correlationID":"string","additionalInfo":[{"key":"string","value":"string"}],"pixRecurringOptions":{"retryPolicy":"NON_PERMITED","journey":"PAYMENT_ON_APPROVAL","minimunValue":0}}'
+              --data '{"customer":{"name":"string","email":"string","phone":"string","taxID":"string","address":{"zipcode":"string","street":"string","number":"string","neighborhood":"string","city":"string","state":"string","complement":"string","country":"string"}},"value":0,"comment":"string","dayGenerateCharge":5,"frequency":"WEEKLY","type":"PIX_RECURRING","dayDue":7,"correlationID":"string","additionalInfo":[{"key":"string","value":"string"}],"pixRecurringOptions":{"retryPolicy":"NON_PERMITED","journey":"PAYMENT_ON_APPROVAL","minimumValue":0}}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -14201,7 +14208,7 @@ paths:
                 'pixRecurringOptions' => [
                     'retryPolicy' => 'NON_PERMITED',
                     'journey' => 'PAYMENT_ON_APPROVAL',
-                    'minimunValue' => 0
+                    'minimumValue' => 0
                 ]
               ]),
               CURLOPT_HTTPHEADER => [
@@ -14229,7 +14236,7 @@ paths:
 
 
             payload =
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimunValue\":0}}"
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}"
 
 
             headers = {
@@ -14248,7 +14255,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subscriptions\"\n\n\tpayload := strings.NewReader(\"{\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"value\\\":0,\\\"comment\\\":\\\"string\\\",\\\"dayGenerateCharge\\\":5,\\\"frequency\\\":\\\"WEEKLY\\\",\\\"type\\\":\\\"PIX_RECURRING\\\",\\\"dayDue\\\":7,\\\"correlationID\\\":\\\"string\\\",\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"pixRecurringOptions\\\":{\\\"retryPolicy\\\":\\\"NON_PERMITED\\\",\\\"journey\\\":\\\"PAYMENT_ON_APPROVAL\\\",\\\"minimunValue\\\":0}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subscriptions\"\n\n\tpayload := strings.NewReader(\"{\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"value\\\":0,\\\"comment\\\":\\\"string\\\",\\\"dayGenerateCharge\\\":5,\\\"frequency\\\":\\\"WEEKLY\\\",\\\"type\\\":\\\"PIX_RECURRING\\\",\\\"dayDue\\\":7,\\\"correlationID\\\":\\\"string\\\",\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"pixRecurringOptions\\\":{\\\"retryPolicy\\\":\\\"NON_PERMITED\\\",\\\"journey\\\":\\\"PAYMENT_ON_APPROVAL\\\",\\\"minimumValue\\\":0}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -14257,7 +14264,7 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimunValue\":0}}");
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}");
 
             Request request = new Request.Builder()
               .url("https://api.woovi.com/api/v1/subscriptions")
@@ -14289,7 +14296,7 @@ paths:
             request["content-type"] = 'application/json'
 
             request.body =
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimunValue\":0}}"
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}"
 
 
             response = http.request(request)
@@ -17149,7 +17156,7 @@ components:
               enum:
                 - PAYMENT_ON_APPROVAL
                 - ONLY_RECURRENCY
-            minimunValue:
+            minimumValue:
               type: number
               description: Minimum value for each cobr
       required:
