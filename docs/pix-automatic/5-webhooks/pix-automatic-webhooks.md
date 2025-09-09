@@ -108,7 +108,7 @@ Quando o consumidor recusa a recorrência em seu aplicativo do banco. o Status �
 
 O Objeto que retorna nos webhooks do `COBR` é a parcela na qual a cobrança será feita, dentro dele tem acesso ao cobr.
 
-A primeira cobrança da jornada 3 (`PAYMENT_ON_APPROVAL`), que é realizada no momento da leitura do QR Code, não é considerado um COBR, logo não acionará os hooks relacionados ao COBR.
+A primeira cobrança da jornada 3 (`PAYMENT_ON_APPROVAL`), que é realizada no momento da leitura do QR Code, dispará tanto o evento de `PIX_AUTOMATIC_APPROVED` quanto o `PIX_AUTOMATIC_COBR_COMPLETED`.
 
 O campo `globalID` representa o id único da parcela.
 o campo `paymentSubscriptionGlobalID` representa o id único da assinatura
