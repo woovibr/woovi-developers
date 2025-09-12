@@ -1,60 +1,73 @@
 ---
-id: single-sign-on-gmail
-title: Configurar Single Sign On usando GSuite
-sidebar_label: Google GSuite & Gmail
+id: domain-restrictions
+title: Restrição de Domínios
+sidebar_label: Restrição de Domínios
 tags:
   - login
-  - sso
-  - gmail
+  - domain
+  - restrictions
 ---
 
-_Usar o Single-Sign-On é extremamente recomendado, pois fornece uma melhor experiência do usuário e aumenta a segurança._
+_A restrição de domínios permite controlar quais domínios de email podem acessar sua organização no Woovi._
 
-## Entre no Google Admin Apps
+## Vídeo Tutorial
 
-Veja em https://admin.google.com/ac/apps
+<iframe width="560" height="315" src="https://www.youtube.com/embed/X8118kGykFA" title="Restrição de Domínios - Parte 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
 
-![google_admin](/img/google-admin.png)
+## Como Funciona
 
-- Clique em Saml Apps
+A restrição de domínios é uma funcionalidade de segurança que permite que você defina quais domínios de email podem criar contas e acessar sua organização no Woovi.
 
-Veja em https://admin.google.com/AdminHome?hl=en#AppsList:serviceType=SAML_APPS
+### Benefícios
 
-![saml_apps](/img/google-saml-apps.png)
+- **Segurança aprimorada**: Apenas usuários de domínios autorizados podem acessar
+- **Controle de acesso**: Gerencie quem pode se registrar na sua organização
+- **Prevenção de acesso não autorizado**: Bloqueia tentativas de login de domínios não permitidos
 
-- Clique no botão `+` para criar um novo SAML App
+### Configuração
 
-### Passo 1
+Para configurar restrições de domínio, acesse as configurações da sua organização e defina os domínios permitidos. Apenas usuários com endereços de email desses domínios poderão criar contas e acessar sua organização.
 
-- Configurar detalhes da sua aplicação.
+### Exemplos de Uso
 
-![saml-step1](/img/step-1-google-admin.png)
+- **Empresas**: Restringir acesso apenas para funcionários com emails corporativos
+- **Organizações educacionais**: Permitir apenas emails de instituições de ensino específicas
+- **Projetos específicos**: Limitar acesso a domínios de parceiros ou clientes específicos
 
-- Nome da Aplicação;
-- Ícone da Aplicação;
+## Configuração Passo a Passo
 
-### Passo 2
+### 1. Acesse as Configurações da Organização
 
-- Configurar detalhes do provedor de identidade do Google
+1. Faça login na sua conta Woovi
+2. Navegue até **Configurações da Empresa** > **Login por**
+3. Procure pela seção **Restrições de domínio de email**
 
-![saml-step2](/img/step-2-google-admin.png)
+### 2. Adicione Domínios Permitidos
 
-- Download IDP metadata, opção 1 (será o xml utilizado dentro do Woovi)
+1. Clique em **Restringir a domínios específicos**
+2. Digite o domínio que deseja permitir (ex: `empresa.com`)
+3. Aperte **Enter** ou clique em **Adicionar** para adicionar um novo domínio
+4. Aperte em **Salvar**
 
-### Passo 3
+### 3. Explicando configurações
 
-- Configurar detalhes do provedor de servidor
+- **Restringir a domínios específicos**: Apenas emails dos domínios configurados podem acessar
+- **Permitir todos**: Remove todas as restrições (não recomendado)
 
-![saml-step](/img/step-3-google-admin.png)
+### Problemas Comuns
 
-- ACS URL: https://api.woovi.com/saml2/login/callback
-- Entity ID (Entidade ID): https://api.woovi.com/saml2/metadata
-- Name ID (Nome do ID) : Basic Information, Primary Email
-- Name ID Format (Formato de ID de nome): EMAIL
+**Usuário não consegue acessar mesmo com domínio correto:**
 
-# Habilite SAML para todos
+- Verifique se o domínio está exatamente como configurado
+- Confirme se não há espaços extras na configuração
+- Teste com diferentes subdomínios se aplicável
 
-# Adicione metadata xml do IDP à sua organização Openpix
+**Restrições não estão funcionando:**
 
-Veja em https://yourcompany.woovi.com/home/company/settings/data
-![saml-feedbackhouse](/img/login-saml-feedback.png)
+- Verifique se a funcionalidade está habilitada
+- Confirme se as configurações foram salvas corretamente
+- Teste em modo incógnito para evitar cache
+
+### Suporte
+
+Se você encontrar problemas com a configuração de restrições de domínio, entre em contato com nosso suporte técnico através do chat ou email.
