@@ -3,14 +3,14 @@ id: single-sign-on-gmail
 title: Configurar Single Sign On usando GSuite
 sidebar_label: Google GSuite & Gmail
 tags:
-- login
-- sso
-- gmail
+  - login
+  - sso
+  - gmail
 ---
 
-*Usar o Single-Sign-On é extremamente recomendado, pois fornece uma melhor experiência do usuário e aumenta a segurança.*
+_Usar o Single-Sign-On é extremamente recomendado, pois fornece uma melhor experiência do usuário e aumenta a segurança._
 
-##  Entre no Google Admin Apps
+## Entre no Google Admin Apps
 
 Veja em https://admin.google.com/ac/apps
 
@@ -52,7 +52,7 @@ Veja em https://admin.google.com/AdminHome?hl=en#AppsList:serviceType=SAML_APPS
 - Name ID (Nome do ID) : Basic Information, Primary Email
 - Name ID Format (Formato de ID de nome): EMAIL
 
-# Habilite SAML para todos 
+# Habilite SAML para todos
 
 # Adicione metadata xml do IDP à sua organização Openpix
 
