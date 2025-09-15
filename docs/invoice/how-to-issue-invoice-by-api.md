@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 ```http
 POST /api/v1/invoice
 ```
-Você encontra a documentação mais detalhada desse endpoint nas [documentações de api]('https://developers.woovi.com/en/api#tag/invoice/paths/~1api~1v1~1invoice/post')
+Você encontra a documentação mais detalhada desse endpoint nas [documentações de api](https://developers.woovi.com/en/api#tag/invoice/paths/~1api~1v1~1invoice/post)
 
 
 A API aceita dois formatos de payload, sempre exigindo dados de cobrança **ou** valor, e um cliente (via `customerId` ou objeto `customer`).

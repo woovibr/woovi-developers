@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 GET /api/v1/invoice/{id}/pdf
 GET /api/v1/invoice/{id}/xml
 ```
-Você encontra a documentação mais detalhada desse endpoint nas [documentações de api]('https://developers.woovi.com/en/api#tag/invoice/paths/~1api~1v1~1invoice~1%7BinvoiceId%7D~1pdf/get')
+Você encontra a documentação mais detalhada desse endpoint nas [documentações de api](https://developers.woovi.com/en/api#tag/invoice/paths/~1api~1v1~1invoice~1%7BinvoiceId%7D~1pdf/get)
 
 Para buscar os arquivos de uma nota fiscal específica você pode apenas buscar utilizando os endpoints listados acima, ambos devem retornar um arquivo correspondente pdf ou xml de acordo com a requisição
 
