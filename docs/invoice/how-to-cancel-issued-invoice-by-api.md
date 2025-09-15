@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 ```
 POST /api/v1/invoice/{invoiceId}/cancel
 ```
-Você encontra a documentação mais detalhada desse endpoint nas [documentações de api]('https://developers.woovi.com/en/api#tag/invoice/paths/~1api~1v1~1invoice~1%7BinvoiceId%7D~1cancel/post')
+Você encontra a documentação mais detalhada desse endpoint nas [documentações de api](https://developers.woovi.com/en/api#tag/invoice/paths/~1api~1v1~1invoice~1%7BinvoiceId%7D~1cancel/post)
 
 Para cancelar uma nota fical é necessário o id de uma nota fical já emidida posteriormente, após a requisição de cancelamento, os documentos virão marcados como nota fiscal cancelada.
 
