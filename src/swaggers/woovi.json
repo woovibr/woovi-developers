@@ -4142,7 +4142,7 @@
           "dispute"
         ],
         "summary": "Upload new evidence",
-        "description": "Upload evidence files for dispute/med.",
+        "description": "Upload evidence files for dispute/med. \\nOBS para obter esse o id da disputa, veja esse artigo https://developers.woovi.com/docs/disputa/how-add-new-evidence-in-dispute#1-obter-o-id-da-disputa",
         "requestBody": {
           "required": true,
           "content": {
