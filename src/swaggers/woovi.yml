@@ -5927,6 +5927,13 @@ paths:
                   dispute:
                     type: object
                     properties:
+                      type:
+                        type: string
+                        enum:
+                          - MED
+                          - DISPUTE
+                          - CHARGEBACK
+                        description: The type of the dispute (MED, DISPUTE, or CHARGEBACK)
                       status:
                         type: string
                         enum:
@@ -5958,6 +5965,7 @@ paths:
                         type: string
               example:
                 dispute:
+                  type: MED
                   status: ACCEPTED
                   name: John Doe
                   email: john.doe@example.com
@@ -6168,7 +6176,8 @@ paths:
                     hasPreviousPage: false
                     hasNextPage: true
                   disputes:
-                    - disputeReason: Dispute reason test
+                    - type: DISPUTE
+                      disputeReason: Dispute reason test
                       email: jorge@test.com
                       name: Seu Jorge
                       phoneNumber: '+551199999999'
@@ -16191,6 +16200,13 @@ components:
     Dispute:
       type: object
       properties:
+        type:
+          type: string
+          enum:
+            - MED
+            - DISPUTE
+            - CHARGEBACK
+          description: The type of the dispute (MED, DISPUTE, or CHARGEBACK)
         status:
           type: string
           enum:
