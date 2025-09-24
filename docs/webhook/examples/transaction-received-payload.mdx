@@ -21,125 +21,77 @@ Os webhooks do tipo `Transação recebida` enviam objetos com os seguintes campo
 ```json
 {
   "event": "OPENPIX:TRANSACTION_RECEIVED",
-  "charge": {
-    "value": 100,
-    "comment": "",
-    "identifier": "8a1c832a52e24d348b5c2f357e0a5c44",
-    "transactionID": "8a1c832a52e24d348b5c2f357e0a5c44",
-    "status": "COMPLETED",
-    "additionalInfo": [],
-    "fee": 85,
-    "discount": 0,
-    "valueWithDiscount": 10000000,
-    "expiresDate": "2025-09-25T15:45:03.965Z",
-    "type": "DYNAMIC",
-    "correlationID": "193db9d0-1aa7-4473-b028-2d85a23f1137",
-    "paymentLinkID": "1e6263ae-fe0c-4f25-81b4-38f192320eb1",
-    "createdAt": "2025-09-24T15:44:39.026Z",
-    "updatedAt": "2025-09-24T15:45:05.018Z",
-    "customer": {
-      "name": "Cliente Teste",
-      "taxID": {
-        "taxID": "44720743000101",
-        "type": "BR:CNPJ"
-      },
-      "correlationID": "ecd41c3b-487c-4719-b9f7-53b6dd6759cb"
-    },
-    "paidAt": "2025-09-24T15:44:42.317Z",
-    "payer": null,
-    "ensureSameTaxID": false,
-    "brCode": "00020101021226980014br.gov.bcb.pix2576api.woovi-sandbox.com/api/testaccount/qr/v1/8a1c832a52e24d348b5c2f357e0a5c445204000053039865409100000.005802BR5921Lucas_Aprigio_Sandbox6009Sao_Paulo622905258a1c832a52e24d348b5c2f3576304C75D",
-    "expiresIn": 86424,
-    "pixKey": "c4988f1b-e30f-4eed-883a-1e81705a7931",
-    "paymentLinkUrl": "https://woovi-sandbox.com/pay/1e6263ae-fe0c-4f25-81b4-38f192320eb1",
-    "qrCodeImage": "https://api.woovi-sandbox.com/openpix/charge/brcode/image/1e6263ae-fe0c-4f25-81b4-38f192320eb1.png",
-    "globalID": "Q2hhcmdlOjY4ZDQxMWU3MDY5YTI4ZjgzMTEzYWYyMA==",
-    "paymentMethods": {
-      "pix": {
-        "method": "PIX_COB",
-        "txId": "8a1c832a52e24d348b5c2f357e0a5c44",
-        "value": 10000000,
-        "status": "COMPLETED",
-        "fee": 85,
-        "brCode": "00020101021226980014br.gov.bcb.pix2576api.woovi-sandbox.com/api/testaccount/qr/v1/8a1c832a52e24d348b5c2f357e0a5c445204000053039865409100000.005802BR5921Lucas_Aprigio_Sandbox6009Sao_Paulo622905258a1c832a52e24d348b5c2f3576304C75D",
-        "transactionID": "8a1c832a52e24d348b5c2f357e0a5c44",
-        "identifier": "8a1c832a52e24d348b5c2f357e0a5c44",
-        "qrCodeImage": "https://api.woovi-sandbox.com/openpix/charge/brcode/image/1e6263ae-fe0c-4f25-81b4-38f192320eb1.png"
-      }
-    }
-  },
+  "charge": null,
   "pixQrCode": null,
   "pix": {
-    "customer": {
-      "name": "Cliente Teste",
-      "taxID": {
-        "taxID": "44720743000101",
-        "type": "BR:CNPJ"
+    "debitParty": {
+      "account": {
+        "branch": "1",
+        "account": "123456789",
+        "accountType": "TRAN"
       },
-      "correlationID": "ecd41c3b-487c-4719-b9f7-53b6dd6759cb"
+      "psp": {
+        "id": "12345678",
+        "name": "BANCO PAGAMENTOS - IP"
+      },
+      "holder": {
+        "taxID": {
+          "taxID": "12345678901",
+          "type": "BR:CPF"
+        },
+        "name": "Name Sobrenome"
+      }
+    },
+    "creditParty": {
+      "pixKey": {
+        "pixKey": "1ed81f30-1654-5eaf3-b911-074449bad07e",
+        "type": "RANDOM"
+      },
+      "account": {
+        "branch": "1",
+        "account": "1234567",
+        "accountType": "TRAN"
+      },
+      "psp": {
+        "id": "54811417",
+        "name": "WOOVI IP LTDA."
+      },
+      "holder": {
+        "taxID": {
+          "taxID": "01123456000199",
+          "type": "BR:CNPJ"
+        }
+      }
     },
     "payer": {
-      "name": "Cliente Teste",
+      "name": "Nome Sobrenome",
+      "email": "email@email.com",
+      "phone": "+5500988776655",
       "taxID": {
-        "taxID": "44720743000101",
-        "type": "BR:CNPJ"
+        "taxID": "98765432100",
+        "type": "BR:CPF"
       },
-      "correlationID": "ecd41c3b-487c-4719-b9f7-53b6dd6759cb"
+      "correlationID": "2566b5bd-2e1a-463d-b21c-ec7717cf2df4"
     },
-    "charge": {
-      "value": 10000000,
-      "comment": "",
-      "identifier": "8a1c832a52e24d348b5c2f357e0a5c44",
-      "transactionID": "8a1c832a52e24d348b5c2f357e0a5c44",
-      "status": "COMPLETED",
-      "additionalInfo": [],
-      "fee": 85,
-      "discount": 0,
-      "valueWithDiscount": 10000000,
-      "expiresDate": "2025-09-25T15:45:03.965Z",
-      "type": "DYNAMIC",
-      "correlationID": "193db9d0-1aa7-4473-b028-2d85a23f1137",
-      "paymentLinkID": "1e6263ae-fe0c-4f25-81b4-38f192320eb1",
-      "createdAt": "2025-09-24T15:44:39.026Z",
-      "updatedAt": "2025-09-24T15:45:05.018Z",
-      "customer": {
-        "name": "Cliente Teste",
-        "taxID": {
-          "taxID": "44720743000101",
-          "type": "BR:CNPJ"
-        },
-        "correlationID": "ecd41c3b-487c-4719-b9f7-53b6dd6759cb"
-      },
-      "paidAt": "2025-09-24T15:44:42.317Z",
-      "payer": null,
-      "ensureSameTaxID": false,
-      "brCode": "00020101021226980014br.gov.bcb.pix2576api.woovi-sandbox.com/api/testaccount/qr/v1/8a1c832a52e24d348b5c2f357e0a5c445204000053039865409100000.005802BR5921Lucas_Aprigio_Sandbox6009Sao_Paulo622905258a1c832a52e24d348b5c2f3576304C75D",
-      "expiresIn": 86424,
-      "pixKey": "c4988f1b-e30f-4eed-883a-1e81705a7931",
-      "paymentLinkUrl": "https://woovi-sandbox.com/pay/1e6263ae-fe0c-4f25-81b4-38f192320eb1",
-      "qrCodeImage": "https://api.woovi-sandbox.com/openpix/charge/brcode/image/1e6263ae-fe0c-4f25-81b4-38f192320eb1.png",
-      "globalID": "Q2hhcmdlOjY4ZDQxMWU3MDY5YTI4ZjgzMTEzYWYyMA=="
-    },
-    "value": 10000000,
-    "time": "2025-09-24T15:44:42.317Z",
-    "endToEndId": "E254ec6e16539474c91f9ebf86fc7c37c",
-    "transactionID": "8a1c832a52e24d348b5c2f357e0a5c44",
-    "infoPagador": "OpenPix testing",
+    "value": 200,
+    "time": "2025-09-23T18:10:56.000Z",
+    "endToEndId": "E18236120202509231810s56149dd987",
     "status": "CONFIRMED",
     "type": "PAYMENT",
-    "createdAt": "2025-09-24T15:44:42.337Z",
-    "globalID": "UGl4VHJhbnNhY3Rpb246NjhkNDExZWEwNjlhMjhmODMxMTNhZjlh"
+    "createdAt": "2025-09-23T18:10:56.657Z",
+    "pixKey": "617126ef-3c13-4a4e-a8a4-05de07f3d8af",
+    "globalID": "UGl4VHJhbnNhY3Rdf246NjhkMmUyYjB5OGI5ZjZkODYwNDVjMjg2"
   },
   "company": {
-    "id": "6810ce3b892866f103d77ef2",
-    "name": "Woovi IP",
-    "taxID": "44720743000101"
+    "id": "66f98ce2acbb5dffa956ff60",
+    "name": "company name",
+    "taxID": "12123456000199"
   },
   "account": {
-    "accountId": "68c990647bfb75eaebeb9205",
+    "accountId": "68b999668bdbfg18agcca244",
     "branch": "0001",
-    "account": "6259",
-    "taxID": "57437573000102"
+    "account": "000000000000012345678",
+    "taxID": "00123456000198"
   },
   "refunds": []
 }
