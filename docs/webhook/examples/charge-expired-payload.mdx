@@ -21,36 +21,48 @@ Os webhooks do tipo `Cobrança Expirada` enviam objetos com os seguintes campos 
 {
   "event": "OPENPIX:CHARGE_EXPIRED",
   "charge": {
-    "customer": {
-      "name": "Antonio Victor",
-      "taxID": { "taxID": "12345678976", "type": "BR:CPF" },
-      "email": "antoniocliente@example.com",
-      "correlationID": "4979ceba-2132-4292-bd90-bee7fb2125e4"
-    },
-    "value": 123456,
+    "value": 1,
     "comment": "",
-    "identifier": "ea83401ed4834b3ea6f1f283b389af29",
-    "paymentLinkID": "21516412-4192-409d-ba18-1ac594db4c29",
-    "transactionID": "ea83401ed4834b3ea6f1f283b389af29",
+    "identifier": "0c0ddb5e24764191a8fa6c9afeaa26aa",
+    "transactionID": "0c0ddb5e24764191a8fa6c9afeaa26aa",
     "status": "EXPIRED",
     "additionalInfo": [],
+    "fee": 85,
     "discount": 0,
-    "valueWithDiscount": 123456,
-    "expiresDate": "2023-11-18T18:32:57.679Z",
+    "valueWithDiscount": 1,
+    "expiresDate": "2025-09-24T15:08:00.368Z",
     "type": "DYNAMIC",
-    "correlationID": "0ac9e5a0-04f3-4879-85bf-8be34f16a1fa",
-    "createdAt": "2023-11-17T18:32:57.869Z",
-    "updatedAt": "2023-11-17T18:35:59.212Z",
-    "brCode": "00020101021226910014br.gov.bcb.pix2569localhost:5001/api/testaccount/qr/v1/5b2970f464a740378aa472c6dad0bf8352040000530398654071234.565802BR5905Woovi6009SAO_PAULO610804556300622905255b2970f464a740378aa472c6d63046BA9",
-    "expiresIn": 86399,
-    "paymentLinkUrl": "https://openpix.com.br/pay/21516412-4192-409d-ba18-1ac594db4c29",
-    "qrCodeImage": "https://api.openpix.com.br/openpix/charge/brcode/image/21516412-4192-409d-ba18-1ac594db4c29.png",
-    "globalID": "Q2hhcmdlOjY1NTdiMWQ5MmQ4NzYzMjA5ZGU0OWE0NA=="
+    "correlationID": "4bfa04e1-b807-4833-b714-dfa7c8877f29",
+    "paymentLinkID": "4ceb0a22-d87d-46d1-b699-cf74e171386d",
+    "createdAt": "2025-09-24T15:03:38.922Z",
+    "updatedAt": "2025-09-24T15:09:00.042Z",
+    "ensureSameTaxID": false,
+    "brCode": "00020101021226870014br.gov.bcb.pix2565qr-h.woovi.digital/qr/v2/cob/92b4992a-92de-423b-938e-0b0b6e534a0052040000530398654040.015802BR592357419727_WOOVI_IP_6009Sao_Paulo622905250c0ddb5e24764191a8fa6c9af6304C6D5",
+    "expiresIn": 300,
+    "paymentLinkUrl": "undefined/4ceb0a22-d87d-46d1-b699-cf74e171386d",
+    "qrCodeImage": "https://api.woovi.dev/openpix/charge/brcode/image/4ceb0a22-d87d-46d1-b699-cf74e171386d.png",
+    "globalID": "Q2hhcmdlOjY4ZDQwODRhZjNmMjk2YTY1MGM5OWNjMg==",
+    "paymentMethods": {
+      "pix": {
+        "method": "PIX_COB",
+        "status": "ACTIVE",
+        "value": 1,
+        "txId": "0c0ddb5e24764191a8fa6c9afeaa26aa",
+        "fee": 85,
+        "brCode": "00020101021226870014br.gov.bcb.pix2565qr-h.woovi.digital/qr/v2/cob/92b4992a-92de-423b-938e-0b0b6e534a0052040000530398654040.015802BR592357419727_WOOVI_IP_6009Sao_Paulo622905250c0ddb5e24764191a8fa6c9af6304C6D5",
+        "transactionID": "0c0ddb5e24764191a8fa6c9afeaa26aa",
+        "identifier": "0c0ddb5e24764191a8fa6c9afeaa26aa",
+        "qrCodeImage": "https://api.woovi.dev/openpix/charge/brcode/image/4ceb0a22-d87d-46d1-b699-cf74e171386d.png"
+      }
+    }
   },
   "company": {
-    "id": "64cab82a485da23384a4e3af",
-    "name": "Woovi LTDA",
-    "taxID": "75800612000168"
+    "id": "67b87652d865a18620c53604",
+    "name": "WOOVI-IP",
+    "taxID": "44720743000101"
+  },
+  "account": {
+    "environment": "PRODUCTION"
   }
 }
 ```

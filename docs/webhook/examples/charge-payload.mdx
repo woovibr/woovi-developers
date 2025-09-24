@@ -1,15 +1,15 @@
 ---
 id: webhook-charge-payload
-title: Payload de Pix Cobrança
+title: Payload de Cobrança Pix Paga
 tags:
   - webhook
   - header
   - api
 ---
 
-## Pix Cobrança
+## Pix Cobrança Paga
 
-Os webhooks de `Pix Cobrança` enviam objetos com os seguintes campos no seu payload:
+Os webhooks de `CHARGE_COMPLETED` enviam objetos com os seguintes campos no seu payload:
 
 - `pix`: Objeto com detalhes da transação Pix
 - `company`: Empresa a que a Transação pertence
@@ -19,73 +19,122 @@ Os webhooks de `Pix Cobrança` enviam objetos com os seguintes campos no seu pay
 
 ```json
 {
-  "pixQrCode": null,
+  "event": "OPENPIX:CHARGE_COMPLETED",
   "charge": {
+    "value": 1,
+    "comment": "",
+    "identifier": "d983a07836cf48ed9a65764d3c184273",
+    "transactionID": "d983a07836cf48ed9a65764d3c184273",
     "status": "COMPLETED",
+    "additionalInfo": [],
+    "fee": 85,
+    "discount": 0,
+    "valueWithDiscount": 1,
+    "expiresDate": "2025-09-25T15:08:12.278Z",
+    "type": "DYNAMIC",
+    "correlationID": "3f2a2690-8224-4aae-a1ba-ed26d4d61f81",
+    "paymentLinkID": "788c8d0d-182b-468e-942e-546be6a621c2",
+    "createdAt": "2025-09-24T15:07:47.334Z",
+    "updatedAt": "2025-09-24T15:08:13.578Z",
     "customer": {
-      "name": "Antonio Victor",
-      "taxID": { "taxID": "12345678976", "type": "BR:CPF" },
-      "email": "antoniocliente@example.com",
-      "correlationID": "4979ceba-2132-4292-bd90-bee7fb2125e4"
+      "name": "Cliente Teste",
+      "taxID": {
+        "taxID": "44720743000101",
+        "type": "BR:CNPJ"
+      },
+      "correlationID": "ecd41c3b-487c-4719-b9f7-53b6dd6759cb"
     },
-    "value": 1000,
-    "comment": "Pagamento Woovi",
-    "transactionID": "ea83401ed4834b3ea6f1f283b389af29",
-    "correlationID": "417bae21-3d08-4cdb-9c2d-fee63c89e9e4",
-    "paymentLinkID": "34697ed2-3790-4b60-8512-e7465b142d84",
-    "createdAt": "2021-03-12T12:43:54.528Z",
-    "updatedAt": "2021-03-12T12:44:09.360Z",
-    "brCode": "https://api.woovi.com/openpix/openpix/testing?transactionID=ea83401ed4834b3ea6f1f283b389af29"
+    "paidAt": "2025-09-24T15:07:50.891Z",
+    "payer": null,
+    "ensureSameTaxID": false,
+    "brCode": "00020101021226980014br.gov.bcb.pix2576api.woovi-sandbox.com/api/testaccount/qr/v1/d983a07836cf48ed9a65764d3c18427352040000530398654040.015802BR5921Lucas_Aprigio_Sandbox6009Sao_Paulo62290525d983a07836cf48ed9a65764d363046759",
+    "expiresIn": 86424,
+    "pixKey": "67856db0-ac6e-4276-8309-503a22a896dc",
+    "paymentLinkUrl": "https://woovi-sandbox.com/pay/788c8d0d-182b-468e-942e-546be6a621c2",
+    "qrCodeImage": "https://api.woovi-sandbox.com/openpix/charge/brcode/image/788c8d0d-182b-468e-942e-546be6a621c2.png",
+    "globalID": "Q2hhcmdlOjY4ZDQwOTQzMDY5YTI4ZjgzMTEzOTVkZA==",
+    "paymentMethods": {
+      "pix": {
+        "method": "PIX_COB",
+        "txId": "d983a07836cf48ed9a65764d3c184273",
+        "value": 1,
+        "status": "COMPLETED",
+        "fee": 85,
+        "brCode": "00020101021226980014br.gov.bcb.pix2576api.woovi-sandbox.com/api/testaccount/qr/v1/d983a07836cf48ed9a65764d3c18427352040000530398654040.015802BR5921Lucas_Aprigio_Sandbox6009Sao_Paulo62290525d983a07836cf48ed9a65764d363046759",
+        "transactionID": "d983a07836cf48ed9a65764d3c184273",
+        "identifier": "d983a07836cf48ed9a65764d3c184273",
+        "qrCodeImage": "https://api.woovi-sandbox.com/openpix/charge/brcode/image/788c8d0d-182b-468e-942e-546be6a621c2.png"
+      }
+    }
   },
   "pix": {
-    "charge": {
-      "status": "COMPLETED",
-      "customer": {
-        "name": "Antonio Victor",
-        "taxID": { "taxID": "12345678976", "type": "BR:CPF" },
-        "email": "antoniocliente@example.com",
-        "correlationID": "4979ceba-2132-4292-bd90-bee7fb2125e4"
-      },
-      "value": 1000,
-      "comment": "Pagamento Woovi",
-      "transactionID": "ea83401ed4834b3ea6f1f283b389af29",
-      "correlationID": "417bae21-3d08-4cdb-9c2d-fee63c89e9e4",
-      "paymentLinkID": "34697ed2-3790-4b60-8512-e7465b142d84",
-      "createdAt": "2021-03-12T12:43:54.528Z",
-      "updatedAt": "2021-03-12T12:44:09.360Z"
-    },
     "customer": {
-      "correlationID": "9134e286-6f71-427a-bf00-241681624586",
-      "email": "email1@example.com",
-      "name": "Loma",
-      "phone": "+5511999999999",
+      "name": "Cliente Teste",
       "taxID": {
-        "taxID": "47043622050",
-        "type": "BR:CPF"
-      }
+        "taxID": "44720743000101",
+        "type": "BR:CNPJ"
+      },
+      "correlationID": "ecd41c3b-487c-4719-b9f7-53b6dd6759cb"
     },
     "payer": {
-      "correlationID": "9134e286-6f71-427a-bf00-241681624586",
-      "email": "email1@example.com",
-      "name": "Loma",
-      "phone": "+5511999999999",
+      "name": "Cliente Teste",
       "taxID": {
-        "taxID": "47043622050",
-        "type": "BR:CPF"
-      }
+        "taxID": "44720743000101",
+        "type": "BR:CNPJ"
+      },
+      "correlationID": "ecd41c3b-487c-4719-b9f7-53b6dd6759cb"
     },
-    "time": "2021-03-12T12:44:09.269Z",
+    "charge": {
+      "value": 1,
+      "comment": "",
+      "identifier": "d983a07836cf48ed9a65764d3c184273",
+      "transactionID": "d983a07836cf48ed9a65764d3c184273",
+      "status": "COMPLETED",
+      "additionalInfo": [],
+      "fee": 85,
+      "discount": 0,
+      "valueWithDiscount": 1,
+      "expiresDate": "2025-09-25T15:08:12.278Z",
+      "type": "DYNAMIC",
+      "correlationID": "3f2a2690-8224-4aae-a1ba-ed26d4d61f81",
+      "paymentLinkID": "788c8d0d-182b-468e-942e-546be6a621c2",
+      "createdAt": "2025-09-24T15:07:47.334Z",
+      "updatedAt": "2025-09-24T15:08:13.578Z",
+      "customer": {
+        "name": "Cliente Teste",
+        "taxID": {
+          "taxID": "44720743000101",
+          "type": "BR:CNPJ"
+        },
+        "correlationID": "ecd41c3b-487c-4719-b9f7-53b6dd6759cb"
+      },
+      "paidAt": "2025-09-24T15:07:50.891Z",
+      "payer": null,
+      "ensureSameTaxID": false,
+      "brCode": "00020101021226980014br.gov.bcb.pix2576api.woovi-sandbox.com/api/testaccount/qr/v1/d983a07836cf48ed9a65764d3c18427352040000530398654040.015802BR5921Lucas_Aprigio_Sandbox6009Sao_Paulo62290525d983a07836cf48ed9a65764d363046759",
+      "expiresIn": 86424,
+      "pixKey": "67856db0-ac6e-4276-8309-503a22a896dc",
+      "paymentLinkUrl": "https://woovi-sandbox.com/pay/788c8d0d-182b-468e-942e-546be6a621c2",
+      "qrCodeImage": "https://api.woovi-sandbox.com/openpix/charge/brcode/image/788c8d0d-182b-468e-942e-546be6a621c2.png",
+      "globalID": "Q2hhcmdlOjY4ZDQwOTQzMDY5YTI4ZjgzMTEzOTVkZA=="
+    },
     "value": 1,
-    "transactionID": "ea83401ed4834b3ea6f1f283b389af29",
-    "infoPagador": "Woovi testing"
+    "time": "2025-09-24T15:07:50.891Z",
+    "endToEndId": "Efa8df7c628cf43d2af424696ea0c6444",
+    "transactionID": "d983a07836cf48ed9a65764d3c184273",
+    "infoPagador": "OpenPix testing",
+    "status": "CONFIRMED",
+    "type": "PAYMENT",
+    "createdAt": "2025-09-24T15:07:50.915Z",
+    "globalID": "UGl4VHJhbnNhY3Rpb246NjhkNDA5NDYwNjlhMjhmODMxMTM5NjU4"
   },
   "company": {
-    "id": "624f46f9e93f9f521c8308d7",
-    "name": "Pizzaria do José",
-    "taxID": "4722767300014"
+    "id": "6810ce3b892866f103d77ef2",
+    "name": "Lucas Aprigio Sandbox",
+    "taxID": "57437573000102"
   },
   "account": {
-    "clientId": "ZOJ64B9B-ZM1W-89MI-4UCI-OP2LVIU6NY75"
-  }
+    "environment": "TESTING"
+  }
 }
 ```
