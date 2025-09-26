@@ -1,6 +1,6 @@
 ---
 id: pix-api-routes
-sidebar_position: 7
+sidebar_position: 19
 title: Rotas API
 tags:
   - pix-automatic

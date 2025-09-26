@@ -1,6 +1,6 @@
 ---
 id: pix-api-errors
-sidebar_position: 8
+sidebar_position: 20
 title: Erros
 tags:
   - pix-automatic
