@@ -1,0 +1,37 @@
+---
+id: wobhook-account-register-approved-payload
+title: Payload de Registro Conta aprovado
+tags:
+  - webhook
+  - header
+  - api
+---
+
+## Registro de conta aprovado
+
+Os webhooks de `ACCOUNT_REGISTER_APPROVED` enviam objetos com os seguintes campos no seu payload:
+
+- `accountRegister`: Detalhes do registro de contas
+- `account`: Detalhes da conta que o resgistro pertence
+
+## Exemplo
+
+```json
+{
+   "event":"ACCOUNT_REGISTER_APPROVED",
+   "accountRegister":{
+      "officialName":"Test Company",
+      "taxID":{
+         "taxID":"12345678901234",
+         "type":"BR:CNPJ"
+      },
+      "status":"APPROVED"
+   },
+   "account":{
+      "status":"OPEN",
+      "accountId":"68dbe391ee9fce4ba2b0b4ec",
+      "account":"123456",
+      "branch":"0001"
+   }
+}
+```

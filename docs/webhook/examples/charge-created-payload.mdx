@@ -1,0 +1,69 @@
+---
+id: webhook-charge-created
+title: Payload de Cobrança Criada
+tags:
+  - webhook
+  - header
+  - api
+---
+
+## Payload de Cobrança Criada
+
+Os webhooks do tipo `Cobrança Criada` enviam objetos com os seguintes campos no seu payload:
+
+- `event`: O tipo de evento realizado que neste caso seria `OPENPIX:CHARGE_CREATED`.
+- `charge`: A cobrança que foi criada.
+- `company`: Empresa a que a cobrança pertence.
+
+## Exemplo
+
+```json
+{
+   "event":"OPENPIX:CHARGE_CREATED",
+   "charge":{
+      "customer":{
+         "name":"customer#0",
+         "email":"email0@entria.com.br",
+         "phone":"119912345670",
+         "taxID":[
+            "Object"
+         ],
+         "correlationID":"9134e286-6f71-427a-bf00-100000000001"
+      },
+      "value":100,
+      "identifier":"9134e2866f71427abf0010000",
+      "correlationID":"9134e286-6f71-427a-bf00-100000000004",
+      "paymentLinkID":"9134e286-6f71-427a-bf00-100000000005",
+      "transactionID":"9134e2866f71427abf00100000000006",
+      "status":"ACTIVE",
+      "additionalInfo": [
+
+      ],
+      "discount":0,
+      "valueWithDiscount":100,
+      "type":"DYNAMIC",
+      "createdAt":"2025-09-30T12:28:00.531Z",
+      "updatedAt":"2025-09-30T12:28:00.531Z",
+      "ensureSameTaxID":false,
+      "brCode":"00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-42665544000052040000530398654041.005802BR5915Call_me_Awesome6009Sao_Paulo622905259134e2866f71427abf001000063047029",
+      "expiresIn":86400,
+      "pixKey":"123e4567-e12b-12d1-a456-426655440000",
+      "paymentLinkUrl":"https://woovi.com/pay/9134e286-6f71-427a-bf00-100000000005",
+      "qrCodeImage":"https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-100000000005.png",
+      "globalID":"Q2hhcmdlOjY4ZGJjY2QwOGI5MTJmMDhmODFmNjY3Yw==",
+      "paymentMethods":{
+         "pix":[
+            "Object"
+         ]
+      }
+   },
+   "company":{
+      "id":"68dbcccf8b912f08f81f6563",
+      "name":"Awesome Company 1",
+      "taxID":"undefined"
+   },
+   "account":{
+
+   }
+}
+```

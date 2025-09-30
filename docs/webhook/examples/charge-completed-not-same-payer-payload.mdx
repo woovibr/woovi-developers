@@ -1,0 +1,160 @@
+---
+id: webhook-charge-completed-not-same-payer-payload
+title: Payload de Cobrança Pix Paga com um payer diferente do customer.
+tags:
+  - webhook
+  - header
+  - api
+---
+
+## Pix Cobrança Paga com um payer diferente do customer.
+
+Os webhooks de `CHARGE_COMPLETED_NOT_SAME_CUSTOMER_PAYER` enviam objetos com os seguintes campos no seu payload:
+
+- `pix`: Objeto com detalhes da transação Pix
+- `company`: Empresa a que a Transação pertence
+- `account`: Detalhes da conta que a Transação pertence
+
+## Exemplo
+
+```json
+{
+   "event":"OPENPIX:CHARGE_COMPLETED_NOT_SAME_CUSTOMER_PAYER",
+   "charge":{
+      "customer":{
+         "name":"Jão",
+         "email":"email0@entria.com.br",
+         "phone":"119912345670",
+         "taxID":{
+            "taxID":"29094848074",
+            "type":"BR:CPF"
+         },
+         "correlationID":"9134e286-6f71-427a-bf00-100000000001"
+      },
+      "value":100,
+      "status":"COMPLETED",
+      "payer":{
+         "name":"Ana",
+         "email":"email1@entria.com.br",
+         "phone":"119912345671",
+         "taxID":{
+            "taxID":"29094848074",
+            "type":"BR:CPF"
+         },
+         "correlationID":"9134e286-6f71-427a-bf00-100000000002"
+      },
+      "discount":0,
+      "valueWithDiscount":100,
+      "type":"DYNAMIC",
+      "identifier":"9134e2866f71427abf0010000",
+      "correlationID":"9134e286-6f71-427a-bf00-100000000005",
+      "paymentLinkID":"9134e286-6f71-427a-bf00-100000000006",
+      "transactionID":"9134e2866f71427abf00100000000007",
+      "additionalInfo":[
+         
+      ],
+      "createdAt":"2025-09-30T13:50:56.065Z",
+      "updatedAt":"2025-09-30T13:50:56.065Z",
+      "ensureSameTaxID":false,
+      "brCode":"00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-42665544000052040000530398654041.005802BR5915Call_me_Awesome6009Sao_Paulo622905259134e2866f71427abf001000063047029",
+      "expiresIn":86400,
+      "pixKey":"123e4567-e12b-12d1-a456-426655440000",
+      "paymentLinkUrl":"https://woovi.com/pay/9134e286-6f71-427a-bf00-100000000006",
+      "qrCodeImage":"https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-100000000006.png",
+      "globalID":"Q2hhcmdlOjY4ZGJlMDQwZGNkOTlmNzM1NDhmYjllOQ==",
+      "paymentMethods":{
+         
+      }
+   },
+   "pix":{
+      "customer":{
+         "name":"Jão",
+         "email":"email0@entria.com.br",
+         "phone":"119912345670",
+         "taxID":{
+            "taxID":"29094848074",
+            "type":"BR:CPF"
+         },
+         "correlationID":"9134e286-6f71-427a-bf00-100000000001"
+      },
+      "payer":{
+         "name":"Jão",
+         "email":"email0@entria.com.br",
+         "phone":"119912345670",
+         "taxID":{
+            "taxID":"29094848074",
+            "type":"BR:CPF"
+         },
+         "correlationID":"9134e286-6f71-427a-bf00-100000000001"
+      },
+      "charge":{
+         "customer":{
+            "name":"Jão",
+            "email":"email0@entria.com.br",
+            "phone":"119912345670",
+            "taxID":{
+               "taxID":"29094848074",
+               "type":"BR:CPF"
+            },
+            "correlationID":"9134e286-6f71-427a-bf00-100000000001"
+         },
+         "value":100,
+         "status":"COMPLETED",
+         "payer":{
+            "name":"Ana",
+            "email":"email1@entria.com.br",
+            "phone":"119912345671",
+            "taxID":{
+               "taxID":"29094848074",
+               "type":"BR:CPF"
+            },
+            "correlationID":"9134e286-6f71-427a-bf00-100000000002"
+         },
+         "discount":0,
+         "valueWithDiscount":100,
+         "type":"DYNAMIC",
+         "identifier":"9134e2866f71427abf0010000",
+         "correlationID":"9134e286-6f71-427a-bf00-100000000005",
+         "paymentLinkID":"9134e286-6f71-427a-bf00-100000000006",
+         "transactionID":"9134e2866f71427abf00100000000007",
+         "additionalInfo":[
+            
+         ],
+         "createdAt":"2025-09-30T13:50:56.065Z",
+         "updatedAt":"2025-09-30T13:50:56.065Z",
+         "ensureSameTaxID":false,
+         "brCode":"00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-42665544000052040000530398654041.005802BR5915Call_me_Awesome6009Sao_Paulo622905259134e2866f71427abf001000063047029",
+         "expiresIn":86400,
+         "pixKey":"123e4567-e12b-12d1-a456-426655440000",
+         "paymentLinkUrl":"https://woovi.com/pay/9134e286-6f71-427a-bf00-100000000006",
+         "qrCodeImage":"https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-100000000006.png",
+         "globalID":"Q2hhcmdlOjY4ZGJlMDQwZGNkOTlmNzM1NDhmYjllOQ=="
+      },
+      "value":100,
+      "time":"2022-09-05T11:05:11.000Z",
+      "endToEndId":"endToEndId#0",
+      "infoPagador":"payer info 0",
+      "status":"CONFIRMED",
+      "type":"PAYMENT",
+      "createdAt":"2025-09-30T13:50:56.075Z",
+      "globalID":"UGl4VHJhbnNhY3Rpb246NjhkYmUwNDBkY2Q5OWY3MzU0OGZiOWVl"
+   },
+   "company":{
+      "id":"68dbe03fdcd99f73548fb8f3",
+      "name":"Awesome Company 1"
+   },
+   "account":{
+      "clientId":"clientId",
+      "environment":"TESTING"
+   },
+   "payer":{
+      "name":"Ana",
+      "email":"email1@entria.com.br",
+      "phone":"119912345671",
+      "taxID":{
+         "taxID":"29094848074",
+         "type":"BR:CPF"
+      }
+   }
+}
+```
