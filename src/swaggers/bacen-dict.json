@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "DICT API",
-    "version": "2.4.3",
+    "version": "2.5.0",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0"
@@ -212,7 +212,7 @@
         "tags": [
           "Directory"
         ],
-        "description": "Atualiza um vínculo.\n\nA ser utilizado no cenário de atualização da informação da conta, nome e nome fantasia de um cliente, permanecendo este no mesmo PSP.\nSomente podem ser atualizadas as informações de conta do vínculo, nome e nome fantasia do cliente. Outras atualizações do vínculo\ndevem ser feitas por exclusão/inclusão do vínculo, portabilidade ou reivindicação de posse, a depender da situação.\n\n### Restrições\nAs seguintes restrições devem ser obedecidas na atualização de vínculo, de acordo com o tipo de chave:\n  - Chaves `EVP` (aleatórias) - Não é permitida a alteração.\n  - Demais chaves - É permitida a alteração com os motivos `USER_REQUESTED`, `BRANCH_TRANSFER` ou `RECONCILIATION`.",
+        "description": "Atualiza um vínculo.\n\nA ser utilizado no cenário de atualização da informação da conta, nome e nome fantasia de um cliente, permanecendo este no mesmo PSP.\nSomente podem ser atualizadas as informações de conta do vínculo, nome e nome fantasia do cliente. Outras atualizações do vínculo\ndevem ser feitas por exclusão/inclusão do vínculo, portabilidade ou reivindicação de posse, a depender da situação.\n\n### Restrições\nAs seguintes restrições devem ser obedecidas na atualização de vínculo, de acordo com o tipo de chave:\n  - Chaves `EVP` (aleatórias) - É permitida a alteração exclusivamente com o motivo `RFB_VALIDATION`.\n  - Demais chaves - É permitida a alteração com os motivos `USER_REQUESTED`, `BRANCH_TRANSFER` ou `RECONCILIATION`.",
         "operationId": "updateEntry",
         "requestBody": {
           "content": {
