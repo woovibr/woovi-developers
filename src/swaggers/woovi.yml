@@ -10623,9 +10623,8 @@ paths:
                     type: string
       x-codeSamples:
         - lang: Node + Native
-          source: >-
+          source: |-
             const http = require('https');
-
 
             const options = {
               method: 'POST',
@@ -10637,7 +10636,6 @@ paths:
                 'content-type': 'application/json'
               }
             };
-
 
             const req = http.request(options, function (res) {
               const chunks = [];
@@ -10652,10 +10650,13 @@ paths:
               });
             });
 
-
-            req.write(JSON.stringify({name: 'string', correlationID: 'string',
-            value: 0, comment: 'string'}));
-
+            req.write(JSON.stringify({
+              name: 'string',
+              correlationID: 'string',
+              value: 0,
+              comment: 'string',
+              pixKey: 'string'
+            }));
             req.end();
         - lang: Shell + Curl
           source: |-
@@ -10663,7 +10664,7 @@ paths:
               --url https://api.woovi.com/api/v1/qrcode-static \
               --header 'Authorization: REPLACE_KEY_VALUE' \
               --header 'content-type: application/json' \
-              --data '{"name":"string","correlationID":"string","value":0,"comment":"string"}'
+              --data '{"name":"string","correlationID":"string","value":0,"comment":"string","pixKey":"string"}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -10682,7 +10683,8 @@ paths:
                 'name' => 'string',
                 'correlationID' => 'string',
                 'value' => 0,
-                'comment' => 'string'
+                'comment' => 'string',
+                'pixKey' => 'string'
               ]),
               CURLOPT_HTTPHEADER => [
                 "Authorization: REPLACE_KEY_VALUE",
@@ -10709,7 +10711,7 @@ paths:
 
 
             payload =
-            "{\"name\":\"string\",\"correlationID\":\"string\",\"value\":0,\"comment\":\"string\"}"
+            "{\"name\":\"string\",\"correlationID\":\"string\",\"value\":0,\"comment\":\"string\",\"pixKey\":\"string\"}"
 
 
             headers = {
@@ -10728,7 +10730,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/qrcode-static\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"comment\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/qrcode-static\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"comment\\\":\\\"string\\\",\\\"pixKey\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -10737,7 +10739,7 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"name\":\"string\",\"correlationID\":\"string\",\"value\":0,\"comment\":\"string\"}");
+            "{\"name\":\"string\",\"correlationID\":\"string\",\"value\":0,\"comment\":\"string\",\"pixKey\":\"string\"}");
 
             Request request = new Request.Builder()
               .url("https://api.woovi.com/api/v1/qrcode-static")
@@ -10769,7 +10771,7 @@ paths:
             request["content-type"] = 'application/json'
 
             request.body =
-            "{\"name\":\"string\",\"correlationID\":\"string\",\"value\":0,\"comment\":\"string\"}"
+            "{\"name\":\"string\",\"correlationID\":\"string\",\"value\":0,\"comment\":\"string\",\"pixKey\":\"string\"}"
 
 
             response = http.request(request)
@@ -16887,6 +16889,9 @@ components:
         comment:
           type: string
           description: Comment to be added in infoPagador
+        pixKey:
+          type: string
+          description: The pix key that this qrcode is associated with
       required:
         - name
     Transaction:
@@ -17364,6 +17369,8 @@ components:
             recurrencyId:
               type: string
             installmentId:
+              type: string
+            endToEndId:
               type: string
             rejectCode:
               type: string
