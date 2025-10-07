@@ -13479,6 +13479,10 @@
             "type": "string",
             "description": "Your correlation ID to keep track of this subscription"
           },
+          "paymentLinkUrl": {
+            "type": "string",
+            "description": "Payment link to this subscription"
+          },
           "addtionalInfo": {
             "type": "array",
             "items": {
