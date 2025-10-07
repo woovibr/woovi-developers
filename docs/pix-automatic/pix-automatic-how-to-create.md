@@ -96,6 +96,7 @@ Retornarmeros a seguinte resposta de exemplo:
         "value": 20,
         "status": "ACTIVE",
         "correlationID": "",
+        "paymentLinkUrl": "https://woovi.dev/pay/8a421a7a-a9af-4b2d-add8-54fc1ac4320f",
         "pixRecurring": {
            "recurrencyId": "RN54811417202508244SORthDqe6c",
             "emv": "00020101021226870014br.gov.bcb.pix2565qr-h.woovi.digital/qr/v2/cob/464bf2d4-3b4b-4633-a9fc-c4b492f76e035204000053039865802BR5911Pedro Woovi6007VITORIA62070503***80870014br.gov.bcb.pix2565qr-h.woovi.digital/qr/v2/rec/a8493991-b364-4821-acea-f548ee239f416304E887",

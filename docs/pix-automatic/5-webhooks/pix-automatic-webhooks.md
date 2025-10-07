@@ -205,6 +205,7 @@ Quando o COBR é pago pelo consumidor.
     "identifierId": "01K3942Y0DFEK73H541ZADVK0P",
     "recurrencyId": "RN5481141720250822YHKirVyWBjF",
     "status": "COMPLETED",
+    "endToEndId": "my-end-to-end-id",
     "tries": [
       {
         "tryStatus": "PAID",
