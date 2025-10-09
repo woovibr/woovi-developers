@@ -1,7 +1,7 @@
 ---
 id: how-to-create-new-pix-key
 sidebar_position: 1
-title: Como cria uma nova chave pix.
+title: Como criar uma nova chave pix.
 tags:
 - chave pix
 
