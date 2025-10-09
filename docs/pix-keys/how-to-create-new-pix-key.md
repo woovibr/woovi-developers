@@ -34,7 +34,7 @@ Este documento irá ajudar a entender como criar uma chave Pix.
       "pixKey": {
         "pixKey": "<chave pix>",
         "type": "<tipo da chave pix>",
-        "isDefault": <true or false>
+        "isDefault": true
       }
     }
   ```
