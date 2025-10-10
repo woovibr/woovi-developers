@@ -24,7 +24,7 @@ As jornadas são as diferentes maneiras de se utilizar o Pix Automático definid
 
 ### Jornada 1 | Autorização via Push Notification
 
-Na jornada 1 o recebor envia uma notificação ao usuário, convidando-o para entrar em uma recorrência.
+Na jornada 1 o recebedor envia uma notificação ao usuário, convidando-o para entrar em uma recorrência.
 
 ### Jornada 2 | Autorização via QRCode
 
