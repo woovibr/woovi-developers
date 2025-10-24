@@ -7195,7 +7195,7 @@
           },
           "expiresIn": {
             "type": "number",
-            "description": "Expires the charge in seconds (minimum is 15 minutes)"
+            "description": "Expires the charge in seconds (minimum is 5 minutes)"
           },
           "expiresDate": {
             "type": "string",

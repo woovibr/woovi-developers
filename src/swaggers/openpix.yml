@@ -4849,7 +4849,7 @@ components:
           description: Comment to be added in infoPagador
         expiresIn:
           type: number
-          description: Expires the charge in seconds (minimum is 15 minutes)
+          description: Expires the charge in seconds (minimum is 5 minutes)
         expiresDate:
           type: string
           description: Expiration date of the charge. Only in ISO 8601 format.
