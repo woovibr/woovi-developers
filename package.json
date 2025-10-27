@@ -25,8 +25,7 @@
     "redoc": "2.1.5",
     "redocusaurus": "2.5.0",
     "snippet-enricher-cli": "^0.0.8",
-    "styled-components": "^6.1.13",
-    "yarn": "^1.22.22"
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@eslint/compat": "^1.1.1",
