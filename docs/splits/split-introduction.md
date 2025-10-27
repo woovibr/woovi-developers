@@ -68,3 +68,13 @@ Uma empresa pode ter qualquer número de subcontas.
 Uma empresa pode a qualquer momento realizar um saque para a chave pix registrada na subconta, tanto via integração de API ou diretamente pela plataforma.
 
 O uso da subconta permite a criação de fluxos menos burocráticos e mais livres dentro da plataforma, os valores sacados só serão debitados da conta principal no momento do saque garantindo total controle ao administrador da empresa dona destas subcontas.
+
+### Split de transferência entre contas (SPLIT_INTERNAL_TRANSFER)
+
+Em casos de empresas, com múltiplas contas bancárias, ou empresas com várias contas de clientes (BAAS) ou mesmo empresas afiliadas, é possível criar um split personalizado via API
+
+![Split SubAccount](__assets__/split_internal_transfer.png)
+
+#### Quando utilizar (SPLIT_INTERNAL_TRANSFER)
+
+Quando o nível de complexidade do split aumenta e é necessário criar regras personalizadas
