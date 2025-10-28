@@ -1384,7 +1384,7 @@ paths:
             puts response.read_body
     get:
       tags:
-        - pix-charge
+        - pixCharge
       summary: Get a pix charge
       description: Retrieve details of a specific Pix charge
       parameters:
