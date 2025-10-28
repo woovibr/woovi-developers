@@ -196,6 +196,10 @@ module.exports = {
             route: '/api/',
             spec: './src/swaggers/woovi.json',
           },
+          {
+            route: '/indirect/',
+            spec: './src/swaggers/pixIndirect.json',
+          }
         ],
       },
     ],
