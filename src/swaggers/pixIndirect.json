@@ -980,7 +980,7 @@
       },
       "get": {
         "tags": [
-          "pix-charge"
+          "pixCharge"
         ],
         "summary": "Get a pix charge",
         "description": "Retrieve details of a specific Pix charge",
@@ -2068,10 +2068,6 @@
     {
       "name": "pixCharge",
       "description": "Endpoint to manage Pix Charges\n"
-    },
-    {
-      "name": "pix-charge",
-      "description": "Endpoints for pix-charge\n"
     }
   ]
 }
