@@ -18,10 +18,12 @@ Vale lembrar que a assinatura de valor variável não tem um limite para o quant
 
 Dessa forma, ao realizar uma cobrança com valor superior ao mínimo ela poderá ser rejeitada a depender das restrições que o usuário definiu.
 
-## Como criar uma cobrança com valor variável
+## Atualizar o valor da assinatura
 
-Após o Pix Automático aprovado, você poderá criar as cobranças com valores variáveis segundo a [documentação de cobrança manual](https://developers.woovi.com/docs/pix-automatic/pix-automatic-cobr-manual)
+Para atualizar o valor da assinatura você pode utilizar o endpoint `/api/v1/subscriptions/{id}/value`
 
-Para a criar uma cobrança com valor variável você que deverá criar a cobrança manual de 5 a 10 dias antes da data de cobrança, mais detalhes na documentação.
-
-
+```json
+{
+  "value": 100
+}
+```
