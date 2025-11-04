@@ -7385,7 +7385,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The globalID of the installment.
+          description: The globalID of the installment or the endToEndId from transaction.
           required: true
           schema:
             type: string
