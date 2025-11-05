@@ -903,7 +903,6 @@ paths:
               example:
                 error: Internal server error
       x-codeSamples: []
-  /api/v1/account-register:
     get:
       tags:
         - account register
@@ -911,7 +910,7 @@ paths:
       description: Retrieves an existing account registration by Tax ID
       parameters:
         - name: taxID
-          in: query
+          in: path
           required: true
           description: Tax ID of the company to retrieve
           schema:
@@ -1008,7 +1007,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/account-register?taxID=12345678901234',
+              path: '/api/v1/account-register/12345678901234',
               headers: {
                 Authorization: 'REPLACE_KEY_VALUE'
               }
@@ -1031,7 +1030,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/account-register?taxID=12345678901234' \
+              --url 'https://api.woovi.com/api/v1/account-register/12345678901234' \
               --header 'Authorization: REPLACE_KEY_VALUE'
         - lang: Php + Curl
           source: |-
@@ -1040,7 +1039,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/account-register?taxID=12345678901234",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/account-register/12345678901234",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -1073,7 +1072,7 @@ paths:
             headers = { 'Authorization': "REPLACE_KEY_VALUE" }
 
 
-            conn.request("GET", "/api/v1/account-register?taxID=12345678901234",
+            conn.request("GET", "/api/v1/account-register/12345678901234",
             headers=headers)
 
 
@@ -1084,13 +1083,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account-register?taxID=12345678901234\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account-register/12345678901234\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/account-register?taxID=12345678901234")
+              .url("https://api.woovi.com/api/v1/account-register/12345678901234")
               .get()
               .addHeader("Authorization", "REPLACE_KEY_VALUE")
               .build();
@@ -1104,7 +1103,7 @@ paths:
 
 
             url =
-            URI("https://api.woovi.com/api/v1/account-register?taxID=12345678901234")
+            URI("https://api.woovi.com/api/v1/account-register/12345678901234")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -1120,6 +1119,7 @@ paths:
             response = http.request(request)
 
             puts response.read_body
+  /api/v1/account-register:
     post:
       tags:
         - account register

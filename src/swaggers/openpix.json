@@ -240,7 +240,7 @@
         }
       }
     },
-    "/api/v1/account-register": {
+    "/api/v1/account-register/{id}": {
       "get": {
         "tags": [
           "account register"
@@ -249,8 +249,8 @@
         "description": "Retrieves an existing account registration by Tax ID",
         "parameters": [
           {
-            "name": "taxID",
-            "in": "query",
+            "name": "id",
+            "in": "path",
             "required": true,
             "description": "Tax ID of the company to retrieve",
             "schema": {
@@ -392,7 +392,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/account-register": {
       "post": {
         "tags": [
           "account register"
