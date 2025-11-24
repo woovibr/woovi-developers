@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Pix Location",
-    "description": "Pix Location",
+    "title": "Pix Indirect",
+    "description": "Pix Indirect",
     "version": "1.0.0"
   },
   "servers": [
