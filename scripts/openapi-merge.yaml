@@ -1,0 +1,11 @@
+{
+  "inputs": [
+    {
+      "inputFile": "../../pix-location/src/openapi/pixLocation.yml"
+    },
+    {
+      "inputFile": "../../pix-charge/src/openapi/pixCharge.yml"
+    }
+  ],
+  "output": "./pixIndirect-merged.yml"
+}
