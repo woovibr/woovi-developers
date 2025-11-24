@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Pix Indirect
-  description: Pix Indirect
+  title: Pix Location
+  description: Pix Location
   version: 1.0.0
 servers:
   - url: 'https://<name>.indireto.woovi-indireto.dev'
