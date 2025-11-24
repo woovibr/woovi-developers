@@ -1,10 +1,10 @@
 openapi: 3.0.3
 info:
-  title: Pix Indirect
-  description: Pix Indirect
+  title: Pix Location
+  description: Pix Location
   version: 1.0.0
 servers:
-  - url: "https://<name>.indireto.woovi-indireto.dev"
+  - url: 'https://<name>.indireto.woovi-indireto.dev'
     description: Staging
 security: []
 tags:
@@ -18,458 +18,7 @@ tags:
     description: |
       Endpoints for pix-charge
 paths:
-  /api/v1/decode/emv:
-    post:
-      tags:
-        - decode
-      summary: Parse EMV (PIX) QR code and optionally resolve COB/REC locations
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - emv
-              properties:
-                emv:
-                  type: string
-                  description: Raw EMV / PIX QR payload (text)
-                  example: >-
-                    00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486
-      responses:
-        "200":
-          description: >-
-            Parsed EMV payload with resolved COB and/or REC location (when
-            available)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  emv:
-                    type: object
-                    properties:
-                      payloadFormatIndicator:
-                        type: string
-                      pointOfInitiationMethod:
-                        type: string
-                        description: Present when EMV indicates a dynamic QR (e.g. "12")
-                      merchantAccountInformationPix:
-                        type: object
-                        description: Parsed "26"/"00"... Pix merchant account info
-                        properties:
-                          gui:
-                            type: string
-                          pixKey:
-                            type: string
-                            description: UUID or key when Pix key present
-                          url:
-                            type: string
-                            description: URL when location points to a COB/REC resource
-                          additionalInformation:
-                            type: string
-                      merchantCategoryCode:
-                        type: string
-                      transactionCurrency:
-                        type: string
-                      transactionAmount:
-                        type: string
-                      countryCode:
-                        type: string
-                      merchantName:
-                        type: string
-                      merchantCity:
-                        type: string
-                      additionalDataFieldTemplate:
-                        type: object
-                        properties:
-                          referenceLabel:
-                            type: string
-                      unreservedTemplates:
-                        type: object
-                        properties:
-                          gui:
-                            type: string
-                          url:
-                            type: string
-                      crc:
-                        type: string
-                  cobLocation:
-                    nullable: true
-                    type: object
-                    description: >-
-                      Resolved COB (charge) location details when the EMV points
-                      to a COB endpoint
-                    properties:
-                      isValid:
-                        type: boolean
-                      locationErrors:
-                        type: array
-                        items:
-                          type: string
-                      payload:
-                        type: object
-                        properties:
-                          calendar:
-                            type: object
-                            properties:
-                              presentation:
-                                type: string
-                                format: date-time
-                              expiration:
-                                type: integer
-                              creation:
-                                type: string
-                                format: date-time
-                          key:
-                            type: string
-                          debtor:
-                            type: object
-                            properties:
-                              cpf:
-                                type: string
-                              name:
-                                type: string
-                          additionalInfo:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                name:
-                                  type: string
-                                value:
-                                  type: string
-                          revision:
-                            type: integer
-                          status:
-                            type: string
-                          txid:
-                            type: string
-                          value:
-                            type: object
-                            properties:
-                              original:
-                                type: string
-                      url:
-                        type: string
-                  recLocation:
-                    nullable: true
-                    type: object
-                    description: >-
-                      Resolved REC (request for payment) location details when
-                      EMV points to a REC endpoint
-                    properties:
-                      isValid:
-                        type: boolean
-                      locationErrors:
-                        type: array
-                        items:
-                          type: string
-                      payload:
-                        type: object
-                        properties:
-                          updates:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                date:
-                                  type: string
-                                  format: date-time
-                                status:
-                                  type: string
-                          calendar:
-                            type: object
-                            properties:
-                              startDate:
-                                type: string
-                                format: date
-                              periodicity:
-                                type: string
-                          idRec:
-                            type: string
-                          retryPolicy:
-                            type: string
-                          receiver:
-                            type: object
-                            properties:
-                              cnpj:
-                                type: string
-                              participantIspb:
-                                type: string
-                              name:
-                                type: string
-                          value:
-                            type: object
-                            properties:
-                              valueRec:
-                                type: string
-                          link:
-                            type: object
-                            properties:
-                              contract:
-                                type: string
-                              debtor:
-                                type: object
-                                properties:
-                                  cpf:
-                                    type: string
-                                  name:
-                                    type: string
-                      url:
-                        type: string
-              examples:
-                parsedWithRecLocation:
-                  summary: EMV parsed and REC location resolved
-                  value:
-                    emv:
-                      payloadFormatIndicator: "01"
-                      merchantAccountInformationPix:
-                        gui: br.gov.bcb.pix
-                        pixKey: f4c6089a-bfde-4c00-a2d9-9eaa584b0219
-                        additionalInformation: CobrancaEstatica
-                      merchantCategoryCode: "0000"
-                      transactionCurrency: "986"
-                      transactionAmount: "546.28"
-                      countryCode: BR
-                      merchantName: Pix
-                      merchantCity: BRASILIA
-                      additionalDataFieldTemplate:
-                        referenceLabel: 84767c56c2ab4e65b6670de2a
-                      unreservedTemplates:
-                        gui: br.gov.bcb.pix
-                        url: >-
-                          qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf0788691
-                      crc: "4486"
-                    cobLocation: null
-                    recLocation:
-                      isValid: true
-                      locationErrors: []
-                      payload:
-                        updates:
-                          - date: "2025-10-24T18:42:58Z"
-                            status: CRIADA
-                        calendar:
-                          startDate: "2025-10-24"
-                          periodicity: SEMANAL
-                        idRec: RN5481141720251024BnwNHejs9h9
-                        retryPolicy: NAO_PERMITE
-                        receiver:
-                          cnpj: "44720743000101"
-                          participantIspb: "54811417"
-                          name: Woovi Demo
-                        value:
-                          valueRec: "0.01"
-                        link:
-                          contract: Woovi Demo - Pix Automático
-                          debtor:
-                            cpf: "15775023706"
-                            name: Pedro Cliente
-                      url: >-
-                        qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf0788691
-                parsedWithCobLocation:
-                  summary: EMV parsed and COB location resolved
-                  value:
-                    emv:
-                      payloadFormatIndicator: "01"
-                      pointOfInitiationMethod: "12"
-                      merchantAccountInformationPix:
-                        gui: br.gov.bcb.pix
-                        url: >-
-                          qr-h.woovi.digital/qr/v2/cob/fb274322-221c-43d4-b58b-fab36d87c75c
-                      merchantCategoryCode: "0000"
-                      transactionCurrency: "986"
-                      transactionAmount: "10.00"
-                      countryCode: BR
-                      merchantName: sibeliusip
-                      merchantCity: Sao_Paulo
-                      additionalDataFieldTemplate:
-                        referenceLabel: fb274322-221c-43d4-b58b-f
-                      crc: 0C98
-                    cobLocation:
-                      isValid: true
-                      locationErrors: []
-                      payload:
-                        calendar:
-                          presentation: "2025-02-25T13:27:54.168Z"
-                          expiration: 86400
-                          creation: "2025-02-12T16:59:22.939Z"
-                        key: 4004901d-bd85-4769-8e52-cb4c42c506dc
-                        debtor:
-                          cpf: "62550186362"
-                          name: Fulano de Tal
-                        additionalInfo:
-                          - name: Entrega
-                            value: Residencial
-                        revision: 0
-                        status: ATIVA
-                        txid: d71a2ffd7a7b468eba993cef83428583
-                        value:
-                          original: "120.58"
-                      url: >-
-                        qr-h.woovi.digital/qr/v2/cob/fb274322-221c-43d4-b58b-fab36d87c75c
-                    recLocation: null
-        "400":
-          description: Bad request — invalid input
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              example:
-                error: Invalid EMV payload
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              example:
-                error: Internal server error occurred
-      x-codeSamples:
-        - lang: Node + Native
-          source: |-
-            const http = require('http');
-
-            const options = {
-              method: 'POST',
-              hostname: 'undefinedundefined',
-              port: null,
-              path: '/api/v1/decode/emv',
-              headers: {
-                'content-type': 'application/json'
-              }
-            };
-
-            const req = http.request(options, function (res) {
-              const chunks = [];
-
-              res.on('data', function (chunk) {
-                chunks.push(chunk);
-              });
-
-              res.on('end', function () {
-                const body = Buffer.concat(chunks);
-                console.log(body.toString());
-              });
-            });
-
-            req.write(JSON.stringify({
-              emv: '00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486'
-            }));
-            req.end();
-        - lang: Shell + Curl
-          source: |-
-            curl --request POST \
-              --url http://undefinedundefined/api/v1/decode/emv \
-              --header 'content-type: application/json' \
-              --data '{"emv":"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486"}'
-        - lang: Php + Curl
-          source: |-
-            <?php
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, [
-              CURLOPT_URL => "http://undefinedundefined/api/v1/decode/emv",
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => json_encode([
-                'emv' => '00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486'
-              ]),
-              CURLOPT_HTTPHEADER => [
-                "content-type: application/json"
-              ],
-            ]);
-
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-
-            curl_close($curl);
-
-            if ($err) {
-              echo "cURL Error #:" . $err;
-            } else {
-              echo $response;
-            }
-        - lang: Python + Python3
-          source: >-
-            import http.client
-
-
-            conn = http.client.HTTPConnection("undefinedundefined")
-
-
-            payload =
-            "{\"emv\":\"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486\"}"
-
-
-            headers = { 'content-type': "application/json" }
-
-
-            conn.request("POST", "/api/v1/decode/emv", payload, headers)
-
-
-            res = conn.getresponse()
-
-            data = res.read()
-
-
-            print(data.decode("utf-8"))
-        - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"http://undefinedundefined/api/v1/decode/emv\"\n\n\tpayload := strings.NewReader(\"{\\\"emv\\\":\\\"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-        - lang: Java + Okhttp
-          source: >-
-            OkHttpClient client = new OkHttpClient();
-
-
-            MediaType mediaType = MediaType.parse("application/json");
-
-            RequestBody body = RequestBody.create(mediaType,
-            "{\"emv\":\"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486\"}");
-
-            Request request = new Request.Builder()
-              .url("http://undefinedundefined/api/v1/decode/emv")
-              .post(body)
-              .addHeader("content-type", "application/json")
-              .build();
-
-            Response response = client.newCall(request).execute();
-        - lang: Ruby + Native
-          source: >-
-            require 'uri'
-
-            require 'net/http'
-
-
-            url = URI("http://undefinedundefined/api/v1/decode/emv")
-
-
-            http = Net::HTTP.new(url.host, url.port)
-
-
-            request = Net::HTTP::Post.new(url)
-
-            request["content-type"] = 'application/json'
-
-            request.body =
-            "{\"emv\":\"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486\"}"
-
-
-            response = http.request(request)
-
-            puts response.read_body
-  "/qr/v2/{locType}/{pixUrlAccessToken}":
+  '/qr/v2/{locType}/{pixUrlAccessToken}':
     get:
       tags:
         - pixLocation
@@ -510,20 +59,20 @@ paths:
             type: string
           description: Additional location parameter
       responses:
-        "200":
+        '200':
           description: Pix location QR code data retrieved successfully
           content:
             application/jose:
               schema:
                 type: string
                 description: JOSE formatted data for QR code generation
-        "404":
+        '404':
           description: Pix location or charge not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "500":
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
           description: Internal server error
       x-codeSamples:
         - lang: Node + Native
@@ -650,22 +199,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PixLocationCreate"
+              $ref: '#/components/schemas/PixLocationCreate'
       responses:
-        "200":
+        '200':
           description: Pix location created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PixLocationResponse"
-        "400":
+                $ref: '#/components/schemas/PixLocationResponse'
+        '400':
           description: Bad request - invalid location type
           content:
             text/plain:
               schema:
                 type: string
                 example: Invalid type
-        "500":
+        '500':
           description: Internal server error
       x-codeSamples:
         - lang: Node + Native
@@ -869,7 +418,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EMVRequest"
+              $ref: '#/components/schemas/EMVRequest'
             examples:
               basic_example:
                 summary: Basic EMV generation
@@ -877,7 +426,7 @@ paths:
                   merchantName: Test Merchant
                   merchantCity: Sao Paulo
                   merchantAccountInformationPix:
-                    url: "https://example.com/pix"
+                    url: 'https://example.com/pix'
               with_additional_fields:
                 summary: EMV generation with additional fields
                 value:
@@ -885,7 +434,7 @@ paths:
                   merchantCity: Sao Paulo
                   merchantAccountInformationPix:
                     gui: br.gov.bcb.pix
-                    url: "https://example.com/pix"
+                    url: 'https://example.com/pix'
                     additionalInformation: Payment for services
               minimal_example:
                 summary: Minimal required fields only
@@ -893,14 +442,14 @@ paths:
                   merchantName: Merchant
                   merchantCity: Sao Paulo
                   merchantAccountInformationPix:
-                    url: "https://merchant.com/pix/payment"
+                    url: 'https://merchant.com/pix/payment'
       responses:
-        "201":
+        '201':
           description: EMV QR Code generated successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EMVResponse"
+                $ref: '#/components/schemas/EMVResponse'
               examples:
                 success_response:
                   summary: Successful EMV generation
@@ -914,12 +463,12 @@ paths:
                     emv: >-
                       00020101021226450014br.gov.bcb.pix2523https://example.com/pix5204000053039865802BR5913Test
                       Merchant6009Sao Paulo62070503***6304E69E
-        "400":
+        '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
+                $ref: '#/components/schemas/ErrorResponse1'
               examples:
                 missing_merchant_name:
                   summary: Missing merchant name
@@ -1012,12 +561,12 @@ paths:
                           message: String must contain at most 15 character(s)
                       name: ZodError
                       message: Validation error
-        "401":
+        '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
+                $ref: '#/components/schemas/ErrorResponse1'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -1213,7 +762,7 @@ paths:
             response = http.request(request)
 
             puts response.read_body
-  "/pix-charge/v1/charge/{txid}":
+  '/pix-charge/v1/charge/{txid}':
     post:
       tags:
         - pixCharge
@@ -1231,9 +780,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PixChargeCreate"
+              $ref: '#/components/schemas/PixChargeCreate'
       responses:
-        "201":
+        '201':
           description: Pix charge created successfully
           content:
             application/json:
@@ -1241,25 +790,25 @@ paths:
                 type: object
                 properties:
                   charge:
-                    $ref: "#/components/schemas/PixCharge"
-        "400":
+                    $ref: '#/components/schemas/PixCharge'
+        '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "401":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "409":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '409':
           description: Conflict - txid already exists
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
+                $ref: '#/components/schemas/ErrorResponse1'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -1544,11 +1093,11 @@ paths:
               type: object
               properties:
                 chargeType:
-                  $ref: "#/components/schemas/ChargeType"
+                  $ref: '#/components/schemas/ChargeType'
                 calendar:
-                  $ref: "#/components/schemas/Calendar"
+                  $ref: '#/components/schemas/Calendar'
       responses:
-        "200":
+        '200':
           description: Pix charge updated successfully
           content:
             application/json:
@@ -1556,25 +1105,25 @@ paths:
                 type: object
                 properties:
                   charge:
-                    $ref: "#/components/schemas/PixCharge"
-        "400":
+                    $ref: '#/components/schemas/PixCharge'
+        '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "401":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '404':
           description: Pix charge not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
+                $ref: '#/components/schemas/ErrorResponse1'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -1757,7 +1306,7 @@ paths:
             type: string
           description: Optional municipality code for business-day calculation
       responses:
-        "200":
+        '200':
           description: the pix charge
           content:
             application/json:
@@ -1765,7 +1314,7 @@ paths:
                 type: object
                 properties:
                   charge:
-                    $ref: "#/components/schemas/PixCharge"
+                    $ref: '#/components/schemas/PixCharge'
                     type: object
               example:
                 account:
@@ -1775,7 +1324,7 @@ paths:
                     total: 129430
                     blocked: 0
                     available: 129430
-        "400":
+        '400':
           description: An error message
           content:
             application/json:
@@ -1784,18 +1333,18 @@ paths:
                 properties:
                   error:
                     type: string
-        "401":
+        '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '404':
           description: Pix charge not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
+                $ref: '#/components/schemas/ErrorResponse1'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -1918,20 +1467,20 @@ paths:
             type: string
           description: Unique transaction identifier
       responses:
-        "204":
+        '204':
           description: Pix charge deleted successfully (no content)
-        "401":
+        '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '404':
           description: Pix charge not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
+                $ref: '#/components/schemas/ErrorResponse1'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -2041,7 +1590,7 @@ paths:
             response = http.request(request)
 
             puts response.read_body
-  "/pix-charge/v1/charge/location/{locId}":
+  '/pix-charge/v1/charge/location/{locId}':
     get:
       tags:
         - pixCharge
@@ -2067,7 +1616,7 @@ paths:
             type: string
           description: Optional municipality code for business-day calculation
       responses:
-        "200":
+        '200':
           description: Pix charges retrieved successfully
           content:
             application/json:
@@ -2075,19 +1624,19 @@ paths:
                 type: object
                 properties:
                   charge:
-                    $ref: "#/components/schemas/PixCharge"
-        "401":
+                    $ref: '#/components/schemas/PixCharge'
+        '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '404':
           description: Location not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
+                $ref: '#/components/schemas/ErrorResponse1'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -2197,7 +1746,7 @@ paths:
             response = http.request(request)
 
             puts response.read_body
-  "/pix-charge/v1/charge/{txid}/allow":
+  '/pix-charge/v1/charge/{txid}/allow':
     post:
       tags:
         - pixCharge
@@ -2230,26 +1779,26 @@ paths:
                   type: string
                   description: Optional payer taxID when ensureSameTaxID is enabled
       responses:
-        "204":
+        '204':
           description: Payment allowed (no content)
-        "400":
+        '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "401":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse1'
+        '404':
           description: Pix charge not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse1"
+                $ref: '#/components/schemas/ErrorResponse1'
       x-codeSamples:
         - lang: Node + Native
           source: >-
@@ -2398,9 +1947,9 @@ paths:
             response = http.request(request)
 
             puts response.read_body
-  "/core/charge/{txid}":
+  '/core/charge/{txid}':
     post:
-      "400":
+      '400':
         description: Bad Request – invalid txid or body validation error
         content:
           application/json:
@@ -2429,7 +1978,7 @@ paths:
           description: Unique transaction identifier (1–35 alphanumeric chars)
           schema:
             type: string
-            pattern: "^[a-zA-Z0-9]{1,35}$"
+            pattern: '^[a-zA-Z0-9]{1,35}$'
       requestBody:
         required: true
         content:
@@ -2443,7 +1992,7 @@ paths:
               properties:
                 pixCharge:
                   description: Raw Pix charge payload forwarded to the Pix provider
-                  $ref: "#/components/schemas/PixChargeCreate"
+                  $ref: '#/components/schemas/PixChargeCreate'
                   additionalProperties: true
                 pixLocation:
                   type: object
@@ -2480,7 +2029,7 @@ paths:
                     merchantName: Test Merchant
                     merchantCity: Sao Paulo
       responses:
-        "200":
+        '200':
           description: Charge created successfully
           content:
             application/json:
@@ -2488,7 +2037,7 @@ paths:
                 type: object
                 properties:
                   charge:
-                    $ref: "#/components/schemas/PixCharge"
+                    $ref: '#/components/schemas/PixCharge'
         description: Charge created successfully
         content:
           application/json:
@@ -2503,7 +2052,7 @@ paths:
                   location:
                     id: location-123
                     type: COB
-                    location: "https://example.com/location/123"
+                    location: 'https://example.com/location/123'
                     pixUrlAccessToken: token-123
                   brCode: 00020101021243650016COM.MERCADOLIVRE02008...
             schema:
@@ -2967,7 +2516,7 @@ components:
       nullable: true
       properties:
         modality:
-          $ref: "#/components/schemas/InterestModality"
+          $ref: '#/components/schemas/InterestModality'
         value:
           type: integer
           minimum: 0
@@ -2976,11 +2525,11 @@ components:
       nullable: true
       properties:
         modality:
-          $ref: "#/components/schemas/DiscountModality"
+          $ref: '#/components/schemas/DiscountModality'
         discountFixedDate:
           type: array
           items:
-            $ref: "#/components/schemas/DiscountFixedData"
+            $ref: '#/components/schemas/DiscountFixedData'
         value:
           type: integer
     RebateRules:
@@ -2988,7 +2537,7 @@ components:
       nullable: true
       properties:
         modality:
-          $ref: "#/components/schemas/RebateModality"
+          $ref: '#/components/schemas/RebateModality'
         value:
           type: number
           minimum: 0
@@ -2997,7 +2546,7 @@ components:
       nullable: true
       properties:
         modality:
-          $ref: "#/components/schemas/FineModality"
+          $ref: '#/components/schemas/FineModality'
         value:
           type: number
           minimum: 0
@@ -3019,9 +2568,9 @@ components:
       nullable: true
       properties:
         withdraw:
-          $ref: "#/components/schemas/Withdraw"
+          $ref: '#/components/schemas/Withdraw'
         change:
-          $ref: "#/components/schemas/Withdraw"
+          $ref: '#/components/schemas/Withdraw'
     Amount:
       type: object
       properties:
@@ -3030,15 +2579,15 @@ components:
         chargeValue:
           type: integer
         interestRules:
-          $ref: "#/components/schemas/InterestRules"
+          $ref: '#/components/schemas/InterestRules'
         discountRules:
-          $ref: "#/components/schemas/DiscountRules"
+          $ref: '#/components/schemas/DiscountRules'
         rebateRules:
-          $ref: "#/components/schemas/RebateRules"
+          $ref: '#/components/schemas/RebateRules'
         fineRules:
-          $ref: "#/components/schemas/FineRules"
+          $ref: '#/components/schemas/FineRules'
         withdrawal:
-          $ref: "#/components/schemas/Withdrawal"
+          $ref: '#/components/schemas/Withdrawal'
     Calendar:
       type: object
       properties:
@@ -3068,8 +2617,8 @@ components:
         taxIDType:
           type: string
           enum:
-            - "BR:CNPJ"
-            - "BR:CPF"
+            - 'BR:CNPJ'
+            - 'BR:CPF'
     Receiver:
       type: object
       properties:
@@ -3082,8 +2631,8 @@ components:
         taxIDType:
           type: string
           enum:
-            - "BR:CNPJ"
-            - "BR:CPF"
+            - 'BR:CNPJ'
+            - 'BR:CPF'
         tradeName:
           type: string
         email:
@@ -3143,19 +2692,19 @@ components:
       type: object
       properties:
         chargeType:
-          $ref: "#/components/schemas/ChargeType"
+          $ref: '#/components/schemas/ChargeType'
         calendar:
-          $ref: "#/components/schemas/Calendar"
+          $ref: '#/components/schemas/Calendar'
         additionalInfo:
           type: array
           maxItems: 50
           items:
-            $ref: "#/components/schemas/AdditionalInfo"
+            $ref: '#/components/schemas/AdditionalInfo'
         comment:
           type: string
           maxLength: 140
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
         pixKey:
           type: string
           minLength: 1
@@ -3173,9 +2722,9 @@ components:
         ensureSameTaxID:
           type: boolean
         debtor:
-          $ref: "#/components/schemas/Debtor"
+          $ref: '#/components/schemas/Debtor'
         receiver:
-          $ref: "#/components/schemas/Receiver"
+          $ref: '#/components/schemas/Receiver'
     PixChargeUpdate:
       type: object
       properties:
@@ -3218,7 +2767,7 @@ components:
         charges:
           type: array
           items:
-            $ref: "#/components/schemas/PixCharge"
+            $ref: '#/components/schemas/PixCharge'
     AllowPayment:
       type: object
       properties:
@@ -3314,7 +2863,7 @@ components:
               description: >-
                 URL for the PIX location/endpoint where payment requests are
                 processed
-              example: "https://example.com/pix"
+              example: 'https://example.com/pix'
             additionalInformation:
               type: string
               description: Additional information for the PIX payment
@@ -3328,19 +2877,19 @@ components:
         payloadFormatIndicator:
           type: string
           description: EMV QR Code payload format indicator (usually '01')
-          example: "01"
+          example: '01'
         pointOfInitiationMethod:
           type: string
           description: Point of initiation method (usually '12' for dynamic QR)
-          example: "12"
+          example: '12'
         merchantCategoryCode:
           type: string
           description: Merchant category code (MCC) for business classification
-          example: "0000"
+          example: '0000'
         transactionCurrency:
           type: string
           description: Transaction currency code (986 for Brazilian Real)
-          example: "986"
+          example: '986'
         countryCode:
           type: string
           description: Country code (BR for Brazil)
@@ -3351,7 +2900,7 @@ components:
             referenceLabel:
               type: string
               description: Reference label for the transaction
-              example: "***"
+              example: '***'
         unreservedTemplates:
           type: object
           properties:

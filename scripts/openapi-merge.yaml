@@ -5,7 +5,10 @@
     },
     {
       "inputFile": "../../pix-charge/src/openapi/pixCharge.yml"
+    },
+    {
+      "inputFile": "./decodeEMVGet.api.yml"
     }
   ],
-  "output": "./pixIndirect-merged.yml"
+  "output": "./pixIndirect.json"
 }
