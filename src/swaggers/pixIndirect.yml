@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Pix Indirect
-  description: Pix Indirect
+  title: Pix Location
+  description: Pix Location
   version: 1.0.0
 servers:
   - url: 'https://<name>.indireto.woovi-indireto.dev'
@@ -1949,121 +1949,10 @@ paths:
             puts response.read_body
   '/core/charge/{txid}':
     post:
-      '400':
-        description: Bad Request – invalid txid or body validation error
-        content:
-          application/json:
-            examples:
-              invalidTxid:
-                summary: Invalid TXID format
-                value:
-                  error: Invalid txid
       tags:
         - pixCharge
       summary: Create a PIX Charge with Location and EMV
-      description: |
-        Creates a PIX Charge using a provided `txid`, creates a PIX Location,
-        and generates an EMV QR Code (BR Code).
-
-        This endpoint:
-        1. Validates the `txid`
-        2. Validates the request body (`pixCharge`, `pixLocation`, `brCodeInfo`)
-        3. Creates a location
-        4. Creates a charge
-        5. Generates an EMV BR Code
-      parameters:
-        - name: txid
-          in: path
-          required: true
-          description: Unique transaction identifier (1–35 alphanumeric chars)
-          schema:
-            type: string
-            pattern: '^[a-zA-Z0-9]{1,35}$'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - pixCharge
-                - pixLocation
-                - brCodeInfo
-              properties:
-                pixCharge:
-                  description: Raw Pix charge payload forwarded to the Pix provider
-                  $ref: '#/components/schemas/PixChargeCreate'
-                  additionalProperties: true
-                pixLocation:
-                  type: object
-                  required:
-                    - type
-                  properties:
-                    type:
-                      type: string
-                      description: PIX location type
-                      enum:
-                        - cob
-                        - cobv
-                        - rec
-                brCodeInfo:
-                  type: object
-                  required:
-                    - merchantName
-                    - merchantCity
-                  properties:
-                    merchantName:
-                      type: string
-                    merchantCity:
-                      type: string
-            examples:
-              basic_example:
-                summary: Create charge + location + EMV
-                value:
-                  pixCharge:
-                    chargeType: cob
-                    pixKey: test@example.com
-                  pixLocation:
-                    type: cob
-                  brCodeInfo:
-                    merchantName: Test Merchant
-                    merchantCity: Sao Paulo
-      responses:
-        '200':
-          description: Charge created successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  charge:
-                    $ref: '#/components/schemas/PixCharge'
-        description: Charge created successfully
-        content:
-          application/json:
-            examples:
-              success:
-                summary: Successful charge creation
-                value:
-                  charge:
-                    txid: E12345678920241201123456
-                    status: ATIVA
-                    value: 100
-                  location:
-                    id: location-123
-                    type: COB
-                    location: 'https://example.com/location/123'
-                    pixUrlAccessToken: token-123
-                  brCode: 00020101021243650016COM.MERCADOLIVRE02008...
-            schema:
-              type: object
-              properties:
-                charge:
-                  type: object
-                location:
-                  type: object
-                brCode:
-                  type: string
+      description: Create a PIX Charge with Location and EMV
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -2074,9 +1963,7 @@ paths:
               hostname: '',
               port: null,
               path: '%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D',
-              headers: {
-                'content-type': 'application/json'
-              }
+              headers: {}
             };
 
             const req = http.request(options, function (res) {
@@ -2092,66 +1979,11 @@ paths:
               });
             });
 
-            req.write(JSON.stringify({
-              pixCharge: {
-                chargeType: 'cob',
-                calendar: {
-                  dueDate: 'string',
-                  expiration: 1,
-                  validateAfterExpiration: 0,
-                  presentation: 'string',
-                  creation: 'string'
-                },
-                additionalInfo: [{name: 'string', value: 'string'}],
-                comment: 'string',
-                amount: {
-                  customerCanChangeValue: true,
-                  chargeValue: 0,
-                  interestRules: {modality: 1, value: 0},
-                  discountRules: {modality: 1, discountFixedDate: [{data: 'string', value: 0}], value: 0},
-                  rebateRules: {modality: 1, value: 0},
-                  fineRules: {modality: 1, value: 0},
-                  withdrawal: {
-                    withdraw: {
-                      value: 0,
-                      agentMode: 'string',
-                      changeMode: 0,
-                      withdrawalServiceProvider: 'string'
-                    },
-                    change: {
-                      value: 0,
-                      agentMode: 'string',
-                      changeMode: 0,
-                      withdrawalServiceProvider: 'string'
-                    }
-                  }
-                },
-                pixKey: 'string',
-                location: {id: 'string', isLinked: false},
-                ensureSameTaxID: true,
-                debtor: {name: 'string', taxID: 'string', taxIDType: 'BR:CNPJ'},
-                receiver: {
-                  name: 'string',
-                  taxID: 'string',
-                  taxIDType: 'BR:CNPJ',
-                  tradeName: 'string',
-                  email: 'string',
-                  street: 'string',
-                  city: 'string',
-                  state: 'st',
-                  zipcode: 'string'
-                }
-              },
-              pixLocation: {type: 'cob'},
-              brCodeInfo: {merchantName: 'string', merchantCity: 'string'}
-            }));
             req.end();
         - lang: Shell + Curl
           source: |-
             curl --request POST \
-              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D \
-              --header 'content-type: application/json' \
-              --data '{"pixCharge":{"chargeType":"cob","calendar":{"dueDate":"string","expiration":1,"validateAfterExpiration":0,"presentation":"string","creation":"string"},"additionalInfo":[{"name":"string","value":"string"}],"comment":"string","amount":{"customerCanChangeValue":true,"chargeValue":0,"interestRules":{"modality":1,"value":0},"discountRules":{"modality":1,"discountFixedDate":[{"data":"string","value":0}],"value":0},"rebateRules":{"modality":1,"value":0},"fineRules":{"modality":1,"value":0},"withdrawal":{"withdraw":{"value":0,"agentMode":"string","changeMode":0,"withdrawalServiceProvider":"string"},"change":{"value":0,"agentMode":"string","changeMode":0,"withdrawalServiceProvider":"string"}}},"pixKey":"string","location":{"id":"string","isLinked":false},"ensureSameTaxID":true,"debtor":{"name":"string","taxID":"string","taxIDType":"BR:CNPJ"},"receiver":{"name":"string","taxID":"string","taxIDType":"BR:CNPJ","tradeName":"string","email":"string","street":"string","city":"string","state":"st","zipcode":"string"}},"pixLocation":{"type":"cob"},"brCodeInfo":{"merchantName":"string","merchantCity":"string"}}'
+              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D
         - lang: Php + Curl
           source: |-
             <?php
@@ -2166,97 +1998,6 @@ paths:
               CURLOPT_TIMEOUT => 30,
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => json_encode([
-                'pixCharge' => [
-                    'chargeType' => 'cob',
-                    'calendar' => [
-                            'dueDate' => 'string',
-                            'expiration' => 1,
-                            'validateAfterExpiration' => 0,
-                            'presentation' => 'string',
-                            'creation' => 'string'
-                    ],
-                    'additionalInfo' => [
-                            [
-                                            'name' => 'string',
-                                            'value' => 'string'
-                            ]
-                    ],
-                    'comment' => 'string',
-                    'amount' => [
-                            'customerCanChangeValue' => null,
-                            'chargeValue' => 0,
-                            'interestRules' => [
-                                            'modality' => 1,
-                                            'value' => 0
-                            ],
-                            'discountRules' => [
-                                            'modality' => 1,
-                                            'discountFixedDate' => [
-                                                                            [
-                                                                                                                                            'data' => 'string',
-                                                                                                                                            'value' => 0
-                                                                            ]
-                                            ],
-                                            'value' => 0
-                            ],
-                            'rebateRules' => [
-                                            'modality' => 1,
-                                            'value' => 0
-                            ],
-                            'fineRules' => [
-                                            'modality' => 1,
-                                            'value' => 0
-                            ],
-                            'withdrawal' => [
-                                            'withdraw' => [
-                                                                            'value' => 0,
-                                                                            'agentMode' => 'string',
-                                                                            'changeMode' => 0,
-                                                                            'withdrawalServiceProvider' => 'string'
-                                            ],
-                                            'change' => [
-                                                                            'value' => 0,
-                                                                            'agentMode' => 'string',
-                                                                            'changeMode' => 0,
-                                                                            'withdrawalServiceProvider' => 'string'
-                                            ]
-                            ]
-                    ],
-                    'pixKey' => 'string',
-                    'location' => [
-                            'id' => 'string',
-                            'isLinked' => null
-                    ],
-                    'ensureSameTaxID' => null,
-                    'debtor' => [
-                            'name' => 'string',
-                            'taxID' => 'string',
-                            'taxIDType' => 'BR:CNPJ'
-                    ],
-                    'receiver' => [
-                            'name' => 'string',
-                            'taxID' => 'string',
-                            'taxIDType' => 'BR:CNPJ',
-                            'tradeName' => 'string',
-                            'email' => 'string',
-                            'street' => 'string',
-                            'city' => 'string',
-                            'state' => 'st',
-                            'zipcode' => 'string'
-                    ]
-                ],
-                'pixLocation' => [
-                    'type' => 'cob'
-                ],
-                'brCodeInfo' => [
-                    'merchantName' => 'string',
-                    'merchantCity' => 'string'
-                ]
-              ]),
-              CURLOPT_HTTPHEADER => [
-                "content-type: application/json"
-              ],
             ]);
 
             $response = curl_exec($curl);
@@ -2277,16 +2018,8 @@ paths:
             conn = http.client.HTTPSConnection("")
 
 
-            payload =
-            "{\"pixCharge\":{\"chargeType\":\"cob\",\"calendar\":{\"dueDate\":\"string\",\"expiration\":1,\"validateAfterExpiration\":0,\"presentation\":\"string\",\"creation\":\"string\"},\"additionalInfo\":[{\"name\":\"string\",\"value\":\"string\"}],\"comment\":\"string\",\"amount\":{\"customerCanChangeValue\":true,\"chargeValue\":0,\"interestRules\":{\"modality\":1,\"value\":0},\"discountRules\":{\"modality\":1,\"discountFixedDate\":[{\"data\":\"string\",\"value\":0}],\"value\":0},\"rebateRules\":{\"modality\":1,\"value\":0},\"fineRules\":{\"modality\":1,\"value\":0},\"withdrawal\":{\"withdraw\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"},\"change\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"}}},\"pixKey\":\"string\",\"location\":{\"id\":\"string\",\"isLinked\":false},\"ensureSameTaxID\":true,\"debtor\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\"},\"receiver\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\",\"tradeName\":\"string\",\"email\":\"string\",\"street\":\"string\",\"city\":\"string\",\"state\":\"st\",\"zipcode\":\"string\"}},\"pixLocation\":{\"type\":\"cob\"},\"brCodeInfo\":{\"merchantName\":\"string\",\"merchantCity\":\"string\"}}"
-
-
-            headers = { 'content-type': "application/json" }
-
-
             conn.request("POST",
-            "%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D",
-            payload, headers)
+            "%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D")
 
 
             res = conn.getresponse()
@@ -2296,21 +2029,14 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D\"\n\n\tpayload := strings.NewReader(\"{\\\"pixCharge\\\":{\\\"chargeType\\\":\\\"cob\\\",\\\"calendar\\\":{\\\"dueDate\\\":\\\"string\\\",\\\"expiration\\\":1,\\\"validateAfterExpiration\\\":0,\\\"presentation\\\":\\\"string\\\",\\\"creation\\\":\\\"string\\\"},\\\"additionalInfo\\\":[{\\\"name\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"comment\\\":\\\"string\\\",\\\"amount\\\":{\\\"customerCanChangeValue\\\":true,\\\"chargeValue\\\":0,\\\"interestRules\\\":{\\\"modality\\\":1,\\\"value\\\":0},\\\"discountRules\\\":{\\\"modality\\\":1,\\\"discountFixedDate\\\":[{\\\"data\\\":\\\"string\\\",\\\"value\\\":0}],\\\"value\\\":0},\\\"rebateRules\\\":{\\\"modality\\\":1,\\\"value\\\":0},\\\"fineRules\\\":{\\\"modality\\\":1,\\\"value\\\":0},\\\"withdrawal\\\":{\\\"withdraw\\\":{\\\"value\\\":0,\\\"agentMode\\\":\\\"string\\\",\\\"changeMode\\\":0,\\\"withdrawalServiceProvider\\\":\\\"string\\\"},\\\"change\\\":{\\\"value\\\":0,\\\"agentMode\\\":\\\"string\\\",\\\"changeMode\\\":0,\\\"withdrawalServiceProvider\\\":\\\"string\\\"}}},\\\"pixKey\\\":\\\"string\\\",\\\"location\\\":{\\\"id\\\":\\\"string\\\",\\\"isLinked\\\":false},\\\"ensureSameTaxID\\\":true,\\\"debtor\\\":{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"taxIDType\\\":\\\"BR:CNPJ\\\"},\\\"receiver\\\":{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"taxIDType\\\":\\\"BR:CNPJ\\\",\\\"tradeName\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"st\\\",\\\"zipcode\\\":\\\"string\\\"}},\\\"pixLocation\\\":{\\\"type\\\":\\\"cob\\\"},\\\"brCodeInfo\\\":{\\\"merchantName\\\":\\\"string\\\",\\\"merchantCity\\\":\\\"string\\\"}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D\"\n\n\treq, _ := http.NewRequest(\"POST\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
-          source: >-
+          source: |-
             OkHttpClient client = new OkHttpClient();
-
-
-            MediaType mediaType = MediaType.parse("application/json");
-
-            RequestBody body = RequestBody.create(mediaType,
-            "{\"pixCharge\":{\"chargeType\":\"cob\",\"calendar\":{\"dueDate\":\"string\",\"expiration\":1,\"validateAfterExpiration\":0,\"presentation\":\"string\",\"creation\":\"string\"},\"additionalInfo\":[{\"name\":\"string\",\"value\":\"string\"}],\"comment\":\"string\",\"amount\":{\"customerCanChangeValue\":true,\"chargeValue\":0,\"interestRules\":{\"modality\":1,\"value\":0},\"discountRules\":{\"modality\":1,\"discountFixedDate\":[{\"data\":\"string\",\"value\":0}],\"value\":0},\"rebateRules\":{\"modality\":1,\"value\":0},\"fineRules\":{\"modality\":1,\"value\":0},\"withdrawal\":{\"withdraw\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"},\"change\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"}}},\"pixKey\":\"string\",\"location\":{\"id\":\"string\",\"isLinked\":false},\"ensureSameTaxID\":true,\"debtor\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\"},\"receiver\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\",\"tradeName\":\"string\",\"email\":\"string\",\"street\":\"string\",\"city\":\"string\",\"state\":\"st\",\"zipcode\":\"string\"}},\"pixLocation\":{\"type\":\"cob\"},\"brCodeInfo\":{\"merchantName\":\"string\",\"merchantCity\":\"string\"}}");
 
             Request request = new Request.Builder()
               .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D")
-              .post(body)
-              .addHeader("content-type", "application/json")
+              .post(null)
               .build();
 
             Response response = client.newCall(request).execute();
@@ -2332,15 +2058,148 @@ paths:
 
             request = Net::HTTP::Post.new(url)
 
-            request["content-type"] = 'application/json'
-
-            request.body =
-            "{\"pixCharge\":{\"chargeType\":\"cob\",\"calendar\":{\"dueDate\":\"string\",\"expiration\":1,\"validateAfterExpiration\":0,\"presentation\":\"string\",\"creation\":\"string\"},\"additionalInfo\":[{\"name\":\"string\",\"value\":\"string\"}],\"comment\":\"string\",\"amount\":{\"customerCanChangeValue\":true,\"chargeValue\":0,\"interestRules\":{\"modality\":1,\"value\":0},\"discountRules\":{\"modality\":1,\"discountFixedDate\":[{\"data\":\"string\",\"value\":0}],\"value\":0},\"rebateRules\":{\"modality\":1,\"value\":0},\"fineRules\":{\"modality\":1,\"value\":0},\"withdrawal\":{\"withdraw\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"},\"change\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"}}},\"pixKey\":\"string\",\"location\":{\"id\":\"string\",\"isLinked\":false},\"ensureSameTaxID\":true,\"debtor\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\"},\"receiver\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\",\"tradeName\":\"string\",\"email\":\"string\",\"street\":\"string\",\"city\":\"string\",\"state\":\"st\",\"zipcode\":\"string\"}},\"pixLocation\":{\"type\":\"cob\"},\"brCodeInfo\":{\"merchantName\":\"string\",\"merchantCity\":\"string\"}}"
-
 
             response = http.request(request)
 
             puts response.read_body
+    parameters:
+      - name: txid
+        in: path
+        required: true
+        description: Unique transaction identifier (1–35 alphanumeric chars)
+        schema:
+          type: string
+          pattern: '^[a-zA-Z0-9]{1,35}$'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - pixCharge
+              - pixLocation
+              - brCodeInfo
+            properties:
+              pixCharge:
+                description: Raw Pix charge payload forwarded to the Pix provider
+                type: object
+                $ref: '#/components/schemas/PixChargeCreate'
+                additionalProperties: true
+              pixLocation:
+                type: object
+                required:
+                  - type
+                properties:
+                  type:
+                    type: string
+                    description: PIX location type
+                    enum:
+                      - cob
+                      - cobv
+                      - rec
+              brCodeInfo:
+                type: object
+                required:
+                  - merchantName
+                  - merchantCity
+                properties:
+                  merchantName:
+                    type: string
+                  merchantCity:
+                    type: string
+          examples:
+            basic_example:
+              summary: Create charge + location + EMV
+              value:
+                pixCharge:
+                  chargeType: cob
+                  pixKey: test@example.com
+                  value: 100
+                pixLocation:
+                  type: cob
+                brCodeInfo:
+                  merchantName: Test Merchant
+                  merchantCity: Sao Paulo
+    responses:
+      '200':
+        description: 'Charge, Location, and BR Code created successfully'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                charge:
+                  description: The created PIX Charge object
+                  type: object
+                  $ref: '#/components/schemas/PixChargeCreate'
+                location:
+                  description: The created PIX Location object
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    location:
+                      type: string
+                      format: url
+                    pixUrlAccessToken:
+                      type: string
+                brCode:
+                  type: string
+                  description: The generated EMV BR Code (encoded string)
+            examples:
+              success:
+                summary: Successful charge creation
+                value:
+                  charge:
+                    txid: E12345678920241201123456
+                    status: ATIVA
+                    value: 100
+                  location:
+                    id: location-123
+                    type: COB
+                    location: 'https://example.com/location/123'
+                    pixUrlAccessToken: token-123
+                  brCode: 00020101021243650016COM.MERCADOLIVRE02008...
+      '400':
+        description: >-
+          Bad Request – Invalid txid, body validation, or failure in a
+          sub-service (Location, Charge, or BR Code creation).
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: object
+                  description: >-
+                    Details of the error, can be a string, a Zod issues array,
+                    or a JSON string representation of an upstream error.
+            examples:
+              invalidTxid:
+                summary: Invalid TXID format
+                value:
+                  error:
+                    - code: invalid_string
+                      message: Invalid input
+                      path: []
+                      validation: regex
+              bodyValidation:
+                summary: 'Missing required body field (e.g., pixLocation)'
+                value:
+                  error:
+                    - code: invalid_type
+                      expected: object
+                      received: undefined
+                      path:
+                        - pixLocation
+                      message: Required
+              serviceFailure:
+                summary: 'Failure in an upstream service (e.g., createPixLocation)'
+                value:
+                  error: '{"error":"Location creation failed"}'
 components:
   schemas:
     PixLocation:
