@@ -13332,6 +13332,18 @@
             "type": "string",
             "description": "Pix Transaction type",
             "enum": [
+              "CREATED",
+              "CONFIRMED",
+              "REFUNDED",
+              "PARTIAL_REFUND",
+              "IN_PROCESSING",
+              "REJECTED"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "description": "Pix Transaction type",
+            "enum": [
               "PAYMENT",
               "WITHDRAW",
               "REFUND",
