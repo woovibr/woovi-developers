@@ -10,7 +10,7 @@ Este documento irá ajuda-lo a entender o fluxo básico de baas
 
 ### pré requisitos
 
-antes de começar a utilisar a api baas é nescessrio duas coisas: 
+antes de começar a utilizar a api baas é nescessrio duas coisas: 
  * solicitar ativação das features: Baas e Criação de conta
  * gerar uma chave de api master
 
