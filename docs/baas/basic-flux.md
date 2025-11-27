@@ -10,7 +10,7 @@ Este documento irá ajuda-lo a entender o fluxo básico de baas
 
 ### pré requisitos
 
-antes de começar a utilizar a api baas é nescessrio duas coisas: 
+antes de começar a utilizar a api baas é necessário duas coisas: 
  * solicitar ativação das features: Baas e Criação de conta
  * gerar uma chave de api master
 
@@ -20,13 +20,13 @@ A conta bancária relacionada a essa API será utilizada no processo de criaçã
 Assim estamos prontos para iniciar a sequencia de integração
 
 ### Documentos necessários
-**Representantes/socios:** 
+**Representantes/sócios:** 
 | Type           | Descrição               |
 |----------------|-------------------------|
 | PICTURE        | Foto de perfil          |
-| CNH            | Imagen completa da CNH   |
-| CNH_FRONT      | Imagen frontal da CNH   |
-| CNH_BACK       | Imagen traseira da CNH  |
+| CNH            | Imagem completa da CNH   |
+| CNH_FRONT      | Imagem frontal da CNH   |
+| CNH_BACK       | Imagem traseira da CNH  |
 | IDENTITY_FRONT | Imagem frontal do RG    |
 | IDENTITY_BACK  | Imagem traseira do RG   |
 
@@ -43,7 +43,7 @@ Apenas esses conjuntos de documentos serão aceitos:
 | BYLAWS          | Estatuto da organização      |
 | SOCIAL_CONTRACT | Contrato social              |
 
-Documentos nescessários por tipo de cnpj:
+Documentos necessários por tipo de cnpj:
 * MEI: nenhum documento é necessário, apenas os dos sócios
 * ONG, IGREJA: SOCIAL_CONTRACT, BYLAWS
 * LTDA: SOCIAL_CONTRACT, ATA, BYLAWS
@@ -168,7 +168,7 @@ Documentos nescessários por tipo de cnpj:
     }
   ```
 
- * quando a conta for aprova o webhook receberar os seguintes dados: 
+ * quando a conta for aprovada o webhook receberá os seguintes dados: 
  ```JSON
   {
     "event": "ACCOUNT_REGISTER_APPROVED",
@@ -190,7 +190,7 @@ Documentos nescessários por tipo de cnpj:
  ```
 
 ### 3. Gere uma chave de api padrão
- * Utilize o endpoint de application para gerar uma chave de api para a conta recen criada
+ * Utilize o endpoint de application para gerar uma chave de api para a conta recém criada
  * Utilize a chave de api master para autenticar a requisição
  * Faça a requisição
  ```JSON
@@ -221,7 +221,7 @@ Documentos nescessários por tipo de cnpj:
     }
  ```
 
-### 4. Gere uma chave pix aleatoria
+### 4. Gere uma chave pix aleatória
  * Utilize o endpoint pix-keys para gerar uma chave para a conta
  * Utilize o appId gerado no passo anterior para autenticar a requisição
  * Faça a requisição:
