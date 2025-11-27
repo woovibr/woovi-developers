@@ -10,7 +10,7 @@ Este documento irá ajuda-lo a entender o fluxo básico de baas
 
 ### pré requisitos
 
-antes de começar a utilizar a api baas é nescessário duas coisas: 
+antes de começar a utilizar a api baas é necessário duas coisas: 
  * solicitar ativação das features: Baas e Criação de conta
  * gerar uma chave de api master
 
@@ -43,7 +43,7 @@ Apenas esses conjuntos de documentos serão aceitos:
 | BYLAWS          | Estatuto da organização      |
 | SOCIAL_CONTRACT | Contrato social              |
 
-Documentos nescessários por tipo de cnpj:
+Documentos necessários por tipo de cnpj:
 * MEI: nenhum documento é necessário, apenas os dos sócios
 * ONG, IGREJA: SOCIAL_CONTRACT, BYLAWS
 * LTDA: SOCIAL_CONTRACT, ATA, BYLAWS
