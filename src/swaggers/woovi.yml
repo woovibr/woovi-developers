@@ -17244,6 +17244,16 @@ components:
           type: string
           description: Pix Transaction type
           enum:
+            - CREATED
+            - CONFIRMED
+            - REFUNDED
+            - PARTIAL_REFUND
+            - IN_PROCESSING
+            - REJECTED
+        status:
+          type: string
+          description: Pix Transaction type
+          enum:
             - PAYMENT
             - WITHDRAW
             - REFUND
@@ -17484,6 +17494,8 @@ components:
             - SEMIANNUALY
             - ANNUALLY
           description: Frequency of the subscription
+        isActive:
+          type: boolean
         status:
           type: string
           enum:

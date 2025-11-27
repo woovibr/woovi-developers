@@ -10,8 +10,8 @@ Este documento irá ajuda-lo a entender o fluxo básico de baas
 
 ### pré requisitos
 
-antes de começar a utilisar a api baas é nescessrio duas coisas: 
- * solicitar ativação das features: Bass e Criação de conta
+antes de começar a utilizar a api baas é necessário duas coisas: 
+ * solicitar ativação das features: Baas e Criação de conta
  * gerar uma chave de api master
 
 A API precisa ser do tipo MASTER porquê ela precisa ser capaz de criar novas integrações.
@@ -20,13 +20,13 @@ A conta bancária relacionada a essa API será utilizada no processo de criaçã
 Assim estamos prontos para iniciar a sequencia de integração
 
 ### Documentos necessários
-**Representantes/socios:** 
+**Representantes/sócios:** 
 | Type           | Descrição               |
 |----------------|-------------------------|
 | PICTURE        | Foto de perfil          |
-| CNH            | Imagen completa da CNH   |
-| CNH_FRONT      | Imagen frontal da CNH   |
-| CNH_BACK       | Imagen traseira da CNH  |
+| CNH            | Imagem completa da CNH   |
+| CNH_FRONT      | Imagem frontal da CNH   |
+| CNH_BACK       | Imagem traseira da CNH  |
 | IDENTITY_FRONT | Imagem frontal do RG    |
 | IDENTITY_BACK  | Imagem traseira do RG   |
 
@@ -43,7 +43,7 @@ Apenas esses conjuntos de documentos serão aceitos:
 | BYLAWS          | Estatuto da organização      |
 | SOCIAL_CONTRACT | Contrato social              |
 
-Documentos nescessários por tipo de cnpj:
+Documentos necessários por tipo de cnpj:
 * MEI: nenhum documento é necessário, apenas os dos sócios
 * ONG, IGREJA: SOCIAL_CONTRACT, BYLAWS
 * LTDA: SOCIAL_CONTRACT, ATA, BYLAWS
@@ -54,8 +54,8 @@ Documentos nescessários por tipo de cnpj:
 ![diagrama fluxo basico de conta](./__assets__/diagrama_fluxo_basico.png) 
 
 ### 1. Registrando uma conta
- * Utilise o endpoint de registro de conta para registrar uma nova conta
- * Utilise a chave de api master para autenticar a requisição
+ * Utilize o endpoint de registro de conta para registrar uma nova conta
+ * Utilize a chave de api master para autenticar a requisição
  * Faça a requisição
  ```JSON
     curl -X POST "https://api.woovi.com/api/v1/account-register" \
@@ -168,7 +168,7 @@ Documentos nescessários por tipo de cnpj:
     }
   ```
 
- * quando a conta for aprova o webhook receberar os seguintes dados: 
+ * quando a conta for aprovada o webhook receberá os seguintes dados: 
  ```JSON
   {
     "event": "ACCOUNT_REGISTER_APPROVED",
@@ -190,8 +190,8 @@ Documentos nescessários por tipo de cnpj:
  ```
 
 ### 3. Gere uma chave de api padrão
- * Utilise o endpoint de application para gerar uma chave de api para a conta recen criada
- * Utilise a chave de api master para autenticar a requisição
+ * Utilize o endpoint de application para gerar uma chave de api para a conta recém criada
+ * Utilize a chave de api master para autenticar a requisição
  * Faça a requisição
  ```JSON
     curl -X POST "https://api.woovi.com/api/v1/application" \
@@ -221,9 +221,9 @@ Documentos nescessários por tipo de cnpj:
     }
  ```
 
-### 4. Gere uma chave pix aleatoria
- * Utilise o endpoint pix-keys para gerar uma chave para a conta
- * Utilise o appId gerado no passo anterior para autenticar a requisição
+### 4. Gere uma chave pix aleatória
+ * Utilize o endpoint pix-keys para gerar uma chave para a conta
+ * Utilize o appId gerado no passo anterior para autenticar a requisição
  * Faça a requisição:
   ```JSON
      curl -X POST "https://api.woovi.com/api/v1/pix-keys" \

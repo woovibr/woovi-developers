@@ -1,0 +1,14 @@
+{
+  "inputs": [
+    {
+      "inputFile": "../../pix-location/src/openapi/pixLocation.yml"
+    },
+    {
+      "inputFile": "../../pix-charge/src/openapi/pixCharge.yml"
+    },
+    {
+      "inputFile": "./decodeEMVGet.api.yml"
+    }
+  ],
+  "output": "./pixIndirect.json"
+}
