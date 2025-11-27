@@ -14,6 +14,9 @@ tags:
   - name: decode
     description: |
       Endpoint to decode EMV (PIX) QR codes and resolve locations
+  - name: pix-dict
+    description: |
+      VSYNC utilities for PIX dict indirect participants
 paths:
   /api/v1/decode/emv:
     post:
@@ -466,6 +469,40 @@ paths:
             response = http.request(request)
 
             puts response.read_body
+  /dict/vsync:
+    get:
+      operationId: getDictVsync
+      summary: List PIX VSYNC validations
+      tags:
+        - pix-dict
+      responses:
+        '200':
+          description: VSYNC records with their PIX key type and validation status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DictVsyncListResponse'
+              examples:
+                success:
+                  summary: VSYNC list
+                  value:
+                    success: Vsync information fetched successfully
+                    vsyncs:
+                      - vsync: 145879f96d391979266642b0191c9ac4faecb9255e5761f837303e2ec44f8d50
+                        pixKeyType: PHONE
+                        validated: false
+                      - vsync: 9d6666a499d01f4baf1fadc8041a69e1408c7d27f8afa285cf0d5317a27bad13
+                        pixKeyType: EMAIL
+                        validated: false
+                      - vsync: d338095fd94a28859a189742f299a45c230e8ce0676f8988b9f892d7147e21f3
+                        pixKeyType: CPF
+                        validated: false
+                      - vsync: f83f106b91dccc839fb0457cfe3896b474a37be79313d42fd93e6984300660df
+                        pixKeyType: CNPJ
+                        validated: false
+                      - vsync: a6d0ebcc4c73fd06bb0ffb932ee7dddbbf7ac666a87767000303b18afa0a16bb
+                        pixKeyType: RANDOM
+                        validated: false
   '/qr/v2/{locType}/{pixUrlAccessToken}':
     get:
       tags:
@@ -2507,6 +2544,46 @@ components:
           type: string
           description: Error message
           example: A cobrança em questão não foi encontrada para a location requisitada
+    DictVsyncListResponse:
+      type: object
+      required:
+        - success
+        - vsyncs
+      properties:
+        success:
+          type: string
+          description: Human-readable message describing the outcome.
+          example: Vsync information fetched successfully
+        vsyncs:
+          type: array
+          description: Collection of VSYNC entries and their latest validation status.
+          items:
+            $ref: '#/components/schemas/DictVsyncItem'
+    DictVsyncItem:
+      type: object
+      required:
+        - vsync
+        - pixKeyType
+        - validated
+      properties:
+        vsync:
+          type: string
+          description: 64-hex VSYNC identifier used as the participant sync verifier.
+          example: 145879f96d391979266642b0191c9ac4faecb9255e5761f837303e2ec44f8d50
+        pixKeyType:
+          type: string
+          description: PIX key type associated with the VSYNC entry.
+          enum:
+            - PHONE
+            - EMAIL
+            - CPF
+            - CNPJ
+            - RANDOM
+          example: PHONE
+        validated:
+          type: boolean
+          description: Indicates if the VSYNC passed the SPI verification check.
+          example: false
     ChargeType:
       type: string
       description: Charge type
