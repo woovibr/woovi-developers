@@ -54,8 +54,8 @@ Documentos nescessários por tipo de cnpj:
 ![diagrama fluxo basico de conta](./__assets__/diagrama_fluxo_basico.png) 
 
 ### 1. Registrando uma conta
- * Utilise o endpoint de registro de conta para registrar uma nova conta
- * Utilise a chave de api master para autenticar a requisição
+ * Utilize o endpoint de registro de conta para registrar uma nova conta
+ * Utilize a chave de api master para autenticar a requisição
  * Faça a requisição
  ```JSON
     curl -X POST "https://api.woovi.com/api/v1/account-register" \
@@ -190,8 +190,8 @@ Documentos nescessários por tipo de cnpj:
  ```
 
 ### 3. Gere uma chave de api padrão
- * Utilise o endpoint de application para gerar uma chave de api para a conta recen criada
- * Utilise a chave de api master para autenticar a requisição
+ * Utilize o endpoint de application para gerar uma chave de api para a conta recen criada
+ * Utilize a chave de api master para autenticar a requisição
  * Faça a requisição
  ```JSON
     curl -X POST "https://api.woovi.com/api/v1/application" \
@@ -222,8 +222,8 @@ Documentos nescessários por tipo de cnpj:
  ```
 
 ### 4. Gere uma chave pix aleatoria
- * Utilise o endpoint pix-keys para gerar uma chave para a conta
- * Utilise o appId gerado no passo anterior para autenticar a requisição
+ * Utilize o endpoint pix-keys para gerar uma chave para a conta
+ * Utilize o appId gerado no passo anterior para autenticar a requisição
  * Faça a requisição:
   ```JSON
      curl -X POST "https://api.woovi.com/api/v1/pix-keys" \
