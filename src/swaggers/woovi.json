@@ -13680,6 +13680,9 @@
             ],
             "description": "Frequency of the subscription"
           },
+          "isActive": {
+            "type": "boolean"
+          },
           "status": {
             "type": "string",
             "enum": [
