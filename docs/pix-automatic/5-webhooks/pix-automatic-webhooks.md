@@ -92,13 +92,13 @@ Quando o consumidor recusa a recorrÃªncia em seu aplicativo do banco. o Status Ã
   },
   "dayGenerateCharge": 24,
   "value": 100,
-  "status": "ACTIVE",
+  "status": "INACTIVE",
   "correlationID": "UniqueID1344445457t11653453223241",
   "pixRecurring": {
     "recurrencyId": "RN5481141720250822YHKirVyWBjF",
     "emv": "qrcode",
     "journey": "ONLY_RECURRENCY",
-    "status": "APPROVED"
+    "status": "REJECTED"
   },
   "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2OGE4ODMyMWQ2NWNiMmQ1MDdhMmVlMjk="
 }
