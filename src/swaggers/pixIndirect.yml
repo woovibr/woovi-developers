@@ -3,350 +3,80 @@ info:
   title: Woovi - Indireto
   description: Documentação infraestrutura pix indireto.
   version: 1.0.0
+servers:
+  - url: https://<name>.indireto.woovi-indireto.dev
+    description: Staging
 security: []
-tags:
-  - name: pixLocation
-    description: |
-      Endpoints to manage Pix Locations and QR code generation
-  - name: pixCharge
-    description: |
-      Endpoint to manage Pix Charges
-  - name: pix-charge
-    description: |
-      Endpoint to decode EMV (PIX) QR codes and resolve locations
-  - name: pix-dict
-    description: |
-      VSYNC utilities for PIX dict indirect participants
 paths:
-  /api/v1/decode/emv:
+  /pix-charge/v1/charge/{txid}/allow:
     post:
       tags:
-        - pix-charge
-
-      summary: Parse EMV (PIX) QR code and optionally resolve COB/REC locations
+        - pixCharge
+      summary: Check if a Pix charge is allowed to be paid
+      description: Check if a Pix charge is allowed to be paid
+      parameters:
+        - name: txid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique transaction identifier
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required:
-                - emv
               properties:
-                emv:
+                DPP:
                   type: string
-                  description: Raw EMV / PIX QR payload (text)
-                  example: >-
-                    00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486
+                  description: Optional payment date-time for calculation
+                codMun:
+                  type: string
+                  description: Optional municipality code
+                paymentValue:
+                  type: integer
+                  description: Payment value to validate
+                taxID:
+                  type: string
+                  description: Optional payer taxID when ensureSameTaxID is enabled
       responses:
-        '200':
-          description: >-
-            Parsed EMV payload with resolved COB and/or REC location (when
-            available)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  emv:
-                    type: object
-                    properties:
-                      payloadFormatIndicator:
-                        type: string
-                      pointOfInitiationMethod:
-                        type: string
-                        description: Present when EMV indicates a dynamic QR (e.g. "12")
-                      merchantAccountInformationPix:
-                        type: object
-                        description: Parsed "26"/"00"... Pix merchant account info
-                        properties:
-                          gui:
-                            type: string
-                          pixKey:
-                            type: string
-                            description: UUID or key when Pix key present
-                          url:
-                            type: string
-                            description: URL when location points to a COB/REC resource
-                          additionalInformation:
-                            type: string
-                      merchantCategoryCode:
-                        type: string
-                      transactionCurrency:
-                        type: string
-                      transactionAmount:
-                        type: string
-                      countryCode:
-                        type: string
-                      merchantName:
-                        type: string
-                      merchantCity:
-                        type: string
-                      additionalDataFieldTemplate:
-                        type: object
-                        properties:
-                          referenceLabel:
-                            type: string
-                      unreservedTemplates:
-                        type: object
-                        properties:
-                          gui:
-                            type: string
-                          url:
-                            type: string
-                      crc:
-                        type: string
-                  cobLocation:
-                    nullable: true
-                    type: object
-                    description: >-
-                      Resolved COB (charge) location details when the EMV points
-                      to a COB endpoint
-                    properties:
-                      isValid:
-                        type: boolean
-                      locationErrors:
-                        type: array
-                        items:
-                          type: string
-                      payload:
-                        type: object
-                        properties:
-                          calendar:
-                            type: object
-                            properties:
-                              presentation:
-                                type: string
-                                format: date-time
-                              expiration:
-                                type: integer
-                              creation:
-                                type: string
-                                format: date-time
-                          key:
-                            type: string
-                          debtor:
-                            type: object
-                            properties:
-                              cpf:
-                                type: string
-                              name:
-                                type: string
-                          additionalInfo:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                name:
-                                  type: string
-                                value:
-                                  type: string
-                          revision:
-                            type: integer
-                          status:
-                            type: string
-                          txid:
-                            type: string
-                          value:
-                            type: object
-                            properties:
-                              original:
-                                type: string
-                      url:
-                        type: string
-                  recLocation:
-                    nullable: true
-                    type: object
-                    description: >-
-                      Resolved REC (request for payment) location details when
-                      EMV points to a REC endpoint
-                    properties:
-                      isValid:
-                        type: boolean
-                      locationErrors:
-                        type: array
-                        items:
-                          type: string
-                      payload:
-                        type: object
-                        properties:
-                          updates:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                date:
-                                  type: string
-                                  format: date-time
-                                status:
-                                  type: string
-                          calendar:
-                            type: object
-                            properties:
-                              startDate:
-                                type: string
-                                format: date
-                              periodicity:
-                                type: string
-                          idRec:
-                            type: string
-                          retryPolicy:
-                            type: string
-                          receiver:
-                            type: object
-                            properties:
-                              cnpj:
-                                type: string
-                              participantIspb:
-                                type: string
-                              name:
-                                type: string
-                          value:
-                            type: object
-                            properties:
-                              valueRec:
-                                type: string
-                          link:
-                            type: object
-                            properties:
-                              contract:
-                                type: string
-                              debtor:
-                                type: object
-                                properties:
-                                  cpf:
-                                    type: string
-                                  name:
-                                    type: string
-                      url:
-                        type: string
-              examples:
-                parsedWithRecLocation:
-                  summary: EMV parsed and REC location resolved
-                  value:
-                    emv:
-                      payloadFormatIndicator: '01'
-                      merchantAccountInformationPix:
-                        gui: br.gov.bcb.pix
-                        pixKey: f4c6089a-bfde-4c00-a2d9-9eaa584b0219
-                        additionalInformation: CobrancaEstatica
-                      merchantCategoryCode: '0000'
-                      transactionCurrency: '986'
-                      transactionAmount: '546.28'
-                      countryCode: BR
-                      merchantName: Pix
-                      merchantCity: BRASILIA
-                      additionalDataFieldTemplate:
-                        referenceLabel: 84767c56c2ab4e65b6670de2a
-                      unreservedTemplates:
-                        gui: br.gov.bcb.pix
-                        url: >-
-                          qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf0788691
-                      crc: '4486'
-                    cobLocation: null
-                    recLocation:
-                      isValid: true
-                      locationErrors: []
-                      payload:
-                        updates:
-                          - date: '2025-10-24T18:42:58Z'
-                            status: CRIADA
-                        calendar:
-                          startDate: '2025-10-24'
-                          periodicity: SEMANAL
-                        idRec: RN5481141720251024BnwNHejs9h9
-                        retryPolicy: NAO_PERMITE
-                        receiver:
-                          cnpj: '44720743000101'
-                          participantIspb: '54811417'
-                          name: Woovi Demo
-                        value:
-                          valueRec: '0.01'
-                        link:
-                          contract: Woovi Demo - Pix Automático
-                          debtor:
-                            cpf: '15775023706'
-                            name: Pedro Cliente
-                      url: >-
-                        qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf0788691
-                parsedWithCobLocation:
-                  summary: EMV parsed and COB location resolved
-                  value:
-                    emv:
-                      payloadFormatIndicator: '01'
-                      pointOfInitiationMethod: '12'
-                      merchantAccountInformationPix:
-                        gui: br.gov.bcb.pix
-                        url: >-
-                          qr-h.woovi.digital/qr/v2/cob/fb274322-221c-43d4-b58b-fab36d87c75c
-                      merchantCategoryCode: '0000'
-                      transactionCurrency: '986'
-                      transactionAmount: '10.00'
-                      countryCode: BR
-                      merchantName: sibeliusip
-                      merchantCity: Sao_Paulo
-                      additionalDataFieldTemplate:
-                        referenceLabel: fb274322-221c-43d4-b58b-f
-                      crc: 0C98
-                    cobLocation:
-                      isValid: true
-                      locationErrors: []
-                      payload:
-                        calendar:
-                          presentation: '2025-02-25T13:27:54.168Z'
-                          expiration: 86400
-                          creation: '2025-02-12T16:59:22.939Z'
-                        key: 4004901d-bd85-4769-8e52-cb4c42c506dc
-                        debtor:
-                          cpf: '62550186362'
-                          name: Fulano de Tal
-                        additionalInfo:
-                          - name: Entrega
-                            value: Residencial
-                        revision: 0
-                        status: ATIVA
-                        txid: d71a2ffd7a7b468eba993cef83428583
-                        value:
-                          original: '120.58'
-                      url: >-
-                        qr-h.woovi.digital/qr/v2/cob/fb274322-221c-43d4-b58b-fab36d87c75c
-                    recLocation: null
+        '204':
+          description: Payment allowed (no content)
         '400':
-          description: Bad request — invalid input
+          description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              example:
-                error: Invalid EMV payload
-        '500':
-          description: Internal server error
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              example:
-                error: Internal server error occurred
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Pix charge not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-codeSamples:
         - lang: Node + Native
-          source: |-
-            const http = require('http');
+          source: >-
+            const http = require('https');
+
 
             const options = {
               method: 'POST',
-              hostname: 'undefinedundefined',
+              hostname: '',
               port: null,
-              path: '/api/v1/decode/emv',
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow',
               headers: {
                 'content-type': 'application/json'
               }
             };
+
 
             const req = http.request(options, function (res) {
               const chunks = [];
@@ -361,16 +91,17 @@ paths:
               });
             });
 
-            req.write(JSON.stringify({
-              emv: '00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486'
-            }));
+
+            req.write(JSON.stringify({DPP: 'string', codMun: 'string',
+            paymentValue: 0, taxID: 'string'}));
+
             req.end();
         - lang: Shell + Curl
           source: |-
             curl --request POST \
-              --url http://undefinedundefined/api/v1/decode/emv \
+              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow \
               --header 'content-type: application/json' \
-              --data '{"emv":"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486"}'
+              --data '{"DPP":"string","codMun":"string","paymentValue":0,"taxID":"string"}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -378,7 +109,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "http://undefinedundefined/api/v1/decode/emv",
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -386,7 +117,10 @@ paths:
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => "POST",
               CURLOPT_POSTFIELDS => json_encode([
-                'emv' => '00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486'
+                'DPP' => 'string',
+                'codMun' => 'string',
+                'paymentValue' => 0,
+                'taxID' => 'string'
               ]),
               CURLOPT_HTTPHEADER => [
                 "content-type: application/json"
@@ -408,17 +142,19 @@ paths:
             import http.client
 
 
-            conn = http.client.HTTPConnection("undefinedundefined")
+            conn = http.client.HTTPSConnection("")
 
 
             payload =
-            "{\"emv\":\"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486\"}"
+            "{\"DPP\":\"string\",\"codMun\":\"string\",\"paymentValue\":0,\"taxID\":\"string\"}"
 
 
             headers = { 'content-type': "application/json" }
 
 
-            conn.request("POST", "/api/v1/decode/emv", payload, headers)
+            conn.request("POST",
+            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow",
+            payload, headers)
 
 
             res = conn.getresponse()
@@ -428,7 +164,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"http://undefinedundefined/api/v1/decode/emv\"\n\n\tpayload := strings.NewReader(\"{\\\"emv\\\":\\\"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow\"\n\n\tpayload := strings.NewReader(\"{\\\"DPP\\\":\\\"string\\\",\\\"codMun\\\":\\\"string\\\",\\\"paymentValue\\\":0,\\\"taxID\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -437,10 +173,10 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"emv\":\"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486\"}");
+            "{\"DPP\":\"string\",\"codMun\":\"string\",\"paymentValue\":0,\"taxID\":\"string\"}");
 
             Request request = new Request.Builder()
-              .url("http://undefinedundefined/api/v1/decode/emv")
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow")
               .post(body)
               .addHeader("content-type", "application/json")
               .build();
@@ -453,10 +189,13 @@ paths:
             require 'net/http'
 
 
-            url = URI("http://undefinedundefined/api/v1/decode/emv")
+            url =
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow")
 
 
             http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
 
 
             request = Net::HTTP::Post.new(url)
@@ -464,104 +203,44 @@ paths:
             request["content-type"] = 'application/json'
 
             request.body =
-            "{\"emv\":\"00020126780014br.gov.bcb.pix0136f4c6089a-bfde-4c00-a2d9-9eaa584b02190216CobrancaEstatica5204000053039865406546.285802BR5903Pix6008BRASILIA6229052584767c56c2ab4e65b6670de2a80950014br.gov.bcb.pix2573qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf078869163044486\"}"
+            "{\"DPP\":\"string\",\"codMun\":\"string\",\"paymentValue\":0,\"taxID\":\"string\"}"
 
 
             response = http.request(request)
 
             puts response.read_body
-  /dict/vsync:
+  /core/balance:
     get:
-      operationId: getDictVsync
-      summary: List PIX VSYNC validations
+      summary: Get account balance
+      description: Retrieves the balance for the configured ledger account
+      operationId: getBalance
       tags:
-        - pix-charge
-        - pix-dict
+        - Core
       responses:
         '200':
-          description: VSYNC records with their PIX key type and validation status
+          description: Successful response with account balance
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DictVsyncListResponse'
-              examples:
-                success:
-                  summary: VSYNC list
-                  value:
-                    success: Vsync information fetched successfully
-                    vsyncs:
-                      - vsync: 145879f96d391979266642b0191c9ac4faecb9255e5761f837303e2ec44f8d50
-                        pixKeyType: PHONE
-                        validated: false
-                      - vsync: 9d6666a499d01f4baf1fadc8041a69e1408c7d27f8afa285cf0d5317a27bad13
-                        pixKeyType: EMAIL
-                        validated: false
-                      - vsync: d338095fd94a28859a189742f299a45c230e8ce0676f8988b9f892d7147e21f3
-                        pixKeyType: CPF
-                        validated: false
-                      - vsync: f83f106b91dccc839fb0457cfe3896b474a37be79313d42fd93e6984300660df
-                        pixKeyType: CNPJ
-                        validated: false
-                      - vsync: a6d0ebcc4c73fd06bb0ffb932ee7dddbbf7ac666a87767000303b18afa0a16bb
-                        pixKeyType: RANDOM
-                        validated: false
-  '/qr/v2/{locType}/{pixUrlAccessToken}':
-    get:
-      tags:
-        - pix-charge
-        - pixLocation
-      summary: Get Pix location QR code information
-      description: >
-        Retrieve Pix location information and generate QR code data based on the
-        location type and access token.
-
-        This endpoint returns JOSE (JSON Object Signing and Encryption)
-        formatted data for QR code generation.
-      parameters:
-        - name: locType
-          in: path
-          required: true
-          schema:
-            type: string
-            enum:
-              - cob
-              - cobv
-              - rec
-          description: Type of Pix location
-        - name: pixUrlAccessToken
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Access token for the Pix location
-        - name: codMun
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Municipality code for location-specific data
-        - name: DPP
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Additional location parameter
-      responses:
-        '200':
-          description: Pix location QR code data retrieved successfully
-          content:
-            application/jose:
-              schema:
-                type: string
-                description: JOSE formatted data for QR code generation
-        '404':
-          description: Pix location or charge not found
+                type: object
+                required:
+                  - balance
+                properties:
+                  balance:
+                    type: number
+                    description: The account balance (cents)
+                    example: 1000
+        '400':
+          description: Failed to get balance
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Internal server error
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                    example: Failed to get balance
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -571,7 +250,7 @@ paths:
               method: 'GET',
               hostname: '',
               port: null,
-              path: '%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE',
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/core/balance',
               headers: {}
             };
 
@@ -592,7 +271,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE'
+              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/core/balance
         - lang: Php + Curl
           source: |-
             <?php
@@ -600,7 +279,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE",
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/core/balance",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -628,7 +307,7 @@ paths:
 
 
             conn.request("GET",
-            "%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+            "%3Cname%3E.indireto.woovi-indireto.dev/core/balance")
 
 
             res = conn.getresponse()
@@ -638,13 +317,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/core/balance\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/core/balance")
               .get()
               .build();
 
@@ -657,7 +336,7 @@ paths:
 
 
             url =
-            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/core/balance")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -671,392 +350,153 @@ paths:
             response = http.request(request)
 
             puts response.read_body
-  /pix-location/v1/location:
+  /core/charge/{txid}:
     post:
       tags:
-        - pix-charge
-        - pixLocation
-      summary: Create a new Pix location
+        - Core
+      summary: Create a PIX Charge with Location and EMV
       description: >
-        Create a new Pix location with the specified type. The service will
-        generate a unique
-
-        access token and return the complete location information including the
-        QR code URL.
+        Creates a PIX charge using the Pix Charge provider schemas, links it to
+        a PIX location, and returns the generated BR Code (EMV).
+      operationId: postCharge
+      parameters:
+        - name: txid
+          in: path
+          required: true
+          description: Unique transaction identifier (1–35 alphanumeric chars).
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9]{1,35}$
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PixLocationCreate'
-      responses:
-        '200':
-          description: Pix location created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PixLocationResponse'
-        '400':
-          description: Bad request - invalid location type
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Invalid type
-        '500':
-          description: Internal server error
-      x-codeSamples:
-        - lang: Node + Native
-          source: |-
-            const http = require('https');
-
-            const options = {
-              method: 'POST',
-              hostname: '',
-              port: null,
-              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-location/v1/location',
-              headers: {
-                'content-type': 'application/json'
-              }
-            };
-
-            const req = http.request(options, function (res) {
-              const chunks = [];
-
-              res.on('data', function (chunk) {
-                chunks.push(chunk);
-              });
-
-              res.on('end', function () {
-                const body = Buffer.concat(chunks);
-                console.log(body.toString());
-              });
-            });
-
-            req.write(JSON.stringify({type: 'cob'}));
-            req.end();
-        - lang: Shell + Curl
-          source: |-
-            curl --request POST \
-              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-location/v1/location \
-              --header 'content-type: application/json' \
-              --data '{"type":"cob"}'
-        - lang: Php + Curl
-          source: |-
-            <?php
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, [
-              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-location/v1/location",
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => json_encode([
-                'type' => 'cob'
-              ]),
-              CURLOPT_HTTPHEADER => [
-                "content-type: application/json"
-              ],
-            ]);
-
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-
-            curl_close($curl);
-
-            if ($err) {
-              echo "cURL Error #:" . $err;
-            } else {
-              echo $response;
-            }
-        - lang: Python + Python3
-          source: >-
-            import http.client
-
-
-            conn = http.client.HTTPSConnection("")
-
-
-            payload = "{\"type\":\"cob\"}"
-
-
-            headers = { 'content-type': "application/json" }
-
-
-            conn.request("POST",
-            "%3Cname%3E.indireto.woovi-indireto.dev/pix-location/v1/location",
-            payload, headers)
-
-
-            res = conn.getresponse()
-
-            data = res.read()
-
-
-            print(data.decode("utf-8"))
-        - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-location/v1/location\"\n\n\tpayload := strings.NewReader(\"{\\\"type\\\":\\\"cob\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-        - lang: Java + Okhttp
-          source: >-
-            OkHttpClient client = new OkHttpClient();
-
-
-            MediaType mediaType = MediaType.parse("application/json");
-
-            RequestBody body = RequestBody.create(mediaType,
-            "{\"type\":\"cob\"}");
-
-            Request request = new Request.Builder()
-              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-location/v1/location")
-              .post(body)
-              .addHeader("content-type", "application/json")
-              .build();
-
-            Response response = client.newCall(request).execute();
-        - lang: Ruby + Native
-          source: >-
-            require 'uri'
-
-            require 'net/http'
-
-
-            url =
-            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-location/v1/location")
-
-
-            http = Net::HTTP.new(url.host, url.port)
-
-            http.use_ssl = true
-
-
-            request = Net::HTTP::Post.new(url)
-
-            request["content-type"] = 'application/json'
-
-            request.body = "{\"type\":\"cob\"}"
-
-
-            response = http.request(request)
-
-            puts response.read_body
-  /pix-charge/v1/emv/:
-    post:
-      tags:
-        - pix-charge
-        - pixCharge
-      summary: Generate EMV QR Code for PIX
-      description: >
-        Generates an EMV QR Code string in TLV (Tag-Length-Value) format for PIX
-        payments.
-
-        This endpoint creates a standardized QR code that can be used for PIX
-        instant payments
-
-        in Brazil. The generated EMV string contains all necessary information
-        for PIX
-
-        transactions including merchant details and location URL.
-
-
-        ## Key Features:
-
-        - **Validation**: Strict validation of merchant name and city (no
-        diacritics, length limits)
-
-        - **Default Values**: Automatically applies standard PIX EMV values when
-        not provided
-
-        - **TLV Format**: Returns EMV string in proper TLV format for QR code
-        generation
-
-        - **Brazilian Standards**: Compliant with Brazilian PIX instant payment
-        standards
-
-
-        ## Validation Rules:
-
-        - `merchantName`: Required, 1-25 characters, no diacritics
-
-        - `merchantCity`: Required, 1-15 characters, no diacritics  
-
-        - `merchantAccountInformationPix.url`: Required, valid URI format
-
-
-        ## Default Values Applied:
-
-        - `payloadFormatIndicator`: "01"
-
-        - `pointOfInitiationMethod`: "12" (dynamic QR)
-
-        - `merchantCategoryCode`: "0000"
-
-        - `transactionCurrency`: "986" (Brazilian Real)
-
-        - `countryCode`: "BR"
-
-        - `additionalDataFieldTemplate.referenceLabel`: "***"
-
-
-        The endpoint will return validation errors for any field that doesn't
-        meet the requirements.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EMVRequest'
+              type: object
+              required:
+                - pixCharge
+                - pixLocation
+                - brCodeInfo
+              properties:
+                pixCharge:
+                  description: Raw Pix charge payload forwarded to the Pix Charge service.
+                  allOf:
+                    - $ref: '#/components/schemas/PixChargeCreate'
+                pixLocation:
+                  type: object
+                  description: Payload forwarded to the Pix Location service.
+                  required:
+                    - type
+                  properties:
+                    type:
+                      type: string
+                      description: PIX location type.
+                      enum:
+                        - cob
+                        - cobv
+                        - rec
+                  additionalProperties: true
+                brCodeInfo:
+                  type: object
+                  description: Merchant information used to generate the BR Code (EMV).
+                  required:
+                    - merchantName
+                    - merchantCity
+                  properties:
+                    merchantName:
+                      type: string
+                      example: Test Merchant
+                    merchantCity:
+                      type: string
+                      example: Sao Paulo
+              additionalProperties: true
             examples:
               basic_example:
-                summary: Basic EMV generation
+                summary: Create charge + location + EMV
                 value:
-                  merchantName: Test Merchant
-                  merchantCity: Sao Paulo
-                  merchantAccountInformationPix:
-                    url: 'https://example.com/pix'
-              with_additional_fields:
-                summary: EMV generation with additional fields
-                value:
-                  merchantName: Test Merchant
-                  merchantCity: Sao Paulo
-                  merchantAccountInformationPix:
-                    gui: br.gov.bcb.pix
-                    url: 'https://example.com/pix'
-                    additionalInformation: Payment for services
-              minimal_example:
-                summary: Minimal required fields only
-                value:
-                  merchantName: Merchant
-                  merchantCity: Sao Paulo
-                  merchantAccountInformationPix:
-                    url: 'https://merchant.com/pix/payment'
+                  pixCharge:
+                    chargeType: cob
+                    pixKey: test@example.com
+                    value: 100
+                  pixLocation:
+                    type: cob
+                  brCodeInfo:
+                    merchantName: Test Merchant
+                    merchantCity: Sao Paulo
       responses:
-        '201':
-          description: EMV QR Code generated successfully
+        '200':
+          description: Charge, location, and BR Code created successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EMVResponse'
-              examples:
-                success_response:
-                  summary: Successful EMV generation
-                  value:
-                    emv: >-
-                      00020101021226450014br.gov.bcb.pix2523https://example.com/pix5204000053039865802BR5913Test
-                      Merchant6009Sao Paulo62070503***6304E69E
-                success_with_additional_info:
-                  summary: EMV generation with additional information
-                  value:
-                    emv: >-
-                      00020101021226450014br.gov.bcb.pix2523https://example.com/pix5204000053039865802BR5913Test
-                      Merchant6009Sao Paulo62070503***6304E69E
+                type: object
+                required:
+                  - charge
+                  - location
+                  - brCode
+                properties:
+                  charge:
+                    description: Charge data returned by the Pix Charge service.
+                    allOf:
+                      - $ref: '#/components/schemas/PixCharge'
+                  location:
+                    description: Location created for the charge.
+                    allOf:
+                      - $ref: '#/components/schemas/PixLocationResponse'
+                  brCode:
+                    type: string
+                    description: EMV representation of the BR Code.
+                example:
+                  charge:
+                    txid: E12345678920241201123456
+                    status: ACTIVE
+                    value: 100
+                  location:
+                    id: location-123
+                    type: COB
+                    location: https://example.com/location/123
+                    pixUrlAccessToken: token-123
+                  brCode: 00020101021243650016COM.MERCADOLIVRE02008...
         '400':
-          description: Bad request - invalid parameters
+          description: >-
+            Invalid txid, body validation, or failure in a downstream service
+            (Location, Charge, or BR Code).
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                type: object
+                properties:
+                  error:
+                    description: Error details from validation or upstream services.
+                    oneOf:
+                      - $ref: '#/components/schemas/ErrorResponse'
+                      - type: string
+                      - type: array
+                        items:
+                          $ref: '#/components/schemas/ChargeValidationIssue'
               examples:
-                missing_merchant_name:
-                  summary: Missing merchant name
+                invalidTxid:
+                  summary: Invalid TXID format
                   value:
                     error:
-                      issues:
-                        - code: invalid_type
-                          expected: string
-                          received: undefined
-                          path:
-                            - merchantName
-                          message: merchantName is required
-                      name: ZodError
-                      message: Validation error
-                missing_merchant_city:
-                  summary: Missing merchant city
+                      - code: invalid_string
+                        message: Invalid input
+                        path: []
+                        validation: regex
+                bodyValidation:
+                  summary: Missing required body field (e.g., pixLocation)
                   value:
                     error:
-                      issues:
-                        - code: invalid_type
-                          expected: string
-                          received: undefined
-                          path:
-                            - merchantCity
-                          message: merchantCity is required
-                      name: ZodError
-                      message: Validation error
-                missing_pix_info:
-                  summary: Missing merchant account information
+                      - code: invalid_type
+                        expected: object
+                        received: undefined
+                        path:
+                          - pixLocation
+                        message: Required
+                serviceFailure:
+                  summary: Failure in an upstream service (e.g., createPixLocation)
                   value:
-                    error:
-                      issues:
-                        - code: invalid_type
-                          expected: object
-                          received: undefined
-                          path:
-                            - merchantAccountInformationPix
-                          message: Required
-                      name: ZodError
-                      message: Validation error
-                diacritics_in_merchant_name:
-                  summary: Diacritics in merchant name
-                  value:
-                    error:
-                      issues:
-                        - code: custom
-                          path:
-                            - merchantName
-                          message: String must not contain diacritics
-                          validation: noDiacritics
-                      name: ZodError
-                      message: Validation error
-                diacritics_in_merchant_city:
-                  summary: Diacritics in merchant city
-                  value:
-                    error:
-                      issues:
-                        - code: custom
-                          path:
-                            - merchantCity
-                          message: String must not contain diacritics
-                          validation: noDiacritics
-                      name: ZodError
-                      message: Validation error
-                merchant_name_too_long:
-                  summary: Merchant name too long
-                  value:
-                    error:
-                      issues:
-                        - code: too_big
-                          maximum: 25
-                          type: string
-                          inclusive: true
-                          path:
-                            - merchantName
-                          message: String must contain at most 25 character(s)
-                      name: ZodError
-                      message: Validation error
-                merchant_city_too_long:
-                  summary: Merchant city too long
-                  value:
-                    error:
-                      issues:
-                        - code: too_big
-                          maximum: 15
-                          type: string
-                          inclusive: true
-                          path:
-                            - merchantCity
-                          message: String must contain at most 15 character(s)
-                      name: ZodError
-                      message: Validation error
-        '401':
-          description: Unauthorized - invalid AppID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                    error: '{"error":"Location creation failed"}'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -1066,7 +506,7 @@ paths:
               method: 'POST',
               hostname: '',
               port: null,
-              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/',
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D',
               headers: {
                 'content-type': 'application/json'
               }
@@ -1086,36 +526,65 @@ paths:
             });
 
             req.write(JSON.stringify({
-              merchantName: 'Test Merchant',
-              merchantCity: 'Sao Paulo',
-              merchantAccountInformationPix: {
-                gui: 'br.gov.bcb.pix',
-                url: 'https://example.com/pix',
-                additionalInformation: 'Payment for services',
-                fss: 'string',
-                pixKey: 'string'
+              pixCharge: {
+                chargeType: 'cob',
+                calendar: {
+                  dueDate: 'string',
+                  expiration: 1,
+                  validateAfterExpiration: 0,
+                  presentation: 'string',
+                  creation: 'string'
+                },
+                additionalInfo: [{name: 'string', value: 'string'}],
+                comment: 'string',
+                amount: {
+                  customerCanChangeValue: true,
+                  chargeValue: 0,
+                  interestRules: {modality: 1, value: 0},
+                  discountRules: {modality: 1, discountFixedDate: [{data: 'string', value: 0}], value: 0},
+                  rebateRules: {modality: 1, value: 0},
+                  fineRules: {modality: 1, value: 0},
+                  withdrawal: {
+                    withdraw: {
+                      value: 0,
+                      agentMode: 'string',
+                      changeMode: 0,
+                      withdrawalServiceProvider: 'string'
+                    },
+                    change: {
+                      value: 0,
+                      agentMode: 'string',
+                      changeMode: 0,
+                      withdrawalServiceProvider: 'string'
+                    }
+                  }
+                },
+                pixKey: 'string',
+                location: {id: 'string', isLinked: false},
+                ensureSameTaxID: true,
+                debtor: {name: 'string', taxID: 'string', taxIDType: 'BR:CNPJ'},
+                receiver: {
+                  name: 'string',
+                  taxID: 'string',
+                  taxIDType: 'BR:CNPJ',
+                  tradeName: 'string',
+                  email: 'string',
+                  street: 'string',
+                  city: 'string',
+                  state: 'st',
+                  zipcode: 'string'
+                }
               },
-              payloadFormatIndicator: '01',
-              pointOfInitiationMethod: '12',
-              merchantCategoryCode: '0000',
-              transactionCurrency: '986',
-              countryCode: 'BR',
-              additionalDataFieldTemplate: {referenceLabel: '***'},
-              unreservedTemplates: {
-                gui: 'string',
-                url: 'http://example.com',
-                additionalInformation: 'string',
-                fss: 'string',
-                pixKey: 'string'
-              }
+              pixLocation: {type: 'cob'},
+              brCodeInfo: {merchantName: 'Test Merchant', merchantCity: 'Sao Paulo'}
             }));
             req.end();
         - lang: Shell + Curl
           source: |-
             curl --request POST \
-              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/ \
+              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D \
               --header 'content-type: application/json' \
-              --data '{"merchantName":"Test Merchant","merchantCity":"Sao Paulo","merchantAccountInformationPix":{"gui":"br.gov.bcb.pix","url":"https://example.com/pix","additionalInformation":"Payment for services","fss":"string","pixKey":"string"},"payloadFormatIndicator":"01","pointOfInitiationMethod":"12","merchantCategoryCode":"0000","transactionCurrency":"986","countryCode":"BR","additionalDataFieldTemplate":{"referenceLabel":"***"},"unreservedTemplates":{"gui":"string","url":"http://example.com","additionalInformation":"string","fss":"string","pixKey":"string"}}'
+              --data '{"pixCharge":{"chargeType":"cob","calendar":{"dueDate":"string","expiration":1,"validateAfterExpiration":0,"presentation":"string","creation":"string"},"additionalInfo":[{"name":"string","value":"string"}],"comment":"string","amount":{"customerCanChangeValue":true,"chargeValue":0,"interestRules":{"modality":1,"value":0},"discountRules":{"modality":1,"discountFixedDate":[{"data":"string","value":0}],"value":0},"rebateRules":{"modality":1,"value":0},"fineRules":{"modality":1,"value":0},"withdrawal":{"withdraw":{"value":0,"agentMode":"string","changeMode":0,"withdrawalServiceProvider":"string"},"change":{"value":0,"agentMode":"string","changeMode":0,"withdrawalServiceProvider":"string"}}},"pixKey":"string","location":{"id":"string","isLinked":false},"ensureSameTaxID":true,"debtor":{"name":"string","taxID":"string","taxIDType":"BR:CNPJ"},"receiver":{"name":"string","taxID":"string","taxIDType":"BR:CNPJ","tradeName":"string","email":"string","street":"string","city":"string","state":"st","zipcode":"string"}},"pixLocation":{"type":"cob"},"brCodeInfo":{"merchantName":"Test Merchant","merchantCity":"Sao Paulo"}}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -1123,7 +592,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/",
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -1131,29 +600,91 @@ paths:
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => "POST",
               CURLOPT_POSTFIELDS => json_encode([
-                'merchantName' => 'Test Merchant',
-                'merchantCity' => 'Sao Paulo',
-                'merchantAccountInformationPix' => [
-                    'gui' => 'br.gov.bcb.pix',
-                    'url' => 'https://example.com/pix',
-                    'additionalInformation' => 'Payment for services',
-                    'fss' => 'string',
-                    'pixKey' => 'string'
+                'pixCharge' => [
+                    'chargeType' => 'cob',
+                    'calendar' => [
+                            'dueDate' => 'string',
+                            'expiration' => 1,
+                            'validateAfterExpiration' => 0,
+                            'presentation' => 'string',
+                            'creation' => 'string'
+                    ],
+                    'additionalInfo' => [
+                            [
+                                            'name' => 'string',
+                                            'value' => 'string'
+                            ]
+                    ],
+                    'comment' => 'string',
+                    'amount' => [
+                            'customerCanChangeValue' => null,
+                            'chargeValue' => 0,
+                            'interestRules' => [
+                                            'modality' => 1,
+                                            'value' => 0
+                            ],
+                            'discountRules' => [
+                                            'modality' => 1,
+                                            'discountFixedDate' => [
+                                                                            [
+                                                                                                                                            'data' => 'string',
+                                                                                                                                            'value' => 0
+                                                                            ]
+                                            ],
+                                            'value' => 0
+                            ],
+                            'rebateRules' => [
+                                            'modality' => 1,
+                                            'value' => 0
+                            ],
+                            'fineRules' => [
+                                            'modality' => 1,
+                                            'value' => 0
+                            ],
+                            'withdrawal' => [
+                                            'withdraw' => [
+                                                                            'value' => 0,
+                                                                            'agentMode' => 'string',
+                                                                            'changeMode' => 0,
+                                                                            'withdrawalServiceProvider' => 'string'
+                                            ],
+                                            'change' => [
+                                                                            'value' => 0,
+                                                                            'agentMode' => 'string',
+                                                                            'changeMode' => 0,
+                                                                            'withdrawalServiceProvider' => 'string'
+                                            ]
+                            ]
+                    ],
+                    'pixKey' => 'string',
+                    'location' => [
+                            'id' => 'string',
+                            'isLinked' => null
+                    ],
+                    'ensureSameTaxID' => null,
+                    'debtor' => [
+                            'name' => 'string',
+                            'taxID' => 'string',
+                            'taxIDType' => 'BR:CNPJ'
+                    ],
+                    'receiver' => [
+                            'name' => 'string',
+                            'taxID' => 'string',
+                            'taxIDType' => 'BR:CNPJ',
+                            'tradeName' => 'string',
+                            'email' => 'string',
+                            'street' => 'string',
+                            'city' => 'string',
+                            'state' => 'st',
+                            'zipcode' => 'string'
+                    ]
                 ],
-                'payloadFormatIndicator' => '01',
-                'pointOfInitiationMethod' => '12',
-                'merchantCategoryCode' => '0000',
-                'transactionCurrency' => '986',
-                'countryCode' => 'BR',
-                'additionalDataFieldTemplate' => [
-                    'referenceLabel' => '***'
+                'pixLocation' => [
+                    'type' => 'cob'
                 ],
-                'unreservedTemplates' => [
-                    'gui' => 'string',
-                    'url' => 'http://example.com',
-                    'additionalInformation' => 'string',
-                    'fss' => 'string',
-                    'pixKey' => 'string'
+                'brCodeInfo' => [
+                    'merchantName' => 'Test Merchant',
+                    'merchantCity' => 'Sao Paulo'
                 ]
               ]),
               CURLOPT_HTTPHEADER => [
@@ -1179,18 +710,16 @@ paths:
             conn = http.client.HTTPSConnection("")
 
 
-            payload = "{\"merchantName\":\"Test
-            Merchant\",\"merchantCity\":\"Sao
-            Paulo\",\"merchantAccountInformationPix\":{\"gui\":\"br.gov.bcb.pix\",\"url\":\"https://example.com/pix\",\"additionalInformation\":\"Payment
-            for
-            services\",\"fss\":\"string\",\"pixKey\":\"string\"},\"payloadFormatIndicator\":\"01\",\"pointOfInitiationMethod\":\"12\",\"merchantCategoryCode\":\"0000\",\"transactionCurrency\":\"986\",\"countryCode\":\"BR\",\"additionalDataFieldTemplate\":{\"referenceLabel\":\"***\"},\"unreservedTemplates\":{\"gui\":\"string\",\"url\":\"http://example.com\",\"additionalInformation\":\"string\",\"fss\":\"string\",\"pixKey\":\"string\"}}"
+            payload =
+            "{\"pixCharge\":{\"chargeType\":\"cob\",\"calendar\":{\"dueDate\":\"string\",\"expiration\":1,\"validateAfterExpiration\":0,\"presentation\":\"string\",\"creation\":\"string\"},\"additionalInfo\":[{\"name\":\"string\",\"value\":\"string\"}],\"comment\":\"string\",\"amount\":{\"customerCanChangeValue\":true,\"chargeValue\":0,\"interestRules\":{\"modality\":1,\"value\":0},\"discountRules\":{\"modality\":1,\"discountFixedDate\":[{\"data\":\"string\",\"value\":0}],\"value\":0},\"rebateRules\":{\"modality\":1,\"value\":0},\"fineRules\":{\"modality\":1,\"value\":0},\"withdrawal\":{\"withdraw\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"},\"change\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"}}},\"pixKey\":\"string\",\"location\":{\"id\":\"string\",\"isLinked\":false},\"ensureSameTaxID\":true,\"debtor\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\"},\"receiver\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\",\"tradeName\":\"string\",\"email\":\"string\",\"street\":\"string\",\"city\":\"string\",\"state\":\"st\",\"zipcode\":\"string\"}},\"pixLocation\":{\"type\":\"cob\"},\"brCodeInfo\":{\"merchantName\":\"Test
+            Merchant\",\"merchantCity\":\"Sao Paulo\"}}"
 
 
             headers = { 'content-type': "application/json" }
 
 
             conn.request("POST",
-            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/",
+            "%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D",
             payload, headers)
 
 
@@ -1201,7 +730,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/\"\n\n\tpayload := strings.NewReader(\"{\\\"merchantName\\\":\\\"Test Merchant\\\",\\\"merchantCity\\\":\\\"Sao Paulo\\\",\\\"merchantAccountInformationPix\\\":{\\\"gui\\\":\\\"br.gov.bcb.pix\\\",\\\"url\\\":\\\"https://example.com/pix\\\",\\\"additionalInformation\\\":\\\"Payment for services\\\",\\\"fss\\\":\\\"string\\\",\\\"pixKey\\\":\\\"string\\\"},\\\"payloadFormatIndicator\\\":\\\"01\\\",\\\"pointOfInitiationMethod\\\":\\\"12\\\",\\\"merchantCategoryCode\\\":\\\"0000\\\",\\\"transactionCurrency\\\":\\\"986\\\",\\\"countryCode\\\":\\\"BR\\\",\\\"additionalDataFieldTemplate\\\":{\\\"referenceLabel\\\":\\\"***\\\"},\\\"unreservedTemplates\\\":{\\\"gui\\\":\\\"string\\\",\\\"url\\\":\\\"http://example.com\\\",\\\"additionalInformation\\\":\\\"string\\\",\\\"fss\\\":\\\"string\\\",\\\"pixKey\\\":\\\"string\\\"}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D\"\n\n\tpayload := strings.NewReader(\"{\\\"pixCharge\\\":{\\\"chargeType\\\":\\\"cob\\\",\\\"calendar\\\":{\\\"dueDate\\\":\\\"string\\\",\\\"expiration\\\":1,\\\"validateAfterExpiration\\\":0,\\\"presentation\\\":\\\"string\\\",\\\"creation\\\":\\\"string\\\"},\\\"additionalInfo\\\":[{\\\"name\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"comment\\\":\\\"string\\\",\\\"amount\\\":{\\\"customerCanChangeValue\\\":true,\\\"chargeValue\\\":0,\\\"interestRules\\\":{\\\"modality\\\":1,\\\"value\\\":0},\\\"discountRules\\\":{\\\"modality\\\":1,\\\"discountFixedDate\\\":[{\\\"data\\\":\\\"string\\\",\\\"value\\\":0}],\\\"value\\\":0},\\\"rebateRules\\\":{\\\"modality\\\":1,\\\"value\\\":0},\\\"fineRules\\\":{\\\"modality\\\":1,\\\"value\\\":0},\\\"withdrawal\\\":{\\\"withdraw\\\":{\\\"value\\\":0,\\\"agentMode\\\":\\\"string\\\",\\\"changeMode\\\":0,\\\"withdrawalServiceProvider\\\":\\\"string\\\"},\\\"change\\\":{\\\"value\\\":0,\\\"agentMode\\\":\\\"string\\\",\\\"changeMode\\\":0,\\\"withdrawalServiceProvider\\\":\\\"string\\\"}}},\\\"pixKey\\\":\\\"string\\\",\\\"location\\\":{\\\"id\\\":\\\"string\\\",\\\"isLinked\\\":false},\\\"ensureSameTaxID\\\":true,\\\"debtor\\\":{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"taxIDType\\\":\\\"BR:CNPJ\\\"},\\\"receiver\\\":{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"taxIDType\\\":\\\"BR:CNPJ\\\",\\\"tradeName\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"st\\\",\\\"zipcode\\\":\\\"string\\\"}},\\\"pixLocation\\\":{\\\"type\\\":\\\"cob\\\"},\\\"brCodeInfo\\\":{\\\"merchantName\\\":\\\"Test Merchant\\\",\\\"merchantCity\\\":\\\"Sao Paulo\\\"}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -1210,13 +739,11 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"merchantName\":\"Test Merchant\",\"merchantCity\":\"Sao
-            Paulo\",\"merchantAccountInformationPix\":{\"gui\":\"br.gov.bcb.pix\",\"url\":\"https://example.com/pix\",\"additionalInformation\":\"Payment
-            for
-            services\",\"fss\":\"string\",\"pixKey\":\"string\"},\"payloadFormatIndicator\":\"01\",\"pointOfInitiationMethod\":\"12\",\"merchantCategoryCode\":\"0000\",\"transactionCurrency\":\"986\",\"countryCode\":\"BR\",\"additionalDataFieldTemplate\":{\"referenceLabel\":\"***\"},\"unreservedTemplates\":{\"gui\":\"string\",\"url\":\"http://example.com\",\"additionalInformation\":\"string\",\"fss\":\"string\",\"pixKey\":\"string\"}}");
+            "{\"pixCharge\":{\"chargeType\":\"cob\",\"calendar\":{\"dueDate\":\"string\",\"expiration\":1,\"validateAfterExpiration\":0,\"presentation\":\"string\",\"creation\":\"string\"},\"additionalInfo\":[{\"name\":\"string\",\"value\":\"string\"}],\"comment\":\"string\",\"amount\":{\"customerCanChangeValue\":true,\"chargeValue\":0,\"interestRules\":{\"modality\":1,\"value\":0},\"discountRules\":{\"modality\":1,\"discountFixedDate\":[{\"data\":\"string\",\"value\":0}],\"value\":0},\"rebateRules\":{\"modality\":1,\"value\":0},\"fineRules\":{\"modality\":1,\"value\":0},\"withdrawal\":{\"withdraw\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"},\"change\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"}}},\"pixKey\":\"string\",\"location\":{\"id\":\"string\",\"isLinked\":false},\"ensureSameTaxID\":true,\"debtor\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\"},\"receiver\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\",\"tradeName\":\"string\",\"email\":\"string\",\"street\":\"string\",\"city\":\"string\",\"state\":\"st\",\"zipcode\":\"string\"}},\"pixLocation\":{\"type\":\"cob\"},\"brCodeInfo\":{\"merchantName\":\"Test
+            Merchant\",\"merchantCity\":\"Sao Paulo\"}}");
 
             Request request = new Request.Builder()
-              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/")
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D")
               .post(body)
               .addHeader("content-type", "application/json")
               .build();
@@ -1230,7 +757,7 @@ paths:
 
 
             url =
-            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/")
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/core/charge/%7Btxid%7D")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -1242,20 +769,898 @@ paths:
 
             request["content-type"] = 'application/json'
 
-            request.body = "{\"merchantName\":\"Test
-            Merchant\",\"merchantCity\":\"Sao
-            Paulo\",\"merchantAccountInformationPix\":{\"gui\":\"br.gov.bcb.pix\",\"url\":\"https://example.com/pix\",\"additionalInformation\":\"Payment
-            for
-            services\",\"fss\":\"string\",\"pixKey\":\"string\"},\"payloadFormatIndicator\":\"01\",\"pointOfInitiationMethod\":\"12\",\"merchantCategoryCode\":\"0000\",\"transactionCurrency\":\"986\",\"countryCode\":\"BR\",\"additionalDataFieldTemplate\":{\"referenceLabel\":\"***\"},\"unreservedTemplates\":{\"gui\":\"string\",\"url\":\"http://example.com\",\"additionalInformation\":\"string\",\"fss\":\"string\",\"pixKey\":\"string\"}}"
+            request.body =
+            "{\"pixCharge\":{\"chargeType\":\"cob\",\"calendar\":{\"dueDate\":\"string\",\"expiration\":1,\"validateAfterExpiration\":0,\"presentation\":\"string\",\"creation\":\"string\"},\"additionalInfo\":[{\"name\":\"string\",\"value\":\"string\"}],\"comment\":\"string\",\"amount\":{\"customerCanChangeValue\":true,\"chargeValue\":0,\"interestRules\":{\"modality\":1,\"value\":0},\"discountRules\":{\"modality\":1,\"discountFixedDate\":[{\"data\":\"string\",\"value\":0}],\"value\":0},\"rebateRules\":{\"modality\":1,\"value\":0},\"fineRules\":{\"modality\":1,\"value\":0},\"withdrawal\":{\"withdraw\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"},\"change\":{\"value\":0,\"agentMode\":\"string\",\"changeMode\":0,\"withdrawalServiceProvider\":\"string\"}}},\"pixKey\":\"string\",\"location\":{\"id\":\"string\",\"isLinked\":false},\"ensureSameTaxID\":true,\"debtor\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\"},\"receiver\":{\"name\":\"string\",\"taxID\":\"string\",\"taxIDType\":\"BR:CNPJ\",\"tradeName\":\"string\",\"email\":\"string\",\"street\":\"string\",\"city\":\"string\",\"state\":\"st\",\"zipcode\":\"string\"}},\"pixLocation\":{\"type\":\"cob\"},\"brCodeInfo\":{\"merchantName\":\"Test
+            Merchant\",\"merchantCity\":\"Sao Paulo\"}}"
 
 
             response = http.request(request)
 
             puts response.read_body
-  '/pix-charge/v1/charge/{txid}':
+    parameters:
+      - name: txid
+        in: path
+        required: true
+        description: Unique transaction identifier (1–35 alphanumeric chars)
+        schema:
+          type: string
+          pattern: ^[a-zA-Z0-9]{1,35}$
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - pixCharge
+              - pixLocation
+              - brCodeInfo
+            properties:
+              pixCharge:
+                description: Raw Pix charge payload forwarded to the Pix provider
+                type: object
+                $ref: '#/components/schemas/PixChargeCreate'
+                additionalProperties: true
+              pixLocation:
+                type: object
+                required:
+                  - type
+                properties:
+                  type:
+                    type: string
+                    description: PIX location type
+                    enum:
+                      - cob
+                      - cobv
+                      - rec
+              brCodeInfo:
+                type: object
+                required:
+                  - merchantName
+                  - merchantCity
+                properties:
+                  merchantName:
+                    type: string
+                  merchantCity:
+                    type: string
+          examples:
+            basic_example:
+              summary: Create charge + location + EMV
+              value:
+                pixCharge:
+                  chargeType: cob
+                  pixKey: test@example.com
+                  value: 100
+                pixLocation:
+                  type: cob
+                brCodeInfo:
+                  merchantName: Test Merchant
+                  merchantCity: Sao Paulo
+    responses:
+      '200':
+        description: Charge, Location, and BR Code created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                charge:
+                  description: The created PIX Charge object
+                  type: object
+                  $ref: '#/components/schemas/PixChargeCreate'
+                location:
+                  description: The created PIX Location object
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    location:
+                      type: string
+                      format: url
+                    pixUrlAccessToken:
+                      type: string
+                brCode:
+                  type: string
+                  description: The generated EMV BR Code (encoded string)
+            examples:
+              success:
+                summary: Successful charge creation
+                value:
+                  charge:
+                    txid: E12345678920241201123456
+                    status: ATIVA
+                    value: 100
+                  location:
+                    id: location-123
+                    type: COB
+                    location: https://example.com/location/123
+                    pixUrlAccessToken: token-123
+                  brCode: 00020101021243650016COM.MERCADOLIVRE02008...
+      '400':
+        description: >-
+          Bad Request – Invalid txid, body validation, or failure in a
+          sub-service (Location, Charge, or BR Code creation).
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: object
+                  description: >-
+                    Details of the error, can be a string, a Zod issues array,
+                    or a JSON string representation of an upstream error.
+            examples:
+              invalidTxid:
+                summary: Invalid TXID format
+                value:
+                  error:
+                    - code: invalid_string
+                      message: Invalid input
+                      path: []
+                      validation: regex
+              bodyValidation:
+                summary: Missing required body field (e.g., pixLocation)
+                value:
+                  error:
+                    - code: invalid_type
+                      expected: object
+                      received: undefined
+                      path:
+                        - pixLocation
+                      message: Required
+              serviceFailure:
+                summary: Failure in an upstream service (e.g., createPixLocation)
+                value:
+                  error: '{"error":"Location creation failed"}'
+  /pix-charge/v1/charge/location/{locId}:
+    get:
+      tags:
+        - pixCharge
+      summary: Get Pix charges by location
+      description: Retrieve all Pix charges associated with a specific location
+      parameters:
+        - name: locId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Location identifier
+        - name: DPP
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional payment date-time for calculation
+        - name: codMun
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional municipality code for business-day calculation
+      responses:
+        '200':
+          description: Pix charges retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  charge:
+                    $ref: '#/components/schemas/PixCharge'
+        '401':
+          description: Unauthorized - invalid AppID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: '',
+              port: null,
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE',
+              headers: {}
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url 'https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("")
+
+
+            conn.request("GET",
+            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
+              .get()
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Get.new(url)
+
+
+            response = http.request(request)
+
+            puts response.read_body
+  /pix-charge/v1/charge/{txid}/complete:
     post:
       tags:
-        - pix-charge
+        - pixCharge
+      summary: Complete a Pix charge
+      description: >
+        Mark a Pix charge as completed by recording the payment date and payment
+        value.
+
+
+        This endpoint updates the charge status to COMPLETED and stores the
+        payment information (paidAt and paidAmount).
+
+        The charge amount values are recalculated based on the payment date.
+      parameters:
+        - name: txid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique transaction identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - paymentDate
+                - paymentValue
+              properties:
+                paymentDate:
+                  type: string
+                  description: Payment date-time in ISO format (timezone-aware)
+                  example: 2025-03-20T13:30:00.000Z
+                paymentValue:
+                  type: number
+                  description: Payment value in cents
+                  example: 10000
+            examples:
+              basic_example:
+                summary: Complete charge with payment
+                value:
+                  paymentDate: 2025-03-20T13:30:00.000Z
+                  paymentValue: 10000
+      responses:
+        '200':
+          description: Pix charge completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  charge:
+                    $ref: '#/components/schemas/PixCharge'
+              examples:
+                success_response:
+                  summary: Successful charge completion
+                  value:
+                    charge:
+                      txid: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                      status: CONCLUIDA
+                      amount:
+                        original: '100.00'
+                        final: '100.00'
+        '400':
+          description: Bad request - invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missing_payment_date:
+                  summary: Missing paymentDate
+                  value:
+                    error:
+                      issues:
+                        - code: invalid_type
+                          expected: string
+                          received: undefined
+                          path:
+                            - paymentDate
+                          message: Required
+                      name: ZodError
+                      message: Validation error
+                missing_payment_value:
+                  summary: Missing paymentValue
+                  value:
+                    error:
+                      issues:
+                        - code: invalid_type
+                          expected: number
+                          received: undefined
+                          path:
+                            - paymentValue
+                          message: Required
+                      name: ZodError
+                      message: Validation error
+                invalid_payment_value:
+                  summary: Invalid paymentValue type
+                  value:
+                    error:
+                      issues:
+                        - code: invalid_type
+                          expected: number
+                          received: string
+                          path:
+                            - paymentValue
+                          message: Expected number, received string
+                      name: ZodError
+                      message: Validation error
+        '401':
+          description: Unauthorized - invalid AppID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Pix charge not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                not_found:
+                  summary: Charge not found
+                  value:
+                    error: Pix charge not found
+      x-codeSamples:
+        - lang: Node + Native
+          source: >-
+            const http = require('https');
+
+
+            const options = {
+              method: 'POST',
+              hostname: '',
+              port: null,
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/complete',
+              headers: {
+                'content-type': 'application/json'
+              }
+            };
+
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+
+            req.write(JSON.stringify({paymentDate: '2025-03-20T13:30:00.000Z',
+            paymentValue: 10000}));
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/complete \
+              --header 'content-type: application/json' \
+              --data '{"paymentDate":"2025-03-20T13:30:00.000Z","paymentValue":10000}'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/complete",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode([
+                'paymentDate' => '2025-03-20T13:30:00.000Z',
+                'paymentValue' => 10000
+              ]),
+              CURLOPT_HTTPHEADER => [
+                "content-type: application/json"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("")
+
+
+            payload =
+            "{\"paymentDate\":\"2025-03-20T13:30:00.000Z\",\"paymentValue\":10000}"
+
+
+            headers = { 'content-type': "application/json" }
+
+
+            conn.request("POST",
+            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/complete",
+            payload, headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/complete\"\n\n\tpayload := strings.NewReader(\"{\\\"paymentDate\\\":\\\"2025-03-20T13:30:00.000Z\\\",\\\"paymentValue\\\":10000}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"paymentDate\":\"2025-03-20T13:30:00.000Z\",\"paymentValue\":10000}");
+
+            Request request = new Request.Builder()
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/complete")
+              .post(body)
+              .addHeader("content-type", "application/json")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/complete")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["content-type"] = 'application/json'
+
+            request.body =
+            "{\"paymentDate\":\"2025-03-20T13:30:00.000Z\",\"paymentValue\":10000}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
+  /pix-charge/v1/charge/{txid}:
+    delete:
+      tags:
+        - pixCharge
+      summary: Delete a Pix charge
+      description: Delete a specific Pix charge
+      parameters:
+        - name: txid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique transaction identifier
+      responses:
+        '204':
+          description: Pix charge deleted successfully (no content)
+        '401':
+          description: Unauthorized - invalid AppID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Pix charge not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'DELETE',
+              hostname: '',
+              port: null,
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D',
+              headers: {}
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request DELETE \
+              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "DELETE",
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("")
+
+
+            conn.request("DELETE",
+            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D")
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D\"\n\n\treq, _ := http.NewRequest(\"DELETE\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D")
+              .delete(null)
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Delete.new(url)
+
+
+            response = http.request(request)
+
+            puts response.read_body
+    get:
+      tags:
+        - pixCharge
+      summary: Get a pix charge
+      description: Retrieve details of a specific Pix charge
+      parameters:
+        - name: txid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: pix charge txid
+          example: 6290ccfd42831958a405debc
+        - name: DPP
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional payment date-time for calculation
+        - name: codMun
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional municipality code for business-day calculation
+      responses:
+        '200':
+          description: the pix charge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  charge:
+                    $ref: '#/components/schemas/PixCharge'
+                    type: object
+              example:
+                account:
+                  accountId: 6290ccfd42831958a405debc
+                  isDefault: true
+                  balance:
+                    total: 129430
+                    blocked: 0
+                    available: 129430
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized - invalid AppID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Pix charge not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: '',
+              port: null,
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE',
+              headers: {}
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url 'https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("")
+
+
+            conn.request("GET",
+            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
+              .get()
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Get.new(url)
+
+
+            response = http.request(request)
+
+            puts response.read_body
+    post:
+      tags:
         - pixCharge
       summary: Create a new Pix charge
       description: Create a new Pix charge with the specified parameters
@@ -1287,19 +1692,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '409':
           description: Conflict - txid already exists
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -1566,7 +1971,6 @@ paths:
             puts response.read_body
     put:
       tags:
-        - pix-charge
         - pixCharge
       summary: Update an existing Pix charge
       description: Update an existing Pix charge with new parameters
@@ -1603,19 +2007,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Pix charge not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
       x-codeSamples:
         - lang: Node + Native
           source: |-
@@ -1772,545 +2176,233 @@ paths:
             response = http.request(request)
 
             puts response.read_body
-    get:
-      tags:
-        - pix-charge
-        - pixCharge
-      summary: Get a pix charge
-      description: Retrieve details of a specific Pix charge
-      parameters:
-        - name: txid
-          in: path
-          required: true
-          schema:
-            type: string
-          description: pix charge txid
-          example: 6290ccfd42831958a405debc
-        - name: DPP
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Optional payment date-time for calculation
-        - name: codMun
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Optional municipality code for business-day calculation
-      responses:
-        '200':
-          description: the pix charge
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  charge:
-                    $ref: '#/components/schemas/PixCharge'
-                    type: object
-              example:
-                account:
-                  accountId: 6290ccfd42831958a405debc
-                  isDefault: true
-                  balance:
-                    total: 129430
-                    blocked: 0
-                    available: 129430
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-        '401':
-          description: Unauthorized - invalid AppID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse1'
-        '404':
-          description: Pix charge not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse1'
-      x-codeSamples:
-        - lang: Node + Native
-          source: |-
-            const http = require('https');
-
-            const options = {
-              method: 'GET',
-              hostname: '',
-              port: null,
-              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE',
-              headers: {}
-            };
-
-            const req = http.request(options, function (res) {
-              const chunks = [];
-
-              res.on('data', function (chunk) {
-                chunks.push(chunk);
-              });
-
-              res.on('end', function () {
-                const body = Buffer.concat(chunks);
-                console.log(body.toString());
-              });
-            });
-
-            req.end();
-        - lang: Shell + Curl
-          source: |-
-            curl --request GET \
-              --url 'https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE'
-        - lang: Php + Curl
-          source: |-
-            <?php
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, [
-              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE",
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "GET",
-            ]);
-
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-
-            curl_close($curl);
-
-            if ($err) {
-              echo "cURL Error #:" . $err;
-            } else {
-              echo $response;
-            }
-        - lang: Python + Python3
-          source: >-
-            import http.client
-
-
-            conn = http.client.HTTPSConnection("")
-
-
-            conn.request("GET",
-            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
-
-
-            res = conn.getresponse()
-
-            data = res.read()
-
-
-            print(data.decode("utf-8"))
-        - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-        - lang: Java + Okhttp
-          source: |-
-            OkHttpClient client = new OkHttpClient();
-
-            Request request = new Request.Builder()
-              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
-              .get()
-              .build();
-
-            Response response = client.newCall(request).execute();
-        - lang: Ruby + Native
-          source: >-
-            require 'uri'
-
-            require 'net/http'
-
-
-            url =
-            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/6290ccfd42831958a405debc?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
-
-
-            http = Net::HTTP.new(url.host, url.port)
-
-            http.use_ssl = true
-
-
-            request = Net::HTTP::Get.new(url)
-
-
-            response = http.request(request)
-
-            puts response.read_body
-    delete:
-      tags:
-        - pix-charge
-        - pixCharge
-      summary: Delete a Pix charge
-      description: Delete a specific Pix charge
-      parameters:
-        - name: txid
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Unique transaction identifier
-      responses:
-        '204':
-          description: Pix charge deleted successfully (no content)
-        '401':
-          description: Unauthorized - invalid AppID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse1'
-        '404':
-          description: Pix charge not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse1'
-      x-codeSamples:
-        - lang: Node + Native
-          source: |-
-            const http = require('https');
-
-            const options = {
-              method: 'DELETE',
-              hostname: '',
-              port: null,
-              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D',
-              headers: {}
-            };
-
-            const req = http.request(options, function (res) {
-              const chunks = [];
-
-              res.on('data', function (chunk) {
-                chunks.push(chunk);
-              });
-
-              res.on('end', function () {
-                const body = Buffer.concat(chunks);
-                console.log(body.toString());
-              });
-            });
-
-            req.end();
-        - lang: Shell + Curl
-          source: |-
-            curl --request DELETE \
-              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D
-        - lang: Php + Curl
-          source: |-
-            <?php
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, [
-              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D",
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "DELETE",
-            ]);
-
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-
-            curl_close($curl);
-
-            if ($err) {
-              echo "cURL Error #:" . $err;
-            } else {
-              echo $response;
-            }
-        - lang: Python + Python3
-          source: >-
-            import http.client
-
-
-            conn = http.client.HTTPSConnection("")
-
-
-            conn.request("DELETE",
-            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D")
-
-
-            res = conn.getresponse()
-
-            data = res.read()
-
-
-            print(data.decode("utf-8"))
-        - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D\"\n\n\treq, _ := http.NewRequest(\"DELETE\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-        - lang: Java + Okhttp
-          source: |-
-            OkHttpClient client = new OkHttpClient();
-
-            Request request = new Request.Builder()
-              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D")
-              .delete(null)
-              .build();
-
-            Response response = client.newCall(request).execute();
-        - lang: Ruby + Native
-          source: >-
-            require 'uri'
-
-            require 'net/http'
-
-
-            url =
-            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D")
-
-
-            http = Net::HTTP.new(url.host, url.port)
-
-            http.use_ssl = true
-
-
-            request = Net::HTTP::Delete.new(url)
-
-
-            response = http.request(request)
-
-            puts response.read_body
-  '/pix-charge/v1/charge/location/{locId}':
-    get:
-      tags:
-        - pix-charge
-        - pixCharge
-      summary: Get Pix charges by location
-      description: Retrieve all Pix charges associated with a specific location
-      parameters:
-        - name: locId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Location identifier
-        - name: DPP
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Optional payment date-time for calculation
-        - name: codMun
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Optional municipality code for business-day calculation
-      responses:
-        '200':
-          description: Pix charges retrieved successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  charge:
-                    $ref: '#/components/schemas/PixCharge'
-        '401':
-          description: Unauthorized - invalid AppID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse1'
-        '404':
-          description: Location not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse1'
-      x-codeSamples:
-        - lang: Node + Native
-          source: |-
-            const http = require('https');
-
-            const options = {
-              method: 'GET',
-              hostname: '',
-              port: null,
-              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE',
-              headers: {}
-            };
-
-            const req = http.request(options, function (res) {
-              const chunks = [];
-
-              res.on('data', function (chunk) {
-                chunks.push(chunk);
-              });
-
-              res.on('end', function () {
-                const body = Buffer.concat(chunks);
-                console.log(body.toString());
-              });
-            });
-
-            req.end();
-        - lang: Shell + Curl
-          source: |-
-            curl --request GET \
-              --url 'https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE'
-        - lang: Php + Curl
-          source: |-
-            <?php
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, [
-              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE",
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "GET",
-            ]);
-
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-
-            curl_close($curl);
-
-            if ($err) {
-              echo "cURL Error #:" . $err;
-            } else {
-              echo $response;
-            }
-        - lang: Python + Python3
-          source: >-
-            import http.client
-
-
-            conn = http.client.HTTPSConnection("")
-
-
-            conn.request("GET",
-            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
-
-
-            res = conn.getresponse()
-
-            data = res.read()
-
-
-            print(data.decode("utf-8"))
-        - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-        - lang: Java + Okhttp
-          source: |-
-            OkHttpClient client = new OkHttpClient();
-
-            Request request = new Request.Builder()
-              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
-              .get()
-              .build();
-
-            Response response = client.newCall(request).execute();
-        - lang: Ruby + Native
-          source: >-
-            require 'uri'
-
-            require 'net/http'
-
-
-            url =
-            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/location/%7BlocId%7D?DPP=SOME_STRING_VALUE&codMun=SOME_STRING_VALUE")
-
-
-            http = Net::HTTP.new(url.host, url.port)
-
-            http.use_ssl = true
-
-
-            request = Net::HTTP::Get.new(url)
-
-
-            response = http.request(request)
-
-            puts response.read_body
-  '/pix-charge/v1/charge/{txid}/allow':
+  /pix-charge/v1/emv/:
     post:
       tags:
-        - pix-charge
         - pixCharge
-      summary: Check if a Pix charge is allowed to be paid
-      description: Check if a Pix charge is allowed to be paid
-      parameters:
-        - name: txid
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Unique transaction identifier
+      summary: Generate EMV QR Code for PIX
+      description: >
+        Generates an EMV QR Code string in TLV (Tag-Length-Value) format for PIX
+        payments.
+
+        This endpoint creates a standardized QR code that can be used for PIX
+        instant payments
+
+        in Brazil. The generated EMV string contains all necessary information
+        for PIX
+
+        transactions including merchant details and location URL.
+
+
+        ## Key Features:
+
+        - **Validation**: Strict validation of merchant name and city (no
+        diacritics, length limits)
+
+        - **Default Values**: Automatically applies standard PIX EMV values when
+        not provided
+
+        - **TLV Format**: Returns EMV string in proper TLV format for QR code
+        generation
+
+        - **Brazilian Standards**: Compliant with Brazilian PIX instant payment
+        standards
+
+
+        ## Validation Rules:
+
+        - `merchantName`: Required, 1-25 characters, no diacritics
+
+        - `merchantCity`: Required, 1-15 characters, no diacritics  
+
+        - `merchantAccountInformationPix.url`: Required, valid URI format
+
+
+        ## Default Values Applied:
+
+        - `payloadFormatIndicator`: "01"
+
+        - `pointOfInitiationMethod`: "12" (dynamic QR)
+
+        - `merchantCategoryCode`: "0000"
+
+        - `transactionCurrency`: "986" (Brazilian Real)
+
+        - `countryCode`: "BR"
+
+        - `additionalDataFieldTemplate.referenceLabel`: "***"
+
+
+        The endpoint will return validation errors for any field that doesn't
+        meet the requirements.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                DPP:
-                  type: string
-                  description: Optional payment date-time for calculation
-                codMun:
-                  type: string
-                  description: Optional municipality code
-                paymentValue:
-                  type: integer
-                  description: Payment value to validate
-                taxID:
-                  type: string
-                  description: Optional payer taxID when ensureSameTaxID is enabled
+              $ref: '#/components/schemas/EMVRequest'
+            examples:
+              basic_example:
+                summary: Basic EMV generation
+                value:
+                  merchantName: Test Merchant
+                  merchantCity: Sao Paulo
+                  merchantAccountInformationPix:
+                    url: https://example.com/pix
+              with_additional_fields:
+                summary: EMV generation with additional fields
+                value:
+                  merchantName: Test Merchant
+                  merchantCity: Sao Paulo
+                  merchantAccountInformationPix:
+                    gui: br.gov.bcb.pix
+                    url: https://example.com/pix
+                    additionalInformation: Payment for services
+              minimal_example:
+                summary: Minimal required fields only
+                value:
+                  merchantName: Merchant
+                  merchantCity: Sao Paulo
+                  merchantAccountInformationPix:
+                    url: https://merchant.com/pix/payment
       responses:
-        '204':
-          description: Payment allowed (no content)
+        '201':
+          description: EMV QR Code generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EMVResponse'
+              examples:
+                success_response:
+                  summary: Successful EMV generation
+                  value:
+                    emv: >-
+                      00020101021226450014br.gov.bcb.pix2523https://example.com/pix5204000053039865802BR5913Test
+                      Merchant6009Sao Paulo62070503***6304E69E
+                success_with_additional_info:
+                  summary: EMV generation with additional information
+                  value:
+                    emv: >-
+                      00020101021226450014br.gov.bcb.pix2523https://example.com/pix5204000053039865802BR5913Test
+                      Merchant6009Sao Paulo62070503***6304E69E
         '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missing_merchant_name:
+                  summary: Missing merchant name
+                  value:
+                    error:
+                      issues:
+                        - code: invalid_type
+                          expected: string
+                          received: undefined
+                          path:
+                            - merchantName
+                          message: merchantName is required
+                      name: ZodError
+                      message: Validation error
+                missing_merchant_city:
+                  summary: Missing merchant city
+                  value:
+                    error:
+                      issues:
+                        - code: invalid_type
+                          expected: string
+                          received: undefined
+                          path:
+                            - merchantCity
+                          message: merchantCity is required
+                      name: ZodError
+                      message: Validation error
+                missing_pix_info:
+                  summary: Missing merchant account information
+                  value:
+                    error:
+                      issues:
+                        - code: invalid_type
+                          expected: object
+                          received: undefined
+                          path:
+                            - merchantAccountInformationPix
+                          message: Required
+                      name: ZodError
+                      message: Validation error
+                diacritics_in_merchant_name:
+                  summary: Diacritics in merchant name
+                  value:
+                    error:
+                      issues:
+                        - code: custom
+                          path:
+                            - merchantName
+                          message: String must not contain diacritics
+                          validation: noDiacritics
+                      name: ZodError
+                      message: Validation error
+                diacritics_in_merchant_city:
+                  summary: Diacritics in merchant city
+                  value:
+                    error:
+                      issues:
+                        - code: custom
+                          path:
+                            - merchantCity
+                          message: String must not contain diacritics
+                          validation: noDiacritics
+                      name: ZodError
+                      message: Validation error
+                merchant_name_too_long:
+                  summary: Merchant name too long
+                  value:
+                    error:
+                      issues:
+                        - code: too_big
+                          maximum: 25
+                          type: string
+                          inclusive: true
+                          path:
+                            - merchantName
+                          message: String must contain at most 25 character(s)
+                      name: ZodError
+                      message: Validation error
+                merchant_city_too_long:
+                  summary: Merchant city too long
+                  value:
+                    error:
+                      issues:
+                        - code: too_big
+                          maximum: 15
+                          type: string
+                          inclusive: true
+                          path:
+                            - merchantCity
+                          message: String must contain at most 15 character(s)
+                      name: ZodError
+                      message: Validation error
         '401':
           description: Unauthorized - invalid AppID
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse1'
-        '404':
-          description: Pix charge not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
       x-codeSamples:
         - lang: Node + Native
-          source: >-
+          source: |-
             const http = require('https');
-
 
             const options = {
               method: 'POST',
               hostname: '',
               port: null,
-              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow',
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/',
               headers: {
                 'content-type': 'application/json'
               }
             };
-
 
             const req = http.request(options, function (res) {
               const chunks = [];
@@ -2325,17 +2417,37 @@ paths:
               });
             });
 
-
-            req.write(JSON.stringify({DPP: 'string', codMun: 'string',
-            paymentValue: 0, taxID: 'string'}));
-
+            req.write(JSON.stringify({
+              merchantName: 'Test Merchant',
+              merchantCity: 'Sao Paulo',
+              merchantAccountInformationPix: {
+                gui: 'br.gov.bcb.pix',
+                url: 'https://example.com/pix',
+                additionalInformation: 'Payment for services',
+                fss: 'string',
+                pixKey: 'string'
+              },
+              payloadFormatIndicator: '01',
+              pointOfInitiationMethod: '12',
+              merchantCategoryCode: '0000',
+              transactionCurrency: '986',
+              countryCode: 'BR',
+              additionalDataFieldTemplate: {referenceLabel: '***'},
+              unreservedTemplates: {
+                gui: 'string',
+                url: 'http://example.com',
+                additionalInformation: 'string',
+                fss: 'string',
+                pixKey: 'string'
+              }
+            }));
             req.end();
         - lang: Shell + Curl
           source: |-
             curl --request POST \
-              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow \
+              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/ \
               --header 'content-type: application/json' \
-              --data '{"DPP":"string","codMun":"string","paymentValue":0,"taxID":"string"}'
+              --data '{"merchantName":"Test Merchant","merchantCity":"Sao Paulo","merchantAccountInformationPix":{"gui":"br.gov.bcb.pix","url":"https://example.com/pix","additionalInformation":"Payment for services","fss":"string","pixKey":"string"},"payloadFormatIndicator":"01","pointOfInitiationMethod":"12","merchantCategoryCode":"0000","transactionCurrency":"986","countryCode":"BR","additionalDataFieldTemplate":{"referenceLabel":"***"},"unreservedTemplates":{"gui":"string","url":"http://example.com","additionalInformation":"string","fss":"string","pixKey":"string"}}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -2343,7 +2455,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow",
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -2351,10 +2463,30 @@ paths:
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => "POST",
               CURLOPT_POSTFIELDS => json_encode([
-                'DPP' => 'string',
-                'codMun' => 'string',
-                'paymentValue' => 0,
-                'taxID' => 'string'
+                'merchantName' => 'Test Merchant',
+                'merchantCity' => 'Sao Paulo',
+                'merchantAccountInformationPix' => [
+                    'gui' => 'br.gov.bcb.pix',
+                    'url' => 'https://example.com/pix',
+                    'additionalInformation' => 'Payment for services',
+                    'fss' => 'string',
+                    'pixKey' => 'string'
+                ],
+                'payloadFormatIndicator' => '01',
+                'pointOfInitiationMethod' => '12',
+                'merchantCategoryCode' => '0000',
+                'transactionCurrency' => '986',
+                'countryCode' => 'BR',
+                'additionalDataFieldTemplate' => [
+                    'referenceLabel' => '***'
+                ],
+                'unreservedTemplates' => [
+                    'gui' => 'string',
+                    'url' => 'http://example.com',
+                    'additionalInformation' => 'string',
+                    'fss' => 'string',
+                    'pixKey' => 'string'
+                ]
               ]),
               CURLOPT_HTTPHEADER => [
                 "content-type: application/json"
@@ -2379,15 +2511,18 @@ paths:
             conn = http.client.HTTPSConnection("")
 
 
-            payload =
-            "{\"DPP\":\"string\",\"codMun\":\"string\",\"paymentValue\":0,\"taxID\":\"string\"}"
+            payload = "{\"merchantName\":\"Test
+            Merchant\",\"merchantCity\":\"Sao
+            Paulo\",\"merchantAccountInformationPix\":{\"gui\":\"br.gov.bcb.pix\",\"url\":\"https://example.com/pix\",\"additionalInformation\":\"Payment
+            for
+            services\",\"fss\":\"string\",\"pixKey\":\"string\"},\"payloadFormatIndicator\":\"01\",\"pointOfInitiationMethod\":\"12\",\"merchantCategoryCode\":\"0000\",\"transactionCurrency\":\"986\",\"countryCode\":\"BR\",\"additionalDataFieldTemplate\":{\"referenceLabel\":\"***\"},\"unreservedTemplates\":{\"gui\":\"string\",\"url\":\"http://example.com\",\"additionalInformation\":\"string\",\"fss\":\"string\",\"pixKey\":\"string\"}}"
 
 
             headers = { 'content-type': "application/json" }
 
 
             conn.request("POST",
-            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow",
+            "%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/",
             payload, headers)
 
 
@@ -2398,7 +2533,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow\"\n\n\tpayload := strings.NewReader(\"{\\\"DPP\\\":\\\"string\\\",\\\"codMun\\\":\\\"string\\\",\\\"paymentValue\\\":0,\\\"taxID\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/\"\n\n\tpayload := strings.NewReader(\"{\\\"merchantName\\\":\\\"Test Merchant\\\",\\\"merchantCity\\\":\\\"Sao Paulo\\\",\\\"merchantAccountInformationPix\\\":{\\\"gui\\\":\\\"br.gov.bcb.pix\\\",\\\"url\\\":\\\"https://example.com/pix\\\",\\\"additionalInformation\\\":\\\"Payment for services\\\",\\\"fss\\\":\\\"string\\\",\\\"pixKey\\\":\\\"string\\\"},\\\"payloadFormatIndicator\\\":\\\"01\\\",\\\"pointOfInitiationMethod\\\":\\\"12\\\",\\\"merchantCategoryCode\\\":\\\"0000\\\",\\\"transactionCurrency\\\":\\\"986\\\",\\\"countryCode\\\":\\\"BR\\\",\\\"additionalDataFieldTemplate\\\":{\\\"referenceLabel\\\":\\\"***\\\"},\\\"unreservedTemplates\\\":{\\\"gui\\\":\\\"string\\\",\\\"url\\\":\\\"http://example.com\\\",\\\"additionalInformation\\\":\\\"string\\\",\\\"fss\\\":\\\"string\\\",\\\"pixKey\\\":\\\"string\\\"}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -2407,10 +2542,13 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"DPP\":\"string\",\"codMun\":\"string\",\"paymentValue\":0,\"taxID\":\"string\"}");
+            "{\"merchantName\":\"Test Merchant\",\"merchantCity\":\"Sao
+            Paulo\",\"merchantAccountInformationPix\":{\"gui\":\"br.gov.bcb.pix\",\"url\":\"https://example.com/pix\",\"additionalInformation\":\"Payment
+            for
+            services\",\"fss\":\"string\",\"pixKey\":\"string\"},\"payloadFormatIndicator\":\"01\",\"pointOfInitiationMethod\":\"12\",\"merchantCategoryCode\":\"0000\",\"transactionCurrency\":\"986\",\"countryCode\":\"BR\",\"additionalDataFieldTemplate\":{\"referenceLabel\":\"***\"},\"unreservedTemplates\":{\"gui\":\"string\",\"url\":\"http://example.com\",\"additionalInformation\":\"string\",\"fss\":\"string\",\"pixKey\":\"string\"}}");
 
             Request request = new Request.Builder()
-              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow")
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/")
               .post(body)
               .addHeader("content-type", "application/json")
               .build();
@@ -2424,7 +2562,7 @@ paths:
 
 
             url =
-            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/charge/%7Btxid%7D/allow")
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/pix-charge/v1/emv/")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -2436,165 +2574,474 @@ paths:
 
             request["content-type"] = 'application/json'
 
-            request.body =
-            "{\"DPP\":\"string\",\"codMun\":\"string\",\"paymentValue\":0,\"taxID\":\"string\"}"
+            request.body = "{\"merchantName\":\"Test
+            Merchant\",\"merchantCity\":\"Sao
+            Paulo\",\"merchantAccountInformationPix\":{\"gui\":\"br.gov.bcb.pix\",\"url\":\"https://example.com/pix\",\"additionalInformation\":\"Payment
+            for
+            services\",\"fss\":\"string\",\"pixKey\":\"string\"},\"payloadFormatIndicator\":\"01\",\"pointOfInitiationMethod\":\"12\",\"merchantCategoryCode\":\"0000\",\"transactionCurrency\":\"986\",\"countryCode\":\"BR\",\"additionalDataFieldTemplate\":{\"referenceLabel\":\"***\"},\"unreservedTemplates\":{\"gui\":\"string\",\"url\":\"http://example.com\",\"additionalInformation\":\"string\",\"fss\":\"string\",\"pixKey\":\"string\"}}"
 
 
             response = http.request(request)
 
             puts response.read_body
+  openapi:
+    '0': '3'
+    '1': .
+    '2': '1'
+    '3': .
+    '4': '0'
+  info:
+    title: Woovi - Indireto
+    description: Documentação infraestrutura pix indireto.
+    version: 1.0.0
+  servers:
+    url: https://<name>.indireto.woovi-indireto.dev
+    description: Staging
+  /qr/v2/{locType}/{pixUrlAccessToken}:
+    get:
+      tags:
+        - pixLocation
+      summary: Get Pix location QR code information
+      description: >
+        Retrieve Pix location information and generate QR code data based on the
+        location type and access token.
+
+        This endpoint returns JOSE (JSON Object Signing and Encryption)
+        formatted data for QR code generation.
+      parameters:
+        - name: locType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - cob
+              - cobv
+              - rec
+          description: Type of Pix location
+        - name: pixUrlAccessToken
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Access token for the Pix location
+        - name: codMun
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Municipality code for location-specific data
+        - name: DPP
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Additional location parameter
+      responses:
+        '200':
+          description: Pix location QR code data retrieved successfully
+          content:
+            application/jose:
+              schema:
+                type: string
+                description: JOSE formatted data for QR code generation
+        '404':
+          description: Pix location or charge not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: '',
+              port: null,
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE',
+              headers: {}
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url 'https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("")
+
+
+            conn.request("GET",
+            "%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+              .get()
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Get.new(url)
+
+
+            response = http.request(request)
+
+            puts response.read_body
+  /qr/v2/{locType}/{pixUrlAccessToken}/payload:
+    get:
+      tags:
+        - pixLocation
+      summary: Get Pix location payload
+      description: >
+        Retrieve the processed Pix location payload translated to Portuguese and
+        filtered
+
+        according to the location type. This endpoint returns the same payload
+        that is
+
+        used to sign the JOSE response, but in JSON format for internal
+        integrations.
+      parameters:
+        - name: locType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - cob
+              - cobv
+              - rec
+          description: Type of Pix location
+        - name: pixUrlAccessToken
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Access token for the Pix location
+        - name: codMun
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Municipality code for location-specific data
+        - name: DPP
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Additional location parameter
+      responses:
+        '200':
+          description: Pix location payload retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Pix location payload translated to Portuguese
+        '404':
+          description: Pix location or charge not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: '',
+              port: null,
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D/payload?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE',
+              headers: {}
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url 'https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D/payload?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D/payload?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("")
+
+
+            conn.request("GET",
+            "%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D/payload?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D/payload?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D/payload?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+              .get()
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/qr/v2/%7BlocType%7D/%7BpixUrlAccessToken%7D/payload?codMun=SOME_STRING_VALUE&DPP=SOME_STRING_VALUE")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Get.new(url)
+
+
+            response = http.request(request)
+
+            puts response.read_body
+  /status:
+    get:
+      tags:
+        - pixLocation
+      summary: Get API status
+      description: Retrieve the health status of the Pix Location service.
+      responses:
+        '200':
+          description: API status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          description: Bad request
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: '',
+              port: null,
+              path: '%3Cname%3E.indireto.woovi-indireto.dev/status',
+              headers: {}
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url https:///%3Cname%3E.indireto.woovi-indireto.dev/status
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https:///%3Cname%3E.indireto.woovi-indireto.dev/status",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: |-
+            import http.client
+
+            conn = http.client.HTTPSConnection("")
+
+            conn.request("GET", "%3Cname%3E.indireto.woovi-indireto.dev/status")
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https:///%3Cname%3E.indireto.woovi-indireto.dev/status\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https:///%3Cname%3E.indireto.woovi-indireto.dev/status")
+              .get()
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: |-
+            require 'uri'
+            require 'net/http'
+
+            url = URI("https:///%3Cname%3E.indireto.woovi-indireto.dev/status")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+
+            request = Net::HTTP::Get.new(url)
+
+            response = http.request(request)
+            puts response.read_body
 components:
   schemas:
-    PixLocation:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the Pix location
-        type:
-          type: string
-          enum:
-            - cob
-            - cobv
-            - rec
-          description: >-
-            Type of Pix location (cob = charge, cobv = charge with value, rec =
-            recommendation)
-        location:
-          type: string
-          description: Full URL for the Pix location QR code
-        pixUrlAccessToken:
-          type: string
-          description: Unique access token for the Pix location URL
-        ispb:
-          type: string
-          description: ISPB (Instituto de Serviços de Pagamento Brasileiro) identifier
-        createdAt:
-          type: string
-          format: date-time
-          description: Creation timestamp
-        updatedAt:
-          type: string
-          format: date-time
-          description: Last update timestamp
-    PixLocationCreate:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - cob
-            - cobv
-            - rec
-          description: Type of Pix location to create
-    PixLocationResponse:
-      type: object
-      properties:
-        location:
-          type: object
-          properties:
-            id:
-              type: string
-              description: Unique identifier for the Pix location
-            type:
-              type: string
-              enum:
-                - cob
-                - cobv
-                - rec
-              description: Type of Pix location
-            location:
-              type: string
-              description: Full URL for the Pix location QR code
-            pixUrlAccessToken:
-              type: string
-              description: Unique access token for the Pix location URL
-    PixLocationGetParams:
-      type: object
-      properties:
-        locType:
-          type: string
-          enum:
-            - cob
-            - cobv
-            - rec
-          description: Type of Pix location
-        pixUrlAccessToken:
-          type: string
-          description: Access token for the Pix location
-    PixLocationQueryParams:
-      type: object
-      properties:
-        codMun:
-          type: string
-          description: Municipality code for location-specific data
-        DPP:
-          type: string
-          description: Additional location parameter
-    StatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: OK
-          description: Service status
-        timestamp:
-          type: string
-          format: date-time
-          description: Current timestamp
-        version:
-          type: string
-          example: 1.0.0
-          description: API version
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error message
-          example: A cobrança em questão não foi encontrada para a location requisitada
-    DictVsyncListResponse:
-      type: object
-      required:
-        - success
-        - vsyncs
-      properties:
-        success:
-          type: string
-          description: Human-readable message describing the outcome.
-          example: Vsync information fetched successfully
-        vsyncs:
-          type: array
-          description: Collection of VSYNC entries and their latest validation status.
-          items:
-            $ref: '#/components/schemas/DictVsyncItem'
-    DictVsyncItem:
-      type: object
-      required:
-        - vsync
-        - pixKeyType
-        - validated
-      properties:
-        vsync:
-          type: string
-          description: 64-hex VSYNC identifier used as the participant sync verifier.
-          example: 145879f96d391979266642b0191c9ac4faecb9255e5761f837303e2ec44f8d50
-        pixKeyType:
-          type: string
-          description: PIX key type associated with the VSYNC entry.
-          enum:
-            - PHONE
-            - EMAIL
-            - CPF
-            - CNPJ
-            - RANDOM
-          example: PHONE
-        validated:
-          type: boolean
-          description: Indicates if the VSYNC passed the SPI verification check.
-          example: false
     ChargeType:
       type: string
       description: Charge type
@@ -2759,8 +3206,8 @@ components:
         taxIDType:
           type: string
           enum:
-            - 'BR:CNPJ'
-            - 'BR:CPF'
+            - BR:CNPJ
+            - BR:CPF
     Receiver:
       type: object
       properties:
@@ -2773,8 +3220,8 @@ components:
         taxIDType:
           type: string
           enum:
-            - 'BR:CNPJ'
-            - 'BR:CPF'
+            - BR:CNPJ
+            - BR:CPF
         tradeName:
           type: string
         email:
@@ -2916,7 +3363,7 @@ components:
         allowed:
           type: boolean
           description: Whether payment is allowed
-    ErrorResponse1:
+    ErrorResponse:
       type: object
       properties:
         error:
@@ -3005,7 +3452,7 @@ components:
               description: >-
                 URL for the PIX location/endpoint where payment requests are
                 processed
-              example: 'https://example.com/pix'
+              example: https://example.com/pix
             additionalInformation:
               type: string
               description: Additional information for the PIX payment
@@ -3078,3 +3525,37 @@ components:
           example: >-
             00020101021226450014br.gov.bcb.pix2523https://example.com/pix5204000053039865802BR5913Test
             Merchant6009Sao Paulo62070503***6304E69E
+    ChargeValidationIssue:
+      type: object
+      properties:
+        code:
+          type: string
+        expected:
+          type: string
+        received:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+        message:
+          type: string
+        validation:
+          type: string
+    PixLocationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        location:
+          type: string
+          format: uri
+        pixUrlAccessToken:
+          type: string
+      additionalProperties: true
+tags:
+  - name: pixCharge
+    description: |
+      Endpoint to manage Pix Charges
