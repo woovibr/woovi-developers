@@ -20,7 +20,7 @@ Dessa forma, ao realizar uma cobrança com valor superior ao mínimo ela poderá
 
 ## Atualizar o valor da assinatura
 
-Para atualizar o valor da assinatura você pode utilizar o endpoint `/api/v1/subscriptions/{id}/value`
+Para atualizar o valor da assinatura você pode utilizar o endpoint PUT `/api/v1/subscriptions/{id}/value`
 
 ```json
 {
