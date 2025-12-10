@@ -11041,6 +11041,174 @@
         ]
       }
     },
+    "/api/v1/webhook/events": {
+      "get": {
+        "tags": [
+          "webhook"
+        ],
+        "summary": "Get a list of webhook events",
+        "description": "Returns a complete list of all available webhook event types in the OpenPix platform. Use this endpoint to programmatically discover which triggers (events) can be subscribed to when creating webhooks. Each event represents a specific action in the system (such as a Pix charge creation or a transaction received) that, when occurs, can send a notification to your configured webhook URL.",
+        "responses": {
+          "200": {
+            "description": "A list of all available webhook events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "The event name/identifier"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "events": [
+                    {
+                      "name": "OPENPIX:CHARGE_CREATED"
+                    },
+                    {
+                      "name": "OPENPIX:CHARGE_COMPLETED"
+                    },
+                    {
+                      "name": "OPENPIX:CHARGE_EXPIRED"
+                    },
+                    {
+                      "name": "OPENPIX:CHARGE_COMPLETED_NOT_SAME_CUSTOMER_PAYER"
+                    },
+                    {
+                      "name": "OPENPIX:TRANSACTION_RECEIVED"
+                    },
+                    {
+                      "name": "OPENPIX:TRANSACTION_REFUND_RECEIVED"
+                    },
+                    {
+                      "name": "PIX_TRANSACTION_REFUND_RECEIVED_CONFIRMED"
+                    },
+                    {
+                      "name": "PIX_TRANSACTION_REFUND_SENT_CONFIRMED"
+                    },
+                    {
+                      "name": "PIX_TRANSACTION_REFUND_RECEIVED_REJECTED"
+                    },
+                    {
+                      "name": "PIX_TRANSACTION_REFUND_SENT_REJECTED"
+                    },
+                    {
+                      "name": "OPENPIX:MOVEMENT_CONFIRMED"
+                    },
+                    {
+                      "name": "OPENPIX:MOVEMENT_FAILED"
+                    },
+                    {
+                      "name": "OPENPIX:MOVEMENT_REMOVED"
+                    },
+                    {
+                      "name": "OPENPIX:DISPUTE_CREATED"
+                    },
+                    {
+                      "name": "OPENPIX:DISPUTE_ACCEPTED"
+                    },
+                    {
+                      "name": "OPENPIX:DISPUTE_REJECTED"
+                    },
+                    {
+                      "name": "OPENPIX:DISPUTE_CANCELED"
+                    },
+                    {
+                      "name": "ACCOUNT_REGISTER_APPROVED"
+                    },
+                    {
+                      "name": "ACCOUNT_REGISTER_REJECTED"
+                    },
+                    {
+                      "name": "ACCOUNT_REGISTER_PENDING"
+                    },
+                    {
+                      "name": "PIX_AUTOMATIC_APPROVED"
+                    },
+                    {
+                      "name": "PIX_AUTOMATIC_REJECTED"
+                    },
+                    {
+                      "name": "PIX_AUTOMATIC_COBR_CREATED"
+                    },
+                    {
+                      "name": "PIX_AUTOMATIC_COBR_APPROVED"
+                    },
+                    {
+                      "name": "PIX_AUTOMATIC_COBR_REJECTED"
+                    },
+                    {
+                      "name": "PIX_AUTOMATIC_COBR_TRY_REJECTED"
+                    },
+                    {
+                      "name": "PIX_AUTOMATIC_COBR_TRY_REQUESTED"
+                    },
+                    {
+                      "name": "PIX_AUTOMATIC_COBR_COMPLETED"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/webhook/events',\n  headers: {\n    Authorization: 'REPLACE_KEY_VALUE'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/webhook/events \\\n  --header 'Authorization: REPLACE_KEY_VALUE'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/webhook/events\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: REPLACE_KEY_VALUE\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"REPLACE_KEY_VALUE\" }\n\nconn.request(\"GET\", \"/api/v1/webhook/events\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/webhook/events\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/webhook/events\")\n  .get()\n  .addHeader(\"Authorization\", \"REPLACE_KEY_VALUE\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/webhook/events\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'REPLACE_KEY_VALUE'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
     "/api/v1/webhook": {
       "get": {
         "parameters": [
