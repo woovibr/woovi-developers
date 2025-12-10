@@ -12,6 +12,11 @@ Por exemplo, quando uma cobrança é paga, a Woovi envia uma notificação para 
 
 Abaixo, você pode ver uma lista de todos os eventos que a Woovi envia para sua aplicação.
 
+:::tip Obtenha a lista de eventos via API
+Você também pode obter a lista completa de eventos disponíveis programaticamente através da nossa API. 
+Consulte o endpoint [GET /api/v1/webhook/events](https://developers.woovi.com/api#tag/webhook/paths/~1api~1v1~1webhook~1events/get) na referência da API.
+:::
+
 ## Eventos de cobrança
 
 Os eventos de cobrança são enviados quando uma cobrança é paga.
@@ -125,9 +130,15 @@ Esse evento é enviado quando uma disputa é cancelada
 ## Eventos de Registro de contas 
 
 ### ACCOUNT_REGISTER_APPROVED
-Esse evento é enviado quando um registro de conta é aprovado
+Esse evento é enviado quando um registro de subconta é aprovado no compliance.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-account-register-approved-payload)
+
+### ACCOUNT_REGISTER_REJECTED
+Esse evento é enviado quando um registro de subconta é reprovado no compliance.
+
+### ACCOUNT_REGISTER_PENDING
+Esse evento é enviado quando um registro de subconta está em análise.
 
 ## Eventos de Pix Automatico
 
