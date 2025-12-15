@@ -2655,6 +2655,26 @@
           }
         },
         "additionalProperties": true
+      },
+      "StatusResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "OK",
+            "description": "Service status"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Current timestamp"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0",
+            "description": "API version"
+          }
+        }
       }
     }
   },
