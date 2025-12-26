@@ -9,17 +9,17 @@ tags:
 
 Você pode criar uma disputa de forma fácil atráves do link: https://woovi.com/disputa.
 
-E então preencher os dados sobre a transação com suspeita de fraude fraudulenta
+E então preencher os dados sobre a transação com suspeita de fraude.
 
 ![dispute-form](./__assets__/dispute-form.png)
 
-Após isso voce será redirecionado para uma página, onde será possível ver o status da disputa, esse link também será enviado para o email do pagador.
+Após isso voce será redirecionado para uma página onde será possível ver o status da disputa, esse link também será enviado para o email do pagador.
 
 ![dispute-page](./__assets__/dispute-page.png)
 
 ### Análise da disputa
 
-E entao faremos uma análise da disputa, durante esse tempo o saldo relacionado a transação será bloqueado no saldo da empresa. Isso garante que o dinheiro possa ser devolvido, caso a disputa seja aceita.
+E então faremos uma análise da disputa, durante esse tempo o saldo relacionado a transação será bloqueado no saldo da empresa. Isso garante que o dinheiro possa ser devolvido, caso a disputa seja aceita.
 
 ### Envio de evidências e provas
 
