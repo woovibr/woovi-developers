@@ -56,7 +56,7 @@ Pronto! O aplicativo foi desinstalado com sucesso. Agora podemos prosseguir com 
 
 Para integrar sua loja Shopify com a woovi, é necessário instalar o aplicativo woovi diretamente pela Shopify.
 
-- Acesse nosso aplicativo na Shopify: [woovi Pay](https://apps.shopify.com/woovi-pay-app-prod)
+- Acesse nosso aplicativo na Shopify: [Plugin Woovi](https://apps.shopify.com/openpix-pay-app-prod)
 
 Após acessar a página inicial, selecione a loja que deseja instalar o aplicativo:
 
