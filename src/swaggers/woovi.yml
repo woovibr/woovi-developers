@@ -32,6 +32,7 @@ paths:
 
         Notes:
         - Accounts with balance cannot be closed.
+      x-required-scope: ACCOUNT_DELETE
       parameters:
         - name: accountId
           in: path
@@ -236,6 +237,7 @@ paths:
       tags:
         - account
       summary: Get an Account
+      x-required-scope: ACCOUNT_GET
       parameters:
         - name: accountId
           in: path
@@ -398,6 +400,7 @@ paths:
       tags:
         - account
       summary: Get a list of Accounts
+      x-required-scope: ACCOUNT_GET_LIST
       responses:
         '200':
           description: A list of Accounts
@@ -546,6 +549,7 @@ paths:
       description: >-
         Duplicates the account associated with the authorization appId. Requires
         the bank account feature to be enabled.
+      x-required-scope: ACCOUNT_POST
       responses:
         '200':
           description: The created Account information
@@ -698,6 +702,7 @@ paths:
         - account register
       summary: Delete an account registration
       description: Deletes an account registration that is in PENDING status
+      x-required-scope: ACCOUNT_REGISTER_DELETE
       parameters:
         - name: id
           in: path
@@ -777,6 +782,7 @@ paths:
       description: >-
         Updates documents and representatives for an existing account
         registration in PENDING status
+      x-required-scope: ACCOUNT_REGISTER_PATCH
       parameters:
         - name: id
           in: path
@@ -1059,6 +1065,7 @@ paths:
         - account register
       summary: Get account register by Tax ID
       description: Retrieves an existing account registration by Tax ID
+      x-required-scope: ACCOUNT_REGISTER_GET
       parameters:
         - name: taxID
           in: query
@@ -1275,6 +1282,7 @@ paths:
         - account register
       summary: Register a new account
       description: Creates a new account registration with the provided details
+      x-required-scope: ACCOUNT_REGISTER_POST
       requestBody:
         required: true
         content:
@@ -1837,6 +1845,7 @@ paths:
         An additional fee may be charged depending on the minimum free
         withdrawal amount. See more about at
         https://developers.openpix.com.br/docs/FAQ/faq-virtual-account/#onde-posso-consultar-as-taxas-da-minha-conta-virtual
+      x-required-scope: ACCOUNT_WITHDRAW_POST
       parameters:
         - name: accountId
           in: path
@@ -2046,6 +2055,7 @@ paths:
       description: >-
         Deactivates an application by setting isActive to false and adding a
         removedAt timestamp
+      x-required-scope: APPLICATION_DELETE
       responses:
         '200':
           description: Application successfully deleted
@@ -2219,6 +2229,7 @@ paths:
         - application
       summary: Create a new application
       description: Creates a new application for a company
+      x-required-scope: APPLICATION_POST
       requestBody:
         description: Data to create a new application
         required: true
@@ -2462,6 +2473,7 @@ paths:
       tags:
         - cashback-fidelity
       summary: Get the exclusive cashback amount an user still has to receive by taxID.
+      x-required-scope: CASHBACK_FIDELITY_BALANCE_GET
       parameters:
         - name: taxID
           in: path
@@ -2623,6 +2635,7 @@ paths:
         Create a new cashback exclusive for the customer with a given taxID. If
         the customer already has a pending excluisve cashback, this endpoint
         will return it instead.
+      x-required-scope: CASHBACK_FIDELITY_POST
       requestBody:
         description: Customer's taxID and the cash
         required: true
@@ -2819,6 +2832,7 @@ paths:
       tags:
         - charge
       summary: Get an image of Qr Code from a Charge
+      x-required-scope: CHARGE_IMAGE_GET
       parameters:
         - in: path
           name: id
@@ -2979,6 +2993,7 @@ paths:
       tags:
         - charge
       summary: Get a base64 encoded QR Code image from a Charge
+      x-required-scope: CHARGE_BRCODE_IMAGE_GET
       parameters:
         - in: path
           name: id
@@ -3168,6 +3183,7 @@ paths:
       tags:
         - charge
       summary: Delete a charge
+      x-required-scope: CHARGE_DELETE
       parameters:
         - name: id
           in: path
@@ -3334,6 +3350,7 @@ paths:
       tags:
         - charge
       summary: Edit expiration date of a charge
+      x-required-scope: CHARGE_PATCH
       parameters:
         - name: id
           in: path
@@ -3578,6 +3595,7 @@ paths:
       tags:
         - charge
       summary: Get one charge
+      x-required-scope: CHARGE_GET
       parameters:
         - name: id
           in: path
@@ -3783,6 +3801,7 @@ paths:
       tags:
         - charge
       summary: Get a list of charges
+      x-required-scope: CHARGE_GET_LIST
       parameters:
         - in: query
           name: start
@@ -4044,6 +4063,7 @@ paths:
       tags:
         - charge
       summary: Create a new Charge
+      x-required-scope: CHARGE_POST
       parameters:
         - in: query
           name: return_existing
@@ -4497,6 +4517,7 @@ paths:
         - charge refund
       summary: Get all refunds of a charge
       description: Endpoint to get all refunds of a charge
+      x-required-scope: CHARGE_REFUND_GET_LIST
       parameters:
         - name: id
           in: path
@@ -4673,6 +4694,7 @@ paths:
         - charge refund
       summary: Create a new refund for a charge
       description: Endpoint to create a new refund for a charge
+      x-required-scope: CHARGE_REFUND_POST
       parameters:
         - name: id
           in: path
@@ -4888,6 +4910,7 @@ paths:
       tags:
         - company
       summary: Get a Company
+      x-required-scope: COMPANY_GET
       responses:
         '200':
           description: The Company retrieved from the application ID
@@ -5032,6 +5055,7 @@ paths:
       tags:
         - customer
       summary: Get one customer
+      x-required-scope: CUSTOMER_GET
       parameters:
         - name: id
           in: path
@@ -5200,6 +5224,7 @@ paths:
       tags:
         - customer
       summary: Get a list of customers
+      x-required-scope: CUSTOMER_GET_LIST
       responses:
         '200':
           description: A list of customers
@@ -5373,6 +5398,7 @@ paths:
         - customer
       summary: Create a new Customer
       description: Endpoint to create a new Customer
+      x-required-scope: CUSTOMER_POST
       requestBody:
         description: Data to create a new customer
         required: true
@@ -5613,6 +5639,7 @@ paths:
       tags:
         - customer
       summary: Update a Customer
+      x-required-scope: CUSTOMER_PATCH
       parameters:
         - name: correlationID
           in: path
@@ -5863,6 +5890,7 @@ paths:
       tags:
         - decode
       summary: Parse EMV (PIX) QR code and optionally resolve COB/REC locations
+      x-required-scope: DECODE_EMV_POST
       requestBody:
         required: true
         content:
@@ -6329,6 +6357,7 @@ paths:
         Upload evidence files for dispute/med. \nOBS para obter esse o id da
         disputa, veja esse artigo
         https://developers.woovi.com/docs/disputa/how-add-new-evidence-in-dispute#1-obter-o-id-da-disputa
+      x-required-scope: DISPUTE_POST
       requestBody:
         required: true
         content:
@@ -6551,6 +6580,7 @@ paths:
       tags:
         - dispute
       summary: Get one dispute
+      x-required-scope: DISPUTE_GET
       parameters:
         - in: path
           name: id
@@ -6767,6 +6797,7 @@ paths:
       tags:
         - dispute
       summary: Get a list of disputes
+      x-required-scope: DISPUTE_GET_LIST
       parameters:
         - in: query
           name: start
@@ -8369,6 +8400,7 @@ paths:
         can use
 
         it too.
+      x-required-scope: PARTNER_APPLICATION_POST
       requestBody:
         description: The request body to create a pre registration.
         required: true
@@ -8607,6 +8639,7 @@ paths:
       tags:
         - partner (request access)
       summary: Get an specific preregistration via taxID param.
+      x-required-scope: PARTNER_COMPANY_GET
       parameters:
         - name: taxID
           in: path
@@ -8774,6 +8807,7 @@ paths:
       tags:
         - partner (request access)
       summary: Get every preregistration that is managed by you.
+      x-required-scope: PARTNER_COMPANY_GET_LIST
       responses:
         '200':
           description: A list with preregistrations.
@@ -8948,6 +8982,7 @@ paths:
         your
 
         company as a partner.
+      x-required-scope: PARTNER_COMPANY_POST
       requestBody:
         description: The request body to create a pre registration.
         required: true
@@ -9185,6 +9220,7 @@ paths:
       tags:
         - payment (request access)
       summary: Approve a Payment Request
+      x-required-scope: PAYMENT_APPROVE_POST
       description: Endpoint to approve a payment
       requestBody:
         description: Data to approve a payment request
@@ -9372,6 +9408,7 @@ paths:
       tags:
         - payment (request access)
       summary: Get one Payment
+      x-required-scope: PAYMENT_GET
       parameters:
         - name: id
           in: path
@@ -9588,6 +9625,7 @@ paths:
       tags:
         - payment (request access)
       summary: Get a list of payments
+      x-required-scope: PAYMENT_GET_LIST
       responses:
         '200':
           description: A list of payments
@@ -9815,6 +9853,7 @@ paths:
       tags:
         - payment (request access)
       summary: Create a Payment Request
+      x-required-scope: PAYMENT_POST
       description: Endpoint to request a payment
       requestBody:
         description: Data to create a payment request
@@ -11547,6 +11586,7 @@ paths:
       tags:
         - transactions
       summary: Get a Transaction
+      x-required-scope: TRANSACTION_GET
       parameters:
         - name: id
           in: path
@@ -11676,6 +11716,7 @@ paths:
       tags:
         - transactions
       summary: Get a list of transactions
+      x-required-scope: TRANSACTION_GET_LIST
       responses:
         '200':
           description: A list of transactions
@@ -11894,6 +11935,7 @@ paths:
       tags:
         - refund
       summary: Get one refund
+      x-required-scope: REFUND_GET
       parameters:
         - name: id
           in: path
@@ -12060,6 +12102,7 @@ paths:
       tags:
         - refund
       summary: Get a list of refunds
+      x-required-scope: REFUND_GET_LIST
       responses:
         '200':
           description: A list of refunds
@@ -12231,6 +12274,7 @@ paths:
       tags:
         - refund
       summary: Create a new refund
+      x-required-scope: REFUND_POST
       description: Endpoint to create a new refund for a customer
       requestBody:
         description: Data to create a new refund
@@ -12431,6 +12475,7 @@ paths:
       tags:
         - psp
       summary: Get a list of PSPs (Payment Service Providers)
+      x-required-scope: PSP_GET_LIST
       parameters:
         - in: query
           name: ispb
@@ -12831,6 +12876,7 @@ paths:
       tags:
         - statement
       summary: Get statement by company
+      x-required-scope: STATEMENT_GET
       description: Retrieves the statement/ledger entries for a company's bank account
       parameters:
         - in: query
@@ -13057,6 +13103,7 @@ paths:
       tags:
         - subaccount
       summary: Withdraw from a Sub Account
+      x-required-scope: SUBACCOUNT_WITHDRAW_POST
       description: >-
         Withdraw from a Sub Account and return the withdrawal transaction
         information
@@ -13259,6 +13306,7 @@ paths:
       tags:
         - subaccount
       summary: Delete a Sub Account
+      x-required-scope: SUBACCOUNT_DELETE
       description: Deletes a Sub Account if it has no remaining balance
       parameters:
         - name: id
@@ -13440,6 +13488,7 @@ paths:
       tags:
         - subaccount
       summary: Get subaccount details
+      x-required-scope: SUBACCOUNT_GET
       parameters:
         - name: id
           in: path
@@ -13602,6 +13651,7 @@ paths:
       tags:
         - subaccount
       summary: Get a list of subaccounts
+      x-required-scope: SUBACCOUNT_GET_LIST
       responses:
         '200':
           description: A list of subaccounts
@@ -13777,6 +13827,7 @@ paths:
       tags:
         - subaccount
       summary: Create a subaccount
+      x-required-scope: SUBACCOUNT_POST
       requestBody:
         description: Data to create a new subAccount or retrieve existing one
         required: true
@@ -13947,6 +13998,7 @@ paths:
       tags:
         - subaccount
       summary: Debit from a Sub Account and send to the main account
+      x-required-scope: SUBACCOUNT_DEBIT_POST
       description: Transfers the amount from the subaccount to the main account.
       parameters:
         - name: id
@@ -14189,6 +14241,7 @@ paths:
       tags:
         - subaccount
       summary: Transfer between subaccounts
+      x-required-scope: SUBACCOUNT_TRANSFER_POST
       description: Transfer between subaccounts
       requestBody:
         description: Data to make a new transfer between subaccounts
@@ -14397,6 +14450,7 @@ paths:
       tags:
         - subscription
       summary: Cancel an Subscription
+      x-required-scope: SUBSCRIPTION_CANCEL_PUT
       parameters:
         - name: id
           in: path
@@ -14548,6 +14602,7 @@ paths:
       tags:
         - subscription
       summary: Get one subscription
+      x-required-scope: SUBSCRIPTION_GET
       parameters:
         - name: id
           in: path
@@ -14718,6 +14773,7 @@ paths:
       tags:
         - subscription
       summary: Get a list of subscriptions
+      x-required-scope: SUBSCRIPTION_GET_LIST
       responses:
         '200':
           description: A list of subscriptions
@@ -14858,6 +14914,7 @@ paths:
       tags:
         - subscription
       summary: Create a new Subscription
+      x-required-scope: SUBSCRIPTION_POST
       description: Endpoint to create a new Subcription
       requestBody:
         description: Data to create a new Subscription
@@ -15001,6 +15058,7 @@ paths:
               frequency: 'WEEKLY',
               type: 'PIX_RECURRING',
               dayDue: 7,
+              installmentCount: 0,
               correlationID: 'string',
               additionalInfo: [{key: 'string', value: 'string'}],
               pixRecurringOptions: {retryPolicy: 'NON_PERMITED', journey: 'PAYMENT_ON_APPROVAL', minimumValue: 0}
@@ -15012,7 +15070,7 @@ paths:
               --url https://api.woovi.com/api/v1/subscriptions \
               --header 'Authorization: REPLACE_KEY_VALUE' \
               --header 'content-type: application/json' \
-              --data '{"customer":{"name":"string","email":"string","phone":"string","taxID":"string","address":{"zipcode":"string","street":"string","number":"string","neighborhood":"string","city":"string","state":"string","complement":"string","country":"string"}},"value":0,"name":"string","comment":"string","dayGenerateCharge":5,"frequency":"WEEKLY","type":"PIX_RECURRING","dayDue":7,"correlationID":"string","additionalInfo":[{"key":"string","value":"string"}],"pixRecurringOptions":{"retryPolicy":"NON_PERMITED","journey":"PAYMENT_ON_APPROVAL","minimumValue":0}}'
+              --data '{"customer":{"name":"string","email":"string","phone":"string","taxID":"string","address":{"zipcode":"string","street":"string","number":"string","neighborhood":"string","city":"string","state":"string","complement":"string","country":"string"}},"value":0,"name":"string","comment":"string","dayGenerateCharge":5,"frequency":"WEEKLY","type":"PIX_RECURRING","dayDue":7,"installmentCount":0,"correlationID":"string","additionalInfo":[{"key":"string","value":"string"}],"pixRecurringOptions":{"retryPolicy":"NON_PERMITED","journey":"PAYMENT_ON_APPROVAL","minimumValue":0}}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -15051,6 +15109,7 @@ paths:
                 'frequency' => 'WEEKLY',
                 'type' => 'PIX_RECURRING',
                 'dayDue' => 7,
+                'installmentCount' => 0,
                 'correlationID' => 'string',
                 'additionalInfo' => [
                     [
@@ -15089,7 +15148,7 @@ paths:
 
 
             payload =
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}"
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}"
 
 
             headers = {
@@ -15108,7 +15167,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subscriptions\"\n\n\tpayload := strings.NewReader(\"{\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"value\\\":0,\\\"name\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"dayGenerateCharge\\\":5,\\\"frequency\\\":\\\"WEEKLY\\\",\\\"type\\\":\\\"PIX_RECURRING\\\",\\\"dayDue\\\":7,\\\"correlationID\\\":\\\"string\\\",\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"pixRecurringOptions\\\":{\\\"retryPolicy\\\":\\\"NON_PERMITED\\\",\\\"journey\\\":\\\"PAYMENT_ON_APPROVAL\\\",\\\"minimumValue\\\":0}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subscriptions\"\n\n\tpayload := strings.NewReader(\"{\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"value\\\":0,\\\"name\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"dayGenerateCharge\\\":5,\\\"frequency\\\":\\\"WEEKLY\\\",\\\"type\\\":\\\"PIX_RECURRING\\\",\\\"dayDue\\\":7,\\\"installmentCount\\\":0,\\\"correlationID\\\":\\\"string\\\",\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"pixRecurringOptions\\\":{\\\"retryPolicy\\\":\\\"NON_PERMITED\\\",\\\"journey\\\":\\\"PAYMENT_ON_APPROVAL\\\",\\\"minimumValue\\\":0}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -15117,7 +15176,7 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}");
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}");
 
             Request request = new Request.Builder()
               .url("https://api.woovi.com/api/v1/subscriptions")
@@ -15149,7 +15208,7 @@ paths:
             request["content-type"] = 'application/json'
 
             request.body =
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}"
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}"
 
 
             response = http.request(request)
@@ -15162,6 +15221,7 @@ paths:
       summary: >-
         Update the value of the next installments of the subscription. It is
         only possible if pix automatic accepts dynamic value.
+      x-required-scope: SUBSCRIPTION_VALUE_PUT
       parameters:
         - name: id
           in: path
@@ -15510,6 +15570,7 @@ paths:
       tags:
         - webhook
       summary: Delete a Webhook
+      x-required-scope: WEBHOOK_DELETE
       description: Endpoint to delete a Webhook
       parameters:
         - name: id
@@ -15678,6 +15739,7 @@ paths:
       tags:
         - webhook
       summary: Get a list of webhooks
+      x-required-scope: WEBHOOK_GET_LIST
       responses:
         '200':
           description: A list of webhooks
@@ -15866,6 +15928,7 @@ paths:
       tags:
         - webhook
       summary: Create a new Webhook
+      x-required-scope: WEBHOOK_POST
       description: Endpoint to create a new Webhook
       requestBody:
         description: Data to create a new webhook
@@ -16346,6 +16409,7 @@ paths:
       tags:
         - webhook
       summary: Get a list of webhook IPs
+      x-required-scope: WEBHOOK_IPS_GET
       responses:
         '200':
           description: A list of webhook IPs
@@ -18228,6 +18292,9 @@ components:
           minimum: 3
           default: 7
           description: Days that the charge will take to expire from the generation day.
+        installmentCount:
+          type: number
+          description: number of installments (optional)
         correlationID:
           type: string
           description: Your correlation ID to keep track of this subscription
