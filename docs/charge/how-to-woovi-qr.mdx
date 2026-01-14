@@ -1,0 +1,70 @@
+---
+title: Como usar o Woovi QR por API
+description: Saiba como usar o Woovi QR para checkout físico, onde um único QR Code pode ser reutilizado para múltiplas cobranças no caixa.
+---
+
+# Como usar o Woovi QR por API
+
+## O que é o Woovi QR?
+
+O Woovi QR é uma solução pensada para o checkout físico, onde o cliente realiza o pagamento diretamente no caixa. Com essa abordagem, é necessário apenas um único QR Code para processar quantas cobranças forem necessárias.
+
+O QR Code pode ser impresso e reutilizado por todos os clientes futuros. O que muda a cada cobrança são apenas os dados associados ao pagamento, não a imagem do QR Code em si.
+
+## :rocket: Criando a primeira cobrança
+
+Para criar a primeira cobrança do Woovi QR, utilize o endpoint de criação de cobrança com o campo `fixedLocation` definido como `true`.
+
+```bash
+curl -X POST "https://api.woovi.com/api/v1/charge" \
+  -H "Authorization: {APP_ID}" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "correlationID": "...",
+  "value": 100,
+  "comment": "test",
+  "fixedLocation": true
+}'
+```
+
+## :key: Armazenando o paymentLinkID
+
+Após criar a primeira cobrança, a parte mais importante do retorno da API é o `paymentLinkID`, que deverá ser armazenado e enviado em todas as cobranças futuras para o mesmo QR Code:
+
+```json
+{
+  "charge": {
+    "correlationID": "...",
+    "value": 100,
+    "comment": "test",
+    "paymentLinkID": "a57c4739-0382-..."
+  }
+}
+```
+
+## :repeat: Futuras cobranças
+
+Para criar cobranças futuras, utilize o mesmo `paymentLinkID` da primeira cobrança, assim o QR Code será reutilizado:
+
+```bash
+curl -X POST "https://api.woovi.com/api/v1/charge" \
+  -H "Authorization: {APP_ID}" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "correlationID": "...",
+  "value": 100,
+  "comment": "test",
+  "paymentLinkID": "a57c4739-0382-...",
+  "fixedLocation": true
+}'
+```
+
+## :white_check_mark: Como funciona na prática?
+
+Com esse fluxo, todas as cobranças reutilizam o mesmo QR Code. Dessa forma, a `qrCodeImage` retornada pela API pode ser impressa uma única vez e utilizada permanentemente no caixa para todas as cobranças futuras.
+
+## :brain: Conclusão
+
+O Woovi QR simplifica o processo de checkout físico, eliminando a necessidade de gerar um novo QR Code para cada transação. Basta imprimir o QR Code uma vez e reutilizá-lo para todas as cobranças subsequentes, otimizando o fluxo de pagamento no ponto de venda.
+
+:blue_book: Consulte nossa [documentação da API de cobrança](https://developers.woovi.com/api#tag/charge/paths/~1api~1v1~1charge/post) para mais detalhes sobre todos os campos disponíveis.
