@@ -192,7 +192,7 @@ module.exports = {
             spec: './src/swaggers/bacen-dict.json',
           },
           {
-            route: '/api/',
+            route: '/api-redoc/',
             spec: './src/swaggers/woovi.json',
           },
           {
