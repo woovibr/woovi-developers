@@ -13,7 +13,7 @@ Vamos ver como você pode adicionar uma lista de permissões de IP à sua API.
 ## Adicionando uma lista de permissões de IP à sua API
 
 Primeiramente, como um requisito, você precisa ter uma API criada.
-Se você ainda não criou uma API, pode seguir os passos no guia [Criando uma API](./getting-started-api.md).
+Se você ainda não criou uma API, pode seguir os passos no guia [Primeiros Passos](./api-getting-started.md).
 
 Após criar a API, você pode acessar os detalhes dela clicando no nome da API na [lista de APIs](https://app.woovi.com.br/home/applications/tab/list).
 

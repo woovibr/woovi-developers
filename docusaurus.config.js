@@ -14,7 +14,6 @@ const localeConfigs = {
 };
 
 module.exports = {
-  
   markdown: {
     mermaid: true,
   },
@@ -45,8 +44,8 @@ module.exports = {
   scripts: [],
   favicon: 'img/icons/woovi.svg',
   onBrokenLinks: 'log',
-  trailingSlash: false,
   onBrokenMarkdownLinks: 'warn',
+  trailingSlash: false,
   plugins: [
     [
       '@gracefullight/docusaurus-plugin-microsoft-clarity',
@@ -76,7 +75,7 @@ module.exports = {
           },
           {
             from: '/docs/ecommerce/oracle-commerce-cloud',
-            to: '/docs/ecommerce/oracle/occ-getting-started'
+            to: '/docs/ecommerce/oracle/occ-getting-started',
           },
           {
             from: '/docs/getting-started',
@@ -199,7 +198,7 @@ module.exports = {
           {
             route: '/indirect/',
             spec: './src/swaggers/pixIndirect.json',
-          }
+          },
         ],
       },
     ],

@@ -1,5 +1,6 @@
 {
   "label": "Webhook",
+  "key": "flows-webhook",
   "collapsible": true,
   "collapsed": true,
   "className": "red",

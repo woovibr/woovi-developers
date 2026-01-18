@@ -1,5 +1,5 @@
 ---
-id: payment-how-to-use-api-to-approve
+id: payment-how-to-use-api-to-approve-a
 sidebar_position: 4
 title: Como usar a API de Aprovar Pagamentos?
 tags:

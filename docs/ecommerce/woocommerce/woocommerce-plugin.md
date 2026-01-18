@@ -32,7 +32,7 @@ Entre em WooCommerce -> Settings > Payments.
 
 ### Clique em `Manage` no Plugin Woovi.
 
-- [ ] Cadastre um AppID do tipo API. Crie um appID [aqui](../apis/api-getting-started.md)
+- [ ] Cadastre um AppID do tipo API. Crie um appID [documentação de API](../../apis/api-getting-started.md)
 - [ ] Customize o Título, Descrição e Texto de Botão de Pedido
 
 ![Setup](/img/ecommerce/woocommerce-setup.png)

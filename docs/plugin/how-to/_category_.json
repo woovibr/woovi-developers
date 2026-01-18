@@ -1,0 +1,10 @@
+{
+  "label": "How to",
+  "key": "plugin-how-to",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Plugin How to"
+  }
+}

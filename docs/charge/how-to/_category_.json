@@ -1,0 +1,10 @@
+{
+  "label": "How to",
+  "key": "charge-how-to",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Charge How to"
+  }
+}
