@@ -1,5 +1,6 @@
 {
   "label": "Reembolso de cobrança",
+  "key": "charge-refund",
   "collapsible": true,
   "collapsed": true,
   "className": "red",

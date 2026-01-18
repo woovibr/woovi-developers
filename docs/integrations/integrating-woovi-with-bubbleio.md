@@ -11,7 +11,7 @@ tags:
 Essa documentação assume que você tenha preenchido alguns requisitos que são:
 
 1. Ter uma conta no [Bubble.io](https://bubble.io)
-2. Ter uma aplicação criada na woovi. Caso ainda não tenha feito, você pode criar uma seguindo [este tutorial](../apis/getting-started-api.md).
+2. Ter uma aplicação criada na woovi. Caso ainda não tenha feito, você pode criar uma seguindo [este tutorial](../apis/api-getting-started.md).
 
 :::
 
@@ -73,7 +73,7 @@ Preencha as informações necessárias levando em consideração os seguintes po
 
 Caso tenha dúvida em como pegar o `AppID` da sua aplicação woovi.
 
-Siga este tutorial [aqui](../apis/getting-started-api.md).
+Siga este tutorial [aqui](../apis/api-getting-started.md).
 
 :::
 

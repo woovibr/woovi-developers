@@ -1,5 +1,6 @@
 {
   "label": "Webhook",
+  "key": "webhook",
   "collapsible": true,
   "collapsed": true,
   "className": "red",

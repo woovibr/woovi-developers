@@ -8,7 +8,7 @@ tags:
 ---
 ## Configurar os webhooks
 
-A primeira etapa é configurar os [webhooks](./pix-automatic-webhooks.md) para ser notificado quando houver alguma alteração de status. Caso ainda não saiba como cadastrar os webhooks na nossa plataforma, veja o nosso [tutorial](../webhook/platform/webhook-platform-api.mdx)
+A primeira etapa é configurar os [webhooks](./5-webhooks/pix-automatic-webhooks.md) para ser notificado quando houver alguma alteração de status. Caso ainda não saiba como cadastrar os webhooks na nossa plataforma, veja o nosso [tutorial](../webhook/platform/webhook-platform-api.mdx)
 
 Os indispensáveis são:
 

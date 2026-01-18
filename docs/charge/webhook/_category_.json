@@ -1,0 +1,10 @@
+{
+  "label": "Webhook",
+  "key": "charge-webhook",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Charge Webhook"
+  }
+}

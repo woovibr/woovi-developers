@@ -13,7 +13,7 @@ usando a ferramenta [Make](https://make.com/).
 
 Caso deseje realizar a integração, é necessário que você já tenha se cadastrado na woovi,
 e por fim tenha já criado uma nova API na nossa plataforma. Caso ainda não tenha feito isso,
-você pode seguir o tutorial de como criar uma nova API [aqui](../../apis/getting-started-api.md).
+você pode seguir o tutorial de como criar uma nova API [Introdução à API Woovi](../../apis/api-getting-started.md).
 
 ## 1. Adicionando o módulo para chamadas HTTP
 

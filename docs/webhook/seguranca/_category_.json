@@ -1,5 +1,6 @@
 {
   "label": "Segurança",
+  "key": "webhook-security",
   "collapsible": true,
   "collapsed": true,
   "className": "red",
