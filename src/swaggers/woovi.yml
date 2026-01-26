@@ -4113,8 +4113,10 @@ paths:
                   daysAfterDueDate: 5
                   interests:
                     value: 10
+                    type: PERCENTAGE
                   fines:
                     value: 20
+                    type: FIXED
                   customer:
                     name: Dan
                     taxID: '31324227036'
@@ -13997,11 +13999,243 @@ paths:
 
             response = http.request(request)
             puts response.read_body
+  /api/v1/subaccount/{id}/credit:
+    post:
+      tags:
+        - subaccount
+      summary: Credit subaccount
+      x-required-scope: SUBACCOUNT_CREDIT_POST
+      description: Transfers the amount from the main account to the subaccount.
+      parameters:
+        - name: id
+          in: path
+          description: Pix key registered to the subaccount
+          required: true
+          schema:
+            type: string
+          example: subaccount@test.com
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: number
+                  description: Amount to credit to the account
+                description:
+                  type: string
+                  description: Optional description for the credit operation
+              required:
+                - value
+            examples:
+              ValidCredit:
+                value:
+                  value: 100
+                  description: Monthly deposit
+      responses:
+        '200':
+          description: Sub Account successfully credited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pixKey:
+                    type: string
+                    example: subaccount@test.com
+                  value:
+                    type: number
+                    example: 100
+                  description:
+                    type: string
+                    example: Monthly deposit
+                  success:
+                    type: string
+                    example: Sub-account withdrawal has been successfully credited, 100
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                MissingAuthorization:
+                  value:
+                    error: Invalid Authorization header
+                CompanyNotFound:
+                  value:
+                    error: Company not found
+                SubAccountNotFound:
+                  value:
+                    error: 'Subaccount not found: subaccount@test.com'
+        '403':
+          description: Forbidden action
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: This feature is not enabled for your company
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'POST',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/subaccount/subaccount@test.com/credit',
+              headers: {
+                Authorization: 'REPLACE_KEY_VALUE',
+                'content-type': 'application/json'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.write(JSON.stringify({value: 0, description: 'string'}));
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url https://api.woovi.com/api/v1/subaccount/subaccount@test.com/credit \
+              --header 'Authorization: REPLACE_KEY_VALUE' \
+              --header 'content-type: application/json' \
+              --data '{"value":0,"description":"string"}'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/subaccount/subaccount@test.com/credit",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode([
+                'value' => 0,
+                'description' => 'string'
+              ]),
+              CURLOPT_HTTPHEADER => [
+                "Authorization: REPLACE_KEY_VALUE",
+                "content-type: application/json"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            payload = "{\"value\":0,\"description\":\"string\"}"
+
+
+            headers = {
+                'Authorization': "REPLACE_KEY_VALUE",
+                'content-type': "application/json"
+            }
+
+
+            conn.request("POST",
+            "/api/v1/subaccount/subaccount@test.com/credit", payload, headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subaccount/subaccount@test.com/credit\"\n\n\tpayload := strings.NewReader(\"{\\\"value\\\":0,\\\"description\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"value\":0,\"description\":\"string\"}");
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/credit")
+              .post(body)
+              .addHeader("Authorization", "REPLACE_KEY_VALUE")
+              .addHeader("content-type", "application/json")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/credit")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["Authorization"] = 'REPLACE_KEY_VALUE'
+
+            request["content-type"] = 'application/json'
+
+            request.body = "{\"value\":0,\"description\":\"string\"}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
   /api/v1/subaccount/{id}/debit:
     post:
       tags:
         - subaccount
-      summary: Debit from a Sub Account and send to the main account
+      summary: Debit subaccount
       x-required-scope: SUBACCOUNT_DEBIT_POST
       description: Transfers the amount from the subaccount to the main account.
       parameters:
@@ -14444,6 +14678,243 @@ paths:
 
             request.body =
             "{\"value\":0,\"fromPixKey\":\"string\",\"fromPixKeyType\":\"CPF\",\"toPixKey\":\"string\",\"toPixKeyType\":\"CPF\",\"correlationID\":\"string\"}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
+  /api/v1/subaccount/{id}/statement:
+    get:
+      tags:
+        - subaccount
+      summary: Get Sub Account statement
+      x-required-scope: SUBACCOUNT_STATEMENT_GET
+      description: Returns the ledger entries (statement) for a specific subaccount.
+      parameters:
+        - name: id
+          in: path
+          description: Pix key registered to the subaccount
+          required: true
+          schema:
+            type: string
+          example: subaccount@test.com
+        - name: skip
+          in: query
+          description: Number of entries to skip for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+          example: 0
+        - name: limit
+          in: query
+          description: Maximum number of entries to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          example: 20
+        - name: start
+          in: query
+          description: Start date for filtering entries (ISO 8601 format)
+          required: false
+          schema:
+            type: string
+            format: date-time
+          example: 2023-01-01T00:00:00.000Z
+        - name: end
+          in: query
+          description: End date for filtering entries (ISO 8601 format)
+          required: false
+          schema:
+            type: string
+            format: date-time
+          example: 2023-12-31T23:59:59.999Z
+      responses:
+        '200':
+          description: Sub Account statement retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 507f1f77bcf86cd799439011
+                    time:
+                      type: string
+                      format: date-time
+                      example: 2023-12-01T10:30:00.000Z
+                    description:
+                      type: string
+                      example: Payment received from customer
+                    balance:
+                      type: number
+                      example: 1500
+                    value:
+                      type: number
+                      example: 100
+                    type:
+                      type: string
+                      enum:
+                        - CREDIT
+                        - DEBIT
+                      example: CREDIT
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                MissingAuthorization:
+                  value:
+                    error: Invalid Authorization header
+                CompanyNotFound:
+                  value:
+                    error: Company not found
+                SubAccountNotFound:
+                  value:
+                    error: 'Subaccount not found: subaccount@test.com'
+                LedgerAccountNotFound:
+                  value:
+                    error: Subaccount ledger account not found
+                ErrorGettingStatement:
+                  value:
+                    error: Error getting subaccount statement
+        '403':
+          description: Forbidden action
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: This feature is not enabled for your company
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20',
+              headers: {
+                Authorization: 'REPLACE_KEY_VALUE'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url 'https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20' \
+              --header 'Authorization: REPLACE_KEY_VALUE'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => [
+                "Authorization: REPLACE_KEY_VALUE"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            headers = { 'Authorization': "REPLACE_KEY_VALUE" }
+
+
+            conn.request("GET",
+            "/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"REPLACE_KEY_VALUE\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20")
+              .get()
+              .addHeader("Authorization", "REPLACE_KEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Get.new(url)
+
+            request["Authorization"] = 'REPLACE_KEY_VALUE'
 
 
             response = http.request(request)
