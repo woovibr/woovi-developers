@@ -270,7 +270,7 @@ Representam uma tentativa de cobrança
 
 ### PIX_AUTOMATIC_COBR_TRY_REQUESTED
 
-Quando uma nova tentatva de cobrança é realizada, apenas o ocorre se o `retryPolicy` for igual a `THREE_RETRIES_7_DAYS`.
+Quando uma nova tentativa de cobrança é realizada, apenas o ocorre se o `retryPolicy` for igual a `THREE_RETRIES_7_DAYS`.
 Quando um cobr é criado também é criado uma nova tentativa de cobrança, porém não enviamos esse webhook nesse caso, visto que o evento do PIX_AUTOMATIC_COBR_CREATED já é emitido.
 
 ```json
