@@ -1,6 +1,6 @@
 ---
 id: webhook-hmac
-title: Validando Webhook payload usando HMAC-SHA1 (Recomendado)
+title: Validando Webhook payload usando HMAC-SHA1 (Depreciado)
 tags:
 - webhook
 - security
@@ -9,9 +9,9 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Validação HMAC (Método Recomendado)
+# Validação HMAC (Depreciado)
 
-A validação HMAC é o **método mais seguro** para validar webhooks da Woovi.
+A validação HMAC é o **Primeiro método** para validar webhooks da Woovi.
 
 ## Qual a diferença entre X-OpenPix-Signature (HMAC) e x-webhook-signature?
 
@@ -21,18 +21,6 @@ Existem dois métodos de validação de webhook disponíveis:
 |--------|--------|--------------|-----------------|
 | **HMAC** | `X-OpenPix-Signature` | Valida que o webhook veio da **sua configuração específica de webhook** | Secret key do seu webhook |
 | **x-webhook-signature** | `x-webhook-signature` | Valida que o webhook veio da **Woovi** (valida o remetente) | Chave pública da Woovi |
-
-### Por que HMAC é mais seguro?
-
-- **Secret key única**: Cada webhook possui sua própria secret key, conhecida apenas por você e pela Woovi.
-- **Validação específica**: Garante que o webhook veio da sua configuração específica, não apenas de qualquer conta Woovi.
-- **Proteção contra replay attacks**: A secret key exclusiva dificulta ataques de replay.
-
-Se você deseja apenas validar que o webhook veio da Woovi (sem garantir que é do seu webhook específico), pode usar o método [x-webhook-signature](./webhook-signature-validation).
-
-:::tip Recomendação
-Sempre que possível, utilize a validação **HMAC (X-OpenPix-Signature)** para maior segurança.
-:::
 
 # Como consultar o Secret Key do HMAC?
 

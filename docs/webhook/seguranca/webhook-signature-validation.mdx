@@ -1,6 +1,6 @@
----
+ --
 id: webhook-signature-validation
-title: Validando Webhook payload usando x-webhook-signature
+title: Validando Webhook payload usando x-webhook-signature (Recomendado)
 tags:
   - webhook
   - security
@@ -10,7 +10,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Como validar o Webhook Signature?
+# Como validar o Webhook Signature? (Recomendado)
 
 Toda request do Webhook possui o header `x-webhook-signature` que é a assinatura gerada com a **chave privada da Woovi** e o payload do Webhook.
 
@@ -23,19 +23,18 @@ Existem dois métodos de validação de webhook disponíveis:
 | **x-webhook-signature** | `x-webhook-signature` | Valida que o webhook veio da **Woovi** (valida o remetente) | Chave pública da Woovi |
 | **HMAC** | `X-OpenPix-Signature` | Valida que o webhook veio da **sua configuração específica de webhook** | Secret key do seu webhook |
 
-### Quando usar cada método?
-
-- **x-webhook-signature**: Use este método para confirmar que o webhook realmente foi enviado pela Woovi. Todos os webhooks da Woovi usam a mesma chave pública para validação.
-
-- **X-OpenPix-Signature (HMAC)**: Este é o **método mais seguro**. Ele valida que o webhook veio da sua configuração específica de webhook, pois utiliza uma secret key única que só você e a Woovi conhecem. [Saiba mais sobre validação HMAC](./webhook-hmac).
-
-:::tip Recomendação
-Para maior segurança, recomendamos utilizar o método **HMAC (X-OpenPix-Signature)**, pois garante que o webhook veio especificamente da sua configuração de webhook, e não apenas de qualquer conta Woovi.
-:::
-
 ## Chave Pública da Woovi
 
-Para validar o `x-webhook-signature`, você deve usar a **chave pública da Woovi** (em Base64):
+```
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/+NtIkjzevvqD+I3MMv3bLXDt
+pvxBjY4BsRrSdca3rtAwMcRYYvxSnd7jagVLpctMiOxQO8ieUCKLSWHpsMAjO/zZ
+WMKbqoG8MNpi/u3fp6zz0mcHCOSqYsPUUG19buW8bis5ZZ2IZgBObWSpTvJ0cnj6
+HKBAA82Jln+lGwS1MwIDAQAB
+-----END PUBLIC KEY-----
+```
+
+Para validar o `x-webhook-signature`, você deve usar a **chave pública da Woovi (em Base64)**:
 
 ```
 LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHZk1BMEdDU3FHU0liM0RRRUJBUVVBQTRHTkFEQ0JpUUtCZ1FDLytOdElranpldnZxRCtJM01NdjNiTFhEdApwdnhCalk0QnNSclNkY2EzcnRBd01jUllZdnhTbmQ3amFnVkxwY3RNaU94UU84aWVVQ0tMU1dIcHNNQWpPL3paCldNS2Jxb0c4TU5waS91M2ZwNnp6MG1jSENPU3FZc1BVVUcxOWJ1VzhiaXM1WloySVpnQk9iV1NwVHZKMGNuajYKSEtCQUE4MkpsbitsR3dTMU13SURBUUFCCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
