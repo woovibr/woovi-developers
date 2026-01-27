@@ -20,6 +20,11 @@ A conta bancária relacionada a essa API será utilizada no processo de criaçã
 Assim estamos prontos para iniciar a sequencia de integração
 
 ### Documentos necessários
+
+:::caution Atenção
+Não recomendamos o envio de arquivos com mais de 10MB.
+:::
+
 **Representantes/sócios:** 
 | Type           | Descrição               |
 |----------------|-------------------------|
