@@ -26,7 +26,7 @@ function ApiScalarInner() {
     <div style={{ height: 'calc(100vh - 60px)' }}>
       <ApiReference
         configuration={{
-          url: '/swaggers/woovi.json',
+          url: '/swaggers/bacen-dict.json',
           theme: 'default',
         }}
       />
@@ -37,8 +37,8 @@ function ApiScalarInner() {
 export default function ApiScalar() {
   return (
     <Layout
-      title="Woovi API"
-      description="Woovi API Documentation"
+      title="Bacen DICT API"
+      description="Bacen DICT API Documentation"
     >
       <BrowserOnly fallback={<div>Loading...</div>}>
         {() => <ApiScalarInner />}
