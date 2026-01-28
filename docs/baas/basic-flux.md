@@ -48,6 +48,9 @@ Documentos necessários por tipo de cnpj:
 * ONG, IGREJA: SOCIAL_CONTRACT, BYLAWS
 * LTDA: SOCIAL_CONTRACT, ATA, BYLAWS
 
+:::caution Atenção
+Não recomendamos o envio de arquivos com mais de 10MB.
+:::
 
 ### Sequência da integração
 
