@@ -1,0 +1,78 @@
+---
+id: webhook-account-register-pending-payload
+title: Payload de Registro de Conta Pendente
+tags:
+  - webhook
+  - header
+  - api
+---
+
+## Registro de conta pendente
+
+Os webhooks de `ACCOUNT_REGISTER_PENDING` enviam objetos com os seguintes campos no seu payload:
+
+- `accountRegister`: Detalhes do registro de conta
+  - `officialName`: Nome oficial/razão social da conta
+  - `taxID`: Objeto contendo o documento de identificação
+    - `taxID`: Número do CPF ou CNPJ
+    - `type`: Tipo do documento (`BR:CPF` ou `BR:CNPJ`)
+  - `status`: Status do registro (sempre `PENDING` para este evento)
+  - `requestDocuments`: Lista de documentos solicitados para análise
+  - `requestReason`: Razão da solicitação de documentos ou análise
+  - `requestDocumentsRepresentatives`: Lista de documentos solicitados para os representantes legais
+
+## Quando é enviado
+
+Este evento é enviado quando um registro de subconta está em análise pelo compliance. Isso pode ocorrer quando:
+
+- Uma nova conta é criada e entra em processo de análise
+- Documentos adicionais são solicitados para a conta
+- A conta retorna para análise após uma atualização de dados
+
+## Exemplo
+
+```json
+{
+  "event": "ACCOUNT_REGISTER_PENDING",
+  "accountRegister": {
+    "officialName": "Test Company",
+    "taxID": {
+      "taxID": "12345678901234",
+      "type": "BR:CNPJ"
+    },
+    "status": "PENDING",
+    "requestDocuments": [],
+    "requestReason": "EMPTY",
+    "requestDocumentsRepresentatives": []
+  }
+}
+```
+
+## Exemplo com documentos solicitados
+
+Quando o compliance solicita documentos adicionais, o payload pode incluir:
+
+```json
+{
+  "event": "ACCOUNT_REGISTER_PENDING",
+  "accountRegister": {
+    "officialName": "Empresa Exemplo LTDA",
+    "taxID": {
+      "taxID": "12345678000199",
+      "type": "BR:CNPJ"
+    },
+    "status": "PENDING",
+    "requestDocuments": ["CONTRATO_SOCIAL", "COMPROVANTE_ENDERECO"],
+    "requestReason": "DOCUMENTS_REQUIRED",
+    "requestDocumentsRepresentatives": [
+      {
+        "taxId": {
+          "taxID": "12345678901",
+          "type": "BR:CPF"
+        },
+        "requestDocuments": ["RG", "COMPROVANTE_ENDERECO"]
+      }
+    ]
+  }
+}
+```
