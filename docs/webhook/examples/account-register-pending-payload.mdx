@@ -15,7 +15,7 @@ Os webhooks de `ACCOUNT_REGISTER_PENDING` enviam objetos com os seguintes campos
   - `officialName`: Nome oficial/razão social da conta
   - `taxID`: Objeto contendo o documento de identificação
     - `taxID`: Número do CPF ou CNPJ
-    - `type`: Tipo do documento (`BR:CPF` ou `BR:CNPJ`)
+    - `type`: Tipo do taxID (`BR:CPF` ou `BR:CNPJ`)
   - `status`: Status do registro (sempre `PENDING` para este evento)
   - `requestDocuments`: Lista de documentos solicitados para análise
   - `requestReason`: Razão da solicitação de documentos ou análise
@@ -25,9 +25,8 @@ Os webhooks de `ACCOUNT_REGISTER_PENDING` enviam objetos com os seguintes campos
 
 Este evento é enviado quando um registro de subconta está em análise pelo compliance. Isso pode ocorrer quando:
 
-- Uma nova conta é criada e entra em processo de análise
+- Uma nova conta é criada, entra em processo de análise mas algun documento é rejeitado e tem que ser reenviado
 - Documentos adicionais são solicitados para a conta
-- A conta retorna para análise após uma atualização de dados
 
 ## Exemplo
 
@@ -50,8 +49,6 @@ Este evento é enviado quando um registro de subconta está em análise pelo com
 
 ## Exemplo com documentos solicitados
 
-Quando o compliance solicita documentos adicionais, o payload pode incluir:
-
 ```json
 {
   "event": "ACCOUNT_REGISTER_PENDING",
@@ -62,15 +59,15 @@ Quando o compliance solicita documentos adicionais, o payload pode incluir:
       "type": "BR:CNPJ"
     },
     "status": "PENDING",
-    "requestDocuments": ["CONTRATO_SOCIAL", "COMPROVANTE_ENDERECO"],
-    "requestReason": "DOCUMENTS_REQUIRED",
+    "requestDocuments": ["SOCIAL_CONTRACT", "ADDRESS_PROOF"],
+    "requestReason": "Faltou contrato social e comprovante de endereço",
     "requestDocumentsRepresentatives": [
       {
         "taxId": {
           "taxID": "12345678901",
           "type": "BR:CPF"
         },
-        "requestDocuments": ["RG", "COMPROVANTE_ENDERECO"]
+        "requestDocuments": ["RG", "ADDRESS_PROOF"]
       }
     ]
   }
