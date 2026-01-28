@@ -18,7 +18,7 @@ Os webhooks de `ACCOUNT_REGISTER_PENDING` enviam objetos com os seguintes campos
     - `type`: Tipo do taxID (`BR:CPF` ou `BR:CNPJ`)
   - `status`: Status do registro (sempre `PENDING` para este evento)
   - `requestDocuments`: Lista de documentos solicitados para análise
-  - `requestReason`: Razão da solicitação de documentos ou análise
+  - `requestReason`: Comunicado sobre as pendências
   - `requestDocumentsRepresentatives`: Lista de documentos solicitados para os representantes legais
 
 ## Quando é enviado
@@ -41,7 +41,7 @@ Este evento é enviado quando um registro de subconta está em análise pelo com
     },
     "status": "PENDING",
     "requestDocuments": [],
-    "requestReason": "EMPTY",
+    "requestReason": "",
     "requestDocumentsRepresentatives": []
   }
 }
