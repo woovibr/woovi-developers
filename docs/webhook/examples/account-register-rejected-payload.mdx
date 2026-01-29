@@ -1,0 +1,64 @@
+---
+id: webhook-account-register-rejected-payload
+title: Payload de Registro de Conta Rejeitado
+tags:
+  - webhook
+  - header
+  - api
+  - account-register
+---
+
+## Registro de conta rejeitado
+
+Os webhooks de `ACCOUNT_REGISTER_REJECTED` enviam objetos com os seguintes campos no seu payload:
+
+- `accountRegister`: Detalhes do registro de conta
+  - `officialName`: Nome oficial/razão social da conta
+  - `taxID`: Objeto contendo o documento de identificação
+    - `taxID`: Numero do CPF ou CNPJ
+    - `type`: Tipo do taxID (`BR:CPF` ou `BR:CNPJ`)
+  - `status`: Status do registro (sempre `REJECTED` para este evento)
+  - `rejectedReason`: Motivo da rejeicao do registro
+
+## Quando é enviado
+
+Este evento é enviado quando um registro de subconta é rejeitado pelo compliance. Isso pode ocorrer quando:
+
+- A documentação enviada não atende aos requisitos de compliance
+- Informações inconsistentes ou incorretas foram fornecidas
+- A análise de risco identificou problemas com o cadastro
+- O solicitante não atendeu às pendências dentro do prazo estabelecido
+
+## Exemplo
+
+```json
+{
+  "event": "ACCOUNT_REGISTER_REJECTED",
+  "accountRegister": {
+    "officialName": "Test Company",
+    "taxID": {
+      "taxID": "12345678901234",
+      "type": "BR:CNPJ"
+    },
+    "status": "REJECTED",
+    "rejectedReason": ""
+  }
+}
+```
+
+## Exemplo com motivo de rejeição
+
+```json
+{
+  "event": "ACCOUNT_REGISTER_REJECTED",
+  "accountRegister": {
+    "officialName": "Empresa Exemplo LTDA",
+    "taxID": {
+      "taxID": "12345678000199",
+      "type": "BR:CNPJ"
+    },
+    "status": "REJECTED",
+    "rejectedReason": "Documentação não atende aos requisitos de compliance. Contrato social apresenta inconsistências com os dados cadastrais."
+  }
+}
+```
