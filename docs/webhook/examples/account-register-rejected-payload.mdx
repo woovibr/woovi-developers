@@ -3,8 +3,6 @@ id: webhook-account-register-rejected-payload
 title: Payload de Registro de Conta Rejeitado
 tags:
   - webhook
-  - header
-  - api
   - account-register
 ---
 
@@ -30,23 +28,6 @@ Este evento é enviado quando um registro de subconta é rejeitado pelo complian
 - O solicitante não atendeu às pendências dentro do prazo estabelecido
 
 ## Exemplo
-
-```json
-{
-  "event": "ACCOUNT_REGISTER_REJECTED",
-  "accountRegister": {
-    "officialName": "Test Company",
-    "taxID": {
-      "taxID": "12345678901234",
-      "type": "BR:CNPJ"
-    },
-    "status": "REJECTED",
-    "rejectedReason": ""
-  }
-}
-```
-
-## Exemplo com motivo de rejeição
 
 ```json
 {
