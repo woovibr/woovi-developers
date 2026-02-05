@@ -273,6 +273,12 @@ paths:
                     total: 129430
                     blocked: 0
                     available: 129430
+                  taxId: '12345678901'
+                  officialName: Company Name LLC
+                  tradeName: Company Trade Name
+                  branch: '0001'
+                  account: '123456'
+                  accountName: Main Account
         '400':
           description: An error message
           content:
@@ -804,12 +810,13 @@ paths:
         - AppID:
             - ACCOUNT_REGISTER_PATCH
       parameters:
-        - name: id
+        - name: correlationID
           in: path
           required: true
-          description: Tax ID of the account register to update
+          description: CorrelationID of the account register
           schema:
             type: string
+            example: 6fe18d8e-5009-4f57-8f1d-5b084b6b83ac
             minLength: 1
       requestBody:
         required: true
@@ -998,6 +1005,9 @@ paths:
                     type: array
                     items:
                       type: string
+                  correlationID:
+                    type: string
+                    example: 6fe18d8e-5009-4f57-8f1d-5b084b6b83ac
                   missingDocumentsDescription:
                     type: string
         '400':
@@ -1090,13 +1100,13 @@ paths:
         - AppID:
             - ACCOUNT_REGISTER_GET
       parameters:
-        - name: taxID
+        - name: CorrelationID
           in: query
           required: true
-          description: Tax ID of the company to retrieve
+          description: CorrelationID of the account register
           schema:
             type: string
-            example: '12345678901234'
+            example: 6fe18d8e-5009-4f57-8f1d-5b084b6b83ac
       responses:
         '200':
           description: Account register found and returned successfully
@@ -1126,6 +1136,9 @@ paths:
                   status:
                     type: string
                     example: PENDING
+                  correlationID:
+                    type: string
+                    example: 6fe18d8e-5009-4f57-8f1d-5b084b6b83ac
         '400':
           description: Bad request - validation error or missing authorization
           content:
@@ -1188,7 +1201,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/account-register?taxID=12345678901234',
+              path: '/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac',
               headers: {
                 Authorization: 'Bearer REPLACE_BEARER_TOKEN'
               }
@@ -1211,7 +1224,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/account-register?taxID=12345678901234' \
+              --url 'https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac' \
               --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
         - lang: Php + Curl
           source: |-
@@ -1220,7 +1233,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/account-register?taxID=12345678901234",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -1253,7 +1266,8 @@ paths:
             headers = { 'Authorization': "Bearer REPLACE_BEARER_TOKEN" }
 
 
-            conn.request("GET", "/api/v1/account-register?taxID=12345678901234",
+            conn.request("GET",
+            "/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac",
             headers=headers)
 
 
@@ -1264,13 +1278,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account-register?taxID=12345678901234\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/account-register?taxID=12345678901234")
+              .url("https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac")
               .get()
               .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
               .build();
@@ -1284,7 +1298,7 @@ paths:
 
 
             url =
-            URI("https://api.woovi.com/api/v1/account-register?taxID=12345678901234")
+            URI("https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -1565,6 +1579,9 @@ paths:
                     type: array
                     items:
                       type: string
+                  correlationID:
+                    type: string
+                    example: 6fe18d8e-5009-4f57-8f1d-5b084b6b83ac
                   missingDocumentsDescription:
                     type: string
         '400':
@@ -2260,7 +2277,11 @@ paths:
       tags:
         - application
       summary: Create a new application
-      description: Creates a new application for a company
+      description: >
+        Creates a new application for a company.
+
+        If the company has the APPLICATION_SCOPES_REQUIRED feature enabled, the
+        scopes field is required.
       x-required-scope: APPLICATION_POST
       security:
         - AppID:
@@ -2298,15 +2319,6 @@ paths:
                 properties:
                   application:
                     $ref: '#/components/schemas/Application'
-              example:
-                application:
-                  name: Test API
-                  isActive: true
-                  type: API
-                  clientId: client_123abc
-                  clientSecret: secret_456def
-                  appID: app_789ghi
-                  companyBankAccount: 507f1f77bcf86cd799439011
               examples:
                 ApplicationWithoutScopes:
                   value:
@@ -2357,6 +2369,9 @@ paths:
                 InvalidScopes:
                   value:
                     error: 'Invalid scopes: INVALID_SCOPE'
+                ScopesRequired:
+                  value:
+                    error: Scopes are required
                 NoMasterApplication:
                   value:
                     error: Only MASTER application can create other application types
@@ -8573,13 +8588,6 @@ paths:
                   required:
                     - taxID
                     - type
-            example:
-              application:
-                name: MyAPIAccess
-                type: API
-              taxID:
-                taxID: '65914571000187'
-                type: BR:CNPJ
             examples:
               ApplicationWithoutScopes:
                 value:
@@ -10643,6 +10651,15 @@ paths:
         - pixKey
       summary: Get all Pix keys
       description: Retrieves a list of all Pix keys
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+        - in: query
+          name: limit
+          schema:
+            type: number
       responses:
         '200':
           description: Successful response
@@ -10673,7 +10690,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/pix-keys',
+              path: '/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE',
               headers: {
                 Authorization: 'Bearer REPLACE_BEARER_TOKEN'
               }
@@ -10696,7 +10713,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url https://api.woovi.com/api/v1/pix-keys \
+              --url 'https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE' \
               --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
         - lang: Php + Curl
           source: |-
@@ -10705,7 +10722,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/pix-keys",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -10728,46 +10745,63 @@ paths:
               echo $response;
             }
         - lang: Python + Python3
-          source: |-
+          source: >-
             import http.client
+
 
             conn = http.client.HTTPSConnection("api.woovi.com")
 
+
             headers = { 'Authorization': "Bearer REPLACE_BEARER_TOKEN" }
 
-            conn.request("GET", "/api/v1/pix-keys", headers=headers)
+
+            conn.request("GET",
+            "/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE",
+            headers=headers)
+
 
             res = conn.getresponse()
+
             data = res.read()
+
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/pix-keys\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/pix-keys")
+              .url("https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE")
               .get()
               .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
               .build();
 
             Response response = client.newCall(request).execute();
         - lang: Ruby + Native
-          source: |-
+          source: >-
             require 'uri'
+
             require 'net/http'
 
-            url = URI("https://api.woovi.com/api/v1/pix-keys")
+
+            url =
+            URI("https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE")
+
 
             http = Net::HTTP.new(url.host, url.port)
+
             http.use_ssl = true
 
+
             request = Net::HTTP::Get.new(url)
+
             request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
 
+
             response = http.request(request)
+
             puts response.read_body
     post:
       tags:
@@ -14908,243 +14942,6 @@ paths:
             response = http.request(request)
 
             puts response.read_body
-  /api/v1/subaccount/{id}/statement:
-    get:
-      tags:
-        - subaccount
-      summary: Get Sub Account statement
-      x-required-scope: SUBACCOUNT_STATEMENT_GET
-      description: Returns the ledger entries (statement) for a specific subaccount.
-      parameters:
-        - name: id
-          in: path
-          description: Pix key registered to the subaccount
-          required: true
-          schema:
-            type: string
-          example: subaccount@test.com
-        - name: skip
-          in: query
-          description: Number of entries to skip for pagination
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-          example: 0
-        - name: limit
-          in: query
-          description: Maximum number of entries to return
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-          example: 20
-        - name: start
-          in: query
-          description: Start date for filtering entries (ISO 8601 format)
-          required: false
-          schema:
-            type: string
-            format: date-time
-          example: 2023-01-01T00:00:00.000Z
-        - name: end
-          in: query
-          description: End date for filtering entries (ISO 8601 format)
-          required: false
-          schema:
-            type: string
-            format: date-time
-          example: 2023-12-31T23:59:59.999Z
-      responses:
-        '200':
-          description: Sub Account statement retrieved successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      example: 507f1f77bcf86cd799439011
-                    time:
-                      type: string
-                      format: date-time
-                      example: 2023-12-01T10:30:00.000Z
-                    description:
-                      type: string
-                      example: Payment received from customer
-                    balance:
-                      type: number
-                      example: 1500
-                    value:
-                      type: number
-                      example: 100
-                    type:
-                      type: string
-                      enum:
-                        - CREDIT
-                        - DEBIT
-                      example: CREDIT
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                MissingAuthorization:
-                  value:
-                    error: Invalid Authorization header
-                CompanyNotFound:
-                  value:
-                    error: Company not found
-                SubAccountNotFound:
-                  value:
-                    error: 'Subaccount not found: subaccount@test.com'
-                LedgerAccountNotFound:
-                  value:
-                    error: Subaccount ledger account not found
-                ErrorGettingStatement:
-                  value:
-                    error: Error getting subaccount statement
-        '403':
-          description: Forbidden action
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              example:
-                error: This feature is not enabled for your company
-      x-codeSamples:
-        - lang: Node + Native
-          source: |-
-            const http = require('https');
-
-            const options = {
-              method: 'GET',
-              hostname: 'api.woovi.com',
-              port: null,
-              path: '/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20',
-              headers: {
-                Authorization: 'Bearer REPLACE_BEARER_TOKEN'
-              }
-            };
-
-            const req = http.request(options, function (res) {
-              const chunks = [];
-
-              res.on('data', function (chunk) {
-                chunks.push(chunk);
-              });
-
-              res.on('end', function () {
-                const body = Buffer.concat(chunks);
-                console.log(body.toString());
-              });
-            });
-
-            req.end();
-        - lang: Shell + Curl
-          source: |-
-            curl --request GET \
-              --url 'https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20' \
-              --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
-        - lang: Php + Curl
-          source: |-
-            <?php
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20",
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "GET",
-              CURLOPT_HTTPHEADER => [
-                "Authorization: Bearer REPLACE_BEARER_TOKEN"
-              ],
-            ]);
-
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-
-            curl_close($curl);
-
-            if ($err) {
-              echo "cURL Error #:" . $err;
-            } else {
-              echo $response;
-            }
-        - lang: Python + Python3
-          source: >-
-            import http.client
-
-
-            conn = http.client.HTTPSConnection("api.woovi.com")
-
-
-            headers = { 'Authorization': "Bearer REPLACE_BEARER_TOKEN" }
-
-
-            conn.request("GET",
-            "/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20",
-            headers=headers)
-
-
-            res = conn.getresponse()
-
-            data = res.read()
-
-
-            print(data.decode("utf-8"))
-        - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-        - lang: Java + Okhttp
-          source: |-
-            OkHttpClient client = new OkHttpClient();
-
-            Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20")
-              .get()
-              .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
-              .build();
-
-            Response response = client.newCall(request).execute();
-        - lang: Ruby + Native
-          source: >-
-            require 'uri'
-
-            require 'net/http'
-
-
-            url =
-            URI("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20")
-
-
-            http = Net::HTTP.new(url.host, url.port)
-
-            http.use_ssl = true
-
-
-            request = Net::HTTP::Get.new(url)
-
-            request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
-
-
-            response = http.request(request)
-
-            puts response.read_body
   /api/v1/subscriptions/{id}/cancel:
     put:
       tags:
@@ -17432,6 +17229,24 @@ components:
             available:
               type: number
               description: Available amount in cents
+        taxId:
+          type: string
+          description: Tax ID associated with the account
+        officialName:
+          type: string
+          description: Official name of the account holder
+        tradeName:
+          type: string
+          description: Trade name of the account holder
+        branch:
+          type: string
+          description: Bank branch number
+        account:
+          type: string
+          description: Bank account number
+        accountName:
+          type: string
+          description: Name of the account
     WithdrawTransaction:
       type: object
       properties:
