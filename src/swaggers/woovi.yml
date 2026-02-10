@@ -2316,7 +2316,11 @@ paths:
                       - CHARGE_GET
       responses:
         '201':
-          description: Application successfully created
+          description: >
+            Application successfully created.
+
+            The response includes the scopes field when scopes are assigned to
+            the application.
           content:
             application/json:
               schema:
@@ -2325,16 +2329,8 @@ paths:
                   application:
                     $ref: '#/components/schemas/Application'
               examples:
-                ApplicationWithoutScopes:
-                  value:
-                    application:
-                      name: Test API
-                      isActive: true
-                      type: API
-                      clientId: client_123abc
-                      clientSecret: secret_456def
-                      appID: app_789ghi
                 ApplicationWithScopes:
+                  summary: Application with scopes (recommended)
                   value:
                     application:
                       name: Test API with Scopes
@@ -2346,6 +2342,16 @@ paths:
                       scopes:
                         - CHARGE_POST
                         - CHARGE_GET
+                ApplicationWithoutScopes:
+                  summary: Application without scopes (legacy)
+                  value:
+                    application:
+                      name: Test API
+                      isActive: true
+                      type: API
+                      clientId: client_123abc
+                      clientSecret: secret_456def
+                      appID: app_789ghi
         '400':
           description: Validation error or other client error
           content:
@@ -8594,15 +8600,8 @@ paths:
                     - taxID
                     - type
             examples:
-              ApplicationWithoutScopes:
-                value:
-                  application:
-                    name: MyAPIAccess
-                    type: API
-                  taxID:
-                    taxID: '65914571000187'
-                    type: BR:CNPJ
               ApplicationWithScopes:
+                summary: Application with scopes (recommended)
                 value:
                   application:
                     name: MyAPIAccessWithScopes
@@ -8613,6 +8612,15 @@ paths:
                   taxID:
                     taxID: '65914571000187'
                     type: BR:CNPJ
+              ApplicationWithoutScopes:
+                summary: Application without scopes (legacy)
+                value:
+                  application:
+                    name: MyAPIAccess
+                    type: API
+                  taxID:
+                    taxID: '65914571000187'
+                    type: BR:CNPJ
       responses:
         '200':
           description: >
@@ -8620,6 +8628,9 @@ paths:
             application
 
             that already has been registered.
+
+            The response includes the scopes field when scopes are assigned to
+            the application.
           content:
             application/json:
               schema:
@@ -8627,12 +8638,37 @@ paths:
                 properties:
                   application:
                     $ref: '#/components/schemas/PartnerApplicationPayload'
+              examples:
+                ApplicationWithScopes:
+                  summary: Application with scopes (recommended)
+                  value:
+                    application:
+                      name: MyAPIAccessWithScopes
+                      isActive: true
+                      type: API
+                      clientId: client_123abc
+                      clientSecret: secret_456def
+                      scopes:
+                        - CHARGE_POST
+                        - CHARGE_GET
+                ApplicationWithoutScopes:
+                  summary: Application without scopes (legacy)
+                  value:
+                    application:
+                      name: MyAPIAccess
+                      isActive: true
+                      type: API
+                      clientId: client_123abc
+                      clientSecret: secret_456def
         '201':
           description: >
             A new application has been registered. It'll be identified by the
             name that you give to it
 
             and by the company that has been referenced.
+
+            The response includes the scopes field when scopes are assigned to
+            the application.
           content:
             application/json:
               schema:
@@ -8640,6 +8676,28 @@ paths:
                 properties:
                   application:
                     $ref: '#/components/schemas/PartnerApplicationPayload'
+              examples:
+                ApplicationWithScopes:
+                  summary: Application with scopes (recommended)
+                  value:
+                    application:
+                      name: MyAPIAccessWithScopes
+                      isActive: true
+                      type: API
+                      clientId: client_123abc
+                      clientSecret: secret_456def
+                      scopes:
+                        - CHARGE_POST
+                        - CHARGE_GET
+                ApplicationWithoutScopes:
+                  summary: Application without scopes (legacy)
+                  value:
+                    application:
+                      name: MyAPIAccess
+                      isActive: true
+                      type: API
+                      clientId: client_123abc
+                      clientSecret: secret_456def
         '400':
           description: An error message
           content:
