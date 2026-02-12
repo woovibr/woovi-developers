@@ -11136,6 +11136,224 @@ paths:
 
             response = http.request(request)
             puts response.read_body
+  /api/v1/pix-keys/tokens/logs:
+    get:
+      tags:
+        - pixKey
+      summary: Get token bucket logs
+      description: Get a list of token bucket operation logs
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+        - in: query
+          name: limit
+          schema:
+            type: number
+        - in: query
+          name: companyBankAccount
+          description: Filter logs by company bank account ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of token bucket logs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenBucketLog'
+                  pageInfo:
+                    type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                            data:
+                              type: object
+                              properties:
+                                skip:
+                                  type: number
+                                limit:
+                                  type: number
+                      skip:
+                        type: number
+                      limit:
+                        type: number
+                      totalCount:
+                        type: number
+                      hasPreviousPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
+              example:
+                pageInfo:
+                  skip: 0
+                  limit: 100
+                  totalCount: 50
+                  hasPreviousPage: false
+                  hasNextPage: false
+                logs:
+                  - operation: REMOVE
+                    reason: pixKeyCheck
+                    tokens: 1
+                    tokensBefore: 100
+                    tokensAfter: 99
+                    endToEndId: E18236120202012032010s0133872GZA
+                    pixKey: '31324227036'
+                    createdAt: 2024-01-15T10:30:00.000Z
+                    updatedAt: 2024-01-15T10:30:00.000Z
+                  - operation: ADD
+                    reason: refill
+                    tokens: 10
+                    tokensBefore: 90
+                    tokensAfter: 100
+                    createdAt: 2024-01-15T11:00:00.000Z
+                    updatedAt: 2024-01-15T11:00:00.000Z
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Your account does not have the permission to use this endpoint
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE',
+              headers: {
+                Authorization: 'Bearer REPLACE_BEARER_TOKEN'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url 'https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE' \
+              --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => [
+                "Authorization: Bearer REPLACE_BEARER_TOKEN"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            headers = { 'Authorization': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+            conn.request("GET",
+            "/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE")
+              .get()
+              .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Get.new(url)
+
+            request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
+
+
+            response = http.request(request)
+
+            puts response.read_body
   /api/v1/qrcode-static/{id}:
     delete:
       tags:
@@ -18625,6 +18843,32 @@ components:
           type: boolean
         data:
           $ref: '#/components/schemas/PixKeyFraudValidationData'
+    TokenBucketLog:
+      type: object
+      properties:
+        operation:
+          type: string
+          enum:
+            - ADD
+            - REMOVE
+        reason:
+          type: string
+        tokens:
+          type: number
+        tokensBefore:
+          type: number
+        tokensAfter:
+          type: number
+        endToEndId:
+          type: string
+        pixKey:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
     PixQrCode:
       type: object
       properties:
