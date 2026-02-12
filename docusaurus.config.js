@@ -57,17 +57,17 @@ module.exports = {
         description: 'Instant payments Docs, APIs, SDKs',
       },
     ],
-    [
-      'docusaurus-plugin-mcp-server',
-      {
-        outputDir: 'mcp',
-        server: {
-          name: 'woovi-developers',
-          version: '1.0.0',
-        },
-        excludeRoutes: ['/404*', '/search*', '/api-redoc*', '/pix*', '/dict*', '/indirect*'],
-      },
-    ],
+    // [
+    //   'docusaurus-plugin-mcp-server',
+    //   {
+    //     outputDir: 'mcp',
+    //     server: {
+    //       name: 'woovi-developers',
+    //       version: '1.0.0',
+    //     },
+    //     excludeRoutes: ['/404*', '/search*', '/api-redoc*', '/pix*', '/dict*', '/indirect*'],
+    //   },
+    // ],
     [
       '@gracefullight/docusaurus-plugin-microsoft-clarity',
       { projectId: 'j6ihzvjzvu' },
