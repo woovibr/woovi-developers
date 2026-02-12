@@ -48,6 +48,16 @@ module.exports = {
   trailingSlash: false,
   plugins: [
     [
+      'docusaurus-plugin-llms',
+      {
+        generateLLMsTxt: true,
+        generateLLMsFullTxt: true,
+        docsDir: 'docs',
+        title: 'Woovi Developers',
+        description: 'Instant payments Docs, APIs, SDKs',
+      },
+    ],
+    [
       '@gracefullight/docusaurus-plugin-microsoft-clarity',
       { projectId: 'j6ihzvjzvu' },
     ],
