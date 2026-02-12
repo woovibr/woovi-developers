@@ -243,7 +243,13 @@
                       "total": 129430,
                       "blocked": 0,
                       "available": 129430
-                    }
+                    },
+                    "taxId": "12345678901",
+                    "officialName": "Company Name LLC",
+                    "tradeName": "Company Trade Name",
+                    "branch": "0001",
+                    "account": "123456",
+                    "accountName": "Main Account"
                   }
                 }
               }
@@ -529,10 +535,10 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "correlationID",
             "in": "path",
             "required": true,
-            "description": "Tax ID of the account register to delete",
+            "description": "CorrelationID of the account register to delete",
             "schema": {
               "type": "string",
               "minLength": 1
@@ -661,12 +667,13 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "correlationID",
             "in": "path",
             "required": true,
-            "description": "Tax ID of the account register to update",
+            "description": "CorrelationID of the account register",
             "schema": {
               "type": "string",
+              "example": "6fe18d8e-5009-4f57-8f1d-5b084b6b83ac",
               "minLength": 1
             }
           }
@@ -925,6 +932,10 @@
                         "type": "string"
                       }
                     },
+                    "correlationID": {
+                      "type": "string",
+                      "example": "6fe18d8e-5009-4f57-8f1d-5b084b6b83ac"
+                    },
                     "missingDocumentsDescription": {
                       "type": "string"
                     }
@@ -1070,8 +1081,8 @@
         "tags": [
           "account register"
         ],
-        "summary": "Get account register by Tax ID",
-        "description": "Retrieves an existing account registration by Tax ID",
+        "summary": "Get account register by CorrelationID",
+        "description": "Retrieves an existing account registration by CorrelationID",
         "x-required-scope": "ACCOUNT_REGISTER_GET",
         "security": [
           {
@@ -1082,13 +1093,13 @@
         ],
         "parameters": [
           {
-            "name": "taxID",
+            "name": "CorrelationID",
             "in": "query",
             "required": true,
-            "description": "Tax ID of the company to retrieve",
+            "description": "CorrelationID of the account register",
             "schema": {
               "type": "string",
-              "example": "12345678901234"
+              "example": "6fe18d8e-5009-4f57-8f1d-5b084b6b83ac"
             }
           }
         ],
@@ -1128,6 +1139,10 @@
                     "status": {
                       "type": "string",
                       "example": "PENDING"
+                    },
+                    "correlationID": {
+                      "type": "string",
+                      "example": "6fe18d8e-5009-4f57-8f1d-5b084b6b83ac"
                     }
                   }
                 }
@@ -1228,31 +1243,31 @@
         "x-codeSamples": [
           {
             "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/account-register?taxID=12345678901234',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/account-register?taxID=12345678901234' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/account-register?taxID=12345678901234\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/account-register?taxID=12345678901234\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account-register?taxID=12345678901234\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/account-register?taxID=12345678901234\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/account-register?taxID=12345678901234\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/account-register?CorrelationID=6fe18d8e-5009-4f57-8f1d-5b084b6b83ac\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       },
@@ -1291,6 +1306,10 @@
                     "type": "string",
                     "description": "Tax ID of the company",
                     "minLength": 1
+                  },
+                  "correlationID": {
+                    "type": "string",
+                    "description": "CorrelationID of the account register, default is uuid"
                   },
                   "documents": {
                     "type": "array",
@@ -1599,6 +1618,10 @@
                         "type": "string"
                       }
                     },
+                    "correlationID": {
+                      "type": "string",
+                      "example": "6fe18d8e-5009-4f57-8f1d-5b084b6b83ac"
+                    },
                     "missingDocumentsDescription": {
                       "type": "string"
                     }
@@ -1714,31 +1737,31 @@
         "x-codeSamples": [
           {
             "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/account-register',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  officialName: 'string',\n  tradeName: 'string',\n  taxID: 'string',\n  documents: [{url: 'string', type: 'SOCIAL_CONTRACT'}],\n  representatives: [\n    {\n      name: 'string',\n      documents: [{url: 'string', type: 'IDENTITY_FRONT'}],\n      birthDate: 'string',\n      email: 'user@example.com',\n      phone: 'string',\n      type: 'ADMIN',\n      taxID: 'string',\n      address: {\n        zipcode: 'string',\n        street: 'string',\n        number: 'string',\n        neighborhood: 'string',\n        city: 'string',\n        state: 'string',\n        complement: 'string',\n        taxID: 'string'\n      }\n    }\n  ],\n  billingAddress: {\n    zipcode: 'string',\n    street: 'string',\n    number: 'string',\n    neighborhood: 'string',\n    city: 'string',\n    state: 'string',\n    complement: 'string'\n  },\n  businessDescription: 'string',\n  businessProduct: 'string',\n  businessLifetime: 'string',\n  businessGoal: 'string'\n}));\nreq.end();"
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/account-register',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  officialName: 'string',\n  tradeName: 'string',\n  taxID: 'string',\n  correlationID: 'string',\n  documents: [{url: 'string', type: 'SOCIAL_CONTRACT'}],\n  representatives: [\n    {\n      name: 'string',\n      documents: [{url: 'string', type: 'IDENTITY_FRONT'}],\n      birthDate: 'string',\n      email: 'user@example.com',\n      phone: 'string',\n      type: 'ADMIN',\n      taxID: 'string',\n      address: {\n        zipcode: 'string',\n        street: 'string',\n        number: 'string',\n        neighborhood: 'string',\n        city: 'string',\n        state: 'string',\n        complement: 'string',\n        taxID: 'string'\n      }\n    }\n  ],\n  billingAddress: {\n    zipcode: 'string',\n    street: 'string',\n    number: 'string',\n    neighborhood: 'string',\n    city: 'string',\n    state: 'string',\n    complement: 'string'\n  },\n  businessDescription: 'string',\n  businessProduct: 'string',\n  businessLifetime: 'string',\n  businessGoal: 'string'\n}));\nreq.end();"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/account-register \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"officialName\":\"string\",\"tradeName\":\"string\",\"taxID\":\"string\",\"documents\":[{\"url\":\"string\",\"type\":\"SOCIAL_CONTRACT\"}],\"representatives\":[{\"name\":\"string\",\"documents\":[{\"url\":\"string\",\"type\":\"IDENTITY_FRONT\"}],\"birthDate\":\"string\",\"email\":\"user@example.com\",\"phone\":\"string\",\"type\":\"ADMIN\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"taxID\":\"string\"}}],\"billingAddress\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\"},\"businessDescription\":\"string\",\"businessProduct\":\"string\",\"businessLifetime\":\"string\",\"businessGoal\":\"string\"}'"
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/account-register \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"officialName\":\"string\",\"tradeName\":\"string\",\"taxID\":\"string\",\"correlationID\":\"string\",\"documents\":[{\"url\":\"string\",\"type\":\"SOCIAL_CONTRACT\"}],\"representatives\":[{\"name\":\"string\",\"documents\":[{\"url\":\"string\",\"type\":\"IDENTITY_FRONT\"}],\"birthDate\":\"string\",\"email\":\"user@example.com\",\"phone\":\"string\",\"type\":\"ADMIN\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"taxID\":\"string\"}}],\"billingAddress\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\"},\"businessDescription\":\"string\",\"businessProduct\":\"string\",\"businessLifetime\":\"string\",\"businessGoal\":\"string\"}'"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/account-register\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'officialName' => 'string',\n    'tradeName' => 'string',\n    'taxID' => 'string',\n    'documents' => [\n        [\n                'url' => 'string',\n                'type' => 'SOCIAL_CONTRACT'\n        ]\n    ],\n    'representatives' => [\n        [\n                'name' => 'string',\n                'documents' => [\n                                [\n                                                                'url' => 'string',\n                                                                'type' => 'IDENTITY_FRONT'\n                                ]\n                ],\n                'birthDate' => 'string',\n                'email' => 'user@example.com',\n                'phone' => 'string',\n                'type' => 'ADMIN',\n                'taxID' => 'string',\n                'address' => [\n                                'zipcode' => 'string',\n                                'street' => 'string',\n                                'number' => 'string',\n                                'neighborhood' => 'string',\n                                'city' => 'string',\n                                'state' => 'string',\n                                'complement' => 'string',\n                                'taxID' => 'string'\n                ]\n        ]\n    ],\n    'billingAddress' => [\n        'zipcode' => 'string',\n        'street' => 'string',\n        'number' => 'string',\n        'neighborhood' => 'string',\n        'city' => 'string',\n        'state' => 'string',\n        'complement' => 'string'\n    ],\n    'businessDescription' => 'string',\n    'businessProduct' => 'string',\n    'businessLifetime' => 'string',\n    'businessGoal' => 'string'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/account-register\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'officialName' => 'string',\n    'tradeName' => 'string',\n    'taxID' => 'string',\n    'correlationID' => 'string',\n    'documents' => [\n        [\n                'url' => 'string',\n                'type' => 'SOCIAL_CONTRACT'\n        ]\n    ],\n    'representatives' => [\n        [\n                'name' => 'string',\n                'documents' => [\n                                [\n                                                                'url' => 'string',\n                                                                'type' => 'IDENTITY_FRONT'\n                                ]\n                ],\n                'birthDate' => 'string',\n                'email' => 'user@example.com',\n                'phone' => 'string',\n                'type' => 'ADMIN',\n                'taxID' => 'string',\n                'address' => [\n                                'zipcode' => 'string',\n                                'street' => 'string',\n                                'number' => 'string',\n                                'neighborhood' => 'string',\n                                'city' => 'string',\n                                'state' => 'string',\n                                'complement' => 'string',\n                                'taxID' => 'string'\n                ]\n        ]\n    ],\n    'billingAddress' => [\n        'zipcode' => 'string',\n        'street' => 'string',\n        'number' => 'string',\n        'neighborhood' => 'string',\n        'city' => 'string',\n        'state' => 'string',\n        'complement' => 'string'\n    ],\n    'businessDescription' => 'string',\n    'businessProduct' => 'string',\n    'businessLifetime' => 'string',\n    'businessGoal' => 'string'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"officialName\\\":\\\"string\\\",\\\"tradeName\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"SOCIAL_CONTRACT\\\"}],\\\"representatives\\\":[{\\\"name\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"IDENTITY_FRONT\\\"}],\\\"birthDate\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"type\\\":\\\"ADMIN\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\"}}],\\\"billingAddress\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\"},\\\"businessDescription\\\":\\\"string\\\",\\\"businessProduct\\\":\\\"string\\\",\\\"businessLifetime\\\":\\\"string\\\",\\\"businessGoal\\\":\\\"string\\\"}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/account-register\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"officialName\\\":\\\"string\\\",\\\"tradeName\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"SOCIAL_CONTRACT\\\"}],\\\"representatives\\\":[{\\\"name\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"IDENTITY_FRONT\\\"}],\\\"birthDate\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"type\\\":\\\"ADMIN\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\"}}],\\\"billingAddress\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\"},\\\"businessDescription\\\":\\\"string\\\",\\\"businessProduct\\\":\\\"string\\\",\\\"businessLifetime\\\":\\\"string\\\",\\\"businessGoal\\\":\\\"string\\\"}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/account-register\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account-register\"\n\n\tpayload := strings.NewReader(\"{\\\"officialName\\\":\\\"string\\\",\\\"tradeName\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"SOCIAL_CONTRACT\\\"}],\\\"representatives\\\":[{\\\"name\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"IDENTITY_FRONT\\\"}],\\\"birthDate\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"type\\\":\\\"ADMIN\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\"}}],\\\"billingAddress\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\"},\\\"businessDescription\\\":\\\"string\\\",\\\"businessProduct\\\":\\\"string\\\",\\\"businessLifetime\\\":\\\"string\\\",\\\"businessGoal\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account-register\"\n\n\tpayload := strings.NewReader(\"{\\\"officialName\\\":\\\"string\\\",\\\"tradeName\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"SOCIAL_CONTRACT\\\"}],\\\"representatives\\\":[{\\\"name\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"IDENTITY_FRONT\\\"}],\\\"birthDate\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"type\\\":\\\"ADMIN\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\"}}],\\\"billingAddress\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\"},\\\"businessDescription\\\":\\\"string\\\",\\\"businessProduct\\\":\\\"string\\\",\\\"businessLifetime\\\":\\\"string\\\",\\\"businessGoal\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"officialName\\\":\\\"string\\\",\\\"tradeName\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"SOCIAL_CONTRACT\\\"}],\\\"representatives\\\":[{\\\"name\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"IDENTITY_FRONT\\\"}],\\\"birthDate\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"type\\\":\\\"ADMIN\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\"}}],\\\"billingAddress\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\"},\\\"businessDescription\\\":\\\"string\\\",\\\"businessProduct\\\":\\\"string\\\",\\\"businessLifetime\\\":\\\"string\\\",\\\"businessGoal\\\":\\\"string\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/account-register\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"officialName\\\":\\\"string\\\",\\\"tradeName\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"SOCIAL_CONTRACT\\\"}],\\\"representatives\\\":[{\\\"name\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"IDENTITY_FRONT\\\"}],\\\"birthDate\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"type\\\":\\\"ADMIN\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\"}}],\\\"billingAddress\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\"},\\\"businessDescription\\\":\\\"string\\\",\\\"businessProduct\\\":\\\"string\\\",\\\"businessLifetime\\\":\\\"string\\\",\\\"businessGoal\\\":\\\"string\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/account-register\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/account-register\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"officialName\\\":\\\"string\\\",\\\"tradeName\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"SOCIAL_CONTRACT\\\"}],\\\"representatives\\\":[{\\\"name\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"IDENTITY_FRONT\\\"}],\\\"birthDate\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"type\\\":\\\"ADMIN\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\"}}],\\\"billingAddress\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\"},\\\"businessDescription\\\":\\\"string\\\",\\\"businessProduct\\\":\\\"string\\\",\\\"businessLifetime\\\":\\\"string\\\",\\\"businessGoal\\\":\\\"string\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/account-register\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"officialName\\\":\\\"string\\\",\\\"tradeName\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"SOCIAL_CONTRACT\\\"}],\\\"representatives\\\":[{\\\"name\\\":\\\"string\\\",\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"type\\\":\\\"IDENTITY_FRONT\\\"}],\\\"birthDate\\\":\\\"string\\\",\\\"email\\\":\\\"user@example.com\\\",\\\"phone\\\":\\\"string\\\",\\\"type\\\":\\\"ADMIN\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\"}}],\\\"billingAddress\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\"},\\\"businessDescription\\\":\\\"string\\\",\\\"businessProduct\\\":\\\"string\\\",\\\"businessLifetime\\\":\\\"string\\\",\\\"businessGoal\\\":\\\"string\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -2035,7 +2058,7 @@
           "application"
         ],
         "summary": "Create a new application",
-        "description": "Creates a new application for a company",
+        "description": "Creates a new application for a company.\nIf the company has the APPLICATION_SCOPES_REQUIRED feature enabled, the scopes field is required.\n",
         "x-required-scope": "APPLICATION_POST",
         "security": [
           {
@@ -2081,7 +2104,7 @@
         },
         "responses": {
           "201": {
-            "description": "Application successfully created",
+            "description": "Application successfully created.\nThe response includes the scopes field when scopes are assigned to the application.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -2092,31 +2115,9 @@
                     }
                   }
                 },
-                "example": {
-                  "application": {
-                    "name": "Test API",
-                    "isActive": true,
-                    "type": "API",
-                    "clientId": "client_123abc",
-                    "clientSecret": "secret_456def",
-                    "appID": "app_789ghi",
-                    "companyBankAccount": "507f1f77bcf86cd799439011"
-                  }
-                },
                 "examples": {
-                  "ApplicationWithoutScopes": {
-                    "value": {
-                      "application": {
-                        "name": "Test API",
-                        "isActive": true,
-                        "type": "API",
-                        "clientId": "client_123abc",
-                        "clientSecret": "secret_456def",
-                        "appID": "app_789ghi"
-                      }
-                    }
-                  },
                   "ApplicationWithScopes": {
+                    "summary": "Application with scopes (recommended)",
                     "value": {
                       "application": {
                         "name": "Test API with Scopes",
@@ -2129,6 +2130,19 @@
                           "CHARGE_POST",
                           "CHARGE_GET"
                         ]
+                      }
+                    }
+                  },
+                  "ApplicationWithoutScopes": {
+                    "summary": "Application without scopes (legacy)",
+                    "value": {
+                      "application": {
+                        "name": "Test API",
+                        "isActive": true,
+                        "type": "API",
+                        "clientId": "client_123abc",
+                        "clientSecret": "secret_456def",
+                        "appID": "app_789ghi"
                       }
                     }
                   }
@@ -2177,6 +2191,11 @@
                   "InvalidScopes": {
                     "value": {
                       "error": "Invalid scopes: INVALID_SCOPE"
+                    }
+                  },
+                  "ScopesRequired": {
+                    "value": {
+                      "error": "Scopes are required"
                     }
                   },
                   "NoMasterApplication": {
@@ -6715,30 +6734,9 @@
                   }
                 }
               },
-              "example": {
-                "application": {
-                  "name": "MyAPIAccess",
-                  "type": "API"
-                },
-                "taxID": {
-                  "taxID": "65914571000187",
-                  "type": "BR:CNPJ"
-                }
-              },
               "examples": {
-                "ApplicationWithoutScopes": {
-                  "value": {
-                    "application": {
-                      "name": "MyAPIAccess",
-                      "type": "API"
-                    },
-                    "taxID": {
-                      "taxID": "65914571000187",
-                      "type": "BR:CNPJ"
-                    }
-                  }
-                },
                 "ApplicationWithScopes": {
+                  "summary": "Application with scopes (recommended)",
                   "value": {
                     "application": {
                       "name": "MyAPIAccessWithScopes",
@@ -6753,6 +6751,19 @@
                       "type": "BR:CNPJ"
                     }
                   }
+                },
+                "ApplicationWithoutScopes": {
+                  "summary": "Application without scopes (legacy)",
+                  "value": {
+                    "application": {
+                      "name": "MyAPIAccess",
+                      "type": "API"
+                    },
+                    "taxID": {
+                      "taxID": "65914571000187",
+                      "type": "BR:CNPJ"
+                    }
+                  }
                 }
               }
             }
@@ -6760,7 +6771,7 @@
         },
         "responses": {
           "200": {
-            "description": "Our \"idempotence output\", if you get this HTTP code, it's an application\nthat already has been registered.\n",
+            "description": "Our \"idempotence output\", if you get this HTTP code, it's an application\nthat already has been registered.\nThe response includes the scopes field when scopes are assigned to the application.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -6770,12 +6781,42 @@
                       "$ref": "#/components/schemas/PartnerApplicationPayload"
                     }
                   }
+                },
+                "examples": {
+                  "ApplicationWithScopes": {
+                    "summary": "Application with scopes (recommended)",
+                    "value": {
+                      "application": {
+                        "name": "MyAPIAccessWithScopes",
+                        "isActive": true,
+                        "type": "API",
+                        "clientId": "client_123abc",
+                        "clientSecret": "secret_456def",
+                        "scopes": [
+                          "CHARGE_POST",
+                          "CHARGE_GET"
+                        ]
+                      }
+                    }
+                  },
+                  "ApplicationWithoutScopes": {
+                    "summary": "Application without scopes (legacy)",
+                    "value": {
+                      "application": {
+                        "name": "MyAPIAccess",
+                        "isActive": true,
+                        "type": "API",
+                        "clientId": "client_123abc",
+                        "clientSecret": "secret_456def"
+                      }
+                    }
+                  }
                 }
               }
             }
           },
           "201": {
-            "description": "A new application has been registered. It'll be identified by the name that you give to it\nand by the company that has been referenced.\n",
+            "description": "A new application has been registered. It'll be identified by the name that you give to it\nand by the company that has been referenced.\nThe response includes the scopes field when scopes are assigned to the application.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -6783,6 +6824,36 @@
                   "properties": {
                     "application": {
                       "$ref": "#/components/schemas/PartnerApplicationPayload"
+                    }
+                  }
+                },
+                "examples": {
+                  "ApplicationWithScopes": {
+                    "summary": "Application with scopes (recommended)",
+                    "value": {
+                      "application": {
+                        "name": "MyAPIAccessWithScopes",
+                        "isActive": true,
+                        "type": "API",
+                        "clientId": "client_123abc",
+                        "clientSecret": "secret_456def",
+                        "scopes": [
+                          "CHARGE_POST",
+                          "CHARGE_GET"
+                        ]
+                      }
+                    }
+                  },
+                  "ApplicationWithoutScopes": {
+                    "summary": "Application without scopes (legacy)",
+                    "value": {
+                      "application": {
+                        "name": "MyAPIAccess",
+                        "isActive": true,
+                        "type": "API",
+                        "clientId": "client_123abc",
+                        "clientSecret": "secret_456def"
+                      }
                     }
                   }
                 }
@@ -8281,6 +8352,22 @@
         ],
         "summary": "Get all Pix keys",
         "description": "Retrieves a list of all Pix keys",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "skip",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -8317,31 +8404,31 @@
         "x-codeSamples": [
           {
             "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/pix-keys',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/pix-keys \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/pix-keys\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/pix-keys\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/pix-keys\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/pix-keys\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/pix-keys\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/pix-keys?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       },
@@ -8461,6 +8548,183 @@
           {
             "lang": "Ruby + Native",
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/pix-keys/tokens\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/pix-keys/tokens/logs": {
+      "get": {
+        "tags": [
+          "pixKey"
+        ],
+        "summary": "Get token bucket logs",
+        "description": "Get a list of token bucket operation logs",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "skip",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "companyBankAccount",
+            "description": "Filter logs by company bank account ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of token bucket logs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "logs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TokenBucketLog"
+                      }
+                    },
+                    "pageInfo": {
+                      "type": "object",
+                      "properties": {
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "message": {
+                                "type": "string"
+                              },
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "skip": {
+                                    "type": "number"
+                                  },
+                                  "limit": {
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "skip": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "totalCount": {
+                          "type": "number"
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean"
+                        },
+                        "hasNextPage": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "pageInfo": {
+                    "skip": 0,
+                    "limit": 100,
+                    "totalCount": 50,
+                    "hasPreviousPage": false,
+                    "hasNextPage": false
+                  },
+                  "logs": [
+                    {
+                      "operation": "REMOVE",
+                      "reason": "pixKeyCheck",
+                      "tokens": 1,
+                      "tokensBefore": 100,
+                      "tokensAfter": 99,
+                      "endToEndId": "E18236120202012032010s0133872GZA",
+                      "pixKey": "31324227036",
+                      "createdAt": "2024-01-15T10:30:00.000Z",
+                      "updatedAt": "2024-01-15T10:30:00.000Z"
+                    },
+                    {
+                      "operation": "ADD",
+                      "reason": "refill",
+                      "tokens": 10,
+                      "tokensBefore": 90,
+                      "tokensAfter": 100,
+                      "createdAt": "2024-01-15T11:00:00.000Z",
+                      "updatedAt": "2024-01-15T11:00:00.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Your account does not have the permission to use this endpoint"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/pix-keys/tokens/logs?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE&companyBankAccount=SOME_STRING_VALUE\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -12983,6 +13247,30 @@
                 "description": "Available amount in cents"
               }
             }
+          },
+          "taxId": {
+            "type": "string",
+            "description": "Tax ID associated with the account"
+          },
+          "officialName": {
+            "type": "string",
+            "description": "Official name of the account holder"
+          },
+          "tradeName": {
+            "type": "string",
+            "description": "Trade name of the account holder"
+          },
+          "branch": {
+            "type": "string",
+            "description": "Bank branch number"
+          },
+          "account": {
+            "type": "string",
+            "description": "Bank account number"
+          },
+          "accountName": {
+            "type": "string",
+            "description": "Name of the account"
           }
         }
       },
@@ -14744,6 +15032,44 @@
           },
           "data": {
             "$ref": "#/components/schemas/PixKeyFraudValidationData"
+          }
+        }
+      },
+      "TokenBucketLog": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "enum": [
+              "ADD",
+              "REMOVE"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "tokens": {
+            "type": "number"
+          },
+          "tokensBefore": {
+            "type": "number"
+          },
+          "tokensAfter": {
+            "type": "number"
+          },
+          "endToEndId": {
+            "type": "string"
+          },
+          "pixKey": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
