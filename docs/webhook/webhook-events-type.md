@@ -137,8 +137,12 @@ Esse evento é enviado quando um registro de subconta é aprovado no compliance.
 ### ACCOUNT_REGISTER_REJECTED
 Esse evento é enviado quando um registro de subconta é reprovado no compliance.
 
+[Ver exemplo de payload →](/docs/webhook/examples/webhook-account-register-rejected-payload)
+
 ### ACCOUNT_REGISTER_PENDING
 Esse evento é enviado quando um registro de subconta está em análise.
+
+[Ver exemplo de payload →](/docs/webhook/examples/webhook-account-register-pending-payload)
 
 ## Eventos de Pix Automatico
 

@@ -139,6 +139,8 @@ This event is sent when a subaccount registration is approved in compliance.
 ### ACCOUNT_REGISTER_REJECTED
 This event is sent when a subaccount registration is rejected in compliance.
 
+[See payload example →](/docs/webhook/examples/webhook-account-register-rejected-payload)
+
 ### ACCOUNT_REGISTER_PENDING
 This event is sent when a subaccount registration is under review.
 

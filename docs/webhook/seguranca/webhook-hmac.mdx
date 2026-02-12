@@ -1,6 +1,6 @@
 ---
 id: webhook-hmac
-title: Validando Webhook payload usando HMAC-SHA1
+title: Validando Webhook payload usando HMAC-SHA1 (Depreciado)
 tags:
 - webhook
 - security
@@ -9,15 +9,28 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+# Validação HMAC (Depreciado)
+
+A validação HMAC é o **Primeiro método** para validar webhooks da Woovi.
+
+## Qual a diferença entre X-OpenPix-Signature (HMAC) e x-webhook-signature?
+
+Existem dois métodos de validação de webhook disponíveis:
+
+| Método | Header | O que valida | Chave utilizada |
+|--------|--------|--------------|-----------------|
+| **HMAC** | `X-OpenPix-Signature` | Valida que o webhook veio da **sua configuração específica de webhook** | Secret key do seu webhook |
+| **x-webhook-signature** | `x-webhook-signature` | Valida que o webhook veio da **Woovi** (valida o remetente) | Chave pública da Woovi |
+
 # Como consultar o Secret Key do HMAC?
 
-Vá até o Menu Administrador e procure por `API/Plugins` e clique no Webhook que você gostaria de consultar o Secret Key do HMAC
+Vá até o Menu Administrador e procure por `API/Plugins` e clique no Webhook que você gostaria de consultar o Secret Key do HMAC.
 
 ![WebhookDetail](/img/webhook/webhook-hmac.png)
 
 # Como validar o HMAC Signature?
 
-Toda request do Webhook possui o header 'X-OpenPix-Signature' que é a signature gerada com a secret key do Webhook e o payload do Webhook.
+Toda request do Webhook possui o header `X-OpenPix-Signature` que é a assinatura gerada com a **secret key do seu Webhook** e o payload do Webhook.
 Ao receber o header você pode validar se o HMAC é válido e dar continuidade no fluxo do Webhook.
 
 Exemplo: `'X-OpenPix-Signature': 'jgR2XF0PKDiAwHP1s+TryvxMySQ='`
