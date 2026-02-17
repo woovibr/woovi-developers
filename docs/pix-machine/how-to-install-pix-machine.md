@@ -11,7 +11,7 @@ tags:
 import Embed from 'react-embed';
 
 :::info
-É esperado que você já possua conta com a woovi, caso não tenha, [clique aqui](https://ajuda.woovi.com.br/pt-br/article/como-cadastrar-minha-empresa-14e7lwx/) para saber como criar uma conta.
+É esperado que você já possua conta com a woovi, caso não tenha, [clique aqui](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-fazer-login-na-plataforma) para saber como criar uma conta.
 :::
 
 :::info
