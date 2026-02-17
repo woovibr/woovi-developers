@@ -13,7 +13,7 @@ Após criar a API basta seguir o passo a passo.
 
 ### Crie um pagamento de 1 centavo:
 
-Para fazer este passo a passo é necessário que você tenha o PIXOUT habilitado em sua conta, então caso não tenha basta solicitar seguindo este artigo : [Como solicitar o pagamento externo (PIX OUT)](https://ajuda.openpix.com.br/pt-br/article/como-solicitar-o-pagamento-externo-pix-out-1qmsnj7/)
+Para fazer este passo a passo é necessário que você tenha o PIXOUT habilitado em sua conta, então caso não tenha basta solicitar seguindo este artigo : [Como ativar o Pix Out (pagamento externo)](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-o-pix-out-pagamento-externo)
 
 Após isso você irá criar um pagamento para a chave-pix que deseja saber os dados bancários.
 

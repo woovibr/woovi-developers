@@ -51,7 +51,7 @@ A criação de conta na woovi é bem simples, rápida e segura. [Acesse online e
 
 ### 3. Criar uma conta virtual na woovi
 
-Após ter acesso à plataforma da woovi você deve ativar sua conta virtual, conta em que você receberá todos os seus pagamentos. Para isso, basta seguir os passos bem explicados no link a seguir [https://ajuda.woovi.com.br/pt-br/article/como-ativar-a-conta-virtual-da-minha-empresa-1syj32q/](https://ajuda.woovi.com.br/pt-br/article/como-ativar-a-conta-virtual-da-minha-empresa-1syj32q/)
+Após ter acesso à plataforma da woovi você deve ativar sua conta virtual, conta em que você receberá todos os seus pagamentos. Para isso, basta seguir os passos bem explicados no link a seguir [https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-a-conta-virtual-da-minha-empresa](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-a-conta-virtual-da-minha-empresa)
 
 ### 4. Configurar a integração na Wabiz
 
