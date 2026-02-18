@@ -14,7 +14,6 @@ Ao gerar uma cobrança podem ocorrer diversos erros. Segue abaixo a listagem de 
 
 | Código | Motivo | Descrição |
 |--------|--------|-----------|
-| ACSP | Instrução de pagamento aceita após as validações realizadas pelo participante do usuário pagador. | Instrução de pagamento aceita após as validações realizadas pelo participante do usuário pagador. |
 | RJCT | Instrução de pagamento rejeitada pelo participante do usuário pagador. | Instrução de pagamento rejeitada pelo participante do usuário pagador. |
 | AB10 | Transação interrompida devido a erro no participante do usuário pagador. | Transação interrompida devido a erro no participante do usuário pagador. |
 | AC05 | Conta transacional do usuário pagador encerrada. | Conta transacional do usuário pagador encerrada. |
