@@ -4,6 +4,7 @@ title: Estatísticas de Fraude da Chave PIX
 sidebar_label: Estatísticas de Fraude da Chave PIX
 description: Consultar estatísticas de fraude e indicadores de risco para chaves PIX
 unlisted: true
+sidebar_class_name: sidebar-hidden
 ---
 
 # Estatísticas de Fraude da Chave PIX ou CPF
