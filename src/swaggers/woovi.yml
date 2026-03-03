@@ -12205,6 +12205,30 @@ paths:
         schema:
           type: string
         example: Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA
+      - in: query
+        name: hasWebhook
+        description: >-
+          Filter transactions by webhook delivery status. Use true to get only
+          transactions that had a successful webhook delivery (HTTP 200), or
+          false to get transactions without successful webhook delivery.
+        schema:
+          type: boolean
+        example: true
+      - in: query
+        name: type
+        description: Filter transactions by type
+        schema:
+          type: string
+          enum:
+            - PAYMENT
+            - WITHDRAW
+            - REFUND
+            - FEE
+            - INTERNAL_TRANSFER
+            - BALANCE_BLOCK
+            - BALANCE_UNBLOCK
+            - REVERSAL
+        example: REFUND
     get:
       tags:
         - transactions
@@ -12295,6 +12319,11 @@ paths:
                   time: 2021-03-03T12:33:00.536Z
                   transactionID: transactionID
                   endToEndId: E18236120202012032010s0133872GZA
+                  webhookSent:
+                    - OPENPIX:TRANSACTION_RECEIVED:
+                        status: 200
+                        time: 2021-03-03T12:33:00.546Z
+                      isRetry: false
         '400':
           description: An error message
           content:
@@ -12313,7 +12342,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA',
+              path: '/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND',
               headers: {
                 Authorization: 'Bearer REPLACE_BEARER_TOKEN'
               }
@@ -12336,7 +12365,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA' \
+              --url 'https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND' \
               --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
         - lang: Php + Curl
           source: |-
@@ -12345,7 +12374,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -12379,7 +12408,7 @@ paths:
 
 
             conn.request("GET",
-            "/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA",
+            "/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND",
             headers=headers)
 
 
@@ -12390,13 +12419,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA")
+              .url("https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND")
               .get()
               .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
               .build();
@@ -12410,7 +12439,7 @@ paths:
 
 
             url =
-            URI("https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA")
+            URI("https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -19192,6 +19221,36 @@ components:
         pixQrCode:
           type: object
           $ref: '#/components/schemas/PixQrCode'
+        webhookSent:
+          type: array
+          description: >-
+            List of webhook delivery attempts for this transaction, sorted by
+            most recent first. Each item contains the event name as key with
+            status and time, plus an isRetry flag.
+          items:
+            type: object
+            properties:
+              isRetry:
+                type: boolean
+                description: Whether this webhook delivery was a retry
+            additionalProperties:
+              type: object
+              properties:
+                status:
+                  type: number
+                  description: HTTP response status code of the webhook delivery attempt
+                time:
+                  type: string
+                  description: Timestamp of the webhook delivery attempt
+          example:
+            - OPENPIX:TRANSACTION_RECEIVED:
+                status: 200
+                time: 2025-01-01T00:00:00.000Z
+              isRetry: false
+            - OPENPIX:TRANSACTION_RECEIVED:
+                status: 404
+                time: 2025-01-02T00:00:00.000Z
+              isRetry: true
     PixWithdrawTransaction:
       type: object
       properties:

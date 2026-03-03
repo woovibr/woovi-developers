@@ -9367,6 +9367,34 @@
             "type": "string"
           },
           "example": "Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA"
+        },
+        {
+          "in": "query",
+          "name": "hasWebhook",
+          "description": "Filter transactions by webhook delivery status. Use true to get only transactions that had a successful webhook delivery (HTTP 200), or false to get transactions without successful webhook delivery.",
+          "schema": {
+            "type": "boolean"
+          },
+          "example": true
+        },
+        {
+          "in": "query",
+          "name": "type",
+          "description": "Filter transactions by type",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "PAYMENT",
+              "WITHDRAW",
+              "REFUND",
+              "FEE",
+              "INTERNAL_TRANSFER",
+              "BALANCE_BLOCK",
+              "BALANCE_UNBLOCK",
+              "REVERSAL"
+            ]
+          },
+          "example": "REFUND"
         }
       ],
       "get": {
@@ -9490,7 +9518,16 @@
                     "value": 100,
                     "time": "2021-03-03T12:33:00.536Z",
                     "transactionID": "transactionID",
-                    "endToEndId": "E18236120202012032010s0133872GZA"
+                    "endToEndId": "E18236120202012032010s0133872GZA",
+                    "webhookSent": [
+                      {
+                        "OPENPIX:TRANSACTION_RECEIVED": {
+                          "status": 200,
+                          "time": "2021-03-03T12:33:00.546Z"
+                        },
+                        "isRetry": false
+                      }
+                    ]
                   }
                 }
               }
@@ -9515,31 +9552,31 @@
         "x-codeSamples": [
           {
             "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.openpix.com.br',\n  port: null,\n  path: '/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.openpix.com.br',\n  port: null,\n  path: '/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request GET \\\n  --url 'https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+            "source": "curl --request GET \\\n  --url 'https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.openpix.com.br\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.openpix.com.br\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.openpix.com.br/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -15213,6 +15250,48 @@
           "pixQrCode": {
             "type": "object",
             "$ref": "#/components/schemas/PixQrCode"
+          },
+          "webhookSent": {
+            "type": "array",
+            "description": "List of webhook delivery attempts for this transaction, sorted by most recent first. Each item contains the event name as key with status and time, plus an isRetry flag.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "isRetry": {
+                  "type": "boolean",
+                  "description": "Whether this webhook delivery was a retry"
+                }
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "number",
+                    "description": "HTTP response status code of the webhook delivery attempt"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Timestamp of the webhook delivery attempt"
+                  }
+                }
+              }
+            },
+            "example": [
+              {
+                "OPENPIX:TRANSACTION_RECEIVED": {
+                  "status": 200,
+                  "time": "2025-01-01T00:00:00.000Z"
+                },
+                "isRetry": false
+              },
+              {
+                "OPENPIX:TRANSACTION_RECEIVED": {
+                  "status": 404,
+                  "time": "2025-01-02T00:00:00.000Z"
+                },
+                "isRetry": true
+              }
+            ]
           }
         }
       },
