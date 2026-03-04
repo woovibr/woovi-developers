@@ -242,7 +242,9 @@
                     "balance": {
                       "total": 129430,
                       "blocked": 0,
-                      "available": 129430
+                      "available": 129430,
+                      "blockedBySecurity": 0,
+                      "blockedByWithdrawSafety": 0
                     },
                     "taxId": "12345678901",
                     "officialName": "Company Name LLC",
@@ -13282,11 +13284,19 @@
               },
               "blocked": {
                 "type": "number",
-                "description": "Blocked amount in cents"
+                "description": "Total blocked amount in cents (security + withdraw safety)"
               },
               "available": {
                 "type": "number",
                 "description": "Available amount in cents"
+              },
+              "blockedBySecurity": {
+                "type": "number",
+                "description": "Amount blocked due to security restrictions (e.g., PIX_OUT blocking)"
+              },
+              "blockedByWithdrawSafety": {
+                "type": "number",
+                "description": "Amount blocked as minimum balance reserve (withdraw safety value)"
               }
             }
           },
