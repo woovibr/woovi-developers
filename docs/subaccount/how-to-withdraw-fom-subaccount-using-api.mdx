@@ -68,3 +68,42 @@ fetch(
   }
 }
 ```
+
+### Tratamento de erros
+
+Quando um saque de subconta falha, o webhook `OPENPIX:MOVEMENT_FAILED` é disparado com o código e a descrição específica do erro no campo `error`:
+
+```json
+{
+  "event": "OPENPIX:MOVEMENT_FAILED",
+  "payment": {
+    "value": 100,
+    "status": "FAILED",
+    "destinationAlias": "pixKeyTest@test.com",
+    "correlationID": "TESTING1323"
+  },
+  "error": {
+    "code": "PIX_KEY_INFO_NOT_FOUND",
+    "description": "A chave pix não está registrada em uma instituição bancária"
+  }
+}
+```
+
+Os principais códigos de erro para saques de subconta são:
+
+| Código do Erro | Descrição |
+| --- | --- |
+| `NOT_ENOUGH_BALANCE` | A subconta não possui saldo suficiente para realizar o saque |
+| `PIX_KEY_INFO_NOT_FOUND` | A chave pix não está registrada em nenhuma instituição bancária |
+| `INVALID_PIX_KEY` | A chave pix informada é inválida |
+| `ENTRY_ASSOCIATED_WITH_RESTRICTED_ACCOUNT_OR_USER` | A conta associada à chave pix está restrita por fraude pelo Banco Central |
+
+:::info
+Para a lista completa de códigos de erro, consulte a [documentação de erros de pagamento](/docs/payment/payment-failed-errors).
+
+Para erros retornados pelo SPI (Sistema de Pagamentos Instantâneos do Banco Central), consulte os [códigos de erro PIX](/docs/flows/error-codes-payment).
+:::
+
+:::caution
+Quando a chave pix da subconta é inválida ou está associada a uma conta restrita, o campo `withdrawBlocked` da subconta é marcado como `true` e saques futuros serão bloqueados. Veja mais detalhes em [Por que o saque da subconta foi bloqueado?](/docs/subaccount/subaccount-withdraw-blocked).
+:::
