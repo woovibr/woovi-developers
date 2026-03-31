@@ -3975,8 +3975,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -3985,7 +3983,6 @@ paths:
                   pageInfo:
                     skip: 0
                     limit: 10
-                    totalCount: 20
                     hasPreviousPage: false
                     hasNextPage: true
                   charges:
@@ -5389,8 +5386,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -5399,7 +5394,6 @@ paths:
                   pageInfo:
                     skip: 0
                     limit: 10
-                    totalCount: 20
                     hasPreviousPage: false
                     hasNextPage: true
                   customers:
@@ -6996,8 +6990,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -7006,7 +6998,6 @@ paths:
                   pageInfo:
                     skip: 0
                     limit: 10
-                    totalCount: 20
                     hasPreviousPage: false
                     hasNextPage: true
                   disputes:
@@ -9086,8 +9077,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -9916,8 +9905,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -9926,7 +9913,6 @@ paths:
                 pageInfo:
                   skip: 0
                   limit: 10
-                  totalCount: 20
                   hasPreviousPage: false
                   hasNextPage: true
                 payments:
@@ -10102,7 +10088,14 @@ paths:
       security:
         - AppID:
             - PAYMENT_POST
-      description: Endpoint to request a payment
+      description: >
+        Endpoint to request a payment. Supports three payment types: Pix Key
+        (`PIX_KEY`), QR Code (`QR_CODE`), and Manual (`MANUAL`).
+
+
+        For QR Code payments, the system decodes the BR Code string and extracts
+        the destination and value automatically. After creating, use `POST
+        /api/v1/payment/approve` with the correlationID to execute.
       requestBody:
         description: Data to create a payment request
         required: true
@@ -10113,8 +10106,9 @@ paths:
               $ref: '#/components/schemas/PaymentCreatePayload'
             examples:
               pixKey:
-                summary: Pix Key
+                summary: Pay via Pix Key
                 value:
+                  type: PIX_KEY
                   value: 100
                   destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
                   destinationAliasType: RANDOM
@@ -10126,19 +10120,35 @@ paths:
                     userId: user-456
                     source: mobile-app
               qrCode:
-                summary: QR Code
+                summary: Pay a QR Code (BR Code)
                 value:
+                  type: QR_CODE
+                  correlationID: payment-qrcode-1
                   qrCode: >-
-                    000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009SaoPaulo62360532867ba5173c734202ac659721306b38c963044BCA
+                    00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA
+                    EXEMPLO LTDA6009SAO
+                    PAULO6229052512345678901234567890163049A2F
                   comment: payment comment
-                  correlationID: payment1
-                  pixKeyEndToEndId: E1234567890
                   metadata:
                     qrCodeSource: store-terminal
                     storeId: store-789
-              manual:
-                summary: Manual Payment
+              qrCodeWithValue:
+                summary: >-
+                  Pay a QR Code with custom value (for QR Codes without fixed
+                  value)
                 value:
+                  type: QR_CODE
+                  correlationID: payment-qrcode-2
+                  qrCode: >-
+                    00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA
+                    EXEMPLO LTDA6009SAO
+                    PAULO6229052512345678901234567890163049A2F
+                  value: 3000
+                  comment: payment with custom value
+              manual:
+                summary: Pay via manual bank details
+                value:
+                  type: MANUAL
                   value: 100
                   pixKeyEndToEndId: E1234567890
                   correlationID: manual-payment-26
@@ -10170,9 +10180,10 @@ paths:
                     $ref: '#/components/schemas/Payment'
               examples:
                 pixKey:
-                  summary: Pix Key
+                  summary: Pix Key response
                   value:
                     payment:
+                      type: PIX_KEY
                       value: 100
                       status: CREATED
                       destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
@@ -10180,27 +10191,32 @@ paths:
                       comment: payment comment
                       correlationID: payment1
                 qrCode:
-                  summary: QR Code
+                  summary: QR Code response
                   value:
                     payment:
-                      value: 100
+                      type: QR_CODE
+                      value: 3000
                       status: CREATED
-                      destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
-                      destinationAliasType: RANDOM
                       qrCode: >-
-                        000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
-                        Paulo62360532867ba5173c734202ac659721306b38c963044BCA
+                        00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA
+                        EXEMPLO LTDA6009SAO
+                        PAULO6229052512345678901234567890163049A2F
                       comment: payment comment
-                      correlationID: payment1
+                      correlationID: payment-qrcode-1
+                    destination:
+                      name: LOJA EXEMPLO LTDA
+                      taxID: '11222333000181'
+                      bank: Banco Exemplo S.A.
                 manual:
-                  summary: Manual Payment
+                  summary: Manual Payment response
                   value:
                     payment:
+                      type: MANUAL
                       value: 100
                       status: CREATED
                       correlationID: manual-payment-1
                       holder:
-                        name: teste
+                        name: Hodlis 3
                         taxID:
                           type: BR:CNPJ
                           taxID: '20244827000158'
@@ -11174,8 +11190,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -11184,7 +11198,6 @@ paths:
                 pageInfo:
                   skip: 0
                   limit: 100
-                  totalCount: 50
                   hasPreviousPage: false
                   hasNextPage: false
                 logs:
@@ -11717,8 +11730,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -11727,7 +11738,6 @@ paths:
                   pageInfo:
                     skip: 0
                     limit: 10
-                    totalCount: 20
                     hasPreviousPage: false
                     hasNextPage: true
                   pixQrCodes:
@@ -12274,8 +12284,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -12284,7 +12292,6 @@ paths:
                 pageInfo:
                   skip: 0
                   limit: 10
-                  totalCount: 20
                   hasPreviousPage: false
                   hasNextPage: true
                 transactions:
@@ -12669,8 +12676,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -12679,7 +12684,6 @@ paths:
                   pageInfo:
                     skip: 0
                     limit: 10
-                    totalCount: 20
                     hasPreviousPage: false
                     hasNextPage: true
                   refunds:
@@ -14246,8 +14250,6 @@ paths:
                         type: number
                       limit:
                         type: number
-                      totalCount:
-                        type: number
                       hasPreviousPage:
                         type: boolean
                       hasNextPage:
@@ -14261,7 +14263,6 @@ paths:
                 pageInfo:
                   skip: 0
                   limit: 10
-                  totalCount: 20
                   hasPreviousPage: false
                   hasNextPage: true
         '400':
@@ -15320,6 +15321,47 @@ paths:
                         - CREDIT
                         - DEBIT
                       example: CREDIT
+                    operationType:
+                      type: string
+                      nullable: true
+                      enum:
+                        - CREDIT
+                        - DEBIT
+                        - TRANSFER_CREDIT
+                        - TRANSFER_DEBIT
+                        - WITHDRAWAL
+                        - WITHDRAWAL_REVERSAL
+                        - WITHDRAWAL_FEE
+                        - WITHDRAWAL_FEE_REVERSAL
+                      description: >
+                        | operationType           |
+                        Descrição                                         |
+
+                        |-------------------------|---------------------------------------------------|
+
+                        | CREDIT                  | Valor
+                        recebido                                    |
+
+                        | DEBIT                   | Valor
+                        enviado                                     |
+
+                        | TRANSFER_CREDIT         | Crédito de transferência
+                        interna entre subcontas  |
+
+                        | TRANSFER_DEBIT          | Débito de transferência
+                        interna entre subcontas   |
+
+                        | WITHDRAWAL              | Saque iniciado a partir da
+                        subconta               |
+
+                        | WITHDRAWAL_REVERSAL     | Estorno de um saque
+                        processado anteriormente      |
+
+                        | WITHDRAWAL_FEE          | Taxa cobrada por uma
+                        operação de saque            |
+
+                        | WITHDRAWAL_FEE_REVERSAL | Estorno da taxa de
+                        saque                          |
         '400':
           description: An error message
           content:
@@ -15835,7 +15877,6 @@ paths:
                   pageInfo:
                     skip: 0
                     limit: 10
-                    totalCount: 20
                     hasPreviousPage: false
                     hasNextPage: true
         '400':
@@ -16827,7 +16868,6 @@ paths:
                   pageInfo:
                     skip: 0
                     limit: 100
-                    totalCount: 2
                     hasPreviousPage: false
                     hasNextPage: true
                   webhooks:
@@ -18723,7 +18763,7 @@ components:
               description: the type of the pix key the payment should be sent to
             correlationID:
               type: string
-              description: an unique identifier for your payment
+              description: a unique identifier for your payment
             pixKeyEndToEndId:
               type: string
               description: >-
@@ -18731,7 +18771,7 @@ components:
                 consultations
             comment:
               type: string
-              description: the comment that will be send alongisde your payment
+              description: the comment that will be sent alongside your payment
             metadata:
               type: object
               additionalProperties: true
@@ -18750,18 +18790,24 @@ components:
               description: type of the payment
             qrCode:
               type: string
-              description: the QR Code to be paid
+              description: >-
+                the BR Code (Pix QR Code) string to be paid. The system will
+                decode it and extract the destination and value automatically
+            value:
+              type: number
+              description: >-
+                optional value in cents. Use this to override the value
+                extracted from the QR Code, or to set a value for QR Codes
+                without a fixed amount
             correlationID:
               type: string
-              description: an unique identifier for your payment
-            pixKeyEndToEndId:
+              description: a unique identifier for your payment
+            sourceAccountId:
               type: string
-              description: >-
-                the end to end id of the pix key used for track pix key
-                consultations
+              description: optional source account ID to use for the payment
             comment:
               type: string
-              description: the comment that will be send alongisde your payment
+              description: the comment that will be sent alongside your payment
             metadata:
               type: object
               additionalProperties: true
@@ -18786,7 +18832,7 @@ components:
               description: value of the requested payment in cents
             correlationID:
               type: string
-              description: an unique identifier for your payment
+              description: a unique identifier for your payment
             pixKeyEndToEndId:
               type: string
               description: >-
@@ -18869,7 +18915,7 @@ components:
           description: Your correlation ID to keep track of this payment
         comment:
           type: string
-          description: the comment that will be send alongisde your payment
+          description: the comment that will be sent alongside your payment
         status:
           type: string
           description: payment status
@@ -19597,11 +19643,20 @@ components:
           type: string
           description: Comment to be show in QR Code
         dayGenerateCharge:
-          type: number
-          description: Day of the month that the charges will be generated. Maximum of 31.
-          minimum: 1
-          maximum: 31
-          default: 5
+          oneOf:
+            - type: number
+              description: >-
+                Day of the month that the charges will be generated. Maximum of
+                31.
+              minimum: 1
+              maximum: 31
+              default: 5
+            - type: string
+              format: date-time
+              description: >-
+                Full UTC date for the first charge generation (e.g.
+                "2026-02-22T00:00:00.000Z"). The day of the month will be
+                extracted for recurring charges.
         frequency:
           type: string
           enum:
@@ -19678,8 +19733,6 @@ components:
         skip:
           type: number
         limit:
-          type: number
-        totalCount:
           type: number
         hasPreviousPage:
           type: boolean
@@ -20057,8 +20110,43 @@ tags:
       Partners integrate affiliated companies.<br/>
       They can register new companies, manage them, and earn money from them.
   - name: payment (request access)
-    description: |
-      Endpoint to init a payment using a Pix Key.
+    description: >
+      Endpoints to create and manage Pix payment requests. Supports three
+      payment types:
+
+
+      **1. Pix Key (`PIX_KEY`)** - Pay directly to a Pix key (CPF, CNPJ, email,
+      phone, or random key).
+
+
+      **2. QR Code (`QR_CODE`)** - Pay a Pix QR Code (BR Code). Send the raw QR
+      Code string and the system will decode it, extract the destination and
+      value automatically.
+
+
+      **3. Manual (`MANUAL`)** - Pay by providing the destination bank account
+      details directly (holder, account, branch, PSP).
+
+
+      ### QR Code Payment Flow
+
+
+      To pay a QR Code, follow these steps:
+
+
+      1. **Create the payment** - Call `POST /api/v1/payment` with `type:
+      "QR_CODE"` and the `qrCode` field containing the BR Code string. The value
+      is automatically extracted from the QR Code. You can optionally provide a
+      `value` field to override it (for QR Codes without a fixed value).
+
+      2. **Review the response** - The response includes the decoded payment
+      details (destination, value, status `CREATED`).
+
+      3. **Approve the payment** - Call `POST /api/v1/payment/approve` with the
+      `correlationID` to execute the payment.
+
+      4. **Check the status** - Call `GET /api/v1/payment/{id}` with the
+      correlationID to verify the payment status and get transaction details.
   - name: pixKey
     description: |
       Endpoint to manage Pix Keys
