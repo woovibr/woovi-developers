@@ -67,8 +67,7 @@ Se você se deparar com problemas utilizando a plataforma, por favor verifique o
 
 - Certifique-se que os domínios da woovi estão liberados seu servidor proxy ou firewall. Além disso seus clientes também devem ter poder acessar todos os domínios e subdomínios.
   
-  > Permitir todo tráfego para woovi *.woovi.com.br 
-  > Permitir todo tráfego para woovi *.woovi.com
+  > Permitir todo tráfego para woovi *.woovi.com.br e/ou *.woovi.com
 
 - Certifique-se de que não está bloqueando os e-mails do domínio da woovi.
   
