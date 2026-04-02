@@ -52,6 +52,8 @@ Todas as `requests` e `responses` da API usam o formato JSON
 
 Para que a requisição seja válida, é necessário enviar o `AppID`/`Token` no header `Authorization` da requisição.
 
+Não utilize o prefixo `Bearer`. Envie o valor bruto do `AppID` no header.
+
 ```json
 {
   "Authorization": "<AppID>"
