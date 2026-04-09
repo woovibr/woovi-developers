@@ -35,7 +35,7 @@ Após clicar em ativar agora, você será redirecionado para a página de ajuste
 
 ![Formulário de informações fiscais](./__assets__/invoice-tax-form.png)
 
-1. **Assinatura municipal**: Código fornecido pela prefeitura para identificação do prestador de serviço no município, necessário para emissão de nota fiscal eletrônica.
+1. **Assinatura municipal (código municipal):** Código fornecido pela prefeitura para identificação do prestador de serviço no município, necessário para emissão de nota fiscal eletrônica.
 2. **Número de rps**: O Número do Recibo de Serviço Provisório é um número que identifica a transação antes da conversão em fatura eletrônica.
 3. **Regime de imposto especial**: Indicação de impostos específicos aplicáveis ao serviço prestado, conforme legislação local ou federal.
 4. **Código de serviço**: Identificador do tipo de serviço prestado, conforme a lista de serviços municipais, para cálculo correto de impostos e tributos..
