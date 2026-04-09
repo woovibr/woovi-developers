@@ -17779,8 +17779,11 @@ paths:
     post:
       tags:
         - kyc
-      summary: Create KYC Onboarding
+      summary: Create KYC Onboarding (Unreleased)
       description: >-
+        ⚠️ **Unreleased** — This endpoint is not yet available in production.
+
+
         Creates a KYC (Know Your Customer) onboarding for a merchant.
         Returns a link for the merchant to complete their registration.
         The endpoint is idempotent by correlationID.
@@ -20269,6 +20272,8 @@ tags:
       Endpoint to manage Customer
   - name: kyc
     description: |
+      > ⚠️ **Unreleased** — This API is not yet available in production.
+
       Endpoints for KYC (Know Your Customer) onboarding
   - name: dispute
     description: |
