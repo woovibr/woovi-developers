@@ -1,0 +1,116 @@
+---
+id: kyc-woovi-kyc-react
+title: "woovi-kyc: Wizard React para KYC Onboarding"
+tags:
+  - kyc
+  - onboarding
+  - react
+  - open-source
+  - community
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# woovi-kyc
+
+[![npm version](https://img.shields.io/npm/v/woovi-kyc.svg)](https://www.npmjs.com/package/woovi-kyc)
+[![npm downloads](https://img.shields.io/npm/dm/woovi-kyc.svg)](https://www.npmjs.com/package/woovi-kyc)
+
+Biblioteca React open-source que implementa um wizard completo de KYC Onboarding para abertura de contas Woovi. Ao invés de construir toda a UI do zero, você integra o componente `<KYCWizard />` e ele cuida de todos os passos: dados da empresa, endereço, upload de documentos, informações dos representantes e revisão final.
+
+**Links:** [GitHub](https://github.com/jgcmarins/woovi-kyc) · [npm](https://www.npmjs.com/package/woovi-kyc) · [Demo](https://woovi-kyc-demo.vercel.app/) · [Documentação completa](https://woovi-kyc-docs.vercel.app/)
+
+:::info Biblioteca da Comunidade
+Esta biblioteca foi criada pela comunidade e **não é mantida oficialmente pela Woovi**. Para a API oficial de KYC Onboarding, consulte os [Primeiros Passos](/docs/kyc/kyc-api-getting-started) e [Como criar um onboarding via API](/docs/kyc/kyc-api-onboarding-create).
+:::
+
+## Instalação
+
+<Tabs>
+  <TabItem value="pnpm" label="pnpm" default>
+
+```bash
+pnpm add woovi-kyc
+```
+
+  </TabItem>
+  <TabItem value="npm" label="npm">
+
+```bash
+npm install woovi-kyc
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+
+```bash
+yarn add woovi-kyc
+```
+
+  </TabItem>
+</Tabs>
+
+**Peer dependencies:** `react` (>=18) e `react-dom` (>=18).
+
+## Uso básico
+
+```tsx
+import { KYCWizard } from 'woovi-kyc';
+import 'woovi-kyc/styles.css';
+
+function App() {
+  return (
+    <KYCWizard
+      cnpj="12345678000100"
+      onFileUploaded={async (file, metadata) => {
+        const url = await myUploadFunction(file, metadata);
+        return url;
+      }}
+      onSubmit={(data) => {
+        // Envie os dados para seu backend → encaminhe para a API Woovi
+        console.log('Dados do onboarding:', data);
+      }}
+      onError={(error) => console.error(error)}
+    />
+  );
+}
+```
+
+## Funcionalidades
+
+- **Auto-preenchimento de CNPJ** — busca dados da empresa via BrasilAPI
+- **Auto-preenchimento de CEP** — busca endereço via BrasilAPI
+- **Storage agnostic** — você controla o upload de arquivos (S3, R2, GCS, etc.)
+- **Callback-driven** — callbacks em cada etapa para controle total do fluxo
+- **Wizard de 5 etapas** — Dados da Empresa → Endereço → Documentos → Representantes → Revisão
+
+## Props
+
+| Prop | Tipo | Obrigatório | Descrição |
+|------|------|:-----------:|-----------|
+| `cnpj` | `string` | Sim | CNPJ da empresa (somente dígitos). Auto-busca dados via BrasilAPI. |
+| `onNext` | `(data) => void` | Não | Chamado quando o usuário avança uma etapa. |
+| `onBack` | `(data) => void` | Não | Chamado quando o usuário volta uma etapa. |
+| `onFileUploaded` | `(file, metadata) => Promise<string>` | Não | Chamado ao selecionar arquivo. Retorne a URL pública. |
+| `onFileRemoved` | `(fileUrl, data) => void` | Não | Chamado ao remover um arquivo. |
+| `onSubmit` | `(data) => void \| Promise<void>` | Não | Chamado ao finalizar o wizard. |
+| `onError` | `(error: Error) => void` | Não | Chamado em caso de erro. |
+
+## Integração com a API Woovi
+
+O wizard coleta todos os dados necessários para o endpoint [`POST /api/v1/kyc/onboarding`](/docs/kyc/kyc-api-onboarding-create). No callback `onSubmit`, envie os dados para seu backend que então encaminha para a API Woovi:
+
+```tsx
+<KYCWizard
+  cnpj="12345678000100"
+  onSubmit={async (data) => {
+    // Seu backend recebe os dados e chama a API Woovi
+    await fetch('/api/kyc/onboarding', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  }}
+/>
+```
