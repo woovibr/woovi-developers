@@ -17775,6 +17775,174 @@ paths:
 
             response = http.request(request)
             puts response.read_body
+  /api/v1/kyc/onboarding:
+    post:
+      tags:
+        - kyc
+      summary: Create KYC Onboarding (Unreleased)
+      description: >-
+        ⚠️ **Unreleased** — This endpoint is not yet available in production.
+
+
+        Creates a KYC (Know Your Customer) onboarding for a merchant.
+        Returns a link for the merchant to complete their registration.
+        The endpoint is idempotent by correlationID.
+      x-required-scope: KYC_ONBOARDING.KYC_ONBOARDING_POST
+      security:
+        - AppID:
+            - KYC_ONBOARDING.KYC_ONBOARDING_POST
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - taxID
+              properties:
+                taxID:
+                  type: string
+                  description: CNPJ of the merchant company (with or without mask)
+                  example: 'XX.XXX.XXX/0001-XX'
+                correlationID:
+                  type: string
+                  description: Unique identifier for idempotency. Defaults to taxID if not provided
+                  example: 'my-unique-id'
+                representatives:
+                  type: array
+                  description: Array of company representatives/partners
+                  items:
+                    type: object
+                    properties:
+                      taxID:
+                        type: string
+                        description: CPF of the representative (with or without mask)
+                        example: 'XXX.XXX.XXX-XX'
+      responses:
+        '201':
+          description: Onboarding created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  linkOnboarding:
+                    type: string
+                  accountRegister:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      officialName:
+                        type: string
+                      tradeName:
+                        type: string
+                      taxID:
+                        type: object
+                        properties:
+                          taxID:
+                            type: string
+                          type:
+                            type: string
+                      correlationID:
+                        type: string
+                      representatives:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            taxID:
+                              type: object
+                              properties:
+                                taxID:
+                                  type: string
+                                type:
+                                  type: string
+              example:
+                linkOnboarding: 'https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...'
+                accountRegister:
+                  status: PENDING
+                  officialName: RAZAO_SOCIAL_DA_EMPRESA
+                  tradeName: NOME_FANTASIA_DA_EMPRESA
+                  taxID:
+                    taxID: 'XXXXXXXXXXXXXX'
+                    type: 'BR:CNPJ'
+                  correlationID: my-unique-id
+                  representatives:
+                    - name: NOME_DO_SOCIO
+                      taxID:
+                        taxID: 'XXXXXXXXXXX'
+                        type: 'BR:CPF'
+        '200':
+          description: Onboarding already exists for this correlationID (idempotent)
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              example:
+                error: 'Invalid input: taxID is required'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: Unauthorized
+        '403':
+          description: Company does not have BAAS feature enabled
+          content:
+            application/json:
+              example:
+                error: Company does not have BaaS feature enabled
+        '409':
+          description: Onboarding already exists with different correlationID
+          content:
+            application/json:
+              example:
+                error: An onboarding already exists for this taxID
+      x-codeSamples:
+        - lang: Shell + cURL
+          source: |-
+            curl 'https://api.woovi.com/api/v1/kyc/onboarding' -X POST \
+                -H "Content-Type: application/json" \
+                -H "Authorization: SEU_APPID_AQUI" \
+                --data-binary '{
+                  "taxID": "XX.XXX.XXX/0001-XX",
+                  "correlationID": "my-unique-id",
+                  "representatives": [
+                    { "taxID": "XXX.XXX.XXX-XX" }
+                  ]
+                }'
+        - lang: Node + Native
+          source: |-
+            const https = require('https');
+
+            const data = JSON.stringify({
+              taxID: 'XX.XXX.XXX/0001-XX',
+              correlationID: 'my-unique-id',
+              representatives: [{ taxID: 'XXX.XXX.XXX-XX' }]
+            });
+
+            const options = {
+              hostname: 'api.woovi.com',
+              path: '/api/v1/kyc/onboarding',
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'SEU_APPID_AQUI',
+                'Content-Length': data.length
+              }
+            };
+
+            const req = https.request(options, (res) => {
+              let body = '';
+              res.on('data', (chunk) => { body += chunk; });
+              res.on('end', () => { console.log(JSON.parse(body)); });
+            });
+
+            req.write(data);
+            req.end();
 components:
   schemas:
     PayloadAccount:
@@ -20102,6 +20270,11 @@ tags:
   - name: customer
     description: |
       Endpoint to manage Customer
+  - name: kyc
+    description: |
+      > ⚠️ **Unreleased** — This API is not yet available in production.
+
+      Endpoints for KYC (Know Your Customer) onboarding
   - name: dispute
     description: |
       Endpoint to manage Dispute

@@ -51,6 +51,14 @@ O status de bloqueio de saque também pode ser visualizado diretamente na plataf
 
 Se você identificar que a chave pix de uma subconta está inválida, retire todo o saldo da subconta. Mesmo após o bloqueio, os endpoints de `/credit` e `/debit` continuam funcionando normalmente — apenas o saque via `/withdraw` é bloqueado.
 
+## Códigos de erro no webhook
+
+Quando um saque falha, o webhook `OPENPIX:MOVEMENT_FAILED` é enviado com o código de erro específico no campo `error`. Isso permite identificar programaticamente o motivo da falha e tomar ações automatizadas.
+
+:::info
+Para a lista completa de códigos de erro, consulte a [documentação de erros de pagamento](/docs/payment/payment-failed-errors) e os [códigos de erro PIX](/docs/flows/error-codes-payment).
+:::
+
 ## Como desbloquear?
 
 Para desbloquear o saque da subconta, é necessário atualizar a chave pix da subconta para uma chave válida e existente e entrar em contato com o suporte técnico.
