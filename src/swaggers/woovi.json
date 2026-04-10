@@ -8276,7 +8276,7 @@
       }
     },
     "/api/v1/pix-keys/{pixKey}/default": {
-      "post": {
+      "put": {
         "tags": [
           "pixKey"
         ],

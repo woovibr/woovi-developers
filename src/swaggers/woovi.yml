@@ -10664,7 +10664,7 @@ paths:
             response = http.request(request)
             puts response.read_body
   /api/v1/pix-keys/{pixKey}/default:
-    post:
+    put:
       tags:
         - pixKey
       summary: Set a pix key as default
