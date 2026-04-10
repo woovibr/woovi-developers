@@ -57,6 +57,16 @@ const links = [
   },
 ];
 
+const communityLibraries = [
+  {
+    title: 'woovi-kyc',
+    description:
+      'Wizard React open-source para onboarding KYC de merchants via API Woovi',
+    href: 'https://github.com/jgcmarins/woovi-kyc',
+    npm: 'https://www.npmjs.com/package/woovi-kyc',
+  },
+];
+
 const products = [
   {
     title: 'Cashback',
@@ -304,6 +314,22 @@ const Home = () => {
               >
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
+              </Link>
+            ))}
+          </section>
+        </section>
+
+        <section>
+          <h2>Bibliotecas da Comunidade</h2>
+          <section className={clsx(styles['products'])}>
+            {communityLibraries.map((lib, i) => (
+              <Link
+                key={`community-${i}`}
+                href={lib.href}
+                className={clsx(styles['products--item'])}
+              >
+                <h3>{lib.title}</h3>
+                <p>{lib.description}</p>
               </Link>
             ))}
           </section>
