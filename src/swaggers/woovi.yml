@@ -8612,6 +8612,13 @@ paths:
         OK) instead
 
         of creating a new one.
+
+
+        The fields `officialName`, `tradeName` and `representatives[].name` are
+        automatically
+
+        populated via data enrichment when available. You do not need to send
+        them in the request.
       security:
         - AppID: []
       requestBody:
@@ -8703,30 +8710,6 @@ paths:
                     type: string
               example:
                 error: Company does not have BaaS feature enabled
-        '405':
-          description: Method not allowed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              example:
-                error: Method Not Allowed. Use POST to create an onboarding.
-        '409':
-          description: >-
-            An onboarding already exists for this taxID with another
-            correlationID
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              example:
-                error: An onboarding already exists for this taxID
         '500':
           description: Internal server error
           content:
