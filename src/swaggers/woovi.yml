@@ -8593,6 +8593,308 @@ paths:
                   value:
                     error: Error while getting invoice documents
       x-codeSamples: []
+  /api/v1/kyc/onboarding:
+    post:
+      tags:
+        - kyc
+      summary: Create a KYC onboarding
+      description: >
+        Creates a new KYC onboarding for a merchant. Returns a link that should
+        be sent
+
+        to the merchant so they can fill in their registration data.
+
+
+        The API is idempotent by `correlationID`. If the same `correlationID` is
+        sent again
+
+        for the same company, the API returns the existing onboarding link (200
+        OK) instead
+
+        of creating a new one.
+      security:
+        - AppID: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KycOnboardingRequest'
+            examples:
+              MinimalRequest:
+                summary: Minimal request with only taxID
+                value:
+                  taxID: XX.XXX.XXX/0001-XX
+              WithCorrelationID:
+                summary: Request with correlationID for idempotency
+                value:
+                  taxID: XX.XXX.XXX/0001-XX
+                  correlationID: my-unique-id
+              WithRepresentatives:
+                summary: Full request with representatives
+                value:
+                  taxID: XX.XXX.XXX/0001-XX
+                  correlationID: my-unique-id
+                  representatives:
+                    - taxID: XXX.XXX.XXX-XX
+                    - taxID: XXX.XXX.XXX-XX
+      responses:
+        '200':
+          description: Onboarding already exists for this correlationID (idempotent)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  linkOnboarding:
+                    type: string
+                    example: >-
+                      https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...
+                  accountRegister:
+                    $ref: '#/components/schemas/KycOnboardingAccountRegister'
+        '201':
+          description: Onboarding created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  linkOnboarding:
+                    type: string
+                    example: >-
+                      https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...
+                  accountRegister:
+                    $ref: '#/components/schemas/KycOnboardingAccountRegister'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                MissingTaxID:
+                  value:
+                    error: 'Invalid input: taxID: Required'
+                InvalidCNPJ:
+                  value:
+                    error: Invalid CNPJ
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Invalid Authorization header
+        '403':
+          description: Company does not have BaaS feature enabled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Company does not have BaaS feature enabled
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Method Not Allowed. Use POST to create an onboarding.
+        '409':
+          description: >-
+            An onboarding already exists for this taxID with another
+            correlationID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: An onboarding already exists for this taxID
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: Internal server error
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'POST',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/kyc/onboarding',
+              headers: {
+                Authorization: 'Bearer REPLACE_BEARER_TOKEN',
+                'content-type': 'application/json'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.write(JSON.stringify({
+              taxID: 'string',
+              correlationID: 'string',
+              representatives: [{taxID: 'string', name: 'string'}]
+            }));
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url https://api.woovi.com/api/v1/kyc/onboarding \
+              --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+              --header 'content-type: application/json' \
+              --data '{"taxID":"string","correlationID":"string","representatives":[{"taxID":"string","name":"string"}]}'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/kyc/onboarding",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode([
+                'taxID' => 'string',
+                'correlationID' => 'string',
+                'representatives' => [
+                    [
+                            'taxID' => 'string',
+                            'name' => 'string'
+                    ]
+                ]
+              ]),
+              CURLOPT_HTTPHEADER => [
+                "Authorization: Bearer REPLACE_BEARER_TOKEN",
+                "content-type: application/json"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            payload =
+            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}"
+
+
+            headers = {
+                'Authorization': "Bearer REPLACE_BEARER_TOKEN",
+                'content-type': "application/json"
+            }
+
+
+            conn.request("POST", "/api/v1/kyc/onboarding", payload, headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/kyc/onboarding\"\n\n\tpayload := strings.NewReader(\"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}");
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/kyc/onboarding")
+              .post(body)
+              .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
+              .addHeader("content-type", "application/json")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url = URI("https://api.woovi.com/api/v1/kyc/onboarding")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
+
+            request["content-type"] = 'application/json'
+
+            request.body =
+            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
   /api/v1/partner/application:
     post:
       tags:
@@ -18651,6 +18953,76 @@ components:
         - disputeReason
         - endToEndId
     End: *ref_1
+    KycOnboardingRepresentative:
+      type: object
+      properties:
+        taxID:
+          type: string
+          description: CPF do representante (com ou sem mascara)
+        name:
+          type: string
+          description: Nome do representante
+      required:
+        - taxID
+    KycOnboardingRequest:
+      type: object
+      properties:
+        taxID:
+          type: string
+          description: CNPJ da empresa do merchant (com ou sem mascara)
+        correlationID:
+          type: string
+          description: >-
+            Identificador unico para idempotencia. Se nao informado, o CNPJ sera
+            usado.
+        representatives:
+          type: array
+          description: Socios/representantes da empresa
+          items:
+            $ref: '#/components/schemas/KycOnboardingRepresentative'
+      required:
+        - taxID
+    KycOnboardingAccountRegister:
+      type: object
+      properties:
+        status:
+          type: string
+          example: PENDING
+        officialName:
+          type: string
+          example: RAZAO_SOCIAL_DA_EMPRESA
+        tradeName:
+          type: string
+          example: NOME_FANTASIA_DA_EMPRESA
+        taxID:
+          type: object
+          properties:
+            taxID:
+              type: string
+              example: XXXXXXXXXXXXXX
+            type:
+              type: string
+              example: BR:CNPJ
+        correlationID:
+          type: string
+          example: my-unique-id
+        representatives:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: NOME_DO_SOCIO
+              taxID:
+                type: object
+                properties:
+                  taxID:
+                    type: string
+                    example: XXXXXXXXXXX
+                  type:
+                    type: string
+                    example: BR:CPF
     ApplicationEnumTypePayload:
       type: string
       description: >-
@@ -20171,6 +20543,8 @@ tags:
   - name: dispute
     description: |
       Endpoint to manage Dispute
+  - name: kyc
+    description: Endpoints for KYC onboarding
   - name: partner (request access)
     description: |
       Partners integrate affiliated companies.<br/>
