@@ -24,7 +24,7 @@ Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real c
 ![Banner](./__assets__/magento2-banner.png)
 ![Install](./__assets__/magento2-marketplace-search.png)
 
-[Download Woovi Magento2 Plugin - versão 2.5.2](pathname:///magento2/woovi_pix.2.5.2.zip) - Versão Atual
+[Download OpenPix Magento2 Plugin - versão 3.0.0](pathname:///magento2/openpix_pix.3.0.0.zip) - Versão Atual
 
 ## 2. Configurando o Plugin Magento2
 
