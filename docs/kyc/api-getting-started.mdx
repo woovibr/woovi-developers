@@ -62,8 +62,8 @@ curl -X POST https://api.woovi.com/api/v1/kyc/onboarding \
 
 ### Requisitos
 
-- A empresa deve possuir a feature **BAAS** habilitada
-- A aplicação deve possuir o scope **`KYC_ONBOARDING.KYC_ONBOARDING_POST`**
+- A empresa deve possuir as features **BAAS** e **KYC_ONBOARDING_LINK** habilitadas
+- A aplicação deve possuir o scope **`KYC_ONBOARDING_POST`**
 
 ## Restrições de API
 
@@ -99,4 +99,7 @@ Caso seja inválido, é recomendado gerar um novo AppID da sua aplicação e adi
 | Ambiente | URL |
 |----------|-----|
 | Produção | `https://api.woovi.com/api/v1/kyc/onboarding` |
-| Staging | `https://api.woovi.dev/api/v1/kyc/onboarding` |
+
+:::tip Referência completa
+Para o schema, parâmetros e exemplos interativos do endpoint, veja a [API Reference](https://developers.woovi.com/api#tag/kyc/POST/api/v1/kyc/onboarding).
+:::

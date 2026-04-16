@@ -14,6 +14,14 @@ Para iniciar o processo de KYC (Know Your Customer) de um merchant, você utiliz
 
 Este endpoint cria um registro de conta (AccountRegister) e retorna um link de onboarding que deve ser enviado ao merchant para que ele preencha seus dados cadastrais.
 
+:::info
+Antes de usar este endpoint, garanta que sua empresa possui as features **BAAS** e **KYC_ONBOARDING_LINK** habilitadas e que sua aplicação tenha o scope **`KYC_ONBOARDING_POST`**. Veja [Primeiros passos com a API de KYC Onboarding](./api-getting-started.mdx) para detalhes.
+:::
+
+:::tip Referência completa
+Para o schema, parâmetros e exemplos interativos, veja a [API Reference](https://developers.woovi.com/api#tag/kyc/POST/api/v1/kyc/onboarding).
+:::
+
 ## Campos
 
 ### Obrigatórios
@@ -100,7 +108,7 @@ curl -X POST https://api.woovi.com/api/v1/kyc/onboarding \
 | `201` | Onboarding criado com sucesso |
 | `400` | Input inválido (taxID ausente ou CNPJ inválido) |
 | `401` | Credenciais inválidas |
-| `403` | Empresa sem feature BAAS |
+| `403` | Empresa sem feature BAAS ou KYC_ONBOARDING_LINK habilitada |
 | `405` | Método HTTP não permitido (use POST) |
 | `409` | Já existe um onboarding para este CNPJ com outro correlationID |
 
@@ -127,6 +135,12 @@ curl -X POST https://api.woovi.com/api/v1/kyc/onboarding \
 ```json
 {
   "error": "Method Not Allowed. Use POST to create an onboarding."
+}
+```
+
+```json
+{
+  "error": "Company does not have BaaS feature enabled"
 }
 ```
 
