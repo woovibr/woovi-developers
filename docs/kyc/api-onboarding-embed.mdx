@@ -1,0 +1,446 @@
+---
+id: kyc-api-onboarding-embed
+title: Como incorporar o link de KYC Onboarding no seu site?
+tags:
+  - api
+  - kyc
+  - onboarding
+  - embed
+  - iframe
+---
+
+import { useState } from 'react';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+export const KycPreview = () => {
+  const [status, setStatus] = useState('PENDING');
+  return (
+    <div>
+      <label style={{display:'flex',alignItems:'center',gap:8,marginBottom:12,fontSize:14,fontWeight:500,flexWrap:'wrap'}}>
+        Renderizar com status:
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          style={{padding:'6px 10px',borderRadius:6,border:'1px solid #d1d5db',background:'#fff'}}
+        >
+          <option value="PENDING">PENDING — em preenchimento</option>
+          <option value="IN_REVIEW">IN_REVIEW — em análise</option>
+          <option value="APPROVED">APPROVED — aprovado</option>
+          <option value="REJECTED">REJECTED — rejeitado</option>
+          <option value="NOT_FOUND">NOT_FOUND — link inválido</option>
+        </select>
+      </label>
+      <iframe
+        src={`https://kyc.woovi.com/onboarding?status=${status}`}
+        title={`Pré-visualização do KYC Onboarding (${status})`}
+        style={{
+          width: '100%',
+          height: '800px',
+          border: '1px solid #e5e7eb',
+          borderRadius: '12px',
+          display: 'block',
+          margin: '0 auto 24px',
+        }}
+        allow="camera; clipboard-read; clipboard-write"
+      />
+    </div>
+  );
+};
+
+Depois de gerar um `linkOnboarding` com o _endpoint_ [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx), você pode entregá-lo ao merchant de três formas:
+
+1. **Redirecionamento** — enviar o merchant diretamente para a página de KYC (recomendado)
+2. **Nova aba / popup** — abrir o KYC sem perder o contexto do seu site
+3. **Iframe** — renderizar o KYC dentro de uma página do seu site
+
+Este guia cobre as três abordagens e como detectar a conclusão do onboarding.
+
+:::info Pré-requisitos
+Antes de incorporar, você precisa ter o `linkOnboarding` em mãos. Caso ainda não tenha, siga [Como criar um onboarding KYC via API?](./api-onboarding-create.mdx).
+:::
+
+:::tip Referência completa
+Para o schema, parâmetros e exemplos interativos do endpoint que gera o `linkOnboarding`, veja a [API Reference](https://developers.woovi.com/api#tag/kyc/POST/api/v1/kyc/onboarding).
+:::
+
+## Opção 1 — Redirecionamento (recomendado)
+
+A forma mais simples e segura de integrar é redirecionar o merchant diretamente para o `linkOnboarding`. O merchant preenche todo o cadastro na página da Woovi e, quando terminar, você pode trazê-lo de volta via um botão no seu sistema ou consultando o status pela API.
+
+```html
+<a href="https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5..." >
+  Iniciar cadastro KYC
+</a>
+```
+
+Ou, programaticamente:
+
+```js
+window.location.href = data.linkOnboarding;
+```
+
+## Opção 2 — Nova aba / popup
+
+Se você quer manter o merchant no seu site enquanto ele preenche o KYC, abra o link em uma nova aba:
+
+```html
+<a
+  href="https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5..."
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Iniciar cadastro KYC
+</a>
+```
+
+Ou como popup:
+
+```js
+const popup = window.open(
+  data.linkOnboarding,
+  'woovi-kyc',
+  'width=480,height=800',
+);
+```
+
+## Opção 3 — Iframe
+
+O frontend de KYC **não envia headers `X-Frame-Options` nem `Content-Security-Policy: frame-ancestors`**, então é possível renderizá-lo dentro de um `<iframe>` no seu site.
+
+```html
+<iframe
+  src="https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5..."
+  width="100%"
+  height="900"
+  style="border: 0; max-width: 640px;"
+  title="Cadastro KYC"
+  allow="camera; clipboard-read; clipboard-write"
+></iframe>
+```
+
+### Atributos recomendados
+
+| Atributo | Valor sugerido | Por quê |
+|----------|----------------|---------|
+| `width` | `100%` (até ~640px) | O formulário é otimizado para telas estreitas/mobile |
+| `height` | `900` ou mais | O formulário é multi-step e pode precisar de scroll interno |
+| `allow` | `camera; clipboard-read; clipboard-write` | Útil para upload de documentos via câmera e colar dados |
+| `title` | `Cadastro KYC` | Acessibilidade |
+
+### Limitações do iframe
+
+- **Não há comunicação `postMessage`** do KYC para a página pai. Você não recebe eventos de "formulário enviado" ou "passo concluído" dentro do iframe.
+- Para saber quando o merchant finalizou o cadastro, você precisa [consultar o status via API](#detectando-a-conclusão-do-onboarding).
+- Upload de arquivos dentro de iframe pode ter restrições em alguns navegadores mobile — teste o fluxo completo antes de subir para produção.
+
+## Detectando a conclusão do onboarding
+
+A API **não envia webhook** quando o merchant conclui o cadastro. Para saber em que estágio ele está, consulte o status do `AccountRegister` usando o `correlationID` ou `taxID` enviados na criação.
+
+### Estados possíveis
+
+| Status | Significado |
+|--------|-------------|
+| `PENDING` | Link criado, merchant ainda não submeteu |
+| `IN_REVIEW` | Merchant submeteu — em análise pela equipe |
+| `APPROVED` | Cadastro aprovado |
+| `REJECTED` | Cadastro rejeitado |
+
+### Estratégias
+
+- **Polling**: consulte a cada N minutos, especialmente se o merchant estiver dentro de um iframe
+- **Callback manual**: coloque um botão "Já finalizei o cadastro" no seu site que dispara a consulta
+- **Verificação antes de liberar funcionalidades**: consulte o status sempre que o merchant tentar acessar recursos que dependem de KYC aprovado
+
+## Exemplo completo — backend + iframe
+
+<Tabs>
+  <TabItem value="backend" label="Backend (Node.js)" default>
+
+```js
+// 1. Crie o onboarding a partir do seu backend
+app.post('/start-kyc', async (req, res) => {
+  const { taxID, correlationID } = req.body;
+
+  const response = await fetch('https://api.woovi.com/api/v1/kyc/onboarding', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': process.env.WOOVI_APPID,
+    },
+    body: JSON.stringify({
+      taxID,
+      correlationID,
+    }),
+  });
+
+  const data = await response.json();
+
+  // Devolva apenas o link para o frontend (nunca o AppID!)
+  res.json({ linkOnboarding: data.linkOnboarding });
+});
+```
+
+  </TabItem>
+  <TabItem value="frontend" label="Frontend (HTML)">
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro KYC — Woovi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --woovi-green:#03D69D;
+      --woovi-green-dark:#02b584;
+      --woovi-green-light:#e6faf4;
+      --bg:#f7f8fa;
+      --surface:#fff;
+      --text-primary:#1a1a2e;
+      --text-secondary:#6b7280;
+      --text-tertiary:#9ca3af;
+      --border:#e5e7eb;
+      --radius:16px;
+      --radius-sm:10px;
+      --shadow-card:0 1px 3px rgba(0,0,0,0.04), 0 4px 24px rgba(0,0,0,0.06);
+      --shadow-soft:0 1px 2px rgba(0,0,0,0.03);
+    }
+    html{font-family:'DM Sans',system-ui,sans-serif;color:var(--text-primary);background:var(--bg);-webkit-font-smoothing:antialiased}
+    body{min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+    .page-header{
+      width:100%;
+      padding:20px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      position:sticky;top:0;z-index:10;
+    }
+    .page-header-inner{
+      max-width:960px;width:100%;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .logo-area{display:flex;align-items:center;gap:10px}
+    .logo-mark{
+      width:36px;height:36px;border-radius:var(--radius-sm);
+      background:var(--woovi-green);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .logo-mark svg{width:20px;height:20px}
+    .logo-text{font-size:18px;font-weight:600;letter-spacing:-0.3px}
+    .header-badge{
+      font-size:12px;font-weight:500;
+      color:var(--woovi-green-dark);
+      background:var(--woovi-green-light);
+      padding:5px 12px;border-radius:20px;
+      display:flex;align-items:center;gap:5px;
+    }
+    .header-badge svg{width:14px;height:14px}
+
+    .main-content{
+      width:100%;max-width:960px;
+      padding:32px 16px 48px;
+      flex:1;display:flex;flex-direction:column;
+    }
+
+    .card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-card);
+      overflow:hidden;
+      position:relative;
+    }
+    .card-header{
+      padding:24px 28px 20px;
+      border-bottom:1px solid var(--border);
+    }
+    .card-title{font-size:17px;font-weight:600;letter-spacing:-0.2px;margin-bottom:4px}
+    .card-subtitle{font-size:13px;color:var(--text-secondary);line-height:1.5}
+
+    .iframe-wrap{
+      position:relative;
+      min-height:860px;
+      background:var(--surface);
+    }
+    .iframe-wrap iframe{
+      display:block;
+      width:100%;
+      height:900px;
+      border:0;
+      opacity:0;
+      transition:opacity 0.4s ease;
+    }
+    .iframe-wrap iframe.loaded{opacity:1}
+
+    .loader{
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      gap:16px;
+      transition:opacity 0.3s ease;
+      pointer-events:none;
+    }
+    .loader.hidden{opacity:0}
+    .spinner{
+      width:36px;height:36px;
+      border:3px solid var(--border);
+      border-top-color:var(--woovi-green);
+      border-radius:50%;
+      animation:spin 0.8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loader-text{font-size:13px;color:var(--text-tertiary);font-weight:500}
+
+    .trust-bar{
+      display:flex;align-items:center;justify-content:center;
+      gap:20px;padding:20px 28px;
+      border-top:1px solid var(--border);
+      background:var(--bg);
+      border-radius:0 0 var(--radius) var(--radius);
+    }
+    .trust-item{
+      display:flex;align-items:center;gap:6px;
+      font-size:12px;color:var(--text-tertiary);font-weight:500;
+    }
+    .trust-item svg{width:14px;height:14px;color:var(--text-tertiary);flex-shrink:0}
+
+    .footer-note{
+      text-align:center;
+      margin-top:24px;
+      font-size:12px;
+      color:var(--text-tertiary);
+      line-height:1.6;
+    }
+    .footer-note a{
+      color:var(--woovi-green-dark);
+      text-decoration:none;
+      font-weight:500;
+    }
+    .footer-note a:hover{text-decoration:underline}
+
+    @media(max-width:520px){
+      .card-header{padding:20px 20px 16px}
+      .trust-bar{gap:12px;padding:16px 16px;flex-wrap:wrap}
+      .header-badge{display:none}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <div class="page-header-inner">
+      <div class="logo-area">
+        <div class="logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z" fill="white" fill-opacity="0.9"/>
+            <path d="M12 8L16 10.5V15L12 17.5L8 15V10.5L12 8Z" fill="white" fill-opacity="0.4"/>
+          </svg>
+        </div>
+        <span class="logo-text">Woovi</span>
+      </div>
+      <div class="header-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Ambiente seguro
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Cadastro de conta</div>
+        <div class="card-subtitle">Preencha seus dados para ativar sua conta Woovi. O processo leva menos de 5 minutos.</div>
+      </div>
+
+      <div class="iframe-wrap" id="iframe-wrap">
+        <div class="loader" id="loader">
+          <div class="spinner"></div>
+          <div class="loader-text">Carregando formulário…</div>
+        </div>
+      </div>
+
+      <div class="trust-bar">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          Criptografia TLS
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          Regulado pelo BACEN
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Dados protegidos
+        </div>
+      </div>
+    </div>
+
+    <p class="footer-note">
+      Ao continuar, você concorda com os
+      <a href="#">Termos de Uso</a> e a
+      <a href="#">Política de Privacidade</a> da Woovi.
+    </p>
+  </main>
+
+  <script>
+    (function() {
+      // Substitua pelo linkOnboarding recebido do seu backend
+      var linkOnboarding = 'https://kyc.woovi.com/onboarding?status=PENDING';
+      var wrap = document.getElementById('iframe-wrap');
+      var loader = document.getElementById('loader');
+
+      var iframe = document.createElement('iframe');
+      iframe.src = linkOnboarding;
+      iframe.title = 'Cadastro KYC Woovi';
+      iframe.allow = 'camera; clipboard-read; clipboard-write;';
+
+      iframe.addEventListener('load', function() {
+        iframe.classList.add('loaded');
+        loader.classList.add('hidden');
+      });
+
+      wrap.appendChild(iframe);
+    })();
+  </script>
+</body>
+</html>
+```
+
+  </TabItem>
+</Tabs>
+
+### Pré-visualização
+
+Selecione um status para renderizar o `linkOnboarding` correspondente:
+
+<KycPreview />
+
+:::caution Nunca exponha o AppID no frontend
+Sempre gere o `linkOnboarding` no seu backend. O `AppID` é uma credencial sensível e não deve ser enviado para o navegador.
+:::
+
+## Boas práticas
+
+- **Use sempre HTTPS** na página que hospeda o iframe — browsers bloqueiam iframes HTTP em páginas HTTPS.
+- **Envie um `correlationID` único** (ex: o ID do pedido no seu sistema) para facilitar a consulta de status depois.
+- **Reutilize o link**: a API é idempotente por `correlationID`. Se o merchant fechar o site antes de terminar, você pode devolver o mesmo link sem criar um registro novo.
+- **Comunique o passo ao merchant**: antes de abrir o iframe/redirect, explique que ele será levado para o cadastro da Woovi.
+- **Trate o retorno**: após detectar `APPROVED`, libere as funcionalidades do BaaS no seu produto.
