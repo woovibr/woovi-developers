@@ -8619,6 +8619,19 @@ paths:
 
         populated via data enrichment when available. You do not need to send
         them in the request.
+
+
+        If `redirectUrl` is provided, the merchant is automatically redirected
+        to that URL
+
+        5 seconds after completing the onboarding flow (terminal states:
+        submitted, approved,
+
+        or rejected). The `redirectUrl` is bound to the onboarding link at
+        creation time and
+
+        cannot be changed later — subsequent idempotent calls will return the
+        original value.
       security:
         - AppID: []
       requestBody:
@@ -8637,6 +8650,12 @@ paths:
                 value:
                   taxID: XX.XXX.XXX/0001-XX
                   correlationID: my-unique-id
+              WithRedirectUrl:
+                summary: Request with redirectUrl for post-onboarding redirect
+                value:
+                  taxID: XX.XXX.XXX/0001-XX
+                  correlationID: my-unique-id
+                  redirectUrl: https://partner.example.com/kyc-done
               WithRepresentatives:
                 summary: Full request with representatives
                 value:
@@ -8657,6 +8676,13 @@ paths:
                     type: string
                     example: >-
                       https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...
+                  redirectUrl:
+                    type: string
+                    nullable: true
+                    description: >-
+                      URL para redirecionamento pos-onboarding (echo do valor
+                      enviado na criacao do link).
+                    example: https://partner.example.com/kyc-done
                   accountRegister:
                     $ref: '#/components/schemas/KycOnboardingAccountRegister'
         '201':
@@ -8670,6 +8696,13 @@ paths:
                     type: string
                     example: >-
                       https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...
+                  redirectUrl:
+                    type: string
+                    nullable: true
+                    description: >-
+                      URL para redirecionamento pos-onboarding (echo do valor
+                      enviado).
+                    example: https://partner.example.com/kyc-done
                   accountRegister:
                     $ref: '#/components/schemas/KycOnboardingAccountRegister'
         '400':
@@ -8700,7 +8733,9 @@ paths:
               example:
                 error: Invalid Authorization header
         '403':
-          description: Company does not have BaaS feature enabled
+          description: >-
+            Company does not have required features enabled (BAAS and
+            KYC_ONBOARDING_LINK)
           content:
             application/json:
               schema:
@@ -8708,8 +8743,13 @@ paths:
                 properties:
                   error:
                     type: string
-              example:
-                error: Company does not have BaaS feature enabled
+              examples:
+                MissingBaaS:
+                  value:
+                    error: Company does not have BaaS feature enabled
+                MissingKycOnboardingLink:
+                  value:
+                    error: Company does not have KYC Onboarding Link feature enabled
         '500':
           description: Internal server error
           content:
@@ -8753,6 +8793,7 @@ paths:
             req.write(JSON.stringify({
               taxID: 'string',
               correlationID: 'string',
+              redirectUrl: 'https://partner.example.com/kyc-done',
               representatives: [{taxID: 'string', name: 'string'}]
             }));
             req.end();
@@ -8762,7 +8803,7 @@ paths:
               --url https://api.woovi.com/api/v1/kyc/onboarding \
               --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
               --header 'content-type: application/json' \
-              --data '{"taxID":"string","correlationID":"string","representatives":[{"taxID":"string","name":"string"}]}'
+              --data '{"taxID":"string","correlationID":"string","redirectUrl":"https://partner.example.com/kyc-done","representatives":[{"taxID":"string","name":"string"}]}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -8780,6 +8821,7 @@ paths:
               CURLOPT_POSTFIELDS => json_encode([
                 'taxID' => 'string',
                 'correlationID' => 'string',
+                'redirectUrl' => 'https://partner.example.com/kyc-done',
                 'representatives' => [
                     [
                             'taxID' => 'string',
@@ -8812,7 +8854,7 @@ paths:
 
 
             payload =
-            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}"
+            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"redirectUrl\":\"https://partner.example.com/kyc-done\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}"
 
 
             headers = {
@@ -8831,7 +8873,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/kyc/onboarding\"\n\n\tpayload := strings.NewReader(\"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/kyc/onboarding\"\n\n\tpayload := strings.NewReader(\"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"redirectUrl\\\":\\\"https://partner.example.com/kyc-done\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -8840,7 +8882,7 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}");
+            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"redirectUrl\":\"https://partner.example.com/kyc-done\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}");
 
             Request request = new Request.Builder()
               .url("https://api.woovi.com/api/v1/kyc/onboarding")
@@ -8872,7 +8914,7 @@ paths:
             request["content-type"] = 'application/json'
 
             request.body =
-            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}"
+            "{\"taxID\":\"string\",\"correlationID\":\"string\",\"redirectUrl\":\"https://partner.example.com/kyc-done\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}"
 
 
             response = http.request(request)
@@ -18958,6 +19000,16 @@ components:
           description: >-
             Identificador unico para idempotencia. Se nao informado, o CNPJ sera
             usado.
+        redirectUrl:
+          type: string
+          format: uri
+          description: >
+            URL para onde o merchant sera redirecionado apos concluir o
+            onboarding.
+
+            Quando informado, a pagina final do fluxo KYC redireciona
+            automaticamente apos 5 segundos.
+          example: https://partner.example.com/kyc-done
         representatives:
           type: array
           description: Socios/representantes da empresa
