@@ -6749,7 +6749,7 @@
           "kyc"
         ],
         "summary": "Create a KYC onboarding",
-        "description": "Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n",
+        "description": "Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n",
         "security": [
           {
             "AppID": []
@@ -6774,6 +6774,14 @@
                   "value": {
                     "taxID": "XX.XXX.XXX/0001-XX",
                     "correlationID": "my-unique-id"
+                  }
+                },
+                "WithRedirectUrl": {
+                  "summary": "Request with redirectUrl for post-onboarding redirect",
+                  "value": {
+                    "taxID": "XX.XXX.XXX/0001-XX",
+                    "correlationID": "my-unique-id",
+                    "redirectUrl": "https://partner.example.com/kyc-done"
                   }
                 },
                 "WithRepresentatives": {
@@ -6807,6 +6815,12 @@
                       "type": "string",
                       "example": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5..."
                     },
+                    "redirectUrl": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "URL para redirecionamento pos-onboarding (echo do valor enviado na criacao do link).",
+                      "example": "https://partner.example.com/kyc-done"
+                    },
                     "accountRegister": {
                       "$ref": "#/components/schemas/KycOnboardingAccountRegister"
                     }
@@ -6825,6 +6839,12 @@
                     "linkOnboarding": {
                       "type": "string",
                       "example": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5..."
+                    },
+                    "redirectUrl": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "URL para redirecionamento pos-onboarding (echo do valor enviado).",
+                      "example": "https://partner.example.com/kyc-done"
                     },
                     "accountRegister": {
                       "$ref": "#/components/schemas/KycOnboardingAccountRegister"
@@ -6880,7 +6900,7 @@
             }
           },
           "403": {
-            "description": "Company does not have BaaS feature enabled",
+            "description": "Company does not have required features enabled (BAAS and KYC_ONBOARDING_LINK)",
             "content": {
               "application/json": {
                 "schema": {
@@ -6891,8 +6911,17 @@
                     }
                   }
                 },
-                "example": {
-                  "error": "Company does not have BaaS feature enabled"
+                "examples": {
+                  "MissingBaaS": {
+                    "value": {
+                      "error": "Company does not have BaaS feature enabled"
+                    }
+                  },
+                  "MissingKycOnboardingLink": {
+                    "value": {
+                      "error": "Company does not have KYC Onboarding Link feature enabled"
+                    }
+                  }
                 }
               }
             }
@@ -6919,31 +6948,31 @@
         "x-codeSamples": [
           {
             "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/kyc/onboarding',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  taxID: 'string',\n  correlationID: 'string',\n  representatives: [{taxID: 'string', name: 'string'}]\n}));\nreq.end();"
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/kyc/onboarding',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  taxID: 'string',\n  correlationID: 'string',\n  redirectUrl: 'https://partner.example.com/kyc-done',\n  representatives: [{taxID: 'string', name: 'string'}]\n}));\nreq.end();"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/kyc/onboarding \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"taxID\":\"string\",\"correlationID\":\"string\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}'"
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/kyc/onboarding \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"taxID\":\"string\",\"correlationID\":\"string\",\"redirectUrl\":\"https://partner.example.com/kyc-done\",\"representatives\":[{\"taxID\":\"string\",\"name\":\"string\"}]}'"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/kyc/onboarding\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'taxID' => 'string',\n    'correlationID' => 'string',\n    'representatives' => [\n        [\n                'taxID' => 'string',\n                'name' => 'string'\n        ]\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/kyc/onboarding\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'taxID' => 'string',\n    'correlationID' => 'string',\n    'redirectUrl' => 'https://partner.example.com/kyc-done',\n    'representatives' => [\n        [\n                'taxID' => 'string',\n                'name' => 'string'\n        ]\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/kyc/onboarding\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"redirectUrl\\\":\\\"https://partner.example.com/kyc-done\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/kyc/onboarding\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/kyc/onboarding\"\n\n\tpayload := strings.NewReader(\"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/kyc/onboarding\"\n\n\tpayload := strings.NewReader(\"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"redirectUrl\\\":\\\"https://partner.example.com/kyc-done\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/kyc/onboarding\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"redirectUrl\\\":\\\"https://partner.example.com/kyc-done\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/kyc/onboarding\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/kyc/onboarding\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\"\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/kyc/onboarding\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"redirectUrl\\\":\\\"https://partner.example.com/kyc-done\\\",\\\"representatives\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"name\\\":\\\"string\\\"}]}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -14643,6 +14672,12 @@
           "correlationID": {
             "type": "string",
             "description": "Identificador unico para idempotencia. Se nao informado, o CNPJ sera usado."
+          },
+          "redirectUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL para onde o merchant sera redirecionado apos concluir o onboarding.\nQuando informado, a pagina final do fluxo KYC redireciona automaticamente apos 5 segundos.\n",
+            "example": "https://partner.example.com/kyc-done"
           },
           "representatives": {
             "type": "array",
