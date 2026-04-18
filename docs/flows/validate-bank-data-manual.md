@@ -166,11 +166,11 @@ Após a criação e confirmação do pagamento, você receberá webhooks com o s
     "endToEndId": "E54811417202507081527dYr4Cp2gfAp"
   },
   "destination": {
-    "name": "Thiago Mota",
-    "taxID": "54508095810",
+    "name": "Carlos",
+    "taxID": "949***95*1",
     "bank": "Mercado pago",
-    "branch": "0001",
-    "account": "49033976342"
+    "branch": "****",
+    "account": "********"
   }
 }
 ```
