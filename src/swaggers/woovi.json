@@ -8368,6 +8368,9 @@
                   "properties": {
                     "error": {
                       "type": "string"
+                    },
+                    "errorCode": {
+                      "type": "string"
                     }
                   }
                 }
@@ -8382,6 +8385,9 @@
                   "type": "object",
                   "properties": {
                     "error": {
+                      "type": "string"
+                    },
+                    "errorCode": {
                       "type": "string"
                     }
                   }
@@ -8398,6 +8404,9 @@
                   "properties": {
                     "error": {
                       "type": "string"
+                    },
+                    "errorCode": {
+                      "type": "string"
                     }
                   }
                 }
@@ -8413,6 +8422,9 @@
                   "properties": {
                     "error": {
                       "type": "string"
+                    },
+                    "errorCode": {
+                      "type": "string"
                     }
                   }
                 }
@@ -8427,6 +8439,9 @@
                   "type": "object",
                   "properties": {
                     "error": {
+                      "type": "string"
+                    },
+                    "errorCode": {
                       "type": "string"
                     }
                   }

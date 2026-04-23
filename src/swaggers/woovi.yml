@@ -10822,6 +10822,8 @@ paths:
                 properties:
                   error:
                     type: string
+                  errorCode:
+                    type: string
         '401':
           description: Your IP is not in the allowed list
           content:
@@ -10830,6 +10832,8 @@ paths:
                 type: object
                 properties:
                   error:
+                    type: string
+                  errorCode:
                     type: string
         '403':
           description: Your account does not have the permission to use this endpoint
@@ -10840,6 +10844,8 @@ paths:
                 properties:
                   error:
                     type: string
+                  errorCode:
+                    type: string
         '404':
           description: Pix key does not exist
           content:
@@ -10849,6 +10855,8 @@ paths:
                 properties:
                   error:
                     type: string
+                  errorCode:
+                    type: string
         '429':
           description: Too many requests, you had too many 404
           content:
@@ -10857,6 +10865,8 @@ paths:
                 type: object
                 properties:
                   error:
+                    type: string
+                  errorCode:
                     type: string
       x-codeSamples: []
   /api/v1/pix-keys/check:
