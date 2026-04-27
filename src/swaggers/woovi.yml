@@ -17656,6 +17656,7 @@ components:
           enum:
             - DYNAMIC
             - OVERDUE
+            - BOLETO
           description: >-
             Charge type is used to determine whether a charge will have a
             deadline, fines and interests
