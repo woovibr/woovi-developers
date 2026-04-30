@@ -9648,8 +9648,13 @@ paths:
 
 
         For QR Code payments, the system decodes the BR Code string and extracts
-        the destination and value automatically. After creating, use `POST
-        /api/v1/payment/approve` with the correlationID to execute.
+        the destination and value automatically.
+
+
+        Set `autoApprove: true` to create and immediately approve the payment in
+        a single call, returning the enriched response with transaction and
+        destination data. Without this flag, the payment is created in `CREATED`
+        status and can be approved later via `POST /api/v1/payment/approve`.
       requestBody:
         description: Data to create a payment request
         required: true
@@ -9657,7 +9662,15 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: '#/components/schemas/PaymentCreatePayload'
+              allOf:
+                - $ref: '#/components/schemas/PaymentCreatePayload'
+                - type: object
+                  properties:
+                    autoApprove:
+                      type: boolean
+                      description: >-
+                        When true, creates and approves the payment in a single
+                        call returning the enriched response. Defaults to false.
             examples:
               pixKey:
                 summary: Pay via Pix Key
@@ -9673,6 +9686,15 @@ paths:
                     orderId: order-123
                     userId: user-456
                     source: mobile-app
+              pixKeyAutoApprove:
+                summary: Pay via Pix Key with auto-approval
+                value:
+                  value: 100
+                  destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
+                  destinationAliasType: RANDOM
+                  comment: payment comment
+                  correlationID: payment-auto-approve
+                  autoApprove: true
               qrCode:
                 summary: Pay a QR Code (BR Code)
                 value:
@@ -9724,7 +9746,10 @@ paths:
                     priority: high
       responses:
         '200':
-          description: Payment destination account information
+          description: >-
+            Payment created. When autoApprove is true, the payment is
+            immediately approved and the response includes transaction and
+            destination data.
           content:
             application/json:
               schema:
@@ -9732,6 +9757,12 @@ paths:
                 properties:
                   payment:
                     $ref: '#/components/schemas/Payment'
+                  transaction:
+                    type: object
+                    $ref: '#/components/schemas/PaymentTransaction'
+                  destination:
+                    type: object
+                    $ref: '#/components/schemas/PaymentDestination'
               examples:
                 pixKey:
                   summary: Pix Key response
@@ -9781,6 +9812,27 @@ paths:
                       psp:
                         id: '54811417'
                         name: WOOVI INSTITUICAO DE PAGAMENTO
+                autoApproved:
+                  summary: Auto-approved payment response (autoApprove true)
+                  value:
+                    payment:
+                      value: 100
+                      status: APPROVED
+                      destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
+                      destinationAliasType: RANDOM
+                      comment: payment comment
+                      correlationID: payment1
+                    transaction:
+                      value: 100
+                      endToEndId: transaction-end-to-end-id
+                      time: 2023-03-20T13:14:17.000Z
+                    destination:
+                      name: Dan
+                      taxID: '31324227036'
+                      pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
+                      bank: A Bank
+                      branch: '1'
+                      account: '123456'
         '400':
           description: An error message
           content:
@@ -9827,315 +9879,6 @@ paths:
               correlationID: 'string',
               pixKeyEndToEndId: 'string',
               comment: 'string',
-              metadata: {}
-            }));
-            req.end();
-        - lang: Shell + Curl
-          source: |-
-            curl --request POST \
-              --url https://api.woovi.com/api/v1/payment \
-              --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
-              --header 'content-type: application/json' \
-              --data '{"type":"PIX_KEY","value":0,"destinationAlias":"string","destinationAliasType":"CPF","correlationID":"string","pixKeyEndToEndId":"string","comment":"string","metadata":{}}'
-        - lang: Php + Curl
-          source: |-
-            <?php
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/payment",
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => json_encode([
-                'type' => 'PIX_KEY',
-                'value' => 0,
-                'destinationAlias' => 'string',
-                'destinationAliasType' => 'CPF',
-                'correlationID' => 'string',
-                'pixKeyEndToEndId' => 'string',
-                'comment' => 'string',
-                'metadata' => [
-                    
-                ]
-              ]),
-              CURLOPT_HTTPHEADER => [
-                "Authorization: Bearer REPLACE_BEARER_TOKEN",
-                "content-type: application/json"
-              ],
-            ]);
-
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-
-            curl_close($curl);
-
-            if ($err) {
-              echo "cURL Error #:" . $err;
-            } else {
-              echo $response;
-            }
-        - lang: Python + Python3
-          source: >-
-            import http.client
-
-
-            conn = http.client.HTTPSConnection("api.woovi.com")
-
-
-            payload =
-            "{\"type\":\"PIX_KEY\",\"value\":0,\"destinationAlias\":\"string\",\"destinationAliasType\":\"CPF\",\"correlationID\":\"string\",\"pixKeyEndToEndId\":\"string\",\"comment\":\"string\",\"metadata\":{}}"
-
-
-            headers = {
-                'Authorization': "Bearer REPLACE_BEARER_TOKEN",
-                'content-type': "application/json"
-            }
-
-
-            conn.request("POST", "/api/v1/payment", payload, headers)
-
-
-            res = conn.getresponse()
-
-            data = res.read()
-
-
-            print(data.decode("utf-8"))
-        - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/payment\"\n\n\tpayload := strings.NewReader(\"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-        - lang: Java + Okhttp
-          source: >-
-            OkHttpClient client = new OkHttpClient();
-
-
-            MediaType mediaType = MediaType.parse("application/json");
-
-            RequestBody body = RequestBody.create(mediaType,
-            "{\"type\":\"PIX_KEY\",\"value\":0,\"destinationAlias\":\"string\",\"destinationAliasType\":\"CPF\",\"correlationID\":\"string\",\"pixKeyEndToEndId\":\"string\",\"comment\":\"string\",\"metadata\":{}}");
-
-            Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/payment")
-              .post(body)
-              .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
-              .addHeader("content-type", "application/json")
-              .build();
-
-            Response response = client.newCall(request).execute();
-        - lang: Ruby + Native
-          source: >-
-            require 'uri'
-
-            require 'net/http'
-
-
-            url = URI("https://api.woovi.com/api/v1/payment")
-
-
-            http = Net::HTTP.new(url.host, url.port)
-
-            http.use_ssl = true
-
-
-            request = Net::HTTP::Post.new(url)
-
-            request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
-
-            request["content-type"] = 'application/json'
-
-            request.body =
-            "{\"type\":\"PIX_KEY\",\"value\":0,\"destinationAlias\":\"string\",\"destinationAliasType\":\"CPF\",\"correlationID\":\"string\",\"pixKeyEndToEndId\":\"string\",\"comment\":\"string\",\"metadata\":{}}"
-
-
-            response = http.request(request)
-
-            puts response.read_body
-  /api/v2/payment:
-    post:
-      tags:
-        - payment (request access)
-      summary: Create and Optionally Approve a Payment in One Call
-      x-required-scope: PAYMENT_POST
-      security:
-        - AppID:
-            - PAYMENT_POST
-      description: >
-        Endpoint to create and optionally approve a payment in a single call.
-        Supports three payment types: Pix Key (`PIX_KEY`), QR Code (`QR_CODE`),
-        and Manual (`MANUAL`).
-
-
-        When `autoApprove` is `true` (default), the payment is created and
-        immediately approved, returning the enriched response with transaction
-        and destination data.
-
-
-        When `autoApprove` is `false`, the payment is created in `CREATED`
-        status and can be approved later via `POST /api/v1/payment/approve`.
-      requestBody:
-        description: Data to create a payment request
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              allOf:
-                - $ref: '#/components/schemas/PaymentCreatePayload'
-                - type: object
-                  properties:
-                    autoApprove:
-                      type: boolean
-                      description: >-
-                        When true (default), creates and approves the payment in
-                        a single call. When false, creates the payment in
-                        CREATED status for later approval.
-                      default: true
-            examples:
-              pixKeyAutoApprove:
-                summary: Pay via Pix Key (auto-approve, default)
-                value:
-                  value: 100
-                  destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
-                  destinationAliasType: RANDOM
-                  comment: payment comment
-                  correlationID: payment1
-                  metadata:
-                    orderId: order-123
-                    userId: user-456
-              pixKeyCreatedOnly:
-                summary: Pay via Pix Key (create only, approve later)
-                value:
-                  value: 100
-                  destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
-                  destinationAliasType: RANDOM
-                  comment: payment comment
-                  correlationID: payment2
-                  autoApprove: false
-              qrCode:
-                summary: Pay a QR Code (auto-approve)
-                value:
-                  correlationID: payment-qrcode-1
-                  qrCode: >-
-                    00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA
-                    EXEMPLO LTDA6009SAO
-                    PAULO6229052512345678901234567890163049A2F
-                  comment: payment comment
-              manual:
-                summary: Pay via manual bank details (auto-approve)
-                value:
-                  value: 100
-                  correlationID: manual-payment-26
-                  holder:
-                    name: Hodlis 3
-                    taxID:
-                      type: BR:CNPJ
-                      taxID: '20244827000158'
-                  account:
-                    account: '00000000000000000981'
-                    branch: '0001'
-                    accountType: TRAN
-                  psp:
-                    id: '54811417'
-                    name: WOOVI INSTITUICAO DE PAGAMENTO
-      responses:
-        '200':
-          description: Payment created (and optionally approved)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payment:
-                    $ref: '#/components/schemas/Payment'
-                  transaction:
-                    type: object
-                    $ref: '#/components/schemas/PaymentTransaction'
-                  destination:
-                    type: object
-                    $ref: '#/components/schemas/PaymentDestination'
-              examples:
-                approved:
-                  summary: Auto-approved payment response
-                  value:
-                    payment:
-                      value: 100
-                      status: APPROVED
-                      destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
-                      destinationAliasType: RANDOM
-                      comment: payment comment
-                      correlationID: payment1
-                    transaction:
-                      value: 100
-                      endToEndId: transaction-end-to-end-id
-                      time: 2023-03-20T13:14:17.000Z
-                    destination:
-                      name: Dan
-                      taxID: '31324227036'
-                      pixKey: c4249323-b4ca-43f2-8139-8232aab09b93
-                      bank: A Bank
-                      branch: '1'
-                      account: '123456'
-                created:
-                  summary: Created-only payment response (autoApprove false)
-                  value:
-                    payment:
-                      value: 100
-                      status: CREATED
-                      destinationAlias: c4249323-b4ca-43f2-8139-8232aab09b93
-                      destinationAliasType: RANDOM
-                      comment: payment comment
-                      correlationID: payment2
-                      sourceAccountId: account-id-here
-        '400':
-          description: An error message
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-      x-codeSamples:
-        - lang: Node + Native
-          source: |-
-            const http = require('https');
-
-            const options = {
-              method: 'POST',
-              hostname: 'api.woovi.com',
-              port: null,
-              path: '/api/v2/payment',
-              headers: {
-                Authorization: 'Bearer REPLACE_BEARER_TOKEN',
-                'content-type': 'application/json'
-              }
-            };
-
-            const req = http.request(options, function (res) {
-              const chunks = [];
-
-              res.on('data', function (chunk) {
-                chunks.push(chunk);
-              });
-
-              res.on('end', function () {
-                const body = Buffer.concat(chunks);
-                console.log(body.toString());
-              });
-            });
-
-            req.write(JSON.stringify({
-              type: 'PIX_KEY',
-              value: 0,
-              destinationAlias: 'string',
-              destinationAliasType: 'CPF',
-              correlationID: 'string',
-              pixKeyEndToEndId: 'string',
-              comment: 'string',
               metadata: {},
               autoApprove: true
             }));
@@ -10143,7 +9886,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request POST \
-              --url https://api.woovi.com/api/v2/payment \
+              --url https://api.woovi.com/api/v1/payment \
               --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
               --header 'content-type: application/json' \
               --data '{"type":"PIX_KEY","value":0,"destinationAlias":"string","destinationAliasType":"CPF","correlationID":"string","pixKeyEndToEndId":"string","comment":"string","metadata":{},"autoApprove":true}'
@@ -10154,7 +9897,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v2/payment",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/payment",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -10208,7 +9951,7 @@ paths:
             }
 
 
-            conn.request("POST", "/api/v2/payment", payload, headers)
+            conn.request("POST", "/api/v1/payment", payload, headers)
 
 
             res = conn.getresponse()
@@ -10218,7 +9961,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v2/payment\"\n\n\tpayload := strings.NewReader(\"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{},\\\"autoApprove\\\":true}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/payment\"\n\n\tpayload := strings.NewReader(\"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{},\\\"autoApprove\\\":true}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -10230,7 +9973,7 @@ paths:
             "{\"type\":\"PIX_KEY\",\"value\":0,\"destinationAlias\":\"string\",\"destinationAliasType\":\"CPF\",\"correlationID\":\"string\",\"pixKeyEndToEndId\":\"string\",\"comment\":\"string\",\"metadata\":{},\"autoApprove\":true}");
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v2/payment")
+              .url("https://api.woovi.com/api/v1/payment")
               .post(body)
               .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
               .addHeader("content-type", "application/json")
@@ -10244,7 +9987,7 @@ paths:
             require 'net/http'
 
 
-            url = URI("https://api.woovi.com/api/v2/payment")
+            url = URI("https://api.woovi.com/api/v1/payment")
 
 
             http = Net::HTTP.new(url.host, url.port)
