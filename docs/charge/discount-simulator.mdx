@@ -68,13 +68,6 @@ inteiros:
 A tela mostra um *preview* legível ao lado de cada campo (`R$X,XX` ou
 `X,XX%`) para que você não precise fazer a conta na cabeça.
 
-## Modo `daily` × `summary`
-
-Por padrão, a linha do tempo mostra uma linha por dia (`daily`). Ative o
-toggle **Modo summary** para ver apenas marcos relevantes: dia de
-criação, dias em que o desconto muda de faixa, dia do vencimento,
-primeira diária pós-vencimento e o último dia simulado.
-
 ## Exportar para a API
 
 - **Copiar JSON** devolve o envelope `{ modality, modalityNumber, input,
@@ -83,5 +76,12 @@ primeira diária pós-vencimento e o último dia simulado.
 - **Copiar como cURL** monta um `POST /api/v1/charge` pronto para
   rodar. Substitua `<APP_ID>` pelo seu AppID e `<CORRELATION_ID>` por
   um identificador único antes de executar.
+
+## Modo `daily` × `summary`
+
+Por padrão, a linha do tempo mostra uma linha por dia (`daily`). Ative o
+toggle **Modo summary** para ver apenas marcos relevantes: dia de
+criação, dias em que o desconto muda de faixa, dia do vencimento,
+primeira diária pós-vencimento e o último dia simulado.
 
 Veja também [Como criar uma cobv usando a API](./how-to-create-cobv-using-api.mdx).

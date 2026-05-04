@@ -71,13 +71,6 @@ units:
 The screen shows a readable preview next to each field (`R$X.XX` or
 `X.XX%`) so you don't have to do the math yourself.
 
-## `daily` vs `summary` mode
-
-By default the schedule shows one row per day (`daily`). Toggle
-**Summary mode** to keep only relevant milestones: creation day, days
-where the discount tier changes, the due date itself, the first day
-after the due date, and the last simulated day.
-
 ## Export to the API
 
 - **Copiar JSON** returns the envelope `{ modality, modalityNumber,
@@ -86,3 +79,10 @@ after the due date, and the last simulated day.
 - **Copiar como cURL** assembles a `POST /api/v1/charge` ready to run.
   Replace `<APP_ID>` with your AppID and `<CORRELATION_ID>` with a
   unique identifier before executing.
+
+## `daily` vs `summary` mode
+
+By default the schedule shows one row per day (`daily`). Toggle
+**Summary mode** to keep only relevant milestones: creation day, days
+where the discount tier changes, the due date itself, the first day
+after the due date, and the last simulated day.

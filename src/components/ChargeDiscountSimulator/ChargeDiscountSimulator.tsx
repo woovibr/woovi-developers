@@ -163,7 +163,7 @@ const ChargeDiscountSimulator = (): JSX.Element => {
   }, []);
 
   const [modality, setModality] = useState<DiscountModality>(
-    'PERCENTAGE_PER_RUNNING_DAY_ADVANCE',
+    'FIXED_VALUE_UNTIL_SPECIFIED_DATE',
   );
 
   const [chargeValue, setChargeValue] = useState<number>(10000);
@@ -182,8 +182,8 @@ const ChargeDiscountSimulator = (): JSX.Element => {
   }, []);
 
   const [fixedDateRows, setFixedDateRows] = useState<FixedDateRow[]>([
-    { daysActive: 5, value: 500 },
-    { daysActive: 10, value: 200 },
+    { daysActive: 5, value: 100 },
+    { daysActive: 10, value: 50 },
   ]);
 
   const [discountValue, setDiscountValue] = useState<number>(10);
@@ -192,7 +192,7 @@ const ChargeDiscountSimulator = (): JSX.Element => {
 
   const [interestValue, setInterestValue] = useState<number>(100);
 
-  const [noInterest, setNoInterest] = useState<boolean>(false);
+  const [noInterest, setNoInterest] = useState<boolean>(true);
 
   const [fineValue, setFineValue] = useState<number>(200);
 
@@ -200,7 +200,7 @@ const ChargeDiscountSimulator = (): JSX.Element => {
     'PERCENTAGE',
   );
 
-  const [noFine, setNoFine] = useState<boolean>(false);
+  const [noFine, setNoFine] = useState<boolean>(true);
 
   const [granularity, setGranularity] = useState<'daily' | 'summary'>(
     'daily',
@@ -696,19 +696,6 @@ const ChargeDiscountSimulator = (): JSX.Element => {
           </label>
         </div>
 
-        <h3>Granularidade do cronograma</h3>
-        <div className={styles.field}>
-          <label className={styles.checkboxLine}>
-            <input
-              type='checkbox'
-              checked={granularity === 'summary'}
-              onChange={(e) =>
-                setGranularity(e.target.checked ? 'summary' : 'daily')
-              }
-            />{' '}
-            Modo summary (apenas marcos relevantes)
-          </label>
-        </div>
       </div>
 
       {/* ============================ RESULT ============================ */}
@@ -823,61 +810,6 @@ const ChargeDiscountSimulator = (): JSX.Element => {
               </>
             )}
 
-            <div className={styles.timeline}>
-              <h3>Linha do tempo</h3>
-              <div className={styles.tableWrap}>
-                <table className={styles.timelineTable}>
-                  <thead>
-                    <tr>
-                      <th scope='col'>date</th>
-                      <th scope='col'>day</th>
-                      <th scope='col'>toDue</th>
-                      <th scope='col'>business</th>
-                      <th scope='col'>discount</th>
-                      <th scope='col'>interest</th>
-                      <th scope='col'>fine</th>
-                      <th scope='col'>total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableRows.map((r) => {
-                      const isSpot =
-                        spotlightRow &&
-                        r.daysFromCreation === spotlightRow.daysFromCreation;
-
-                      const rowClass = clsx(
-                        r.daysToDueDate === 0 && styles.rowDue,
-                        r.daysToDueDate < 0 && styles.rowOverdue,
-                        isSpot && styles.highlighted,
-                      );
-
-                      return (
-                        <tr
-                          key={r.daysFromCreation}
-                          className={rowClass}
-                          onClick={() =>
-                            setSpotlightDayIndex(r.daysFromCreation)
-                          }
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <td>{r.date}</td>
-                          <td>{r.daysFromCreation}</td>
-                          <td>{r.daysToDueDate}</td>
-                          <td>{r.isBusinessDay ? 'business' : 'non-bus.'}</td>
-                          <td>{formatCents(r.discount)}</td>
-                          <td>{formatCents(r.interest)}</td>
-                          <td>{formatCents(r.fine)}</td>
-                          <td className={styles.totalCell}>
-                            {formatCents(r.total)}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
             <div className={styles.actions}>
               <button
                 type='button'
@@ -907,6 +839,76 @@ const ChargeDiscountSimulator = (): JSX.Element => {
           </>
         )}
       </div>
+
+      {/* ====================== TIMELINE (full width) ====================== */}
+      {!validation && (
+        <div className={styles.timelineFull}>
+          <div className={styles.timelineHeader}>
+            <h3>Linha do tempo</h3>
+            <label className={styles.checkboxLine}>
+              <input
+                type='checkbox'
+                checked={granularity === 'summary'}
+                onChange={(e) =>
+                  setGranularity(e.target.checked ? 'summary' : 'daily')
+                }
+              />{' '}
+              Modo summary (apenas marcos relevantes)
+            </label>
+          </div>
+          <div className={styles.tableWrap}>
+            <table className={styles.timelineTable}>
+              <thead>
+                <tr>
+                  <th scope='col'>Data</th>
+                  <th scope='col'>Dia</th>
+                  <th scope='col'>Para vencer</th>
+                  <th scope='col'>Útil</th>
+                  <th scope='col'>Desconto</th>
+                  <th scope='col'>Juros</th>
+                  <th scope='col'>Multa</th>
+                  <th scope='col'>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableRows.map((r) => {
+                  const isSpot =
+                    spotlightRow &&
+                    r.daysFromCreation === spotlightRow.daysFromCreation;
+
+                  const rowClass = clsx(
+                    r.daysToDueDate === 0 && styles.rowDue,
+                    r.daysToDueDate < 0 && styles.rowOverdue,
+                    isSpot && styles.highlighted,
+                  );
+
+                  return (
+                    <tr
+                      key={r.daysFromCreation}
+                      className={rowClass}
+                      onClick={() =>
+                        setSpotlightDayIndex(r.daysFromCreation)
+                      }
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <td>{r.date}</td>
+                      <td>{r.daysFromCreation}</td>
+                      <td>{r.daysToDueDate}</td>
+                      <td>{r.isBusinessDay ? 'Sim' : 'Não'}</td>
+                      <td>{formatCents(r.discount)}</td>
+                      <td>{formatCents(r.interest)}</td>
+                      <td>{formatCents(r.fine)}</td>
+                      <td className={styles.totalCell}>
+                        {formatCents(r.total)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
