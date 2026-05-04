@@ -1,0 +1,21 @@
+---
+id: webhook-events-explorer
+title: Explorador de eventos
+sidebar_label: Explorador de eventos
+sidebar_position: 0.5
+description: Selecione um tipo de evento de webhook e copie o payload em JSON, TypeScript, JSON Schema, Yup ou Zod.
+tags:
+  - webhook
+---
+
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import WebhookEventExplorer from '@site/src/components/WebhookEventExplorer/WebhookEventExplorer';
+
+# Explorador de eventos de webhook
+
+Selecione um tipo de evento na barra lateral e copie o payload em **JSON**, **TypeScript types**, **JSON Schema**, **Yup** ou **Zod**.
+Os tipos e schemas são inferidos automaticamente a partir do payload de exemplo.
+
+<BrowserOnly fallback={<div>Carregando…</div>}>
+  {() => <WebhookEventExplorer />}
+</BrowserOnly>

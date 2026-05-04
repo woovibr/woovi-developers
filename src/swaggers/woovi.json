@@ -2669,6 +2669,35 @@
                     ]
                   }
                 },
+                "Charge with Discount (fixed-date modality)": {
+                  "value": {
+                    "type": "OVERDUE",
+                    "correlationID": "9134e286-6f71-427a-bf00-241681624587",
+                    "value": 1600,
+                    "comment": "good",
+                    "daysForDueDate": 10,
+                    "daysAfterDueDate": 5,
+                    "customer": {
+                      "name": "Dan",
+                      "taxID": "31324227036",
+                      "email": "email0@example.com",
+                      "phone": "5511999999999"
+                    },
+                    "discountSettings": {
+                      "modality": "FIXED_VALUE_UNTIL_SPECIFIED_DATE",
+                      "discountFixedDate": [
+                        {
+                          "daysActive": 5,
+                          "value": 100
+                        },
+                        {
+                          "daysActive": 8,
+                          "value": 50
+                        }
+                      ]
+                    }
+                  }
+                },
                 "Charge with Split Internal Transfer": {
                   "value": {
                     "correlationID": "9134e286-6f71-427a-bf00-241681624587",
@@ -2855,31 +2884,31 @@
         "x-codeSamples": [
           {
             "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/charge?return_existing=true',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  correlationID: 'string',\n  value: 0,\n  type: 'DYNAMIC',\n  comment: 'string',\n  expiresIn: 0,\n  expiresDate: 'string',\n  dueDate: 'string',\n  customer: {\n    name: 'string',\n    email: 'string',\n    phone: 'string',\n    taxID: 'string',\n    correlationID: 'string',\n    address: {\n      zipcode: 'string',\n      street: 'string',\n      number: 'string',\n      neighborhood: 'string',\n      city: 'string',\n      state: 'string',\n      complement: 'string',\n      country: 'string'\n    }\n  },\n  ensureSameTaxID: true,\n  fixedLocation: true,\n  paymentLinkID: 'string',\n  daysForDueDate: 0,\n  daysAfterDueDate: 0,\n  interests: {value: 0, type: 'FIXED'},\n  fines: {value: 0, type: 'FIXED'},\n  discountSettings: {\n    modality: 'FIXED_VALUE_UNTIL_SPECIFIED_DATE',\n    discountFixedDate: [{daysActive: 0, value: 0}]\n  },\n  additionalInfo: [{key: 'string', value: 'string'}],\n  enableCashbackPercentage: true,\n  enableCashbackExclusivePercentage: true,\n  subaccount: 'string',\n  splits: [{value: 0, pixKey: 'string', splitType: 'SPLIT_INTERNAL_TRANSFER'}]\n}));\nreq.end();"
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/charge?return_existing=true',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  correlationID: 'string',\n  value: 0,\n  type: 'DYNAMIC',\n  comment: 'string',\n  expiresIn: 0,\n  expiresDate: 'string',\n  dueDate: 'string',\n  customer: {\n    name: 'string',\n    email: 'string',\n    phone: 'string',\n    taxID: 'string',\n    correlationID: 'string',\n    address: {\n      zipcode: 'string',\n      street: 'string',\n      number: 'string',\n      neighborhood: 'string',\n      city: 'string',\n      state: 'string',\n      complement: 'string',\n      country: 'string'\n    }\n  },\n  ensureSameTaxID: true,\n  fixedLocation: true,\n  paymentLinkID: 'string',\n  daysForDueDate: 0,\n  daysAfterDueDate: 0,\n  interests: {value: 0, type: 'FIXED'},\n  fines: {value: 0, type: 'FIXED'},\n  discountSettings: {\n    modality: 'FIXED_VALUE_UNTIL_SPECIFIED_DATE',\n    discountFixedDate: [{daysActive: 0, value: 0}],\n    value: 0\n  },\n  additionalInfo: [{key: 'string', value: 'string'}],\n  enableCashbackPercentage: true,\n  enableCashbackExclusivePercentage: true,\n  subaccount: 'string',\n  splits: [{value: 0, pixKey: 'string', splitType: 'SPLIT_INTERNAL_TRANSFER'}]\n}));\nreq.end();"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url 'https://api.woovi.com/api/v1/charge?return_existing=true' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"correlationID\":\"string\",\"value\":0,\"type\":\"DYNAMIC\",\"comment\":\"string\",\"expiresIn\":0,\"expiresDate\":\"string\",\"dueDate\":\"string\",\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"correlationID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"ensureSameTaxID\":true,\"fixedLocation\":true,\"paymentLinkID\":\"string\",\"daysForDueDate\":0,\"daysAfterDueDate\":0,\"interests\":{\"value\":0,\"type\":\"FIXED\"},\"fines\":{\"value\":0,\"type\":\"FIXED\"},\"discountSettings\":{\"modality\":\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\",\"discountFixedDate\":[{\"daysActive\":0,\"value\":0}]},\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"enableCashbackPercentage\":true,\"enableCashbackExclusivePercentage\":true,\"subaccount\":\"string\",\"splits\":[{\"value\":0,\"pixKey\":\"string\",\"splitType\":\"SPLIT_INTERNAL_TRANSFER\"}]}'"
+            "source": "curl --request POST \\\n  --url 'https://api.woovi.com/api/v1/charge?return_existing=true' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"correlationID\":\"string\",\"value\":0,\"type\":\"DYNAMIC\",\"comment\":\"string\",\"expiresIn\":0,\"expiresDate\":\"string\",\"dueDate\":\"string\",\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"correlationID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"ensureSameTaxID\":true,\"fixedLocation\":true,\"paymentLinkID\":\"string\",\"daysForDueDate\":0,\"daysAfterDueDate\":0,\"interests\":{\"value\":0,\"type\":\"FIXED\"},\"fines\":{\"value\":0,\"type\":\"FIXED\"},\"discountSettings\":{\"modality\":\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\",\"discountFixedDate\":[{\"daysActive\":0,\"value\":0}],\"value\":0},\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"enableCashbackPercentage\":true,\"enableCashbackExclusivePercentage\":true,\"subaccount\":\"string\",\"splits\":[{\"value\":0,\"pixKey\":\"string\",\"splitType\":\"SPLIT_INTERNAL_TRANSFER\"}]}'"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/charge?return_existing=true\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'correlationID' => 'string',\n    'value' => 0,\n    'type' => 'DYNAMIC',\n    'comment' => 'string',\n    'expiresIn' => 0,\n    'expiresDate' => 'string',\n    'dueDate' => 'string',\n    'customer' => [\n        'name' => 'string',\n        'email' => 'string',\n        'phone' => 'string',\n        'taxID' => 'string',\n        'correlationID' => 'string',\n        'address' => [\n                'zipcode' => 'string',\n                'street' => 'string',\n                'number' => 'string',\n                'neighborhood' => 'string',\n                'city' => 'string',\n                'state' => 'string',\n                'complement' => 'string',\n                'country' => 'string'\n        ]\n    ],\n    'ensureSameTaxID' => null,\n    'fixedLocation' => null,\n    'paymentLinkID' => 'string',\n    'daysForDueDate' => 0,\n    'daysAfterDueDate' => 0,\n    'interests' => [\n        'value' => 0,\n        'type' => 'FIXED'\n    ],\n    'fines' => [\n        'value' => 0,\n        'type' => 'FIXED'\n    ],\n    'discountSettings' => [\n        'modality' => 'FIXED_VALUE_UNTIL_SPECIFIED_DATE',\n        'discountFixedDate' => [\n                [\n                                'daysActive' => 0,\n                                'value' => 0\n                ]\n        ]\n    ],\n    'additionalInfo' => [\n        [\n                'key' => 'string',\n                'value' => 'string'\n        ]\n    ],\n    'enableCashbackPercentage' => null,\n    'enableCashbackExclusivePercentage' => null,\n    'subaccount' => 'string',\n    'splits' => [\n        [\n                'value' => 0,\n                'pixKey' => 'string',\n                'splitType' => 'SPLIT_INTERNAL_TRANSFER'\n        ]\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/charge?return_existing=true\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'correlationID' => 'string',\n    'value' => 0,\n    'type' => 'DYNAMIC',\n    'comment' => 'string',\n    'expiresIn' => 0,\n    'expiresDate' => 'string',\n    'dueDate' => 'string',\n    'customer' => [\n        'name' => 'string',\n        'email' => 'string',\n        'phone' => 'string',\n        'taxID' => 'string',\n        'correlationID' => 'string',\n        'address' => [\n                'zipcode' => 'string',\n                'street' => 'string',\n                'number' => 'string',\n                'neighborhood' => 'string',\n                'city' => 'string',\n                'state' => 'string',\n                'complement' => 'string',\n                'country' => 'string'\n        ]\n    ],\n    'ensureSameTaxID' => null,\n    'fixedLocation' => null,\n    'paymentLinkID' => 'string',\n    'daysForDueDate' => 0,\n    'daysAfterDueDate' => 0,\n    'interests' => [\n        'value' => 0,\n        'type' => 'FIXED'\n    ],\n    'fines' => [\n        'value' => 0,\n        'type' => 'FIXED'\n    ],\n    'discountSettings' => [\n        'modality' => 'FIXED_VALUE_UNTIL_SPECIFIED_DATE',\n        'discountFixedDate' => [\n                [\n                                'daysActive' => 0,\n                                'value' => 0\n                ]\n        ],\n        'value' => 0\n    ],\n    'additionalInfo' => [\n        [\n                'key' => 'string',\n                'value' => 'string'\n        ]\n    ],\n    'enableCashbackPercentage' => null,\n    'enableCashbackExclusivePercentage' => null,\n    'subaccount' => 'string',\n    'splits' => [\n        [\n                'value' => 0,\n                'pixKey' => 'string',\n                'splitType' => 'SPLIT_INTERNAL_TRANSFER'\n        ]\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"type\\\":\\\"DYNAMIC\\\",\\\"comment\\\":\\\"string\\\",\\\"expiresIn\\\":0,\\\"expiresDate\\\":\\\"string\\\",\\\"dueDate\\\":\\\"string\\\",\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"ensureSameTaxID\\\":true,\\\"fixedLocation\\\":true,\\\"paymentLinkID\\\":\\\"string\\\",\\\"daysForDueDate\\\":0,\\\"daysAfterDueDate\\\":0,\\\"interests\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"fines\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"discountSettings\\\":{\\\"modality\\\":\\\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\\\",\\\"discountFixedDate\\\":[{\\\"daysActive\\\":0,\\\"value\\\":0}]},\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"enableCashbackPercentage\\\":true,\\\"enableCashbackExclusivePercentage\\\":true,\\\"subaccount\\\":\\\"string\\\",\\\"splits\\\":[{\\\"value\\\":0,\\\"pixKey\\\":\\\"string\\\",\\\"splitType\\\":\\\"SPLIT_INTERNAL_TRANSFER\\\"}]}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/charge?return_existing=true\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"type\\\":\\\"DYNAMIC\\\",\\\"comment\\\":\\\"string\\\",\\\"expiresIn\\\":0,\\\"expiresDate\\\":\\\"string\\\",\\\"dueDate\\\":\\\"string\\\",\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"ensureSameTaxID\\\":true,\\\"fixedLocation\\\":true,\\\"paymentLinkID\\\":\\\"string\\\",\\\"daysForDueDate\\\":0,\\\"daysAfterDueDate\\\":0,\\\"interests\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"fines\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"discountSettings\\\":{\\\"modality\\\":\\\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\\\",\\\"discountFixedDate\\\":[{\\\"daysActive\\\":0,\\\"value\\\":0}],\\\"value\\\":0},\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"enableCashbackPercentage\\\":true,\\\"enableCashbackExclusivePercentage\\\":true,\\\"subaccount\\\":\\\"string\\\",\\\"splits\\\":[{\\\"value\\\":0,\\\"pixKey\\\":\\\"string\\\",\\\"splitType\\\":\\\"SPLIT_INTERNAL_TRANSFER\\\"}]}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/charge?return_existing=true\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/charge?return_existing=true\"\n\n\tpayload := strings.NewReader(\"{\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"type\\\":\\\"DYNAMIC\\\",\\\"comment\\\":\\\"string\\\",\\\"expiresIn\\\":0,\\\"expiresDate\\\":\\\"string\\\",\\\"dueDate\\\":\\\"string\\\",\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"ensureSameTaxID\\\":true,\\\"fixedLocation\\\":true,\\\"paymentLinkID\\\":\\\"string\\\",\\\"daysForDueDate\\\":0,\\\"daysAfterDueDate\\\":0,\\\"interests\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"fines\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"discountSettings\\\":{\\\"modality\\\":\\\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\\\",\\\"discountFixedDate\\\":[{\\\"daysActive\\\":0,\\\"value\\\":0}]},\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"enableCashbackPercentage\\\":true,\\\"enableCashbackExclusivePercentage\\\":true,\\\"subaccount\\\":\\\"string\\\",\\\"splits\\\":[{\\\"value\\\":0,\\\"pixKey\\\":\\\"string\\\",\\\"splitType\\\":\\\"SPLIT_INTERNAL_TRANSFER\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/charge?return_existing=true\"\n\n\tpayload := strings.NewReader(\"{\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"type\\\":\\\"DYNAMIC\\\",\\\"comment\\\":\\\"string\\\",\\\"expiresIn\\\":0,\\\"expiresDate\\\":\\\"string\\\",\\\"dueDate\\\":\\\"string\\\",\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"ensureSameTaxID\\\":true,\\\"fixedLocation\\\":true,\\\"paymentLinkID\\\":\\\"string\\\",\\\"daysForDueDate\\\":0,\\\"daysAfterDueDate\\\":0,\\\"interests\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"fines\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"discountSettings\\\":{\\\"modality\\\":\\\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\\\",\\\"discountFixedDate\\\":[{\\\"daysActive\\\":0,\\\"value\\\":0}],\\\"value\\\":0},\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"enableCashbackPercentage\\\":true,\\\"enableCashbackExclusivePercentage\\\":true,\\\"subaccount\\\":\\\"string\\\",\\\"splits\\\":[{\\\"value\\\":0,\\\"pixKey\\\":\\\"string\\\",\\\"splitType\\\":\\\"SPLIT_INTERNAL_TRANSFER\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"type\\\":\\\"DYNAMIC\\\",\\\"comment\\\":\\\"string\\\",\\\"expiresIn\\\":0,\\\"expiresDate\\\":\\\"string\\\",\\\"dueDate\\\":\\\"string\\\",\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"ensureSameTaxID\\\":true,\\\"fixedLocation\\\":true,\\\"paymentLinkID\\\":\\\"string\\\",\\\"daysForDueDate\\\":0,\\\"daysAfterDueDate\\\":0,\\\"interests\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"fines\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"discountSettings\\\":{\\\"modality\\\":\\\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\\\",\\\"discountFixedDate\\\":[{\\\"daysActive\\\":0,\\\"value\\\":0}]},\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"enableCashbackPercentage\\\":true,\\\"enableCashbackExclusivePercentage\\\":true,\\\"subaccount\\\":\\\"string\\\",\\\"splits\\\":[{\\\"value\\\":0,\\\"pixKey\\\":\\\"string\\\",\\\"splitType\\\":\\\"SPLIT_INTERNAL_TRANSFER\\\"}]}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/charge?return_existing=true\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"type\\\":\\\"DYNAMIC\\\",\\\"comment\\\":\\\"string\\\",\\\"expiresIn\\\":0,\\\"expiresDate\\\":\\\"string\\\",\\\"dueDate\\\":\\\"string\\\",\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"ensureSameTaxID\\\":true,\\\"fixedLocation\\\":true,\\\"paymentLinkID\\\":\\\"string\\\",\\\"daysForDueDate\\\":0,\\\"daysAfterDueDate\\\":0,\\\"interests\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"fines\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"discountSettings\\\":{\\\"modality\\\":\\\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\\\",\\\"discountFixedDate\\\":[{\\\"daysActive\\\":0,\\\"value\\\":0}],\\\"value\\\":0},\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"enableCashbackPercentage\\\":true,\\\"enableCashbackExclusivePercentage\\\":true,\\\"subaccount\\\":\\\"string\\\",\\\"splits\\\":[{\\\"value\\\":0,\\\"pixKey\\\":\\\"string\\\",\\\"splitType\\\":\\\"SPLIT_INTERNAL_TRANSFER\\\"}]}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/charge?return_existing=true\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/charge?return_existing=true\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"type\\\":\\\"DYNAMIC\\\",\\\"comment\\\":\\\"string\\\",\\\"expiresIn\\\":0,\\\"expiresDate\\\":\\\"string\\\",\\\"dueDate\\\":\\\"string\\\",\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"ensureSameTaxID\\\":true,\\\"fixedLocation\\\":true,\\\"paymentLinkID\\\":\\\"string\\\",\\\"daysForDueDate\\\":0,\\\"daysAfterDueDate\\\":0,\\\"interests\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"fines\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"discountSettings\\\":{\\\"modality\\\":\\\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\\\",\\\"discountFixedDate\\\":[{\\\"daysActive\\\":0,\\\"value\\\":0}]},\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"enableCashbackPercentage\\\":true,\\\"enableCashbackExclusivePercentage\\\":true,\\\"subaccount\\\":\\\"string\\\",\\\"splits\\\":[{\\\"value\\\":0,\\\"pixKey\\\":\\\"string\\\",\\\"splitType\\\":\\\"SPLIT_INTERNAL_TRANSFER\\\"}]}\"\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/charge?return_existing=true\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"correlationID\\\":\\\"string\\\",\\\"value\\\":0,\\\"type\\\":\\\"DYNAMIC\\\",\\\"comment\\\":\\\"string\\\",\\\"expiresIn\\\":0,\\\"expiresDate\\\":\\\"string\\\",\\\"dueDate\\\":\\\"string\\\",\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"ensureSameTaxID\\\":true,\\\"fixedLocation\\\":true,\\\"paymentLinkID\\\":\\\"string\\\",\\\"daysForDueDate\\\":0,\\\"daysAfterDueDate\\\":0,\\\"interests\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"fines\\\":{\\\"value\\\":0,\\\"type\\\":\\\"FIXED\\\"},\\\"discountSettings\\\":{\\\"modality\\\":\\\"FIXED_VALUE_UNTIL_SPECIFIED_DATE\\\",\\\"discountFixedDate\\\":[{\\\"daysActive\\\":0,\\\"value\\\":0}],\\\"value\\\":0},\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"enableCashbackPercentage\\\":true,\\\"enableCashbackExclusivePercentage\\\":true,\\\"subaccount\\\":\\\"string\\\",\\\"splits\\\":[{\\\"value\\\":0,\\\"pixKey\\\":\\\"string\\\",\\\"splitType\\\":\\\"SPLIT_INTERNAL_TRANSFER\\\"}]}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -7202,7 +7231,7 @@
             ]
           }
         ],
-        "description": "Endpoint to request a payment. Supports three payment types: Pix Key (`PIX_KEY`), QR Code (`QR_CODE`), and Manual (`MANUAL`).\n\nFor QR Code payments, the system decodes the BR Code string and extracts the destination and value automatically. After creating, use `POST /api/v1/payment/approve` with the correlationID to execute.\n",
+        "description": "Endpoint to request a payment. Supports three payment types: Pix Key (`PIX_KEY`), QR Code (`QR_CODE`), and Manual (`MANUAL`).\n\nFor QR Code payments, the system decodes the BR Code string and extracts the destination and value automatically.\n\nSet `autoApprove: true` to create and immediately approve the payment in a single call, returning the enriched response with transaction and destination data. Without this flag, the payment is created in `CREATED` status and can be approved later via `POST /api/v1/payment/approve`.\n",
         "requestBody": {
           "description": "Data to create a payment request",
           "required": true,
@@ -7210,7 +7239,20 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "$ref": "#/components/schemas/PaymentCreatePayload"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PaymentCreatePayload"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "autoApprove": {
+                        "type": "boolean",
+                        "description": "When true, creates and approves the payment in a single call returning the enriched response. Defaults to false."
+                      }
+                    }
+                  }
+                ]
               },
               "examples": {
                 "pixKey": {
@@ -7228,6 +7270,17 @@
                       "userId": "user-456",
                       "source": "mobile-app"
                     }
+                  }
+                },
+                "pixKeyAutoApprove": {
+                  "summary": "Pay via Pix Key with auto-approval",
+                  "value": {
+                    "value": 100,
+                    "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
+                    "destinationAliasType": "RANDOM",
+                    "comment": "payment comment",
+                    "correlationID": "payment-auto-approve",
+                    "autoApprove": true
                   }
                 },
                 "qrCode": {
@@ -7289,7 +7342,7 @@
         },
         "responses": {
           "200": {
-            "description": "Payment destination account information",
+            "description": "Payment created. When autoApprove is true, the payment is immediately approved and the response includes transaction and destination data.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7297,6 +7350,14 @@
                   "properties": {
                     "payment": {
                       "$ref": "#/components/schemas/Payment"
+                    },
+                    "transaction": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/PaymentTransaction"
+                    },
+                    "destination": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/PaymentDestination"
                     }
                   }
                 },
@@ -7359,6 +7420,32 @@
                         }
                       }
                     }
+                  },
+                  "autoApproved": {
+                    "summary": "Auto-approved payment response (autoApprove true)",
+                    "value": {
+                      "payment": {
+                        "value": 100,
+                        "status": "APPROVED",
+                        "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
+                        "destinationAliasType": "RANDOM",
+                        "comment": "payment comment",
+                        "correlationID": "payment1"
+                      },
+                      "transaction": {
+                        "value": 100,
+                        "endToEndId": "transaction-end-to-end-id",
+                        "time": "2023-03-20T13:14:17.000Z"
+                      },
+                      "destination": {
+                        "name": "Dan",
+                        "taxID": "31324227036",
+                        "pixKey": "c4249323-b4ca-43f2-8139-8232aab09b93",
+                        "bank": "A Bank",
+                        "branch": "1",
+                        "account": "123456"
+                      }
+                    }
                   }
                 }
               }
@@ -7383,31 +7470,31 @@
         "x-codeSamples": [
           {
             "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/payment',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  type: 'PIX_KEY',\n  value: 0,\n  destinationAlias: 'string',\n  destinationAliasType: 'CPF',\n  correlationID: 'string',\n  pixKeyEndToEndId: 'string',\n  comment: 'string',\n  metadata: {}\n}));\nreq.end();"
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/payment',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  type: 'PIX_KEY',\n  value: 0,\n  destinationAlias: 'string',\n  destinationAliasType: 'CPF',\n  correlationID: 'string',\n  pixKeyEndToEndId: 'string',\n  comment: 'string',\n  metadata: {},\n  autoApprove: true\n}));\nreq.end();"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/payment \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"type\":\"PIX_KEY\",\"value\":0,\"destinationAlias\":\"string\",\"destinationAliasType\":\"CPF\",\"correlationID\":\"string\",\"pixKeyEndToEndId\":\"string\",\"comment\":\"string\",\"metadata\":{}}'"
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/payment \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"type\":\"PIX_KEY\",\"value\":0,\"destinationAlias\":\"string\",\"destinationAliasType\":\"CPF\",\"correlationID\":\"string\",\"pixKeyEndToEndId\":\"string\",\"comment\":\"string\",\"metadata\":{},\"autoApprove\":true}'"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/payment\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'type' => 'PIX_KEY',\n    'value' => 0,\n    'destinationAlias' => 'string',\n    'destinationAliasType' => 'CPF',\n    'correlationID' => 'string',\n    'pixKeyEndToEndId' => 'string',\n    'comment' => 'string',\n    'metadata' => [\n        \n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/payment\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'type' => 'PIX_KEY',\n    'value' => 0,\n    'destinationAlias' => 'string',\n    'destinationAliasType' => 'CPF',\n    'correlationID' => 'string',\n    'pixKeyEndToEndId' => 'string',\n    'comment' => 'string',\n    'metadata' => [\n        \n    ],\n    'autoApprove' => null\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/payment\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{},\\\"autoApprove\\\":true}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/payment\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/payment\"\n\n\tpayload := strings.NewReader(\"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/payment\"\n\n\tpayload := strings.NewReader(\"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{},\\\"autoApprove\\\":true}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{}}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/payment\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{},\\\"autoApprove\\\":true}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/payment\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/payment\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{}}\"\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/payment\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"type\\\":\\\"PIX_KEY\\\",\\\"value\\\":0,\\\"destinationAlias\\\":\\\"string\\\",\\\"destinationAliasType\\\":\\\"CPF\\\",\\\"correlationID\\\":\\\"string\\\",\\\"pixKeyEndToEndId\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"metadata\\\":{},\\\"autoApprove\\\":true}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -13190,19 +13277,23 @@
             }
           },
           "discountSettings": {
-            "description": "Discount settings for the charge. This property is only considered for charges of type OVERDUE",
+            "description": "Discount settings for the charge. This property is only considered for charges of type OVERDUE.\nThe shape of the object depends on `modality`:\n  - For `FIXED_VALUE_UNTIL_SPECIFIED_DATE` and `PERCENTAGE_UNTIL_SPECIFIED_DATE`, provide `discountFixedDate` (array of items with `daysActive` and `value`).\n  - For the four advance-day modalities (`VALUE_PER_RUNNING_DAY_ADVANCE`, `VALUE_PER_BUSINESS_DAY_ADVANCE`, `PERCENTAGE_PER_RUNNING_DAY_ADVANCE`, `PERCENTAGE_PER_BUSINESS_DAY_ADVANCE`), provide a single `value`.\nNote: advance-day modalities are accepted by the API contract but are not yet routed to the pix-charge service and currently respond with HTTP 501.\n",
             "type": "object",
             "properties": {
               "modality": {
                 "type": "string",
                 "enum": [
                   "FIXED_VALUE_UNTIL_SPECIFIED_DATE",
-                  "PERCENTAGE_UNTIL_SPECIFIED_DATE"
+                  "PERCENTAGE_UNTIL_SPECIFIED_DATE",
+                  "VALUE_PER_RUNNING_DAY_ADVANCE",
+                  "VALUE_PER_BUSINESS_DAY_ADVANCE",
+                  "PERCENTAGE_PER_RUNNING_DAY_ADVANCE",
+                  "PERCENTAGE_PER_BUSINESS_DAY_ADVANCE"
                 ],
                 "description": "Modality of discount to be applied"
               },
               "discountFixedDate": {
-                "description": "Absolute discounts applied to charge.",
+                "description": "Absolute discounts applied to charge. Required when `modality` is `FIXED_VALUE_UNTIL_SPECIFIED_DATE` or `PERCENTAGE_UNTIL_SPECIFIED_DATE`.",
                 "type": "array",
                 "items": {
                   "type": "object",
@@ -13213,10 +13304,14 @@
                     },
                     "value": {
                       "type": "number",
-                      "description": "Value in cents of the discount"
+                      "description": "Discount value. Units depend on modality:\n  - `FIXED_VALUE_UNTIL_SPECIFIED_DATE`: cents.\n  - `PERCENTAGE_UNTIL_SPECIFIED_DATE`: basis points (e.g. 100 = 1.00%).\n"
                     }
                   }
                 }
+              },
+              "value": {
+                "type": "number",
+                "description": "Discount value. Required when `modality` is one of the advance-day modalities.\nUnits depend on modality:\n  - `VALUE_PER_RUNNING_DAY_ADVANCE`: cents per running day.\n  - `VALUE_PER_BUSINESS_DAY_ADVANCE`: cents per business day.\n  - `PERCENTAGE_PER_RUNNING_DAY_ADVANCE`, `PERCENTAGE_PER_BUSINESS_DAY_ADVANCE`: basis points (e.g. 100 = 1.00%).\n"
               }
             }
           },
