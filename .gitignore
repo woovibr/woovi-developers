@@ -74,5 +74,5 @@ yarn-error.log
 junit.xml
 .yarn
 .yarnrc
-yarn
-.lockwoovi-agents
+yarn.lock
+woovi-agents
