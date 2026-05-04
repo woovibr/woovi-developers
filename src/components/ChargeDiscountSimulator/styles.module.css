@@ -1,0 +1,243 @@
+.simulator {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.section {
+  background: var(--ifm-card-background-color, var(--ifm-background-surface-color));
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--ifm-color-emphasis-900);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-emphasis-900);
+  box-sizing: border-box;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: -1px;
+  border-color: var(--ifm-color-primary);
+}
+
+.checkboxLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-800);
+  cursor: pointer;
+}
+
+.checkboxLine input {
+  margin: 0;
+}
+
+.muted {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.fixedDateGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fixedDateHeader,
+.fixedDateRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 6px;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.fixedDateHeader {
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.fixedDateRow input {
+  width: 100%;
+  padding: 4px 6px;
+  font-size: 0.85rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  box-sizing: border-box;
+}
+
+.iconButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-emphasis-800);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.iconButton:hover:not(:disabled) {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.iconButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.primaryButton,
+.secondaryButton {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.primaryButton {
+  background: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-contrast-foreground, #fff);
+  border-color: var(--ifm-color-primary);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary-dark);
+}
+
+.secondaryButton {
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-emphasis-900);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.copyStatus {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.error {
+  color: var(--ifm-color-danger-darker, #b22222);
+  background: var(--ifm-color-danger-contrast-background, #fff5f5);
+  border: 1px solid var(--ifm-color-danger-dark, #c53030);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.table th,
+.table td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.table th {
+  background: var(--ifm-color-emphasis-100);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.totalCell {
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-900);
+}
+
+.rowDue {
+  background: var(--ifm-color-primary-contrast-background, rgba(3, 214, 157, 0.12));
+  font-weight: 600;
+}
+
+.rowOverdue {
+  background: var(--ifm-color-danger-contrast-background, rgba(220, 53, 69, 0.05));
+}
+
+@media (max-width: 600px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
