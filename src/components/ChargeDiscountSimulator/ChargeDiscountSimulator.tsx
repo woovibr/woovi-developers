@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import clsx from 'clsx';
 
 import {
   DEFAULT_BR_BANKING_HOLIDAYS,
   simulateChargeDiscount,
+  summarize,
 } from './simulate';
 import type {
   DiscountModality,
@@ -16,6 +18,13 @@ import type {
 import styles from './styles.module.css';
 
 type FixedDateRow = { daysActive: number; value: number };
+
+type SpotStatus =
+  | 'BEFORE_DISCOUNT'
+  | 'DISCOUNT'
+  | 'ACTIVE'
+  | 'DUE_TODAY'
+  | 'OVERDUE';
 
 const MODALITY_OPTIONS: {
   number: number;
@@ -73,16 +82,14 @@ const isFixedDateModality = (m: DiscountModality): boolean =>
 const modalityNumber = (m: DiscountModality): number =>
   MODALITY_OPTIONS.find((o) => o.modality === m)?.number ?? 1;
 
-const formatCents = (cents: number): string => {
-  const sign = cents < 0 ? '-' : '';
-
-  const abs = Math.abs(cents);
-
-  return `${sign}R$${(abs / 100).toFixed(2)}`;
-};
+const formatCents = (cents: number): string =>
+  (cents / 100).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  });
 
 const formatBasisPoints = (bp: number): string =>
-  `${(bp / 100).toFixed(2)}%`;
+  `${(bp / 100).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%`;
 
 const todayIsoUtc = (): string => {
   const d = new Date();
@@ -99,7 +106,6 @@ type DiscountValueUnit = {
   preview: typeof formatCents;
 };
 
-// Discount value-unit copy per modality.
 const discountValueUnit = (m: DiscountModality): DiscountValueUnit => {
   switch (m) {
     case 'VALUE_PER_RUNNING_DAY_ADVANCE':
@@ -121,10 +127,35 @@ const discountValueUnit = (m: DiscountModality): DiscountValueUnit => {
   }
 };
 
+const STATUS_LABELS: Record<SpotStatus, string> = {
+  BEFORE_DISCOUNT: 'Antes do desconto',
+  DISCOUNT: 'Com desconto',
+  ACTIVE: 'Ativa',
+  DUE_TODAY: 'Vence hoje',
+  OVERDUE: 'Vencida',
+};
+
+const deriveStatus = (
+  row: SimulationRow,
+  hasDiscountConfig: boolean,
+): SpotStatus => {
+  if (row.daysToDueDate < 0) {
+    return 'OVERDUE';
+  }
+  if (row.daysToDueDate === 0) {
+    return 'DUE_TODAY';
+  }
+  if (row.discount > 0) {
+    return 'DISCOUNT';
+  }
+  if (hasDiscountConfig) {
+    return 'BEFORE_DISCOUNT';
+  }
+  return 'ACTIVE';
+};
+
 const ChargeDiscountSimulator = (): JSX.Element => {
-  // Mount detection — avoids SSR/CSR hydration mismatch from `new Date()` used
-  // as the default creationDate. Server renders the loading fallback; client
-  // swaps in the real form post-hydration.
+  // Mount detection — avoids SSR/CSR hydration mismatch from `new Date()`.
   const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -132,7 +163,7 @@ const ChargeDiscountSimulator = (): JSX.Element => {
   }, []);
 
   const [modality, setModality] = useState<DiscountModality>(
-    'PERCENTAGE_PER_RUNNING_DAY_ADVANCE',
+    'FIXED_VALUE_UNTIL_SPECIFIED_DATE',
   );
 
   const [chargeValue, setChargeValue] = useState<number>(10000);
@@ -147,12 +178,12 @@ const ChargeDiscountSimulator = (): JSX.Element => {
     if (!creationDate) {
       setCreationDate(todayIsoUtc());
     }
-     
+
   }, []);
 
   const [fixedDateRows, setFixedDateRows] = useState<FixedDateRow[]>([
-    { daysActive: 5, value: 500 },
-    { daysActive: 10, value: 200 },
+    { daysActive: 5, value: 100 },
+    { daysActive: 10, value: 50 },
   ]);
 
   const [discountValue, setDiscountValue] = useState<number>(10);
@@ -161,7 +192,7 @@ const ChargeDiscountSimulator = (): JSX.Element => {
 
   const [interestValue, setInterestValue] = useState<number>(100);
 
-  const [noInterest, setNoInterest] = useState<boolean>(false);
+  const [noInterest, setNoInterest] = useState<boolean>(true);
 
   const [fineValue, setFineValue] = useState<number>(200);
 
@@ -169,31 +200,35 @@ const ChargeDiscountSimulator = (): JSX.Element => {
     'PERCENTAGE',
   );
 
-  const [noFine, setNoFine] = useState<boolean>(false);
+  const [noFine, setNoFine] = useState<boolean>(true);
 
   const [granularity, setGranularity] = useState<'daily' | 'summary'>(
     'daily',
   );
 
+  const [spotlightDayIndex, setSpotlightDayIndex] = useState<number>(0);
+
   const [copyStatus, setCopyStatus] = useState<string>('');
 
-  // ---------- Derived input ----------
+  // ---------- Validation ----------
 
   const validation = useMemo<string | null>(() => {
     if (!Number.isFinite(chargeValue) || chargeValue <= 0) {
-      return 'O valor da cobrança (chargeValue) deve ser maior que zero.';
+      return 'O valor da cobrança deve ser maior que zero.';
     }
     if (!Number.isFinite(daysForDueDate) || daysForDueDate <= 0) {
-      return 'daysForDueDate deve ser maior que zero.';
+      return 'Dias até o vencimento deve ser maior que zero.';
     }
     if (!Number.isFinite(daysAfterDueDate) || daysAfterDueDate < 0) {
-      return 'daysAfterDueDate não pode ser negativo.';
+      return 'Dias após o vencimento não pode ser negativo.';
     }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(creationDate)) {
       return 'Data de criação inválida.';
     }
     return null;
   }, [chargeValue, daysForDueDate, daysAfterDueDate, creationDate]);
+
+  // ---------- Derived input ----------
 
   const discountSettings: DiscountSettings | undefined = useMemo(() => {
     if (noDiscount) {
@@ -228,8 +263,8 @@ const ChargeDiscountSimulator = (): JSX.Element => {
     ? undefined
     : { value: fineValue, type: fineType };
 
-  const input = useMemo<SimulationInput>(() => {
-    return {
+  const dailyInput = useMemo<SimulationInput>(
+    () => ({
       chargeValue,
       daysForDueDate,
       daysAfterDueDate,
@@ -237,30 +272,80 @@ const ChargeDiscountSimulator = (): JSX.Element => {
       discountSettings,
       interests,
       fines,
-      granularity,
+      granularity: 'daily',
       holidays: DEFAULT_BR_BANKING_HOLIDAYS,
-    };
-  }, [
-    chargeValue,
-    daysForDueDate,
-    daysAfterDueDate,
-    creationDate,
-    discountSettings,
-    interests,
-    fines,
-    granularity,
-  ]);
+    }),
+    [
+      chargeValue,
+      daysForDueDate,
+      daysAfterDueDate,
+      creationDate,
+      discountSettings,
+      interests,
+      fines,
+    ],
+  );
 
-  const rows: SimulationRow[] = useMemo(() => {
+  // The full daily array is used for the spotlight day picker and the
+  // schedule table (so the day picker always has every calendar day to
+  // choose from). The summary view is just a filter applied on top.
+  const dailyRows: SimulationRow[] = useMemo(() => {
     if (validation) {
       return [];
     }
     try {
-      return simulateChargeDiscount(input);
+      return simulateChargeDiscount(dailyInput);
     } catch {
       return [];
     }
-  }, [input, validation]);
+  }, [dailyInput, validation]);
+
+  const summaryRows: SimulationRow[] = useMemo(() => {
+    if (dailyRows.length === 0) {
+      return [];
+    }
+    return summarize(dailyRows, daysForDueDate);
+  }, [dailyRows, daysForDueDate]);
+
+  const tableRows = granularity === 'summary' ? summaryRows : dailyRows;
+
+  // Clamp spotlight when the simulation length changes.
+  useEffect(() => {
+    if (dailyRows.length === 0) {
+      return;
+    }
+    const last = dailyRows.length - 1;
+
+    if (spotlightDayIndex > last) {
+      setSpotlightDayIndex(last);
+    } else if (spotlightDayIndex < 0) {
+      setSpotlightDayIndex(0);
+    }
+  }, [dailyRows.length, spotlightDayIndex]);
+
+  const spotlightRow: SimulationRow | undefined =
+    dailyRows[Math.max(0, Math.min(spotlightDayIndex, dailyRows.length - 1))];
+
+  const status: SpotStatus | null = spotlightRow
+    ? deriveStatus(spotlightRow, !!discountSettings)
+    : null;
+
+  // ---------- Derived label info ----------
+
+  const selectedOption = MODALITY_OPTIONS.find((o) => o.modality === modality);
+
+  const spotlightDate = spotlightRow?.date ?? '';
+
+  const onSpotlightDateChange = (iso: string): void => {
+    if (!iso || dailyRows.length === 0) {
+      return;
+    }
+    const idx = dailyRows.findIndex((r) => r.date === iso);
+
+    if (idx >= 0) {
+      setSpotlightDayIndex(idx);
+    }
+  };
 
   // ---------- Copy helpers ----------
 
@@ -269,18 +354,19 @@ const ChargeDiscountSimulator = (): JSX.Element => {
       modality,
       modalityNumber: modalityNumber(modality),
       input: {
-        ...input,
-        creationDate: input.creationDate
-          ? new Date(input.creationDate).toISOString()
+        ...dailyInput,
+        granularity,
+        creationDate: dailyInput.creationDate
+          ? new Date(dailyInput.creationDate).toISOString()
           : undefined,
       },
-      rows,
+      rows: tableRows,
     };
 
     return JSON.stringify(envelope, null, 2);
   };
 
-  const buildCurl = (): string => {
+  const buildBody = (): Record<string, unknown> => {
     const body: Record<string, unknown> = {
       type: 'OVERDUE',
       correlationID: '<CORRELATION_ID>',
@@ -298,8 +384,11 @@ const ChargeDiscountSimulator = (): JSX.Element => {
     if (fines) {
       body.fines = fines;
     }
+    return body;
+  };
 
-    const json = JSON.stringify(body, null, 2);
+  const buildCurl = (): string => {
+    const json = JSON.stringify(buildBody(), null, 2);
 
     return [
       "curl -X POST 'https://api.woovi.com/api/v1/charge' \\",
@@ -324,9 +413,7 @@ const ChargeDiscountSimulator = (): JSX.Element => {
     window.setTimeout(() => setCopyStatus(''), 2500);
   };
 
-  // ---------- Sub-renderers ----------
-
-  const selectedOption = MODALITY_OPTIONS.find((o) => o.modality === modality);
+  // ---------- Discount block ----------
 
   const renderDiscountBlock = (): JSX.Element => {
     if (noDiscount) {
@@ -440,50 +527,49 @@ const ChargeDiscountSimulator = (): JSX.Element => {
   };
 
   if (!mounted) {
-    return <div className={styles.simulator}>Carregando simulador…</div>;
+    return <div className={styles.container}>Carregando simulador…</div>;
   }
 
+  // ---------- Render ----------
+
   return (
-    <div className={styles.simulator}>
-      <div className={styles.formGrid}>
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Modalidade</h3>
-          <div className={styles.field}>
-            <label htmlFor='modality'>Modalidade BACEN</label>
-            <select
-              id='modality'
-              value={modality}
-              onChange={(e) =>
-                setModality(e.target.value as DiscountModality)
-              }
-            >
-              {MODALITY_OPTIONS.map((o) => (
-                <option key={o.modality} value={o.modality}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-            {selectedOption && (
-              <p className={styles.muted}>{selectedOption.description}</p>
-            )}
-          </div>
+    <>
+    <div className={styles.container}>
+      {/* ============================ CONFIG ============================ */}
+      <div className={styles.panel}>
+        <h2>Configuração da cobrança</h2>
+
+        <div className={styles.field}>
+          <label htmlFor='modality'>Modalidade de desconto</label>
+          <select
+            id='modality'
+            value={modality}
+            onChange={(e) => setModality(e.target.value as DiscountModality)}
+          >
+            {MODALITY_OPTIONS.map((o) => (
+              <option key={o.modality} value={o.modality}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+          {selectedOption && (
+            <span className={styles.fieldHint}>{selectedOption.description}</span>
+          )}
         </div>
 
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Parâmetros da cobrança</h3>
+        <div className={styles.field}>
+          <label htmlFor='chargeValue'>Valor principal (em centavos)</label>
+          <input
+            id='chargeValue'
+            type='number'
+            min={1}
+            value={chargeValue}
+            onChange={(e) => setChargeValue(Number(e.target.value))}
+          />
+          <span className={styles.fieldHint}>{formatCents(chargeValue)}</span>
+        </div>
 
-          <div className={styles.field}>
-            <label htmlFor='chargeValue'>Valor (centavos)</label>
-            <input
-              id='chargeValue'
-              type='number'
-              min={1}
-              value={chargeValue}
-              onChange={(e) => setChargeValue(Number(e.target.value))}
-            />
-            <span className={styles.muted}>{formatCents(chargeValue)}</span>
-          </div>
-
+        <div className={styles.row}>
           <div className={styles.field}>
             <label htmlFor='daysForDueDate'>Dias até o vencimento</label>
             <input
@@ -494,11 +580,8 @@ const ChargeDiscountSimulator = (): JSX.Element => {
               onChange={(e) => setDaysForDueDate(Number(e.target.value))}
             />
           </div>
-
           <div className={styles.field}>
-            <label htmlFor='daysAfterDueDate'>
-              Dias simulados após o vencimento
-            </label>
+            <label htmlFor='daysAfterDueDate'>Dias após o vencimento</label>
             <input
               id='daysAfterDueDate'
               type='number'
@@ -506,207 +589,329 @@ const ChargeDiscountSimulator = (): JSX.Element => {
               value={daysAfterDueDate}
               onChange={(e) => setDaysAfterDueDate(Number(e.target.value))}
             />
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor='creationDate'>Data de criação (UTC)</label>
-            <input
-              id='creationDate'
-              type='date'
-              value={creationDate}
-              onChange={(e) => setCreationDate(e.target.value)}
-            />
+            <span className={styles.fieldHint}>
+              Janela máxima de simulação após o vencimento
+            </span>
           </div>
         </div>
 
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Desconto</h3>
+        <div className={styles.field}>
+          <label htmlFor='creationDate'>Data de criação (UTC)</label>
+          <input
+            id='creationDate'
+            type='date'
+            value={creationDate}
+            onChange={(e) => setCreationDate(e.target.value)}
+          />
+        </div>
 
+        <h3>Desconto</h3>
+        <div className={styles.field}>
           <label className={styles.checkboxLine}>
             <input
               type='checkbox'
               checked={noDiscount}
               onChange={(e) => setNoDiscount(e.target.checked)}
-            />
+            />{' '}
             Sem desconto
           </label>
-
-          {renderDiscountBlock()}
         </div>
 
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Juros</h3>
+        {!noDiscount && renderDiscountBlock()}
 
-          <label className={styles.checkboxLine}>
+        <h3>Multa &amp; Juros</h3>
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label htmlFor='fineValue'>
+              Multa{' '}
+              {fineType === 'FIXED'
+                ? '(centavos)'
+                : '(basis points)'}
+            </label>
             <input
-              type='checkbox'
-              checked={noInterest}
-              onChange={(e) => setNoInterest(e.target.checked)}
+              id='fineValue'
+              type='number'
+              min={0}
+              value={fineValue}
+              onChange={(e) => setFineValue(Number(e.target.value))}
+              disabled={noFine}
             />
-            Sem juros
-          </label>
-
-          {!noInterest && (
-            <div className={styles.field}>
-              <label htmlFor='interestValue'>
-                Valor (basis points por dia corrido — 100 = 1,00%)
-              </label>
-              <input
-                id='interestValue'
-                type='number'
-                min={0}
-                value={interestValue}
-                onChange={(e) => setInterestValue(Number(e.target.value))}
-              />
-              <span className={styles.muted}>
-                {formatBasisPoints(interestValue)} ao dia, após o vencimento
-              </span>
-            </div>
-          )}
+            <span className={styles.fieldHint}>
+              {fineType === 'FIXED'
+                ? `${formatCents(fineValue)} aplicada uma vez`
+                : `${formatBasisPoints(fineValue)} aplicada uma vez`}
+            </span>
+          </div>
+          <div className={styles.field}>
+            <label htmlFor='fineType'>Tipo da multa</label>
+            <select
+              id='fineType'
+              value={fineType}
+              onChange={(e) =>
+                setFineType(e.target.value as 'PERCENTAGE' | 'FIXED')
+              }
+              disabled={noFine}
+            >
+              <option value='PERCENTAGE'>Percentual (basis points)</option>
+              <option value='FIXED'>Fixa (centavos)</option>
+            </select>
+          </div>
         </div>
 
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Multa</h3>
-
+        <div className={styles.field}>
           <label className={styles.checkboxLine}>
             <input
               type='checkbox'
               checked={noFine}
               onChange={(e) => setNoFine(e.target.checked)}
-            />
+            />{' '}
             Sem multa
           </label>
-
-          {!noFine && (
-            <>
-              <div className={styles.field}>
-                <label htmlFor='fineType'>Tipo</label>
-                <select
-                  id='fineType'
-                  value={fineType}
-                  onChange={(e) =>
-                    setFineType(e.target.value as 'PERCENTAGE' | 'FIXED')
-                  }
-                >
-                  <option value='PERCENTAGE'>PERCENTAGE</option>
-                  <option value='FIXED'>FIXED</option>
-                </select>
-              </div>
-
-              <div className={styles.field}>
-                <label htmlFor='fineValue'>
-                  Valor{' '}
-                  {fineType === 'FIXED'
-                    ? '(centavos)'
-                    : '(basis points — 100 = 1,00%)'}
-                </label>
-                <input
-                  id='fineValue'
-                  type='number'
-                  min={0}
-                  value={fineValue}
-                  onChange={(e) => setFineValue(Number(e.target.value))}
-                />
-                <span className={styles.muted}>
-                  {fineType === 'FIXED'
-                    ? formatCents(fineValue)
-                    : formatBasisPoints(fineValue)}
-                </span>
-              </div>
-            </>
-          )}
         </div>
 
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Granularidade</h3>
+        <div className={styles.field}>
+          <label htmlFor='interestValue'>
+            Juros (basis points por dia corrido)
+          </label>
+          <input
+            id='interestValue'
+            type='number'
+            min={0}
+            value={interestValue}
+            onChange={(e) => setInterestValue(Number(e.target.value))}
+            disabled={noInterest}
+          />
+          <span className={styles.fieldHint}>
+            {formatBasisPoints(interestValue)} ao dia, após o vencimento
+          </span>
+        </div>
 
+        <div className={styles.field}>
           <label className={styles.checkboxLine}>
             <input
               type='checkbox'
-              checked={granularity === 'summary'}
-              onChange={(e) =>
-                setGranularity(e.target.checked ? 'summary' : 'daily')
-              }
-            />
-            Modo summary (apenas marcos relevantes)
+              checked={noInterest}
+              onChange={(e) => setNoInterest(e.target.checked)}
+            />{' '}
+            Sem juros
           </label>
         </div>
+
       </div>
 
-      <div className={styles.actions}>
-        <button
-          type='button'
-          className={styles.primaryButton}
-          onClick={() => copy(buildJsonEnvelope(), 'JSON')}
-          disabled={!!validation}
-        >
-          Copiar JSON
-        </button>
-        <button
-          type='button'
-          className={styles.secondaryButton}
-          onClick={() => copy(buildCurl(), 'cURL')}
-          disabled={!!validation}
-        >
-          Copiar como cURL
-        </button>
-        {copyStatus && (
-          <span className={styles.copyStatus} role='status'>
-            {copyStatus}
-          </span>
+      {/* ============================ RESULT ============================ */}
+      <div className={styles.panel}>
+        <h2>Resultado da simulação</h2>
+
+        {validation ? (
+          <p className={styles.error} role='alert'>
+            {validation}
+          </p>
+        ) : (
+          <>
+            <div className={styles.field}>
+              <label htmlFor='spot-date'>Data do pagamento (simulada)</label>
+              <input
+                id='spot-date'
+                type='date'
+                value={spotlightDate}
+                min={dailyRows[0]?.date}
+                max={dailyRows[dailyRows.length - 1]?.date}
+                onChange={(e) => onSpotlightDateChange(e.target.value)}
+              />
+              <input
+                className={styles.slider}
+                type='range'
+                min={0}
+                max={Math.max(0, dailyRows.length - 1)}
+                step={1}
+                value={spotlightDayIndex}
+                onChange={(e) =>
+                  setSpotlightDayIndex(Number(e.target.value))
+                }
+                aria-label='Dia simulado'
+              />
+              <div className={styles.sliderTrack}>
+                <span>{dailyRows[0]?.date ?? '—'}</span>
+                <span>
+                  {spotlightRow
+                    ? `dia ${spotlightRow.daysFromCreation} · toDue ${spotlightRow.daysToDueDate}`
+                    : '—'}
+                </span>
+                <span>
+                  {dailyRows[dailyRows.length - 1]?.date ?? '—'}
+                </span>
+              </div>
+            </div>
+
+            {spotlightRow && status && (
+              <>
+                <div className={styles.totalCard}>
+                  <div className={styles.totalLabel}>
+                    Valor a pagar nesta data
+                  </div>
+                  <div className={styles.totalValue}>
+                    {formatCents(spotlightRow.total)}
+                  </div>
+                  <span
+                    className={clsx(
+                      styles.statusBadge,
+                      styles[`status_${status}`],
+                    )}
+                  >
+                    {STATUS_LABELS[status]}
+                    {spotlightRow.daysToDueDate < 0 &&
+                      ` · ${Math.abs(spotlightRow.daysToDueDate)} dia(s) de atraso`}
+                  </span>
+                </div>
+
+                <div className={styles.breakdown}>
+                  <div className={styles.breakdownRow}>
+                    <span>Valor principal</span>
+                    <span>{formatCents(spotlightRow.value)}</span>
+                  </div>
+                  {spotlightRow.discount > 0 && (
+                    <div className={styles.breakdownRow}>
+                      <span>Desconto</span>
+                      <span className={styles.negative}>
+                        −{formatCents(spotlightRow.discount)}
+                      </span>
+                    </div>
+                  )}
+                  {spotlightRow.fine > 0 && (
+                    <div className={styles.breakdownRow}>
+                      <span>
+                        Multa (
+                        {fines?.type === 'FIXED'
+                          ? formatCents(fines.value)
+                          : formatBasisPoints(fines?.value ?? 0)}
+                        )
+                      </span>
+                      <span className={styles.positive}>
+                        +{formatCents(spotlightRow.fine)}
+                      </span>
+                    </div>
+                  )}
+                  {spotlightRow.interest > 0 && (
+                    <div className={styles.breakdownRow}>
+                      <span>
+                        Juros ({Math.abs(spotlightRow.daysToDueDate)} dia(s) ·{' '}
+                        {formatBasisPoints(interests?.value ?? 0)}/dia)
+                      </span>
+                      <span className={styles.positive}>
+                        +{formatCents(spotlightRow.interest)}
+                      </span>
+                    </div>
+                  )}
+                  <div className={clsx(styles.breakdownRow, styles.total)}>
+                    <span>Total</span>
+                    <span>{formatCents(spotlightRow.total)}</span>
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div className={styles.actions}>
+              <button
+                type='button'
+                className={styles.primaryButton}
+                onClick={() => copy(buildJsonEnvelope(), 'JSON')}
+              >
+                Copiar JSON
+              </button>
+              <button
+                type='button'
+                className={styles.secondaryButton}
+                onClick={() => copy(buildCurl(), 'cURL')}
+              >
+                Copiar como cURL
+              </button>
+              {copyStatus && (
+                <span className={styles.copyStatus} role='status'>
+                  {copyStatus}
+                </span>
+              )}
+            </div>
+
+            <h3>Payload equivalente da API</h3>
+            <pre className={styles.jsonPreview}>
+              {JSON.stringify(buildBody(), null, 2)}
+            </pre>
+          </>
         )}
       </div>
+    </div>
 
-      {validation ? (
-        <p className={styles.error} role='alert'>
-          {validation}
-        </p>
-      ) : (
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th scope='col'>date</th>
-                <th scope='col'>day</th>
-                <th scope='col'>toDue</th>
-                <th scope='col'>business</th>
-                <th scope='col'>value</th>
-                <th scope='col'>discount</th>
-                <th scope='col'>interest</th>
-                <th scope='col'>fine</th>
-                <th scope='col'>total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => {
-                const rowClass =
-                  r.daysToDueDate === 0
-                    ? styles.rowDue
-                    : r.daysToDueDate < 0
-                      ? styles.rowOverdue
-                      : '';
+      {/* ====================== TIMELINE (full article width) ====================== */}
+      {!validation && (
+        <div className={styles.timelineFull}>
+          <div className={styles.timelineHeader}>
+            <h3>Linha do tempo</h3>
+            <label className={styles.checkboxLine}>
+              <input
+                type='checkbox'
+                checked={granularity === 'summary'}
+                onChange={(e) =>
+                  setGranularity(e.target.checked ? 'summary' : 'daily')
+                }
+              />{' '}
+              Modo summary (apenas marcos relevantes)
+            </label>
+          </div>
+          <div className={styles.tableWrap}>
+            <table className={styles.timelineTable}>
+              <thead>
+                <tr>
+                  <th scope='col'>Data</th>
+                  <th scope='col'>Dia</th>
+                  <th scope='col'>Para vencer</th>
+                  <th scope='col'>Útil</th>
+                  <th scope='col'>Desconto</th>
+                  <th scope='col'>Juros</th>
+                  <th scope='col'>Multa</th>
+                  <th scope='col'>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableRows.map((r) => {
+                  const isSpot =
+                    spotlightRow &&
+                    r.daysFromCreation === spotlightRow.daysFromCreation;
 
-                return (
-                  <tr key={r.daysFromCreation} className={rowClass}>
-                    <td>{r.date}</td>
-                    <td>{r.daysFromCreation}</td>
-                    <td>{r.daysToDueDate}</td>
-                    <td>{r.isBusinessDay ? 'business' : 'non-bus.'}</td>
-                    <td>{formatCents(r.value)}</td>
-                    <td>{formatCents(r.discount)}</td>
-                    <td>{formatCents(r.interest)}</td>
-                    <td>{formatCents(r.fine)}</td>
-                    <td className={styles.totalCell}>
-                      {formatCents(r.total)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                  const rowClass = clsx(
+                    r.daysToDueDate === 0 && styles.rowDue,
+                    r.daysToDueDate < 0 && styles.rowOverdue,
+                    isSpot && styles.highlighted,
+                  );
+
+                  return (
+                    <tr
+                      key={r.daysFromCreation}
+                      className={rowClass}
+                      onClick={() =>
+                        setSpotlightDayIndex(r.daysFromCreation)
+                      }
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <td>{r.date}</td>
+                      <td>{r.daysFromCreation}</td>
+                      <td>{r.daysToDueDate}</td>
+                      <td>{r.isBusinessDay ? 'Sim' : 'Não'}</td>
+                      <td>{formatCents(r.discount)}</td>
+                      <td>{formatCents(r.interest)}</td>
+                      <td>{formatCents(r.fine)}</td>
+                      <td className={styles.totalCell}>
+                        {formatCents(r.total)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

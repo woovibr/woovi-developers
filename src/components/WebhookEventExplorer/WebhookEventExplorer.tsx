@@ -103,8 +103,8 @@ const WebhookEventExplorer: React.FC = () => {
         <div className={styles.sidebarHeader}>Eventos</div>
         <input
           className={styles.search}
-          type="search"
-          placeholder="Filtrar eventos…"
+          type='search'
+          placeholder='Filtrar eventos…'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -120,7 +120,7 @@ const WebhookEventExplorer: React.FC = () => {
               {list.map((evt) => (
                 <li key={evt.id}>
                   <button
-                    type="button"
+                    type='button'
                     className={clsx(
                       styles.eventItem,
                       evt.id === selectedId && styles.selected,
@@ -144,19 +144,19 @@ const WebhookEventExplorer: React.FC = () => {
           <a
             className={styles.eventDocsLink}
             href={selected.docsPath}
-            target="_blank"
-            rel="noreferrer"
+            target='_blank'
+            rel='noreferrer'
           >
             Ver documentação completa →
           </a>
         </header>
 
-        <div className={styles.tabs} role="tablist">
+        <div className={styles.tabs} role='tablist'>
           {FORMATS.map((f) => (
             <button
               key={f.id}
-              type="button"
-              role="tab"
+              type='button'
+              role='tab'
               aria-selected={format === f.id}
               className={clsx(styles.tab, format === f.id && styles.active)}
               onClick={() => setFormat(f.id)}
@@ -170,7 +170,7 @@ const WebhookEventExplorer: React.FC = () => {
 
         <div className={styles.codeWrapper}>
           <button
-            type="button"
+            type='button'
             className={clsx(styles.copyButton, copied && styles.copied)}
             onClick={handleCopy}
           >

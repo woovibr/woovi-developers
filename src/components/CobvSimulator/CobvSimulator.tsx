@@ -247,10 +247,10 @@ const CobvSimulator: React.FC = () => {
         <h2>Configuração da cobrança</h2>
 
         <div className={styles.field}>
-          <label htmlFor="cobv-value">Valor principal (em centavos)</label>
+          <label htmlFor='cobv-value'>Valor principal (em centavos)</label>
           <input
-            id="cobv-value"
-            type="number"
+            id='cobv-value'
+            type='number'
             min={0}
             step={1}
             value={config.valueCents}
@@ -263,19 +263,19 @@ const CobvSimulator: React.FC = () => {
 
         <div className={styles.row}>
           <div className={styles.field}>
-            <label htmlFor="cobv-due">Data de vencimento</label>
+            <label htmlFor='cobv-due'>Data de vencimento</label>
             <input
-              id="cobv-due"
-              type="date"
+              id='cobv-due'
+              type='date'
               value={config.dueDate}
               onChange={(e) => update('dueDate', e.target.value)}
             />
           </div>
           <div className={styles.field}>
-            <label htmlFor="cobv-days-after">Dias após o vencimento</label>
+            <label htmlFor='cobv-days-after'>Dias após o vencimento</label>
             <input
-              id="cobv-days-after"
-              type="number"
+              id='cobv-days-after'
+              type='number'
               min={0}
               value={config.daysAfterDueDate}
               onChange={(e) =>
@@ -291,10 +291,10 @@ const CobvSimulator: React.FC = () => {
         <h3>Multa & Juros</h3>
         <div className={styles.row}>
           <div className={styles.field}>
-            <label htmlFor="cobv-fines">Multa (basis points)</label>
+            <label htmlFor='cobv-fines'>Multa (basis points)</label>
             <input
-              id="cobv-fines"
-              type="number"
+              id='cobv-fines'
+              type='number'
               min={0}
               value={config.finesBp}
               onChange={(e) => update('finesBp', Number(e.target.value))}
@@ -304,10 +304,10 @@ const CobvSimulator: React.FC = () => {
             </span>
           </div>
           <div className={styles.field}>
-            <label htmlFor="cobv-interests">Juros (basis points / mês)</label>
+            <label htmlFor='cobv-interests'>Juros (basis points / mês)</label>
             <input
-              id="cobv-interests"
-              type="number"
+              id='cobv-interests'
+              type='number'
               min={0}
               value={config.interestsBp}
               onChange={(e) => update('interestsBp', Number(e.target.value))}
@@ -322,7 +322,7 @@ const CobvSimulator: React.FC = () => {
         <div className={styles.field}>
           <label>
             <input
-              type="checkbox"
+              type='checkbox'
               checked={config.discountEnabled}
               onChange={(e) => update('discountEnabled', e.target.checked)}
             />{' '}
@@ -334,23 +334,23 @@ const CobvSimulator: React.FC = () => {
           <>
             <div className={styles.row}>
               <div className={styles.field}>
-                <label htmlFor="cobv-discount-type">Tipo</label>
+                <label htmlFor='cobv-discount-type'>Tipo</label>
                 <select
-                  id="cobv-discount-type"
+                  id='cobv-discount-type'
                   value={config.discountType}
                   onChange={(e) =>
                     update('discountType', e.target.value as DiscountType)
                   }
                 >
-                  <option value="PERCENTAGE">Percentual (basis points)</option>
-                  <option value="FIXED">Fixo (centavos)</option>
+                  <option value='PERCENTAGE'>Percentual (basis points)</option>
+                  <option value='FIXED'>Fixo (centavos)</option>
                 </select>
               </div>
               <div className={styles.field}>
-                <label htmlFor="cobv-discount-value">Valor</label>
+                <label htmlFor='cobv-discount-value'>Valor</label>
                 <input
-                  id="cobv-discount-value"
-                  type="number"
+                  id='cobv-discount-value'
+                  type='number'
                   min={0}
                   value={config.discountValue}
                   onChange={(e) =>
@@ -365,10 +365,10 @@ const CobvSimulator: React.FC = () => {
               </div>
             </div>
             <div className={styles.field}>
-              <label htmlFor="cobv-discount-due">Data limite do desconto</label>
+              <label htmlFor='cobv-discount-due'>Data limite do desconto</label>
               <input
-                id="cobv-discount-due"
-                type="date"
+                id='cobv-discount-due'
+                type='date'
                 value={config.discountDueDate}
                 onChange={(e) => update('discountDueDate', e.target.value)}
               />
@@ -381,16 +381,16 @@ const CobvSimulator: React.FC = () => {
         <h2>Resultado da simulação</h2>
 
         <div className={styles.field}>
-          <label htmlFor="cobv-sim-date">Data do pagamento (simulada)</label>
+          <label htmlFor='cobv-sim-date'>Data do pagamento (simulada)</label>
           <input
-            id="cobv-sim-date"
-            type="date"
+            id='cobv-sim-date'
+            type='date'
             value={simulationDate}
             onChange={(e) => setSimulationDate(e.target.value)}
           />
           <input
             className={styles.slider}
-            type="range"
+            type='range'
             min={minOffset}
             max={maxOffset}
             step={1}

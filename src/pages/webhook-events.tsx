@@ -1,5 +1,7 @@
 import React from 'react';
+// eslint-disable-next-line import/no-unresolved
 import BrowserOnly from '@docusaurus/BrowserOnly';
+// eslint-disable-next-line import/no-unresolved
 import Layout from '@theme/Layout';
 
 import WebhookEventExplorer from '../components/WebhookEventExplorer/WebhookEventExplorer';
@@ -7,8 +9,8 @@ import WebhookEventExplorer from '../components/WebhookEventExplorer/WebhookEven
 const WebhookEventsPage = () => {
   return (
     <Layout
-      title="Explorador de eventos de webhook"
-      description="Selecione um tipo de evento de webhook da Woovi e copie o payload em JSON, TypeScript, JSON Schema, Yup ou Zod."
+      title='Explorador de eventos de webhook'
+      description='Selecione um tipo de evento de webhook da Woovi e copie o payload em JSON, TypeScript, JSON Schema, Yup ou Zod.'
     >
       <main>
         <div style={{ textAlign: 'center', padding: '24px 16px 0' }}>

@@ -347,7 +347,7 @@ export const simulateChargeDiscount = (
   return rows;
 };
 
-const summarize = (
+export const summarize = (
   rows: SimulationRow[],
   daysForDueDate: number,
 ): SimulationRow[] => {
