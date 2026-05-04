@@ -17860,7 +17860,8 @@ components:
 
                 Units depend on modality:
                   - `VALUE_PER_RUNNING_DAY_ADVANCE`: cents per running day.
-                  - `VALUE_PER_BUSINESS_DAY_ADVANCE`, `PERCENTAGE_PER_RUNNING_DAY_ADVANCE`, `PERCENTAGE_PER_BUSINESS_DAY_ADVANCE`: basis points (e.g. 100 = 1.00%).
+                  - `VALUE_PER_BUSINESS_DAY_ADVANCE`: cents per business day.
+                  - `PERCENTAGE_PER_RUNNING_DAY_ADVANCE`, `PERCENTAGE_PER_BUSINESS_DAY_ADVANCE`: basis points (e.g. 100 = 1.00%).
         additionalInfo:
           type: array
           description: Additional info of the charge
