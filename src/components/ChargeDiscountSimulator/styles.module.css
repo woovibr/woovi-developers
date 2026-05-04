@@ -1,6 +1,10 @@
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* `minmax(0, 1fr)` (instead of plain `1fr`) lets each column shrink below
+   * its min-content. Without this, the right panel's wide schedule table
+   * (8 cols, nowrap) and JSON `<pre>` (white-space: pre) inflate the grid
+   * track past the article column, overflowing into the TOC margin. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
   padding: 24px 0;
   max-width: 1200px;
@@ -9,7 +13,7 @@
 
 @media (max-width: 900px) {
   .container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     padding: 16px 0;
   }
 }
@@ -75,7 +79,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
 }
 
