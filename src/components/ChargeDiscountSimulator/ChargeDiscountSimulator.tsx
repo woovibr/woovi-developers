@@ -533,6 +533,7 @@ const ChargeDiscountSimulator = (): JSX.Element => {
   // ---------- Render ----------
 
   return (
+    <>
     <div className={styles.container}>
       {/* ============================ CONFIG ============================ */}
       <div className={styles.panel}>
@@ -839,8 +840,9 @@ const ChargeDiscountSimulator = (): JSX.Element => {
           </>
         )}
       </div>
+    </div>
 
-      {/* ====================== TIMELINE (full width) ====================== */}
+      {/* ====================== TIMELINE (full article width) ====================== */}
       {!validation && (
         <div className={styles.timelineFull}>
           <div className={styles.timelineHeader}>
@@ -909,7 +911,7 @@ const ChargeDiscountSimulator = (): JSX.Element => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

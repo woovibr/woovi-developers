@@ -283,11 +283,11 @@
   margin-top: 20px;
 }
 
-/* Full-width timeline rendered below the 2-panel grid. The grid is 2-col;
- * `grid-column: 1 / -1` makes this row span both columns. */
+/* Full-width timeline rendered as a sibling of `.container`, so it isn't
+ * constrained by the `max-width: 1200px` of the 2-panel grid and spans the
+ * entire article column width. */
 .timelineFull {
-  grid-column: 1 / -1;
-  margin-top: 8px;
+  margin: 0 0 32px;
   padding: 20px;
   background-color: var(--ifm-card-background-color, rgba(198, 198, 198, 0.15));
   border-radius: 16px;
