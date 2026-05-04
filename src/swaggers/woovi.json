@@ -13311,7 +13311,7 @@
               },
               "value": {
                 "type": "number",
-                "description": "Discount value. Required when `modality` is one of the advance-day modalities.\nUnits depend on modality:\n  - `VALUE_PER_RUNNING_DAY_ADVANCE`: cents per running day.\n  - `VALUE_PER_BUSINESS_DAY_ADVANCE`, `PERCENTAGE_PER_RUNNING_DAY_ADVANCE`, `PERCENTAGE_PER_BUSINESS_DAY_ADVANCE`: basis points (e.g. 100 = 1.00%).\n"
+                "description": "Discount value. Required when `modality` is one of the advance-day modalities.\nUnits depend on modality:\n  - `VALUE_PER_RUNNING_DAY_ADVANCE`: cents per running day.\n  - `VALUE_PER_BUSINESS_DAY_ADVANCE`: cents per business day.\n  - `PERCENTAGE_PER_RUNNING_DAY_ADVANCE`, `PERCENTAGE_PER_BUSINESS_DAY_ADVANCE`: basis points (e.g. 100 = 1.00%).\n"
               }
             }
           },
