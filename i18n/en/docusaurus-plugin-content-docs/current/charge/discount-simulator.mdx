@@ -1,0 +1,71 @@
+---
+id: discount-simulator
+title: Discount, interest and fine simulator
+sidebar_label: Discount simulator
+---
+
+import ChargeDiscountSimulator from '@site/src/components/ChargeDiscountSimulator/ChargeDiscountSimulator';
+
+This page simulates, **day by day**, the amount a customer pays across the
+lifetime of a Pix charge with due date (`OVERDUE` / COBV), applying
+discount, interest and fine according to BACEN rules.
+
+The simulation runs **100% in your browser** — nothing is sent to the
+Woovi API and no charge is created. Use this screen as a sandbox to
+understand how each discount modality behaves before calling
+[`POST /api/v1/charge`](https://developers.woovi.com/api#tag/charge/POST/api/v1/charge)
+for real.
+
+> The form labels below are currently in pt-BR. Localizing the component
+> strings is tracked as a follow-up.
+
+## Supported modalities
+
+Woovi exposes six discount modalities, aligned with the COBV standard:
+
+1. **`FIXED_VALUE_UNTIL_SPECIFIED_DATE`** — fixed cents off, valid until a
+   specified date. You can register multiple tiers (e.g. R$1.00 off if
+   paid 5 days early; R$0.50 off if paid 10 days early).
+2. **`PERCENTAGE_UNTIL_SPECIFIED_DATE`** — same idea, but using percentage
+   (basis points).
+3. **`VALUE_PER_RUNNING_DAY_ADVANCE`** — progressive: N cents off for
+   each running (calendar) day before the due date.
+4. **`VALUE_PER_BUSINESS_DAY_ADVANCE`** — same as above, but counting only
+   business days (skips weekends and BR banking holidays).
+5. **`PERCENTAGE_PER_RUNNING_DAY_ADVANCE`** — progressive percentage off
+   in basis points per running day.
+6. **`PERCENTAGE_PER_BUSINESS_DAY_ADVANCE`** — progressive percentage off
+   in basis points per business day.
+
+## Unit convention
+
+Woovi (and BACEN) use two integer units to avoid floating-point issues:
+
+- **Cents** — `R$1.00` = `100`. Applies to `chargeValue`, the `value` field
+  of modalities 3 and 4, the entries of `discountFixedDate` for modality
+  1, and fines with `type: 'FIXED'`.
+- **Basis points** — `1.00%` = `100`. Applies to the `value` field of
+  modalities 5 and 6, the entries of modality 2, the `interests.value`
+  field, and fines with `type: 'PERCENTAGE'`.
+
+The screen shows a readable preview next to each field (`R$X.XX` or
+`X.XX%`) so you don't have to do the math yourself.
+
+## `daily` vs `summary` mode
+
+By default the simulation returns one row per day (`daily` mode). Toggle
+**Summary mode** to keep only the relevant milestones: creation day, days
+where the discount tier changes, the due date itself, the first day after
+the due date, and the last simulated day.
+
+## Export to the API
+
+- **Copiar JSON** returns the envelope `{ modality, modalityNumber, input,
+  rows }` — the same format emitted by the `--out` flag of the
+  `simulateChargeDiscount.ts` script in the Woovi monorepo. Handy for
+  attaching to bug reports or pasting into tests.
+- **Copiar como cURL** assembles a `POST /api/v1/charge` ready to run.
+  Replace `<APP_ID>` with your AppID and `<CORRELATION_ID>` with a unique
+  identifier before executing.
+
+<ChargeDiscountSimulator />

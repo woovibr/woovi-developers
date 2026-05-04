@@ -1,0 +1,69 @@
+---
+id: discount-simulator
+title: Simulador de desconto, juros e multa
+sidebar_label: Simulador de desconto
+---
+
+import ChargeDiscountSimulator from '@site/src/components/ChargeDiscountSimulator/ChargeDiscountSimulator';
+
+Esta página simula, **dia a dia**, o valor que um cliente paga ao longo do
+ciclo de uma cobrança Pix com vencimento (`OVERDUE` / COBV), aplicando
+desconto, juros e multa segundo as regras BACEN.
+
+A simulação roda **100% no seu navegador** — nada é enviado para a API
+da Woovi e nenhuma cobrança é criada. Use a tela como uma ferramenta de
+sandbox para entender como cada modalidade de desconto se comporta antes
+de chamar [`POST /api/v1/charge`](https://developers.woovi.com/api#tag/charge/POST/api/v1/charge)
+de verdade.
+
+## Modalidades suportadas
+
+A Woovi expõe seis modalidades de desconto, alinhadas ao padrão COBV:
+
+1. **`FIXED_VALUE_UNTIL_SPECIFIED_DATE`** — desconto em centavos válido até
+   uma data específica. Você pode cadastrar múltiplas faixas (ex.: R$1,00
+   até 5 dias antes; R$0,50 até 10 dias antes).
+2. **`PERCENTAGE_UNTIL_SPECIFIED_DATE`** — mesma ideia, mas em percentual
+   (basis points).
+3. **`VALUE_PER_RUNNING_DAY_ADVANCE`** — desconto progressivo: tantos
+   centavos a cada dia corrido de antecedência ao vencimento.
+4. **`VALUE_PER_BUSINESS_DAY_ADVANCE`** — idem, mas contando apenas dias
+   úteis (pula fins de semana e feriados bancários BR).
+5. **`PERCENTAGE_PER_RUNNING_DAY_ADVANCE`** — desconto progressivo em
+   basis points por dia corrido.
+6. **`PERCENTAGE_PER_BUSINESS_DAY_ADVANCE`** — desconto progressivo em
+   basis points por dia útil.
+
+## Convenção de unidades
+
+A Woovi (e o BACEN) usam duas unidades inteiras para evitar problemas de
+ponto flutuante:
+
+- **Centavos** — `R$1,00` = `100`. Aplica-se a `chargeValue`, ao `value`
+  das modalidades 3 e 4, às entradas de `discountFixedDate` da modalidade
+  1 e a multas com `type: 'FIXED'`.
+- **Basis points** — `1,00%` = `100`. Aplica-se ao `value` das modalidades
+  5 e 6, às entradas da modalidade 2, ao campo `interests.value` e a
+  multas com `type: 'PERCENTAGE'`.
+
+A tela mostra um *preview* legível ao lado de cada campo (`R$X,XX` ou
+`X,XX%`) para que você não precise fazer a conta na cabeça.
+
+## Modo `daily` × `summary`
+
+Por padrão a simulação devolve uma linha por dia (modo `daily`). Ative o
+toggle **Modo summary** para ver apenas os marcos relevantes: dia de
+criação, dias em que o valor de desconto muda de faixa, dia do vencimento,
+primeira diária pós-vencimento e o último dia simulado.
+
+## Exportar para a API
+
+- **Copiar JSON** devolve o envelope `{ modality, modalityNumber, input,
+  rows }` — mesmo formato emitido pela flag `--out` do script
+  `simulateChargeDiscount.ts` no monorepo Woovi. Útil para anexar em
+  bug reports ou colar em testes.
+- **Copiar como cURL** monta um `POST /api/v1/charge` pronto para rodar.
+  Substitua `<APP_ID>` pelo seu AppID e `<CORRELATION_ID>` por um
+  identificador único antes de executar.
+
+<ChargeDiscountSimulator />
