@@ -31,3 +31,28 @@ html[data-theme='dark'] .docusaurus-highlight-code-line {
 .sidebar-hidden {
   display: none;
 }
+
+/* Full-width pages for API/Webhook explorers — break out of the doc article column. */
+.explorer-fullwidth main {
+  max-width: none !important;
+  width: 100%;
+}
+
+.explorer-fullwidth main > .container {
+  max-width: none !important;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.explorer-fullwidth main .col {
+  max-width: 100% !important;
+  flex: 1 1 100% !important;
+}
+
+.explorer-fullwidth article {
+  max-width: none !important;
+}
+
+.explorer-fullwidth article > .markdown {
+  max-width: none !important;
+}
