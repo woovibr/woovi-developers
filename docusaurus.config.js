@@ -19,6 +19,9 @@ module.exports = {
   },
   themes: ['@docusaurus/theme-mermaid'],
   future: {
+    v4: {
+      removeLegacyPostBuildHeadAttribute: true,
+    },
     faster: {
       swcJsLoader: true,
       swcJsMinimizer: true,
@@ -27,6 +30,7 @@ module.exports = {
       rspackBundler: true,
       rspackPersistentCache: true,
       mdxCrossCompilerCache: true,
+      ssgWorkerThreads: true,
     },
   },
   i18n: {
