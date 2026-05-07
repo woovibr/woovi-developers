@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 340px 1fr;
   gap: 24px;
   padding: 24px;
   width: 100%;
@@ -66,14 +66,16 @@
   padding: 6px 8px 4px;
 }
 
-.eventList {
+.endpointList {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.eventItem {
-  display: block;
+.endpointItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   width: 100%;
   text-align: left;
   background: transparent;
@@ -88,21 +90,54 @@
   transition: background-color 120ms ease;
 }
 
-.eventItem:hover {
+.endpointItem:hover {
   background-color: var(--ifm-color-emphasis-100);
 }
 
-.eventItem.selected {
+.endpointItem.selected {
   background-color: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-primary);
   font-weight: 600;
   box-shadow: inset 3px 0 0 var(--ifm-color-primary);
 }
 
-:global(html[data-theme='dark']) .eventItem.selected {
+:global(html[data-theme='dark']) .endpointItem.selected {
   background-color: var(--ifm-color-emphasis-300);
   color: var(--ifm-color-primary-lighter);
   box-shadow: inset 3px 0 0 var(--ifm-color-primary-lighter);
+}
+
+.method {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #fff;
+}
+
+.methodGET {
+  background-color: #1976d2;
+}
+.methodPOST {
+  background-color: #2e7d32;
+}
+.methodPUT {
+  background-color: #ed6c02;
+}
+.methodPATCH {
+  background-color: #9c27b0;
+}
+.methodDELETE {
+  background-color: #d32f2f;
+}
+
+.endpointPath {
+  flex: 1;
+  min-width: 0;
 }
 
 .panel {
@@ -113,14 +148,14 @@
   min-width: 0;
 }
 
-.eventHeader {
+.endpointHeader {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   margin-bottom: 16px;
 }
 
-.eventCategory {
+.endpointCategory {
   font-size: 11px;
   font-weight: 700;
   color: var(--ifm-color-primary, #1976d2);
@@ -128,23 +163,88 @@
   letter-spacing: 0.5px;
 }
 
-.eventName {
+.endpointTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.endpointPathFull {
   font-family: var(--ifm-font-family-monospace);
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   word-break: break-word;
   margin: 0;
 }
 
-.eventDescription {
+.endpointSummary {
   font-size: 14px;
   color: var(--ifm-color-emphasis-700);
   margin: 0;
 }
 
-.eventDocsLink {
-  font-size: 13px;
-  margin-top: 4px;
+.controlRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin: 12px 0 4px;
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.controlLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ifm-color-emphasis-600);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.segment {
+  display: inline-flex;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.segmentBtn {
+  background: transparent;
+  border: 0;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+  cursor: pointer;
+}
+
+.segmentBtn:not(:last-child) {
+  border-right: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.segmentBtn.segmentActive {
+  background-color: var(--ifm-color-primary);
+  color: #fff;
+}
+
+.segmentBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.exampleSelect {
+  font-size: 12px;
+  padding: 6px 8px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  max-width: 320px;
 }
 
 .tabs {
@@ -194,4 +294,11 @@
   font-size: 12px;
   color: var(--ifm-color-emphasis-600);
   margin-bottom: 8px;
+}
+
+.empty {
+  font-size: 13px;
+  color: var(--ifm-color-emphasis-600);
+  padding: 24px 0;
+  text-align: center;
 }

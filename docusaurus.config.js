@@ -125,6 +125,16 @@ module.exports = {
           position: 'left',
         },
         {
+          to: 'docs/apis/api-explorer',
+          label: 'API Explorer',
+          position: 'left',
+        },
+        {
+          to: 'docs/webhook/webhook-events-explorer',
+          label: 'Webhook Explorer',
+          position: 'left',
+        },
+        {
           to: 'docs/plugin',
           label: 'Plugin',
           position: 'left',

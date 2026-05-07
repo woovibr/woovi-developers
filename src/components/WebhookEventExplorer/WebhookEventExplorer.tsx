@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import clsx from 'clsx';
+import CodeBlock from '@theme/CodeBlock';
 
 import styles from './WebhookEventExplorer.module.css';
 import { events } from './events';
@@ -12,22 +13,40 @@ type FormatOption = {
   id: FormatId;
   label: string;
   hint: string;
+  language: string;
 };
 
 const FORMATS: FormatOption[] = [
-  { id: 'json', label: 'JSON', hint: 'Sample payload as raw JSON.' },
+  {
+    id: 'json',
+    label: 'JSON',
+    hint: 'Sample payload as raw JSON.',
+    language: 'json',
+  },
   {
     id: 'typescript',
     label: 'TypeScript',
     hint: 'Inferred TypeScript type for the payload.',
+    language: 'typescript',
   },
   {
     id: 'jsonSchema',
     label: 'JSON Schema',
     hint: 'Draft-07 JSON Schema describing the payload.',
+    language: 'json',
   },
-  { id: 'yup', label: 'Yup', hint: 'Yup validation schema for the payload.' },
-  { id: 'zod', label: 'Zod', hint: 'Zod validation schema for the payload.' },
+  {
+    id: 'yup',
+    label: 'Yup',
+    hint: 'Yup validation schema for the payload.',
+    language: 'typescript',
+  },
+  {
+    id: 'zod',
+    label: 'Zod',
+    hint: 'Zod validation schema for the payload.',
+    language: 'typescript',
+  },
 ];
 
 const groupByCategory = (list: WebhookEvent[]) => {
@@ -44,7 +63,6 @@ const WebhookEventExplorer: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>(events[0].id);
   const [format, setFormat] = useState<FormatId>('json');
   const [search, setSearch] = useState('');
-  const [copied, setCopied] = useState(false);
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -84,18 +102,8 @@ const WebhookEventExplorer: React.FC = () => {
     }
   }, [format, selected, generated]);
 
-  const formatHint =
-    FORMATS.find((f) => f.id === format)?.hint ?? '';
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1500);
-    } catch {
-      setCopied(false);
-    }
-  };
+  const currentFormat = FORMATS.find((f) => f.id === format) ?? FORMATS[0];
+  const formatHint = currentFormat.hint;
 
   return (
     <div className={styles.container}>
@@ -169,14 +177,7 @@ const WebhookEventExplorer: React.FC = () => {
         <p className={styles.formatHint}>{formatHint}</p>
 
         <div className={styles.codeWrapper}>
-          <button
-            type='button'
-            className={clsx(styles.copyButton, copied && styles.copied)}
-            onClick={handleCopy}
-          >
-            {copied ? 'Copiado!' : 'Copiar'}
-          </button>
-          <pre className={styles.codeBlock}>{code}</pre>
+          <CodeBlock language={currentFormat.language}>{code}</CodeBlock>
         </div>
       </section>
     </div>

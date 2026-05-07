@@ -1,0 +1,24 @@
+---
+id: api-explorer
+title: Explorador de API
+sidebar_label: Explorador de API
+sidebar_position: 0.5
+description: Selecione um endpoint da API Woovi e copie o payload em JSON, TypeScript, JSON Schema, Yup ou Zod.
+tags:
+  - api
+  - explorer
+hide_table_of_contents: true
+wrapperClassName: explorer-fullwidth
+---
+
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ApiExplorer from '@site/src/components/ApiExplorer/ApiExplorer';
+
+# Explorador de endpoints da API
+
+Selecione um endpoint na barra lateral, escolha entre **Request** e **Response**, e copie o payload em **JSON**, **TypeScript types**, **JSON Schema**, **Yup** ou **Zod**.
+Os tipos e schemas são inferidos automaticamente a partir dos exemplos da [especificação OpenAPI](/api-redoc/).
+
+<BrowserOnly fallback={<div>Carregando…</div>}>
+  {() => <ApiExplorer />}
+</BrowserOnly>
