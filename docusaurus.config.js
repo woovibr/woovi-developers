@@ -19,16 +19,15 @@ module.exports = {
   },
   themes: ['@docusaurus/theme-mermaid'],
   future: {
-    // experimental_faster: true,
-    // experimental_faster: {
-    //   swcJsLoader: true,
-    //   swcJsMinimizer: true,
-    //   swcHtmlMinimizer: true,
-    //   lightningCssMinimizer: true,
-    //   rspackBundler: true,
-    //   mdxCrossCompilerCache: true,
-    // },
-    // experimental_faster: false,
+    faster: {
+      swcJsLoader: true,
+      swcJsMinimizer: true,
+      swcHtmlMinimizer: true,
+      lightningCssMinimizer: true,
+      rspackBundler: true,
+      rspackPersistentCache: true,
+      mdxCrossCompilerCache: true,
+    },
   },
   i18n: {
     defaultLocale: 'pt-BR',
