@@ -1,0 +1,213 @@
+---
+id: kyc-api-account-register-get
+title: Como recuperar os dados do KYC via API?
+tags:
+  - api
+  - kyc
+  - onboarding
+  - account-register
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Depois que o seu cliente final preenche o link de KYC ([criado via API](./api-onboarding-create.mdx)), você pode recuperar todos os dados cadastrados — incluindo a selfie, documento de identidade e contrato social — através do _endpoint_ `GET /api/v1/account-register/:id`.
+
+Esse endpoint é útil para sincronizar o status do cadastro com o seu sistema, exibir os dados do KYC no painel do merchant ou armazenar uma cópia dos documentos enviados.
+
+:::info
+Antes de usar este endpoint, garanta que sua empresa possui a feature **BAAS** habilitada e que sua aplicação tenha o scope **`ACCOUNT_REGISTER_GET`**. Veja [Primeiros passos com a API de KYC Onboarding](./api-getting-started.mdx) para detalhes de autenticação.
+:::
+
+:::tip Referência completa
+Para o schema, parâmetros e exemplos interativos, veja a [API Reference](https://developers.woovi.com/api#tag/account-register).
+:::
+
+## Path Parameter
+
+- **`:id`**: pode ser tanto o **CNPJ** quanto o **`correlationID`** do registro de conta. A API detecta automaticamente o formato:
+  - Se o valor for um CNPJ válido (com ou sem máscara), buscamos pelo `taxID`.
+  - Caso contrário, buscamos pelo `correlationID` informado na criação do onboarding.
+
+A API filtra os resultados pela sua empresa — você só consegue recuperar registros vinculados à conta que está autenticando a chamada.
+
+## Exemplo de resposta
+
+Após uma requisição bem-sucedida, o _status code_ será `200` e o `body` da resposta retornará os dados do `AccountRegister`:
+
+```json
+{
+  "status": "APPROVED",
+  "officialName": "RAZAO_SOCIAL_DA_EMPRESA",
+  "tradeName": "NOME_FANTASIA_DA_EMPRESA",
+  "type": "LIMITED_COMPANY",
+  "taxID": {
+    "taxID": "XXXXXXXXXXXXXX",
+    "type": "BR:CNPJ"
+  },
+  "correlationID": "my-unique-id",
+  "requestReason": null,
+  "documents": [
+    {
+      "type": "SOCIAL_CONTRACT",
+      "url": "https://woovi-baas.s3.amazonaws.com/...?X-Amz-Signature=..."
+    }
+  ],
+  "representatives": [
+    {
+      "name": "NOME_DO_SOCIO",
+      "taxID": {
+        "taxID": "XXXXXXXXXXX",
+        "type": "BR:CPF"
+      },
+      "birthdate": "1990-01-15",
+      "email": "socio@empresa.com",
+      "address": {
+        "zipcode": "XXXXXXXX",
+        "street": "Rua Exemplo",
+        "number": "100",
+        "neighborhood": "Centro",
+        "city": "São Paulo",
+        "state": "SP",
+        "complement": "Sala 1"
+      },
+      "documents": [
+        {
+          "type": "PICTURE",
+          "url": "https://woovi-baas.s3.amazonaws.com/...?X-Amz-Signature=..."
+        },
+        {
+          "type": "IDENTITY_FRONT",
+          "url": "https://woovi-baas.s3.amazonaws.com/...?X-Amz-Signature=..."
+        },
+        {
+          "type": "IDENTITY_BACK",
+          "url": "https://woovi-baas.s3.amazonaws.com/...?X-Amz-Signature=..."
+        }
+      ]
+    }
+  ]
+}
+```
+
+:::warning URLs dos documentos são temporárias
+Os campos `url` dentro de `documents` e `representatives[].documents` são **URLs pré-assinadas** do S3 e expiram após alguns minutos. Não armazene a URL — se você precisa manter uma cópia do documento, baixe o arquivo e armazene-o no seu próprio storage.
+:::
+
+:::info Conta bancária criada
+Quando o `status` for `APPROVED`, a resposta também inclui os dados da `companyBankAccount` provisionada (número da conta, agência, etc.).
+:::
+
+## Status possíveis
+
+| Status | Significado |
+|--------|-------------|
+| `PENDING` | Cadastro criado, aguardando o cliente final preencher o link |
+| `IN_REVIEW` | Cliente submeteu os dados; em análise pela Woovi |
+| `APPROVED` | KYC aprovado e conta bancária provisionada |
+| `REJECTED` | KYC rejeitado — verifique o campo `requestReason` para o motivo |
+| `FAILED` | Erro na criação da conta — necessário reenvio |
+| `CREATING` | Provisionamento da conta em andamento |
+| `DELETED` | Cadastro removido pelo cliente final |
+
+## Tipos de documento
+
+**Documentos da empresa** (`documents[].type`):
+
+- `SOCIAL_CONTRACT` — Contrato social
+- `ATA` — Ata
+- `BYLAWS` — Estatuto
+
+**Documentos do representante** (`representatives[].documents[].type`):
+
+- `PICTURE` — Selfie do sócio
+- `IDENTITY_FRONT` — RG (frente)
+- `IDENTITY_BACK` — RG (verso)
+- `CNH` — CNH (documento único)
+- `CNH_FRONT` — CNH (frente)
+- `CNH_BACK` — CNH (verso)
+
+## Códigos de resposta
+
+| Status | Descrição |
+|--------|-----------|
+| `200` | Dados retornados com sucesso |
+| `400` | Header `Authorization` ausente, `id` inválido ou empresa não encontrada |
+| `401` | Credenciais inválidas |
+| `403` | Empresa sem feature BAAS habilitada ou aplicação sem o scope `ACCOUNT_REGISTER_GET` |
+| `404` | Nenhum `AccountRegister` encontrado para o `id` informado |
+| `500` | Erro interno |
+
+### Exemplos de erro
+
+```json
+{
+  "error": "Invalid Authorization header"
+}
+```
+
+```json
+{
+  "error": "account register not found"
+}
+```
+
+## Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+# Buscar por CNPJ
+curl 'https://api.woovi.com/api/v1/account-register/XX.XXX.XXX/0001-XX' \
+    -H "Accept: application/json" \
+    -H "Authorization: SEU_APPID_AQUI"
+
+# Buscar por correlationID
+curl 'https://api.woovi.com/api/v1/account-register/my-unique-id' \
+    -H "Accept: application/json" \
+    -H "Authorization: SEU_APPID_AQUI"
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch">
+
+```js
+const appId = 'SEU_APPID_AQUI';
+
+// Pode ser CNPJ (com ou sem máscara) ou correlationID
+const id = 'my-unique-id';
+
+const response = await fetch(
+  `https://api.woovi.com/api/v1/account-register/${encodeURIComponent(id)}`,
+  {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': appId,
+    },
+  },
+);
+
+const accountRegister = await response.json();
+
+console.log(accountRegister.status);
+// APPROVED
+
+const selfie = accountRegister.representatives[0].documents.find(
+  (doc) => doc.type === 'PICTURE',
+);
+
+console.log(selfie.url);
+// https://woovi-baas.s3.amazonaws.com/...?X-Amz-Signature=...
+```
+
+  </TabItem>
+</Tabs>
+
+## Fluxo recomendado
+
+1. **Crie o onboarding** via [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx) e envie o `linkOnboarding` ao seu cliente.
+2. **Aguarde o preenchimento** — o cliente final acessa o link, preenche os dados e envia os documentos.
+3. **Detecte a conclusão** — faça polling neste endpoint ou aguarde o webhook de mudança de status.
+4. **Quando `status` for `APPROVED`** — chame este endpoint para sincronizar os dados no seu sistema e baixar os documentos enviados (lembre-se que as URLs são temporárias).
