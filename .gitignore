@@ -76,3 +76,4 @@ junit.xml
 .yarnrc
 yarn.lock
 woovi-agents
+.mcp.json
