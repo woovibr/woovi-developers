@@ -19438,6 +19438,7 @@ components:
       required:
         - customer
         - value
+        - name
         - correlationID
         - type
     Pagination:
