@@ -1,7 +1,9 @@
 ---
 id: decode-emv
+sidebar_position: 2
 title: Decodificar QR Code Pix / Copia e Cola
 tags:
+  - payment
   - api
 ---
 
@@ -23,6 +25,8 @@ curl -X POST "https://api.woovi.com/api/v1/decode/emv" \
     "emv": "<string do QR Code ou Copia e Cola>"
   }'
 ```
+
+Você pode acessar [aqui](https://developers.woovi.com/api#tag/decode/paths/~1api~1v1~1decode~1emv/post) a documentação referente a esse _endpoint_.
 
 ### O que é retornado ?
 
