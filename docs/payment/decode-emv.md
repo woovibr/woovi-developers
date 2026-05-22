@@ -9,9 +9,10 @@ Este documento irá ajudá-lo a decodificar uma string de QR Code Pix ou Copia e
 
 O Copia e Cola é a mesma string que o QR Code carrega visualmente — basta passar essa string no body que o endpoint devolve os dados já parseados.
 
-O endpoint cobre os dois tipos de QR:
-- **Estático**: chave Pix, valor e nome do recebedor já estão no payload e voltam direto na resposta.
-- **Dinâmico (COB ou REC)**: o payload carrega apenas uma URL `location` apontando pro PSP emissor. O próprio endpoint resolve essa URL, baixa a cobrança assinada (JWS) e devolve junto na resposta — você não precisa fazer essa parte por conta.
+O endpoint cobre os três cenários típicos:
+- **Estático**: chave Pix, valor e nome do recebedor já estão dentro do próprio payload e voltam direto na resposta, sem nenhuma chamada externa.
+- **Dinâmico de cobrança (COB / COBV)**: o payload carrega uma URL `location` apontando pro PSP emissor da cobrança. O endpoint resolve essa URL, baixa o payload retornado pelo PSP e devolve em `cobLocation.payload`. O conteúdo vem em JWS assinado pelo PSP, mas a Woovi **não valida** a assinatura ICP-Brasil nem o domínio — se precisar dessa garantia, valide pelo seu lado a partir do `url`/`payload` retornado.
+- **Pix Automático (REC)**: similar ao dinâmico, mas a `location` vem em outra tag do EMV (`unreservedTemplates`) e aponta para a estrutura de recorrência (idRec, periodicidade, contrato). O endpoint resolve e devolve em `recLocation.payload`.
 
 - Faça a requisição passando a string do QR / Copia e Cola no campo `emv`:
 ```bash
