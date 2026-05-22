@@ -1,7 +1,9 @@
 ---
 id: decode-emv
+sidebar_position: 2
 title: Decodificar QR Code Pix / Copia e Cola
 tags:
+  - payment
   - api
 ---
 

@@ -1,7 +1,9 @@
 ---
 id: check-pix-key
+sidebar_position: 3
 title: Verificação de Chave Pix
 tags:
+  - payment
   - api
 ---
 
