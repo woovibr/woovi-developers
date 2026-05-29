@@ -32,7 +32,7 @@ Envie `autoApprove: true` no corpo da requisição ao criar um pagamento:
 
 ## Resposta
 
-Quando `autoApprove: true` e o pagamento for aprovado com sucesso, a resposta incluirá os dados enriquecidos do pagamento, transação e destinatário:
+Quando `autoApprove: true` e o pagamento é aprovado, a resposta traz o `payment` com status `APPROVED`:
 
 ```json
 {
@@ -42,7 +42,26 @@ Quando `autoApprove: true` e o pagamento for aprovado com sucesso, a resposta in
     "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
     "destinationAliasType": "RANDOM",
     "comment": "pagamento comentário",
-    "correlationID": "payment-1"
+    "correlationID": "payment-1",
+    "sourceAccountId": "6823414a524ed520d3518dd6"
+  }
+}
+```
+
+> **Importante:** a resposta imediata do `autoApprove` **não** retorna o campo `destination` (dados bancários do recebedor). Como o Pix é enviado de forma assíncrona, o status muda para `CONFIRMED` (ou `FAILED`) depois da liquidação. Para obter os dados do recebedor (`destination`) e da transação (`endToEndId` etc.), use uma das opções abaixo:
+>
+> - o webhook [`OPENPIX:MOVEMENT_CONFIRMED`](../webhook/examples/payment-payload.mdx), que carrega `destination`; ou
+> - uma consulta `GET /api/v1/payment/{correlationID}` após a confirmação.
+
+Consultando o pagamento depois de confirmado, a resposta inclui `transaction` e `destination`:
+
+```json
+{
+  "payment": {
+    "value": 100,
+    "status": "CONFIRMED",
+    "correlationID": "payment-1",
+    "sourceAccountId": "6823414a524ed520d3518dd6"
   },
   "transaction": {
     "value": 100,
@@ -54,7 +73,7 @@ Quando `autoApprove: true` e o pagamento for aprovado com sucesso, a resposta in
     "taxID": "31324227036",
     "pixKey": "c4249323-b4ca-43f2-8139-8232aab09b93",
     "bank": "A Bank",
-    "branch": "1",
+    "branch": "0001",
     "account": "123456"
   }
 }
