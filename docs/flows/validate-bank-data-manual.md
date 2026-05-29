@@ -91,11 +91,11 @@ curl --location 'https://api.woovi.com/api/v1/payment' \
 
 ## 2. Aprove o pagamento e obtenha os dados
 
-Após o pagamento ser aprovado, é gerado um payload com os dados bancários do titular da conta. Há **duas formas** de aprovar o pagamento:
+Após o pagamento ser aprovado, os dados bancários do titular da conta ficam disponíveis. Há **duas formas** de aprovar o pagamento:
 
 ### Opção 1: Aprovação automática (`autoApprove`) — chamada única
 
-Enviando `autoApprove: true` no corpo da requisição do `/api/v1/payment` (a mesma da etapa anterior), o pagamento é criado **e aprovado na mesma chamada**, dispensando o `/api/v1/payment/approve`. A própria resposta do `/payment` já retorna os dados bancários no campo `destination`.
+Enviando `autoApprove: true` no corpo da requisição do `/api/v1/payment` (a mesma da etapa anterior), o pagamento é criado **e aprovado na mesma chamada**, dispensando o `/api/v1/payment/approve`. A resposta imediata traz o `payment` com status `APPROVED` (sem o `destination` — veja [O que é retornado](#o-que-é-retornado-)).
 
 > **Atenção:** o uso do `autoApprove` requer permissão especial na sua conta. Entre em contato com o suporte para ativar. Veja mais em [Como criar e aprovar um pagamento em uma única chamada?](../payment/payment-how-to-auto-approve.md).
 
@@ -143,7 +143,12 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
 
 ### O que é retornado ?
 
-Nas duas opções, após a aprovação a resposta traz os dados do titular da conta no campo `destination`:
+Os dados do titular da conta vêm no campo `destination`. Como o Pix é enviado de forma assíncrona, esse campo **não** está na resposta imediata do `autoApprove` — ele fica disponível quando o pagamento é confirmado, em uma destas fontes:
+
+- o webhook [`OPENPIX:MOVEMENT_CONFIRMED`](#3-webhooks), que carrega o `destination`; ou
+- uma consulta `GET /api/v1/payment/{correlationID}` após a confirmação.
+
+No fluxo de dois passos, o `destination` também vem na resposta do `/api/v1/payment/approve`.
 
 ```json
 {
