@@ -5,29 +5,23 @@ tags:
   - api
 ---
 
-## 1. É necessario que você tenha uma API
+Este documento irá ajudá-lo a validar os dados bancários de um beneficiário (agência e conta) sem precisar de uma chave Pix.
 
-Caso você não tenha, temos essa documentação que lhe ensina como criar uma [API](https://developers.woovi.com/docs/apis/api-getting-started).
+A validação é feita iniciando um pagamento de 1 centavo para a conta informada. Quando o pagamento é aprovado, é gerado um payload com os dados do titular daquela conta, confirmando a quem ela pertence.
 
-Após criar a API basta seguir o passo a passo.
-
-### Crie um pagamento de 1 centavo:
-
-Para fazer este passo a passo é necessário que você tenha o PIXOUT habilitado em sua conta, então caso não tenha basta solicitar seguindo este artigo : [Como ativar o Pix Out (pagamento externo)](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-o-pix-out-pagamento-externo)
-
-Após isso você irá criar um pagamento para a chave-pix que deseja saber os dados bancários.
+> **Pré-requisitos:** ter uma [API MASTER](../apis/api-master.md) e o **PIX OUT habilitado** na conta. Caso não tenha o Pix Out, solicite seguindo o artigo [Como ativar o Pix Out (pagamento externo)](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-o-pix-out-pagamento-externo).
 
 ## Sequência da integração
 
 ![sequencial](./__assets__/payment-flow.png)
 
-# 1. Crie o pagamento:
+## 1. Crie o pagamento
 
-Nesta etapa você irá criar o pagamento seguindo os parâmetros de nosso endPoint: [Create Payment request](<https:///developers.openpix.com.br/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post>)
+Crie o pagamento informando os dados bancários do beneficiário, seguindo os parâmetros do endpoint [Create Payment request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post>).
 
-## Campos do Pagamento Manual
+### Campos do pagamento manual
 
-### holder (Dados do Beneficiário)
+#### holder (dados do beneficiário)
 
 Representa a pessoa ou empresa que vai receber o pagamento.
 
@@ -37,7 +31,7 @@ Representa a pessoa ou empresa que vai receber o pagamento.
 | taxID.type  | Tipo do documento (BR:CNPJ ou BR:CPF) |
 | taxID.taxID | Número do documento                   |
 
-### account (Dados Bancários)
+#### account (dados bancários)
 
 Representa os dados da conta bancária do beneficiário.
 
@@ -47,7 +41,7 @@ Representa os dados da conta bancária do beneficiário.
 | account     | Número da conta bancária (ex: "00000000000000000981") |
 | accountType | Tipo da conta (ex: "TRAN" para conta corrente)        |
 
-### Tipos de Conta (accountType)
+#### Tipos de conta (accountType)
 
 | Código | Descrição                                |
 | ------ | ---------------------------------------- |
@@ -56,81 +50,126 @@ Representa os dados da conta bancária do beneficiário.
 | SVGS   | Savings Account (Conta Poupança)         |
 | TRAN   | Transacting Account (Conta Transacional) |
 
-### psp (Provedor de Serviço de Pagamento)
+#### psp (provedor de serviço de pagamento)
 
 Representa a instituição financeira que processará o pagamento.
 
 | Campo | Descrição                                       |
 | ----- | ----------------------------------------------- |
-| id    | Identificador único do PSP                      |
+| id    | Identificador único do PSP (código ISPB)        |
 | name  | Nome da instituição financeira (ex: "WOOVI IP") |
 
-Para verificar o id do psp, acesse o endpoint: [PSPs](https:///developers.openpix.com.br/api#tag/psp/paths/~1api~1v1~1psp/get)
+Para descobrir o `id` do PSP, consulte o endpoint [PSPs](<https://developers.woovi.com/api#tag/psp/paths/~1api~1v1~1psp/get>) e use o ISPB no campo `psp.id`.
 
-e adicione o ispb no psp.id
-
-```json
+```bash
 curl --location 'https://api.woovi.com/api/v1/payment' \
---header 'Content-Type: application/json' \
---header 'Authorization: ****' \
---data '{
-  "value": 100,
-  "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
-  "holder": {
-    "name": "teste",
-    "taxID": {
-      "type": "BR:CNPJ",
-      "taxID": "202********158"
+  --header 'Authorization: {APP_ID}' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "value": 1,
+    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
+    "holder": {
+      "name": "teste",
+      "taxID": {
+        "type": "BR:CNPJ",
+        "taxID": "202********158"
+      }
+    },
+    "psp": {
+      "id": "54811417",
+      "name": "WOOVI IP LTDA"
+    },
+    "account": {
+      "account": "000********0981",
+      "branch": "00**",
+      "accountType": "TRAN"
     }
-  },
-   "psp": {
-    "id": "54811417",
-    "name": "WOOVI IP LTDA"
-  },
-  "account": {
-    "account": "000********0981",
-    "branch": "00**",
-    "accountType": "TRAN"
-  }
-}'
+  }'
 ```
 
 ![creat](./__assets__/request.png)
 
-# 2. Confirme o pagamento:
+## 2. Aprove o pagamento e obtenha os dados
 
-Nesta etapa será necessário que você aprove o pagamento que criou seguindo o endpoint: [Approve a Payment Request](<https:///developers.openpix.com.br/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>)
+Após o pagamento ser aprovado, é gerado um payload com os dados bancários do titular da conta. Há **duas formas** de aprovar o pagamento:
 
-Após a confirmação do pagamento irá gerar um payload com os dados bancários da chave-pix que fez o pagamento
+### Opção 1: Aprovação automática (`autoApprove`) — chamada única
 
-```json
+Enviando `autoApprove: true` no corpo da requisição do `/api/v1/payment` (a mesma da etapa anterior), o pagamento é criado **e aprovado na mesma chamada**, dispensando o `/api/v1/payment/approve`. A própria resposta do `/payment` já retorna os dados bancários no campo `destination`.
+
+> **Atenção:** o uso do `autoApprove` requer permissão especial na sua conta. Entre em contato com o suporte para ativar. Veja mais em [Como criar e aprovar um pagamento em uma única chamada?](../payment/payment-how-to-auto-approve.md).
+
+```bash
+curl --location 'https://api.woovi.com/api/v1/payment' \
+  --header 'Authorization: {APP_ID}' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "value": 1,
+    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
+    "autoApprove": true,
+    "holder": {
+      "name": "teste",
+      "taxID": {
+        "type": "BR:CNPJ",
+        "taxID": "202********158"
+      }
+    },
+    "psp": {
+      "id": "54811417",
+      "name": "WOOVI IP LTDA"
+    },
+    "account": {
+      "account": "000********0981",
+      "branch": "00**",
+      "accountType": "TRAN"
+    }
+  }'
+```
+
+### Opção 2: Aprovação em dois passos (`/payment/approve`)
+
+Sem o `autoApprove`, o pagamento é criado com status `CREATED` e você precisa aprová-lo em uma segunda chamada, seguindo o endpoint [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>).
+
+```bash
 curl --location 'https://api.woovi.com/api/v1/payment/approve' \
---header 'Content-Type: application/json' \
---header 'Authorization: ****' \
---data '{
-  "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001"
-}'
-{
-   "payment": …,
-   "transaction": …,
-   "destination": {
-       "name": "Luc— – —--ar",
-       "taxID": "07*******61",
-       "pixKey": "07*******61",
-       "bank": "NU PAGAMENTOS - IP",
-       "branch": "1",
-       "account": "76******03"
-   }
-}
+  --header 'Authorization: {APP_ID}' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001"
+  }'
 ```
 
 ![confirm](./__assets__/confirm-payment.png)
 
-# 3. Webhooks
+### O que é retornado ?
+
+Nas duas opções, após a aprovação a resposta traz os dados do titular da conta no campo `destination`:
+
+```json
+{
+  "payment": { },
+  "transaction": { },
+  "destination": {
+    "name": "Luc— – —--ar",
+    "taxID": "07*******61",
+    "pixKey": "07*******61",
+    "bank": "NU PAGAMENTOS - IP",
+    "branch": "1",
+    "account": "76******03"
+  }
+}
+```
+
+- `name` — nome do titular da conta.
+- `taxID` — documento do titular (CPF parcialmente mascarado / CNPJ).
+- `bank` — instituição financeira da conta.
+- `branch` e `account` — agência e conta confirmadas.
+
+## 3. Webhooks
 
 Após a criação e confirmação do pagamento, você receberá webhooks com o status da transação. Aqui estão exemplos dos possíveis webhooks:
 
-## Webhook de Falha (MOVEMENT_FAILED)
+### Webhook de falha (`MOVEMENT_FAILED`)
 
 ```json
 {
@@ -149,7 +188,7 @@ Após a criação e confirmação do pagamento, você receberá webhooks com o s
 }
 ```
 
-## Webhook de Confirmação (MOVEMENT_CONFIRMED)
+### Webhook de confirmação (`MOVEMENT_CONFIRMED`)
 
 ```json
 {
@@ -175,4 +214,40 @@ Após a criação e confirmação do pagamento, você receberá webhooks com o s
 }
 ```
 
-Se não souber como configurar o webhook, acesse: [Criando um webhook para interceptar um Pix e chamar uma API](https://developers.openpix.com.br/docs/webhook/platform/webhook-platform-api)
+Se não souber como configurar o webhook, acesse: [Criando um webhook para interceptar um Pix e chamar uma API](https://developers.woovi.com/docs/webhook/platform/webhook-platform-api).
+
+## Prompt para IA
+
+Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra implementar a integração no seu app:
+
+> Implemente uma função `validateBankData({ holder, account, psp })` que valida os dados bancários de um beneficiário (agência e conta) via Woovi, iniciando um pagamento de 1 centavo e devolvendo os dados do titular confirmados pelo Banco Central.
+>
+> **Endpoint**: `POST https://api.woovi.com/api/v1/payment`
+> **Header**: `Authorization: <APP_ID_MASTER>` e `Content-Type: application/json`
+> **Pré-requisito**: a conta precisa ter PIX OUT habilitado.
+>
+> **Body** (envie `autoApprove: true` para criar e aprovar numa única chamada, sem precisar do `/payment/approve`):
+> ```json
+> {
+>   "value": 1,
+>   "correlationID": "<uuid único>",
+>   "autoApprove": true,
+>   "holder": {
+>     "name": "<nome do beneficiário>",
+>     "taxID": { "type": "BR:CNPJ" | "BR:CPF", "taxID": "<documento>" }
+>   },
+>   "psp": { "id": "<ISPB de 8 dígitos>", "name": "<nome do banco>" },
+>   "account": {
+>     "branch": "<agência>",
+>     "account": "<conta>",
+>     "accountType": "CACC" | "SLRY" | "SVGS" | "TRAN"
+>   }
+> }
+> ```
+>
+> **Resposta de sucesso (200)**: o payload traz `destination` com `name`, `taxID`, `bank`, `branch` e `account` do titular.
+>
+> **Detalhes importantes**:
+> - `autoApprove: true` exige permissão especial na conta; sem ela, crie o pagamento e aprove depois com `POST /api/v1/payment/approve` enviando o `correlationID`.
+> - O `psp.id` é o código ISPB (8 dígitos) do banco — consulte `GET /api/v1/psp` para descobrir.
+> - Trate os webhooks `OPENPIX:MOVEMENT_CONFIRMED` (aprovado) e `OPENPIX:MOVEMENT_FAILED` (rejeitado) para o status final da validação.
