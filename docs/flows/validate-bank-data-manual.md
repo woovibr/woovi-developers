@@ -37,7 +37,7 @@ Representa os dados da conta bancária do beneficiário.
 
 | Campo       | Descrição                                             |
 | ----------- | ----------------------------------------------------- |
-| branch      | Número da agência bancária (ex: "0001")               |
+| branch      | Número da agência bancária, **exatamente 4 dígitos** (ex: "0001") |
 | account     | Número da conta bancária (ex: "00000000000000000981") |
 | accountType | Tipo da conta (ex: "TRAN" para conta corrente)        |
 
@@ -152,9 +152,8 @@ Nas duas opções, após a aprovação a resposta traz os dados do titular da co
   "destination": {
     "name": "Luc— – —--ar",
     "taxID": "07*******61",
-    "pixKey": "07*******61",
     "bank": "NU PAGAMENTOS - IP",
-    "branch": "1",
+    "branch": "0001",
     "account": "76******03"
   }
 }
@@ -164,6 +163,8 @@ Nas duas opções, após a aprovação a resposta traz os dados do titular da co
 - `taxID` — documento do titular (CPF parcialmente mascarado / CNPJ).
 - `bank` — instituição financeira da conta.
 - `branch` e `account` — agência e conta confirmadas.
+
+> No fluxo por agência e conta, o `destination` **não** retorna o campo `pixKey` (esse campo só existe na validação [por chave Pix](./validate-bank-data.md)).
 
 ## 3. Webhooks
 
