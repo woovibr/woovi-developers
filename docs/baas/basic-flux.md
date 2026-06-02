@@ -6,248 +6,176 @@ tags:
   - api
 ---
 
+Fluxo básico de Baas
+
 Este documento irá ajuda-lo a entender o fluxo básico de baas
 
-### pré requisitos
+pré requisitos
 
-antes de começar a utilizar a api baas é necessário duas coisas: 
- * solicitar ativação das features: Baas e Criação de conta
- * gerar uma chave de api master
+antes de começar a utilizar a api baas é necessário duas coisas:
 
-A API precisa ser do tipo MASTER porquê ela precisa ser capaz de criar novas integrações.
-A conta bancária relacionada a essa API será utilizada no processo de criação das novas contas bancárias, elas usarão os dados desta para serem criadas.
+solicitar ativação das features: Baas e Criação de conta
+
+gerar uma chave de api master
+
+A API precisa ser do tipo MASTER porquê ela precisa ser capaz de criar novas integrações. A conta bancária relacionada a essa API será utilizada no processo de criação das novas contas bancárias, elas usarão os dados desta para serem criadas.
 
 Assim estamos prontos para iniciar a sequencia de integração
 
-### Documentos necessários
-**Representantes/sócios:** 
-| Type           | Descrição               |
-|----------------|-------------------------|
-| PICTURE        | Foto de perfil          |
-| CNH            | Imagem completa da CNH   |
-| CNH_FRONT      | Imagem frontal da CNH   |
-| CNH_BACK       | Imagem traseira da CNH  |
-| IDENTITY_FRONT | Imagem frontal do RG    |
-| IDENTITY_BACK  | Imagem traseira do RG   |
-
-Apenas esses conjuntos de documentos serão aceitos: 
-* PICTURE + CNH
-* PICTURE + (CNH_FRONT + CNH_BACK)
-* PICTURE + (IDENTITY_FRONT + IDENTITY_BACK)
+Sequência da integração
 
 
-**Empresa:**
-| Type            | Descrição                    |
-|-----------------|------------------------------|
-| ATA             | Ata da assembleia dos sócios |
-| BYLAWS          | Estatuto da organização      |
-| SOCIAL_CONTRACT | Contrato social              |
+![basic-flux-baas](__assets__/basic-flux-baas.png)
 
-Documentos necessários por tipo de cnpj:
-* MEI: nenhum documento é necessário, apenas os dos sócios
-* ONG, IGREJA: SOCIAL_CONTRACT, BYLAWS
-* LTDA: SOCIAL_CONTRACT, ATA, BYLAWS
 
-:::caution Atenção
-Não recomendamos o envio de arquivos com mais de 10MB.
-:::
+1. Registrando uma conta
 
-### Sequência da integração
+Utilize o endpoint de registro de conta para registrar uma nova conta
 
-![diagrama fluxo basico de conta](./__assets__/diagrama_fluxo_basico.png) 
+Utilize a chave de api master para autenticar a requisição
 
-### 1. Registrando uma conta
- * Utilize o endpoint de registro de conta para registrar uma nova conta
- * Utilize a chave de api master para autenticar a requisição
- * Faça a requisição
- ```JSON
-    curl -X POST "https://api.woovi.com/api/v1/account-register" \
-      -H "Authorization: <apiMasterKey>" \
-      -H "Content-Type: application/json" 
-        --data-raw '
+Faça a requisição
+
+
+
+curl --request POST \
+  --url https://api.woovi.com/api/v1/kyc/onboarding \
+  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+  --header 'content-type: application/json' \
+  --data '{"taxID":"string","correlationID":"string","redirectUrl":"https://partner.example.com/kyc-done","representatives":[{"taxID":"string","name":"string"}]}'
+
+Caso tudo ocorra corretamente, um código 201 será retornado.
+
+No corpo da resposta terá:
+
 {
-  "officialName": "<razão social>",
-  "tradeName": "<nome fantasia>",
-  "taxID": "<cnpj>",
-  "businessDescription": "<website ou canal de vendas>",
-  "businessProduct": "<servico ou produto da compania>",
-  "businessLifetime": "<tempo de mercado>",
-  "businessGoal": "<objetivo ao usar woovi>",
-  "billingAddress": {
-    "zipcode": "<cpf>",
-    "street": "<rua>",
-    "number": "<numero>",
-    "neighborhood": "<bairro>",
-    "city": "<cidade>",
-    "state": "<sigla estado>"
-  },
-  "documents": [
-    {
-      "url": "<url documento contrato social>",
-      "type": "SOCIAL_CONTRACT"
+  "linkOnboarding": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...",
+  "redirectUrl": "https://partner.example.com/kyc-done",
+  "accountRegister": {
+    "status": "PENDING",
+    "officialName": "RAZAO_SOCIAL_DA_EMPRESA",
+    "tradeName": "NOME_FANTASIA_DA_EMPRESA",
+    "taxID": {
+      "taxID": "XXXXXXXX0001XX",
+      "type": "BR:CNPJ"
     },
-    {
-      "url": "<url estatuto social>",
-      "type": "BYLAWS"
-    }
-  ],
-  "representatives": [
-    {
-      "name": "<nome socio 1>",
-      "birthDate": "<nacimento>",
-      "email": "<email>",
-      "taxID": "<cpf/cnpj>",
-      "phone": "<phone>",
-      "address": {
-        "zipcode": "<cep>",
-        "street": "<rua>",
-        "number": "<numero>",
-        "neighborhood": "<bairro>",
-        "city": "<cidade>",
-        "state": "<sigla estado>",
-        "complement": "<complemento'>"
-      },
-      "documents": [
-        {
-          "url": "<url cnh>",
-          "type": "CNH"
-        },
-        {
-          "url": "<url foto de perfil>",
-          "type": "PICTURE"
+    "correlationID": "my-unique-id",
+    "representatives": [
+      {
+        "name": "NOME_DO_SOCIO",
+        "taxID": {
+          "taxID": "XXXXXXXXXXX",
+          "type": "BR:CPF"
         }
-      ],
-      "type": "ADMIN"
-    }
-  ]
-}'
- ```
-
- * Caso tudo ocorra corretamente, um código 201 será retornado.
- * No corpo da resposta terá:
-  ```JSON
-    {
-      "officialName": "minha compania LTDA",
-      "tradeName": "nome fantasia da minha compania",
-      "status": "IN_REVIEW",
-      "taxID": {
-          "taxID": "<cnpj>",
-          "type": "BR:CNPJ"
       }
-    }
-  ```
+    ]
+  }
+}
 
-### 2. Aguarde a aprovação da conta
- * Cadastre um webhook ouvindo o seguinte evento: "ACCOUNT_REGISTER_APPROVED"
- * Para cadastrar um webhook faça a seguinte request:
+2. Aguarde a aprovação da conta
 
-  ```JSON
-      curl --location --request POST 'https://api.woovi.com/api/openpix/v1/webhook' \
-        --header 'Content-Type: application/json' \
-        --header 'Authorization: <apiMasterKey>' \
-        --data-raw '{
-          "webhook": {
-          "name": "webhook via api",
-          "event": "ACCOUNT_REGISTER_APPROVED",
-          "url": "https://minhaurl.test/webhook",
-          "authorization": "auth_key",
-          "isActive": true
-        }
-      }'
-  ```
+Cadastre um webhook ouvindo o seguinte evento: "ACCOUNT_REGISTER_APPROVED"
 
- * No corpo da resposta terá:
+Para cadastrar um webhook faça a seguinte request:
 
-  ```JSON 
-    {
-      "webhook": {
-        "id": "<idWebhook>",
+   curl --location --request POST 'https://api.woovi.com/api/openpix/v1/webhook' \
+      --header 'Content-Type: application/json' \
+      --header 'Authorization: <apiMasterKey>' \
+      --data-raw '{
+        "webhook": {
         "name": "webhook via api",
         "event": "ACCOUNT_REGISTER_APPROVED",
         "url": "https://minhaurl.test/webhook",
         "authorization": "auth_key",
-        "isActive": true,
-        "hmacSecretKey": "<hmacSecretKey>",
-        "createdAt": "2025-07-01T00:25:36.789Z",
-        "updatedAt": "2025-07-01T00:25:36.789Z"
+        "isActive": true
       }
-    }
-  ```
+    }'
 
- * quando a conta for aprovada o webhook receberá os seguintes dados: 
- ```JSON
-  {
-    "event": "ACCOUNT_REGISTER_APPROVED",
-    "accountRegister": {
-      "officialName": "minha compania LTDA",
-      "taxID": {
-        "taxID": "<cnpj>",
-        "type": "BR:CNPJ"
-      },
-      "status": "APPROVED"
+No corpo da resposta terá:
+
+{
+  "event": "ACCOUNT_REGISTER_APPROVED",
+  "accountRegister": {
+    "correlationID": "<CNPJ>",
+    "officialName": "<NOME-COMPLETO>",
+    "taxID": {
+      "taxID": "<CNPJ>",
+      "type": "BR:CNPJ"
     },
-    "account": {
-      "status": "OPEN",
-      "accountId": "<accountId>",
-      "account": "<accountNumber>",
-      "branch": "<branch>"
-    }
+    "status": "APPROVED"
+  },
+  "account": {
+    "status": "OPEN",
+    "accountId": "6a1ec49c050ca1d11348008f",
+    "account": "00000000000006588018",
+    "branch": "0001"
   }
- ```
+}
 
-### 3. Gere uma chave de api padrão
- * Utilize o endpoint de application para gerar uma chave de api para a conta recém criada
- * Utilize a chave de api master para autenticar a requisição
- * Faça a requisição
- ```JSON
-    curl -X POST "https://api.woovi.com/api/v1/application" \
-      -H "Authorization: <apiMasterKey>" \
-      -H "Content-Type: application/json" 
-      --data-raw '{
-        "accountId": "<accountId>",
-        "application": {
-          "name": "Api account register",
-          "type": "API"
-        }
-      }'
- ```
+3. Gere uma chave de api padrão
 
- * Caso tudo ocorra corretamente, um código 201 será retornado.
- * No corpo da resposta terá:
- ```JSON
-    {
-      "application": {
-          "name": "Api account register",
-          "isActive": true,
-          "type": "API",
-          "clientId": "<clientId>",
-          "clientSecret": "<clientSecret>",
-          "appID": "<appID>"
-      }
-    }
- ```
+Utilize o endpoint de application para gerar uma chave de api para a conta recém criada
 
-### 4. Gere uma chave pix aleatória
- * Utilize o endpoint pix-keys para gerar uma chave para a conta
- * Utilize o appId gerado no passo anterior para autenticar a requisição
- * Faça a requisição:
-  ```JSON
-     curl -X POST "https://api.woovi.com/api/v1/pix-keys" \
-      -H "Authorization: <appId>" \
-      -H "Content-Type: application/json" 
-      --data-raw '{
-        "key": "k1",
-        "type": "EVP"
-      }'
-  ```
- * Caso tudo ocorra corretamente, um código 200 será retornado.
- * No corpo da resposta terá:
- ```JSON
-  {
-    "pixKey": {
-        "pixKey": "",
-        "type": "EVP",
-        "isDefault": false
-    }
+Utilize a chave de api master para autenticar a requisição
+
+Faça a requisição
+
+{
+  "accountId": "6a10805a342fd2a76aa0e5ac",
+  "application":  {
+    "name": "Teste API",
+    "type": "API",
+    "scopes": [
+      "CHARGE_GET"
+    ]
   }
+}
+
+
+
+Caso tudo ocorra corretamente, um código 201 será retornado.
+
+No corpo da resposta terá:
+
+{
+    "application": {
+        "name": "Teste API",
+        "isActive": true,
+        "type": "API",
+        "clientId": "Client_Id_791f667b-c885-45e4-bbe1-468de247a9f6",
+        "clientSecret": "Client_Secret_JgDrJ3fedGz9DXlBqPUogNy8HxAucm47l/FWwfSInl8=",
+        "appID": "<APID>",
+        "scopes": [
+            "CHARGE_GET"
+        ]
+    }
+}
+
+4. Gere uma chave pix aleatória
+
+Utilize o endpoint pix-keys para gerar uma chave para a conta
+
+Utilize o appId gerado no passo anterior para autenticar a requisição
+
+Faça a requisição:
+
+   curl -X POST "https://api.woovi.com/api/v1/pix-keys" \
+    -H "Authorization: <appId>" \
+    -H "Content-Type: application/json" 
+    --data-raw '{
+      "key": "k1",
+      "type": "EVP"
+    }'
+
+Caso tudo ocorra corretamente, um código 200 será retornado.
+
+No corpo da resposta terá:
+
+ {
+   "pixKey": {
+       "pixKey": "",
+       "type": "EVP",
+       "isDefault": false
+   }
+ }
  ```
