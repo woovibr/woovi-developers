@@ -36,18 +36,19 @@ Utilize a chave de api master para autenticar a requisição
 
 Faça a requisição
 
-
-
+```bash
 curl --request POST \
   --url https://api.woovi.com/api/v1/kyc/onboarding \
   --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
   --header 'content-type: application/json' \
   --data '{"taxID":"string","correlationID":"string","redirectUrl":"https://partner.example.com/kyc-done","representatives":[{"taxID":"string","name":"string"}]}'
+```
 
 Caso tudo ocorra corretamente, um código 201 será retornado.
 
 No corpo da resposta terá:
 
+```json
 {
   "linkOnboarding": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...",
   "redirectUrl": "https://partner.example.com/kyc-done",
@@ -71,6 +72,7 @@ No corpo da resposta terá:
     ]
   }
 }
+```
 
 2. Aguarde a aprovação da conta
 
@@ -78,21 +80,24 @@ Cadastre um webhook ouvindo o seguinte evento: "ACCOUNT_REGISTER_APPROVED"
 
 Para cadastrar um webhook faça a seguinte request:
 
-   curl --location --request POST 'https://api.woovi.com/api/openpix/v1/webhook' \
-      --header 'Content-Type: application/json' \
-      --header 'Authorization: <apiMasterKey>' \
-      --data-raw '{
-        "webhook": {
-        "name": "webhook via api",
-        "event": "ACCOUNT_REGISTER_APPROVED",
-        "url": "https://minhaurl.test/webhook",
-        "authorization": "auth_key",
-        "isActive": true
-      }
-    }'
+```bash
+curl --location --request POST 'https://api.woovi.com/api/openpix/v1/webhook' \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: <apiMasterKey>' \
+  --data-raw '{
+    "webhook": {
+      "name": "webhook via api",
+      "event": "ACCOUNT_REGISTER_APPROVED",
+      "url": "https://minhaurl.test/webhook",
+      "authorization": "auth_key",
+      "isActive": true
+    }
+  }'
+```
 
 No corpo da resposta terá:
 
+```json
 {
   "event": "ACCOUNT_REGISTER_APPROVED",
   "accountRegister": {
@@ -111,6 +116,7 @@ No corpo da resposta terá:
     "branch": "0001"
   }
 }
+```
 
 3. Gere uma chave de api padrão
 
@@ -120,6 +126,7 @@ Utilize a chave de api master para autenticar a requisição
 
 Faça a requisição
 
+```json
 {
   "accountId": "6a10805a342fd2a76aa0e5ac",
   "application":  {
@@ -130,13 +137,13 @@ Faça a requisição
     ]
   }
 }
-
-
+```
 
 Caso tudo ocorra corretamente, um código 201 será retornado.
 
 No corpo da resposta terá:
 
+```json
 {
     "application": {
         "name": "Teste API",
@@ -150,6 +157,7 @@ No corpo da resposta terá:
         ]
     }
 }
+```
 
 4. Gere uma chave pix aleatória
 
@@ -159,23 +167,26 @@ Utilize o appId gerado no passo anterior para autenticar a requisição
 
 Faça a requisição:
 
-   curl -X POST "https://api.woovi.com/api/v1/pix-keys" \
-    -H "Authorization: <appId>" \
-    -H "Content-Type: application/json" 
-    --data-raw '{
-      "key": "k1",
-      "type": "EVP"
-    }'
+```bash
+curl -X POST "https://api.woovi.com/api/v1/pix-keys" \
+  -H "Authorization: <appId>" \
+  -H "Content-Type: application/json" \
+  --data-raw '{
+    "key": "k1",
+    "type": "EVP"
+  }'
+```
 
 Caso tudo ocorra corretamente, um código 200 será retornado.
 
 No corpo da resposta terá:
 
- {
-   "pixKey": {
-       "pixKey": "",
-       "type": "EVP",
-       "isDefault": false
-   }
- }
- ```
+```json
+{
+  "pixKey": {
+    "pixKey": "",
+    "type": "EVP",
+    "isDefault": false
+  }
+}
+```
