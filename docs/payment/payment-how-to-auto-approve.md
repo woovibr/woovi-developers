@@ -13,8 +13,6 @@ tags:
 
 O campo `autoApprove` no endpoint `POST /api/v1/payment` permite criar e aprovar um pagamento Pix em uma única requisição, eliminando a necessidade de chamar o endpoint `/api/v1/payment/approve` separadamente.
 
-> **Atenção:** O uso do `autoApprove` requer permissão especial na sua conta. Entre em contato com o suporte para ativar essa funcionalidade.
-
 ## Como usar
 
 Envie `autoApprove: true` no corpo da requisição ao criar um pagamento:
