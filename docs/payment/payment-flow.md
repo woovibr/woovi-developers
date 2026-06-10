@@ -87,3 +87,11 @@ Este documento irá ajudar a entender como criar e aprovar um pagamento pix na w
   }
 }
 ```
+
+:::warning 
+
+O DICT não deve ser utilizado para consultas cadastrais nem para finalidades diferentes da realização de transações utilizando uma chave Pix.
+
+Para mais detalhes, consulte o Manual Operacional do Diretório de Identificadores de Contas Transacionais (DICT).
+
+:::
