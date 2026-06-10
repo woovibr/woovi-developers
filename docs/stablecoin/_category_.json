@@ -1,0 +1,13 @@
+{
+  "label": "Stablecoin",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Stablecoin - visão geral"
+  },
+  "customProps": {
+    "description": "Stablecoin (USDT/USDC) documentação"
+  }
+}
