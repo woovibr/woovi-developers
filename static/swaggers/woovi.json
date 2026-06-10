@@ -9977,6 +9977,751 @@
         ]
       }
     },
+    "/api/v1/stablecoin/deposit/approve": {
+      "post": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Approve (settle) a stablecoin deposit",
+        "description": "Approves a previously created stablecoin deposit identified by its `correlationId`,\ntriggering the on-chain settlement (pay the stable qrcode) for the company's deposit.\n\nThe deposit moves to `PROCESSING` while settlement is in flight. The call is rejected\nwith `400` when the deposit cannot be approved, e.g. it was already `COMPLETED`, it is\nalready `PROCESSING`, there is no source account to pay it, or the provider quote/payment\nfails.\n\nRequires the `STABLECOIN_DEPOSIT_CREATE` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "correlationId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The correlationId supplied when the deposit was created."
+                  }
+                },
+                "required": [
+                  "correlationId"
+                ]
+              },
+              "examples": {
+                "ApproveByCorrelationId": {
+                  "summary": "Approve a deposit by its correlationId",
+                  "value": {
+                    "correlationId": "my-unique-id"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deposit approved and settlement started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "The deposit status after approval.",
+                      "example": "PROCESSING"
+                    },
+                    "correlationId": {
+                      "type": "string",
+                      "example": "my-unique-id"
+                    },
+                    "depositId": {
+                      "type": "string",
+                      "example": "6650abc1234def567890aaaa"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing correlationId or the deposit cannot be approved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "correlationId": {
+                      "type": "string"
+                    },
+                    "depositId": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingCorrelationId": {
+                    "value": {
+                      "error": "correlationId is required"
+                    }
+                  },
+                  "NotFound": {
+                    "value": {
+                      "error": "Stablecoin cashout not found",
+                      "correlationId": "my-unique-id"
+                    }
+                  },
+                  "AlreadyCompleted": {
+                    "value": {
+                      "error": "Stablecoin cashout already completed",
+                      "correlationId": "my-unique-id",
+                      "depositId": "6650abc1234def567890aaaa"
+                    }
+                  },
+                  "AlreadyProcessing": {
+                    "value": {
+                      "error": "Stablecoin cashout is already being processed",
+                      "correlationId": "my-unique-id",
+                      "depositId": "6650abc1234def567890aaaa"
+                    }
+                  },
+                  "NoSourceAccount": {
+                    "value": {
+                      "error": "No source account to pay the deposit",
+                      "correlationId": "my-unique-id",
+                      "depositId": "6650abc1234def567890aaaa"
+                    }
+                  },
+                  "PaymentFailed": {
+                    "value": {
+                      "error": "Failed to pay stable qrcode",
+                      "correlationId": "my-unique-id",
+                      "depositId": "6650abc1234def567890aaaa"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Unauthorized"
+                    }
+                  },
+                  "MissingScope": {
+                    "value": {
+                      "error": "Application is missing required scope: STABLECOIN_DEPOSIT_CREATE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/deposit/approve',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({correlationId: 'string'}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/stablecoin/deposit/approve \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"correlationId\":\"string\"}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/deposit/approve\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'correlationId' => 'string'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"correlationId\\\":\\\"string\\\"}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/stablecoin/deposit/approve\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/deposit/approve\"\n\n\tpayload := strings.NewReader(\"{\\\"correlationId\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"correlationId\\\":\\\"string\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/deposit/approve\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/deposit/approve\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"correlationId\\\":\\\"string\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/stablecoin/deposit": {
+      "post": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Create a stablecoin deposit",
+        "description": "Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON\n  - USDC: POLYGON, ETHEREUM, BASE, CELO\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StablecoinDepositRequest"
+              },
+              "examples": {
+                "MinimalRequest": {
+                  "summary": "Minimal request (defaults network to POLYGON)",
+                  "value": {
+                    "value": 10000,
+                    "currency": "USDT"
+                  }
+                },
+                "WithNetwork": {
+                  "summary": "Request choosing an explicit network",
+                  "value": {
+                    "value": 10000,
+                    "currency": "USDC",
+                    "network": "BASE"
+                  }
+                },
+                "WithCorrelationId": {
+                  "summary": "Request with correlationId for idempotency",
+                  "value": {
+                    "value": 10000,
+                    "currency": "BRLA",
+                    "network": "POLYGON",
+                    "correlationId": "my-unique-id"
+                  }
+                },
+                "WithDestinationWallet": {
+                  "summary": "Request sending to an explicit destination wallet",
+                  "value": {
+                    "value": 10000,
+                    "currency": "USDT",
+                    "network": "POLYGON",
+                    "destinationWalletAddress": "0x0000000000000000000000000000000000000000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deposit created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StablecoinDepositResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, no active subaccount, or deposit creation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StablecoinDepositError"
+                },
+                "examples": {
+                  "InvalidValue": {
+                    "value": {
+                      "error": "value must be a positive number (in cents)"
+                    }
+                  },
+                  "InvalidCurrency": {
+                    "value": {
+                      "error": "currency must be one of: USDT, USDC, BRLA"
+                    }
+                  },
+                  "UnsupportedNetwork": {
+                    "value": {
+                      "error": "USDT is not available on BASE. Supported networks: POLYGON, ETHEREUM, CELO, TRON"
+                    }
+                  },
+                  "NoActiveSubAccount": {
+                    "value": {
+                      "error": "No active stable subaccount. A KYB is required, contact support."
+                    }
+                  },
+                  "CreateFailed": {
+                    "value": {
+                      "step": "create",
+                      "error": "Failed to create stable deposit"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Unauthorized"
+                    }
+                  },
+                  "MissingScope": {
+                    "value": {
+                      "error": "Application is missing required scope: STABLECOIN_DEPOSIT_CREATE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/deposit',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  value: 10000,\n  currency: 'USDT',\n  network: 'POLYGON',\n  subAccountId: 'string',\n  correlationId: 'string',\n  destinationWalletAddress: 'string'\n}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/stablecoin/deposit \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"value\":10000,\"currency\":\"USDT\",\"network\":\"POLYGON\",\"subAccountId\":\"string\",\"correlationId\":\"string\",\"destinationWalletAddress\":\"string\"}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/deposit\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'value' => 10000,\n    'currency' => 'USDT',\n    'network' => 'POLYGON',\n    'subAccountId' => 'string',\n    'correlationId' => 'string',\n    'destinationWalletAddress' => 'string'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"value\\\":10000,\\\"currency\\\":\\\"USDT\\\",\\\"network\\\":\\\"POLYGON\\\",\\\"subAccountId\\\":\\\"string\\\",\\\"correlationId\\\":\\\"string\\\",\\\"destinationWalletAddress\\\":\\\"string\\\"}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/stablecoin/deposit\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/deposit\"\n\n\tpayload := strings.NewReader(\"{\\\"value\\\":10000,\\\"currency\\\":\\\"USDT\\\",\\\"network\\\":\\\"POLYGON\\\",\\\"subAccountId\\\":\\\"string\\\",\\\"correlationId\\\":\\\"string\\\",\\\"destinationWalletAddress\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"value\\\":10000,\\\"currency\\\":\\\"USDT\\\",\\\"network\\\":\\\"POLYGON\\\",\\\"subAccountId\\\":\\\"string\\\",\\\"correlationId\\\":\\\"string\\\",\\\"destinationWalletAddress\\\":\\\"string\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/deposit\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/deposit\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"value\\\":10000,\\\"currency\\\":\\\"USDT\\\",\\\"network\\\":\\\"POLYGON\\\",\\\"subAccountId\\\":\\\"string\\\",\\\"correlationId\\\":\\\"string\\\",\\\"destinationWalletAddress\\\":\\\"string\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/stablecoin/quote": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Get a stablecoin quote without creating a deposit",
+        "description": "Returns a PIX (BRL) -> stablecoin quote for the given `value` and\n`currency` without creating a deposit. Use it to display the exact amount\nof stablecoin the customer would receive before confirming.\n\nThe quote is fetched from the provider and cached for 60 seconds.\n\nRequires the `STABLECOIN_DEPOSIT_CREATE` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "value",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "minimum": 1
+            },
+            "description": "Amount to quote, in cents (BRL). Must be positive.",
+            "example": 10000
+          },
+          {
+            "in": "query",
+            "name": "currency",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "USDT",
+                "USDC",
+                "BRLA"
+              ],
+              "default": "USDT"
+            },
+            "description": "Stablecoin to receive. Defaults to USDT.",
+            "example": "USDT"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quote computed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "quote": {
+                      "type": "object",
+                      "properties": {
+                        "basePrice": {
+                          "type": "number",
+                          "nullable": true,
+                          "description": "Exchange rate applied (BRL per stablecoin unit).",
+                          "example": 5.25
+                        },
+                        "inputAmount": {
+                          "type": "number",
+                          "nullable": true,
+                          "description": "Input amount in BRL (currency unit, not cents).",
+                          "example": 100
+                        },
+                        "inputCurrency": {
+                          "type": "string",
+                          "example": "BRL"
+                        },
+                        "outputAmount": {
+                          "type": "number",
+                          "nullable": true,
+                          "description": "Exact stablecoin amount the customer would receive.",
+                          "example": 19.04
+                        },
+                        "outputCurrency": {
+                          "type": "string",
+                          "example": "USDT"
+                        },
+                        "appliedFees": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "example": "In Fee"
+                              },
+                              "amount": {
+                                "type": "number",
+                                "nullable": true,
+                                "example": 1.5
+                              },
+                              "currency": {
+                                "type": "string",
+                                "example": "BRL"
+                              }
+                            }
+                          }
+                        },
+                        "pairName": {
+                          "type": "string",
+                          "example": "BRL/USDT"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "InvalidValue": {
+                    "value": {
+                      "error": "value must be a positive number (in cents)"
+                    }
+                  },
+                  "InvalidCurrency": {
+                    "value": {
+                      "error": "currency must be one of: USDT, USDC, BRLA"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Unauthorized"
+                    }
+                  },
+                  "MissingScope": {
+                    "value": {
+                      "error": "Application is missing required scope: STABLECOIN_DEPOSIT_CREATE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Provider failed to return a quote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unable to fetch quote"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/quote?value=10000&currency=USDT',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/stablecoin/quote?value=10000&currency=USDT' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/quote?value=10000&currency=USDT\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/stablecoin/quote?value=10000&currency=USDT\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/quote?value=10000&currency=USDT\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/quote?value=10000&currency=USDT\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/quote?value=10000&currency=USDT\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/stablecoin/subaccount/{subAccountId}": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Get a stablecoin subaccount by id",
+        "description": "Fetches a single stablecoin subaccount for the authenticated company by its provider\n`subAccountId`.\n\nReturns `404` when no subaccount with that `subAccountId` exists for the company.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subAccountId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "The provider subaccount id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subaccount found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StablecoinSubAccountGetResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Unauthorized"
+                    }
+                  },
+                  "MissingScope": {
+                    "value": {
+                      "error": "Application is missing required scope: STABLECOIN_SUBACCOUNT_LIST"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No subaccount matches the subAccountId for this company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "SubAccount not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
+      }
+    },
+    "/api/v1/stablecoin/subaccount": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "List a company's stablecoin subaccounts",
+        "description": "Lists the authenticated company's stablecoin subaccounts, most recent first.\n\nA subaccount is created when the company completes a KYB with the stablecoin provider.\nUse this endpoint to discover the `subAccountId` values available to the company.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subaccounts listed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StablecoinSubAccountListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Unauthorized"
+                    }
+                  },
+                  "MissingScope": {
+                    "value": {
+                      "error": "Application is missing required scope: STABLECOIN_SUBACCOUNT_LIST"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/subaccount',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/stablecoin/subaccount \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/subaccount\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/stablecoin/subaccount\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/subaccount\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/subaccount\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/subaccount\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
     "/api/v1/statement": {
       "get": {
         "tags": [
@@ -15354,6 +16099,262 @@
           "error"
         ]
       },
+      "StablecoinDepositRequest": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Amount to deposit, in cents (BRL). Must be positive.",
+            "example": 10000
+          },
+          "currency": {
+            "type": "string",
+            "description": "Stablecoin to receive.",
+            "enum": [
+              "USDT",
+              "USDC",
+              "BRLA"
+            ],
+            "example": "USDT"
+          },
+          "network": {
+            "type": "string",
+            "description": "Network to receive the stablecoin on. Defaults to POLYGON. Must be supported\nfor the chosen currency.\n",
+            "enum": [
+              "POLYGON",
+              "ETHEREUM",
+              "BASE",
+              "CELO",
+              "TRON"
+            ],
+            "default": "POLYGON",
+            "example": "POLYGON"
+          },
+          "subAccountId": {
+            "type": "string",
+            "description": "Stable subaccount id to use. Optional; resolved from the company when omitted."
+          },
+          "correlationId": {
+            "type": "string",
+            "description": "Unique identifier for idempotency. Optional."
+          },
+          "destinationWalletAddress": {
+            "type": "string",
+            "description": "Explicit destination wallet address for the stablecoin. Optional."
+          }
+        },
+        "required": [
+          "value",
+          "currency"
+        ]
+      },
+      "StablecoinDepositQuote": {
+        "type": "object",
+        "properties": {
+          "inputAmount": {
+            "type": "number",
+            "example": 10000
+          },
+          "inputCurrency": {
+            "type": "string",
+            "example": "BRL"
+          },
+          "outputAmount": {
+            "type": "number",
+            "example": 18.45
+          },
+          "outputCurrency": {
+            "type": "string",
+            "example": "USDT"
+          },
+          "rate": {
+            "type": "number",
+            "example": 5.42
+          },
+          "fee": {
+            "type": "number",
+            "description": "Total applied fee (Woovi fee + provider applied fees).",
+            "example": 50
+          }
+        }
+      },
+      "StablecoinDepositResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "The deposit status.",
+            "example": "PENDING"
+          },
+          "depositId": {
+            "type": "string",
+            "example": "6650..."
+          },
+          "correlationId": {
+            "type": "string",
+            "example": "my-unique-id"
+          },
+          "expiration": {
+            "type": "string",
+            "example": "2026-06-05T12:00:00.000Z"
+          },
+          "quote": {
+            "$ref": "#/components/schemas/StablecoinDepositQuote"
+          }
+        }
+      },
+      "StablecoinDepositError": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "type": "string",
+            "description": "Present when the failure happened during deposit creation.",
+            "example": "create"
+          },
+          "error": {
+            "type": "string",
+            "example": "No active stable subaccount. A KYB is required, contact support."
+          }
+        }
+      },
+      "StablecoinDepositListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The StableDeposit document id.",
+            "example": "6650abc1234def567890aaaa"
+          },
+          "correlationId": {
+            "type": "string",
+            "description": "Idempotency identifier supplied at creation. May be absent.",
+            "example": "my-unique-id"
+          },
+          "status": {
+            "type": "string",
+            "description": "The deposit status.",
+            "example": "PENDING"
+          },
+          "inputAmount": {
+            "type": "number",
+            "description": "Amount deposited, in cents (BRL).",
+            "example": 10000
+          },
+          "inputCurrency": {
+            "type": "string",
+            "example": "BRL"
+          },
+          "outputAmount": {
+            "type": "number",
+            "description": "Amount of stablecoin received. May be absent until quoted.",
+            "example": 18.45
+          },
+          "outputCurrency": {
+            "type": "string",
+            "example": "USDT"
+          },
+          "fee": {
+            "type": "number",
+            "description": "Total applied fee. May be absent.",
+            "example": 50
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2026-06-05T12:00:00.000Z"
+          }
+        }
+      },
+      "StablecoinDepositGetResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "deposit": {
+            "$ref": "#/components/schemas/StablecoinDepositListItem"
+          }
+        }
+      },
+      "StablecoinDepositListResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "deposits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StablecoinDepositListItem"
+            }
+          },
+          "count": {
+            "type": "integer",
+            "description": "Total number of deposits for the company (ignores pagination).",
+            "example": 42
+          },
+          "limit": {
+            "type": "integer",
+            "example": 20
+          },
+          "skip": {
+            "type": "integer",
+            "example": 0
+          }
+        }
+      },
+      "StablecoinSubAccountItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The StableSubAccount document id.",
+            "example": "6650abc1234def567890aaaa"
+          },
+          "subAccountId": {
+            "type": "string",
+            "description": "The provider subaccount id. May be absent until provisioned.",
+            "example": "sub_01HZ..."
+          },
+          "account": {
+            "type": "string",
+            "description": "The associated company bank account id. May be absent.",
+            "example": "6650def1234abc567890bbbb"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2026-06-05T12:00:00.000Z"
+          }
+        }
+      },
+      "StablecoinSubAccountGetResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "subAccount": {
+            "$ref": "#/components/schemas/StablecoinSubAccountItem"
+          }
+        }
+      },
+      "StablecoinSubAccountListResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "subAccounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StablecoinSubAccountItem"
+            }
+          }
+        }
+      },
       "Start": {
         "type": "string",
         "format": "date-time",
@@ -15550,7 +16551,9 @@
             "type": "string",
             "enum": [
               "PIX_RECURRING",
-              "RECURRENT"
+              "RECURRENT",
+              "IN_INSTALLMENT",
+              "PIX_CREDIARY"
             ],
             "description": "Type of the subscription"
           },
@@ -15559,10 +16562,18 @@
             "enum": [
               "WEEKLY",
               "MONTHLY",
-              "SEMIANNUALY",
+              "BIMONTHLY",
+              "TRIMONTHLY",
+              "QUARTERLY",
+              "SEMIANNUALLY",
               "ANNUALLY"
             ],
-            "description": "Frequency of the subscription"
+            "description": "Frequency of the subscription.\nWhen `type` is `PIX_RECURRING`, only the BCB-allowed subset applies: `WEEKLY`, `MONTHLY`, `QUARTERLY`, `SEMIANNUALLY`, `ANNUALLY`.\n"
+          },
+          "installmentsCount": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total number of installments currently linked to the subscription. `null` when the subscription has no `dateEnd` (open-ended). Mirrors the GraphQL `installmentsCount` field."
           },
           "isActive": {
             "type": "boolean"
@@ -15722,6 +16733,9 @@
             "enum": [
               "WEEKLY",
               "MONTHLY",
+              "BIMONTHLY",
+              "TRIMONTHLY",
+              "QUARTERLY",
               "SEMIANNUALLY",
               "ANNUALLY"
             ],
@@ -16232,6 +17246,10 @@
     {
       "name": "receipt",
       "description": "Get a pdf document related to a payment transaction formated in a receipt style.\n"
+    },
+    {
+      "name": "stablecoin",
+      "description": "Endpoints for stablecoin deposits"
     },
     {
       "name": "subaccount",
