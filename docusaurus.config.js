@@ -110,6 +110,11 @@ module.exports = {
     ],
   ],
   themeConfig: {
+    mermaid: {
+      options: {
+        securityLevel: 'loose',
+      },
+    },
     navbar: {
       title: 'Woovi Developers',
       logo: {
