@@ -6,36 +6,28 @@ tags:
   - api
 ---
 
-Fluxo básico de Baas
+### Fluxo básico de Baas
 
-Este documento irá ajuda-lo a entender o fluxo básico de baas
-
-pré requisitos
-
-antes de começar a utilizar a api baas é necessário duas coisas:
-
-solicitar ativação das features: Baas e Criação de conta
-
-gerar uma chave de api master
+Este documento irá ajuda-lo a entender o fluxo básico de baas e os pré requisitos antes de começar a utilizar a api baas é necessário duas coisas:
+* solicitar ativação das features: Baas e Criação de conta
+* gerar uma chave de api master
 
 A API precisa ser do tipo MASTER porquê ela precisa ser capaz de criar novas integrações. A conta bancária relacionada a essa API será utilizada no processo de criação das novas contas bancárias, elas usarão os dados desta para serem criadas.
 
 Assim estamos prontos para iniciar a sequencia de integração
 
-Sequência da integração
+## Sequência da integração:
 
 
 ![basic-flux-baas](__assets__/basic-flux-baas.png)
 
 
-1. Registrando uma conta
+1.Registrando uma conta
 
-Utilize o endpoint de registro de conta para registrar uma nova conta
+* Utilize o endpoint de registro de conta para registrar uma nova conta
+* Utilize a chave de api master para autenticar a requisição
 
-Utilize a chave de api master para autenticar a requisição
-
-Faça a requisição
-
+Faça a requisição:
 
 
 curl --request POST \
@@ -74,7 +66,7 @@ No corpo da resposta terá:
 
 2. Aguarde a aprovação da conta
 
-Cadastre um webhook ouvindo o seguinte evento: "ACCOUNT_REGISTER_APPROVED"
+* Cadastre um webhook ouvindo o seguinte evento: "ACCOUNT_REGISTER_APPROVED"
 
 Para cadastrar um webhook faça a seguinte request:
 
@@ -153,9 +145,9 @@ No corpo da resposta terá:
 
 4. Gere uma chave pix aleatória
 
-Utilize o endpoint pix-keys para gerar uma chave para a conta
+* Utilize o endpoint pix-keys para gerar uma chave para a conta
 
-Utilize o appId gerado no passo anterior para autenticar a requisição
+* Utilize o appId gerado no passo anterior para autenticar a requisição
 
 Faça a requisição:
 
