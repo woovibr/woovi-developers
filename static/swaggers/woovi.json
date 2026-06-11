@@ -4803,6 +4803,544 @@
         ]
       }
     },
+    "/api/v1/funds-recovery/{id}/cancel": {
+      "post": {
+        "tags": [
+          "funds recovery"
+        ],
+        "summary": "Cancel a funds recovery (MED)",
+        "x-required-scope": "FUNDS_RECOVERY_DELETE",
+        "security": [
+          {
+            "AppID": [
+              "FUNDS_RECOVERY_DELETE"
+            ]
+          }
+        ],
+        "description": "Endpoint to cancel a funds recovery (MED). The request does not need a body.\n\nOnly funds recoveries opened by your account that have not reached a terminal status (`COMPLETED` or `CANCELLED`) can be cancelled.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The `dictId` returned when the funds recovery was created",
+            "example": "3e760cd5-39b2-45da-8ab6-b212cf205568"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The funds recovery cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/FundsRecovery"
+                },
+                "example": {
+                  "rootTransactionId": "E31680151202606101530AbCdEf12345",
+                  "situationType": "SCAM",
+                  "reportDetails": "Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.",
+                  "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+                  "status": "CANCELLED",
+                  "direction": "SENT",
+                  "reporterParticipant": "31680151",
+                  "creationTime": "2026-06-11T00:30:00.000Z",
+                  "lastModified": "2026-06-11T01:10:00.000Z",
+                  "createdAt": "2026-06-11T00:30:00.000Z",
+                  "updatedAt": "2026-06-11T01:10:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The id is not a valid UUID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "error": {
+                    "id": [
+                      "Invalid UUID"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing AppID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Invalid appID"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Your account does not have the MED API feature or the AppID does not have the required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Your account does not have the permission to use this endpoint"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Funds recovery not found for your account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Funds recovery not found"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The funds recovery is already in a terminal status or the cancellation was refused by the Central Bank",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Cannot cancel: FundsRecovery is already in terminal status COMPLETED"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"POST\", \"/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel\"\n\n\treq, _ := http.NewRequest(\"POST\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel\")\n  .post(null)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/funds-recovery/{id}": {
+      "get": {
+        "tags": [
+          "funds recovery"
+        ],
+        "summary": "Get one funds recovery (MED)",
+        "x-required-scope": "FUNDS_RECOVERY_GET",
+        "security": [
+          {
+            "AppID": [
+              "FUNDS_RECOVERY_GET"
+            ]
+          }
+        ],
+        "description": "Endpoint to get a funds recovery (MED). Use it to follow the progress of the funds recovery through the `status` and `events` fields.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The `dictId` returned when the funds recovery was created",
+            "example": "3e760cd5-39b2-45da-8ab6-b212cf205568"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The funds recovery",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/FundsRecovery"
+                },
+                "example": {
+                  "rootTransactionId": "E31680151202606101530AbCdEf12345",
+                  "situationType": "SCAM",
+                  "reportDetails": "Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.",
+                  "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+                  "status": "AWAITING_ANALYSIS",
+                  "direction": "SENT",
+                  "reporterParticipant": "31680151",
+                  "creationTime": "2026-06-11T00:30:00.000Z",
+                  "lastModified": "2026-06-11T00:35:00.000Z",
+                  "events": [
+                    {
+                      "id": "f3a1c9d2-8b47-4e6a-9c21-5d7e0a4b8f13",
+                      "event": "AWAITING_ANALYSIS",
+                      "timestamp": "2026-06-11T00:35:00.000Z"
+                    }
+                  ],
+                  "createdAt": "2026-06-11T00:30:00.000Z",
+                  "updatedAt": "2026-06-11T00:35:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The id is not a valid UUID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "error": {
+                    "id": [
+                      "Invalid UUID"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing AppID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Invalid appID"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Your account does not have the MED API feature or the AppID does not have the required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Your account does not have the permission to use this endpoint"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Funds recovery not found for your account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Funds recovery not found"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568 \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568\")\n  .get()\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/funds-recovery": {
+      "post": {
+        "tags": [
+          "funds recovery"
+        ],
+        "summary": "Open a funds recovery (MED)",
+        "x-required-scope": "FUNDS_RECOVERY_POST",
+        "security": [
+          {
+            "AppID": [
+              "FUNDS_RECOVERY_POST"
+            ]
+          }
+        ],
+        "description": "Endpoint to open a funds recovery (MED) for a Pix transaction sent from your account.\n\nOnly one funds recovery can be opened per transaction. The transaction must have been sent from your account and cannot have been rejected.\n",
+        "requestBody": {
+          "description": "Data to open a funds recovery",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/FundsRecoveryPayload"
+              },
+              "examples": {
+                "Funds recovery": {
+                  "value": {
+                    "transactionEndToEndId": "E31680151202606101530AbCdEf12345",
+                    "situationType": "SCAM",
+                    "details": "Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The funds recovery created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/FundsRecovery"
+                },
+                "example": {
+                  "rootTransactionId": "E31680151202606101530AbCdEf12345",
+                  "situationType": "SCAM",
+                  "reportDetails": "Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.",
+                  "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+                  "status": "CREATED",
+                  "direction": "SENT",
+                  "reporterParticipant": "31680151",
+                  "creationTime": "2026-06-11T00:30:00.000Z",
+                  "lastModified": "2026-06-11T00:30:00.000Z",
+                  "events": [],
+                  "createdAt": "2026-06-11T00:30:00.000Z",
+                  "updatedAt": "2026-06-11T00:30:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body (missing field or invalid situationType)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "error": {
+                    "situationType": [
+                      "Invalid enum value"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing AppID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Invalid appID"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Your account does not have the MED API feature or the AppID does not have the required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Your account does not have the permission to use this endpoint"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found for your account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Transaction not found"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "A funds recovery already exists for the transaction, the transaction was rejected or the request was refused by the Central Bank",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "FundsRecovery already exists for transaction E31680151202606101530AbCdEf12345"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/funds-recovery',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({transactionEndToEndId: 'string', situationType: 'SCAM', details: 'string'}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/funds-recovery \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"transactionEndToEndId\":\"string\",\"situationType\":\"SCAM\",\"details\":\"string\"}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/funds-recovery\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'transactionEndToEndId' => 'string',\n    'situationType' => 'SCAM',\n    'details' => 'string'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"transactionEndToEndId\\\":\\\"string\\\",\\\"situationType\\\":\\\"SCAM\\\",\\\"details\\\":\\\"string\\\"}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/funds-recovery\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/funds-recovery\"\n\n\tpayload := strings.NewReader(\"{\\\"transactionEndToEndId\\\":\\\"string\\\",\\\"situationType\\\":\\\"SCAM\\\",\\\"details\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"transactionEndToEndId\\\":\\\"string\\\",\\\"situationType\\\":\\\"SCAM\\\",\\\"details\\\":\\\"string\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/funds-recovery\")\n  .post(body)\n  .addHeader(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/funds-recovery\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"transactionEndToEndId\\\":\\\"string\\\",\\\"situationType\\\":\\\"SCAM\\\",\\\"details\\\":\\\"string\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
     "/api/v1/installments/{id}/cobr": {
       "post": {
         "tags": [
@@ -14854,6 +15392,126 @@
         "description": "End date used in the query. Complies with RFC 3339.",
         "example": "2020-12-01T17:00:00Z"
       },
+      "FundsRecovery": {
+        "type": "object",
+        "properties": {
+          "dictId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the funds recovery. Use it as the `{id}` on the get and cancel endpoints."
+          },
+          "rootTransactionId": {
+            "type": "string",
+            "description": "The endToEndId of the reported Pix transaction"
+          },
+          "situationType": {
+            "type": "string",
+            "enum": [
+              "SCAM",
+              "ACCOUNT_TAKEOVER",
+              "COERCION",
+              "FRAUDULENT_ACCESS",
+              "OTHER",
+              "UNKNOWN"
+            ],
+            "description": "The situation that motivated the funds recovery"
+          },
+          "reportDetails": {
+            "type": "string",
+            "description": "Detailed description of what happened"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "TRACKED",
+              "AWAITING_ANALYSIS",
+              "ANALYSED",
+              "REFUNDING",
+              "COMPLETED",
+              "CANCELLED"
+            ],
+            "description": "Current status of the funds recovery. COMPLETED and CANCELLED are terminal."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "SENT",
+              "RECEIVED"
+            ],
+            "description": "SENT when the funds recovery was opened by your institution"
+          },
+          "reporterParticipant": {
+            "type": "string",
+            "description": "ISPB code of the institution that opened the funds recovery"
+          },
+          "creationTime": {
+            "type": "string",
+            "description": "When the funds recovery was created on the Central Bank, in ISO 8601 format"
+          },
+          "lastModified": {
+            "type": "string",
+            "description": "Last time the funds recovery was modified on the Central Bank, in ISO 8601 format"
+          },
+          "events": {
+            "type": "array",
+            "description": "Event history of the funds recovery, in chronological order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Event id"
+                },
+                "event": {
+                  "type": "string",
+                  "description": "Event name"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "description": "When the event occurred, in ISO 8601 format"
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "FundsRecoveryPayload": {
+        "type": "object",
+        "properties": {
+          "transactionEndToEndId": {
+            "type": "string",
+            "description": "The endToEndId of the Pix transaction sent from your account that you want to recover"
+          },
+          "situationType": {
+            "type": "string",
+            "enum": [
+              "SCAM",
+              "ACCOUNT_TAKEOVER",
+              "COERCION",
+              "FRAUDULENT_ACCESS",
+              "OTHER",
+              "UNKNOWN"
+            ],
+            "description": "The situation that motivated the funds recovery:\n  - `SCAM`: scam (e.g. fake sale, fake invoice, social engineering)\n  - `ACCOUNT_TAKEOVER`: account takeover\n  - `COERCION`: coercion (e.g. kidnapping, extortion)\n  - `FRAUDULENT_ACCESS`: fraudulent access to credentials\n  - `OTHER`: other kind of fraud\n  - `UNKNOWN`: unknown kind of fraud\n"
+          },
+          "details": {
+            "type": "string",
+            "description": "Detailed description of what happened. The more context, the better for the analysis."
+          }
+        },
+        "required": [
+          "transactionEndToEndId",
+          "situationType",
+          "details"
+        ]
+      },
       "KycOnboardingRepresentative": {
         "type": "object",
         "properties": {
@@ -17206,6 +17864,10 @@
     {
       "name": "dispute",
       "description": "Endpoint to manage Dispute\n"
+    },
+    {
+      "name": "funds recovery",
+      "description": "Endpoints to manage funds recoveries (MED — Mecanismo Especial de Devolução).\n\nA funds recovery lets you request the return of a Pix transaction sent from your account in case of scam or fraud. The Central Bank tracks the money path across Pix participants and opens refund solicitations on the accounts the funds went through.\n\nThese endpoints require the **MED API** feature enabled on your account. Contact our support to enable it.\n"
     },
     {
       "name": "kyc",
