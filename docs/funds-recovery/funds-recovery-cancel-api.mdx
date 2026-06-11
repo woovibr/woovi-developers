@@ -1,0 +1,87 @@
+---
+id: funds-recovery-cancel-api
+sidebar_position: 4
+title: Como cancelar uma recuperação de fundos (MED) usando a API?
+tags:
+  - funds-recovery
+  - med
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Para cancelar uma recuperação de fundos (MED) usando a API, você deverá fazer uma chamada POST para o _endpoint_ `/api/v1/funds-recovery/{id}/cancel`, usando o `dictId` retornado na [criação](./funds-recovery-create-api.mdx).
+
+A requisição não precisa de `BODY`.
+
+:::caution
+Só é possível cancelar recuperações de fundos **abertas pela sua conta** e que ainda não atingiram um status final (`COMPLETED` ou `CANCELLED`).
+:::
+
+## Exemplo
+
+Se tudo ocorreu bem, o _status code_ da requisição será `200` e no `body` da resposta retornaremos a recuperação de fundos cancelada:
+
+```json
+{
+  "rootTransactionId": "E31680151202606101530AbCdEf12345",
+  "situationType": "SCAM",
+  "reportDetails": "Pagamento realizado para um falso vendedor. Após o pagamento, o vendedor parou de responder e não entregou o produto.",
+  "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+  "status": "CANCELLED",
+  "direction": "SENT",
+  "reporterParticipant": "31680151",
+  "creationTime": "2026-06-11T00:30:00.000Z",
+  "lastModified": "2026-06-11T01:10:00.000Z",
+  "createdAt": "2026-06-11T00:30:00.000Z",
+  "updatedAt": "2026-06-11T01:10:00.000Z"
+}
+```
+
+## Possíveis erros
+
+| Status | Motivo                                                                                          |
+| ------ | ------------------------------------------------------------------------------------------------ |
+| `400`  | O `id` informado não é um UUID válido                                                             |
+| `401`  | `AppID` inválido ou ausente                                                                       |
+| `403`  | Sua conta não possui a funcionalidade MED API ou o AppID não possui o escopo necessário           |
+| `404`  | Recuperação de fundos não encontrada para a sua conta                                             |
+| `422`  | A recuperação de fundos já está em um status final ou o cancelamento foi recusado pelo Banco Central |
+
+Em caso de erro, o body da resposta terá o formato:
+
+```json
+{
+  "error": "Cannot cancel: FundsRecovery is already in terminal status COMPLETED"
+}
+```
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request POST \
+    --url https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel \
+    --header 'Authorization: AUTHORIZATION'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch(
+  'https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/cancel',
+  {
+    method: 'POST',
+    headers: {
+      Authorization: 'AUTHORIZATION',
+    },
+  },
+).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
