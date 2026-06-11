@@ -1,0 +1,117 @@
+---
+id: funds-recovery-create-api
+sidebar_position: 2
+title: Como abrir uma recuperação de fundos (MED) usando a API?
+tags:
+  - funds-recovery
+  - med
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Para abrir uma recuperação de fundos (MED) usando a API, você deverá fazer uma chamada POST para o _endpoint_ `/api/v1/funds-recovery`, autenticando com o seu `AppID` no header `Authorization`.
+
+Como parte do `BODY` da requisição, esperamos o envio dos seguintes itens:
+
+- **`transactionEndToEndId`**: O `endToEndId` da transação Pix enviada pela sua conta que você deseja recuperar.
+- **`situationType`**: O tipo de situação que motivou a recuperação de fundos. Os valores possíveis são:
+  - `SCAM`: golpe (ex: falsa venda, falso boleto, engenharia social)
+  - `ACCOUNT_TAKEOVER`: invasão de conta
+  - `COERCION`: coação (ex: sequestro, extorsão)
+  - `FRAUDULENT_ACCESS`: acesso fraudulento às credenciais
+  - `OTHER`: outro tipo de fraude
+  - `UNKNOWN`: tipo de fraude desconhecido
+- **`details`**: A descrição detalhada do ocorrido. Quanto mais contexto, melhor para a análise.
+
+:::caution
+Só é possível abrir **uma** recuperação de fundos por transação. A transação precisa ter sido enviada pela sua conta e não pode ter sido rejeitada.
+:::
+
+## Exemplo
+
+O body da sua requisição será semelhante a este exemplo:
+
+```json
+{
+  "transactionEndToEndId": "E31680151202606101530AbCdEf12345",
+  "situationType": "SCAM",
+  "details": "Pagamento realizado para um falso vendedor. Após o pagamento, o vendedor parou de responder e não entregou o produto."
+}
+```
+
+Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisição será `201` e no `body` da resposta retornaremos a recuperação de fundos criada:
+
+```json
+{
+  "rootTransactionId": "E31680151202606101530AbCdEf12345",
+  "situationType": "SCAM",
+  "reportDetails": "Pagamento realizado para um falso vendedor. Após o pagamento, o vendedor parou de responder e não entregou o produto.",
+  "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+  "status": "CREATED",
+  "direction": "SENT",
+  "reporterParticipant": "31680151",
+  "creationTime": "2026-06-11T00:30:00.000Z",
+  "lastModified": "2026-06-11T00:30:00.000Z",
+  "events": [],
+  "createdAt": "2026-06-11T00:30:00.000Z",
+  "updatedAt": "2026-06-11T00:30:00.000Z"
+}
+```
+
+:::tip
+Guarde o campo **`dictId`** — ele é o identificador da recuperação de fundos e será usado nos endpoints de [consulta](./funds-recovery-get-api.mdx) e [cancelamento](./funds-recovery-cancel-api.mdx).
+:::
+
+## Possíveis erros
+
+| Status | Motivo                                                                                  |
+| ------ | ---------------------------------------------------------------------------------------- |
+| `400`  | Body inválido (campo faltando ou `situationType` fora dos valores aceitos)               |
+| `401`  | `AppID` inválido ou ausente                                                               |
+| `403`  | Sua conta não possui a funcionalidade MED API ou o AppID não possui o escopo necessário   |
+| `404`  | Transação não encontrada para a sua conta                                                 |
+| `422`  | Já existe uma recuperação de fundos para a transação, a transação foi rejeitada ou o pedido foi recusado pelo Banco Central |
+
+Em caso de erro, o body da resposta terá o formato:
+
+```json
+{
+  "error": "FundsRecovery already exists for transaction E31680151202606101530AbCdEf12345"
+}
+```
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request POST \
+    --url https://api.woovi.com/api/v1/funds-recovery \
+    --header 'Authorization: AUTHORIZATION' \
+    --header 'content-type: application/json' \
+    --data '{"transactionEndToEndId": "E31680151202606101530AbCdEf12345", "situationType": "SCAM", "details": "Pagamento realizado para um falso vendedor."}'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/funds-recovery', {
+  method: 'POST',
+  body: JSON.stringify({
+    transactionEndToEndId: 'E31680151202606101530AbCdEf12345',
+    situationType: 'SCAM',
+    details: 'Pagamento realizado para um falso vendedor.',
+  }),
+  headers: {
+    Authorization: 'AUTHORIZATION',
+    'Content-Type': 'application/json',
+  },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
