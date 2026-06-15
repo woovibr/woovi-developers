@@ -15,6 +15,10 @@ Vá para `Api/Plugins` na barra lateral e clique em `Nova API/Plugin`.
 Caso você não esteja visualizando o sidebar API/Plugins é necessário ter a permissão correta, veja com o admin da sua empresa.
 :::
 
+:::info
+Atenção: Somente para clientes BaaS.
+:::
+
 ![appid-1](./__assets__/api-plugins.png)
 
 ![appid-2](./__assets__/new-api-plugin.png)
