@@ -11,7 +11,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Para consultar uma recuperação de fundos (MED) usando a API, você deverá fazer uma chamada GET para o _endpoint_ `/api/v1/funds-recovery/{id}`, usando o `dictId` retornado na [criação](./funds-recovery-create-api.mdx).
+Para consultar uma recuperação de fundos (MED) usando a API, você deverá fazer uma chamada GET para o _endpoint_ `/api/v1/funds-recovery/{id}`, usando como `{id}` o `dictId` retornado na [criação](./funds-recovery-create-api.mdx) **ou** o `endToEndId` da transação Pix que originou a recuperação.
 
 Use este endpoint para acompanhar o andamento da recuperação de fundos através do campo `status` — veja o [ciclo de vida](./funds-recovery.md#ciclo-de-vida) completo.
 
@@ -48,7 +48,6 @@ O campo `events` traz o histórico de eventos da recuperação de fundos, em ord
 
 | Status | Motivo                                                                                |
 | ------ | -------------------------------------------------------------------------------------- |
-| `400`  | O `id` informado não é um UUID válido                                                   |
 | `401`  | `AppID` inválido ou ausente                                                             |
 | `403`  | Sua conta não possui a funcionalidade MED API ou o AppID não possui o escopo necessário |
 | `404`  | Recuperação de fundos não encontrada para a sua conta                                   |
@@ -81,3 +80,11 @@ fetch(
 
   </TabItem>
 </Tabs>
+
+O mesmo _endpoint_ aceita o `endToEndId` da transação no lugar do `dictId`, retornando a mesma recuperação de fundos:
+
+```sh
+curl --request GET \
+    --url https://api.woovi.com/api/v1/funds-recovery/E31680151202606101530AbCdEf12345 \
+    --header 'Authorization: AUTHORIZATION'
+```
