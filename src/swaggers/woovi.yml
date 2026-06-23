@@ -9139,6 +9139,29 @@ paths:
                         type: boolean
                       hasNextPage:
                         type: boolean
+              example:
+                affiliates:
+                  - company:
+                      id: Q29tcGFueTo2MDE1MTQ0OWUzYzlhNDAwMTJhYjM0Y2Q=
+                      name: Affiliate Company One LTDA
+                      taxID: '65914571000187'
+                      createdAt: 2026-01-15T13:22:41.000Z
+                    account:
+                      clientId: Client_Id_5f3a1c9e8b7d4a2f
+                      name: Conta 1234
+                      accountId: 60151449e3c9a40012ab34cd
+                      branch: '0001'
+                      account: '1234567'
+                  - company:
+                      id: Q29tcGFueTo2MDE1MTQ0OWUzYzlhNDAwMTJjZDU2ZWY=
+                      name: Affiliate Company Two LTDA
+                      taxID: '14380200000121'
+                      createdAt: 2026-01-12T09:05:18.000Z
+                pageInfo:
+                  skip: 0
+                  limit: 100
+                  hasPreviousPage: false
+                  hasNextPage: true
         '400':
           description: An error message
           content:
