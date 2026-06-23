@@ -9086,6 +9086,173 @@ paths:
             response = http.request(request)
 
             puts response.read_body
+  /api/v1/partner/affiliate:
+    get:
+      tags:
+        - partner (request access)
+      summary: Get every affiliate company that is managed by you.
+      x-required-scope: PARTNER_COMPANY_GET_LIST
+      security:
+        - AppID:
+            - PARTNER_COMPANY_GET_LIST
+      responses:
+        '200':
+          description: A list with affiliate companies.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  affiliates:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        company:
+                          $ref: '#/components/schemas/CompanyObjectPayload'
+                        account:
+                          $ref: '#/components/schemas/AccountObjectPayload'
+                      required:
+                        - company
+                  pageInfo:
+                    type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                            data:
+                              type: object
+                              properties:
+                                skip:
+                                  type: number
+                                limit:
+                                  type: number
+                      skip:
+                        type: number
+                      limit:
+                        type: number
+                      hasPreviousPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
+        '400':
+          description: An error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/partner/affiliate',
+              headers: {
+                Authorization: 'Bearer REPLACE_BEARER_TOKEN'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url https://api.woovi.com/api/v1/partner/affiliate \
+              --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/partner/affiliate",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => [
+                "Authorization: Bearer REPLACE_BEARER_TOKEN"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: |-
+            import http.client
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+            headers = { 'Authorization': "Bearer REPLACE_BEARER_TOKEN" }
+
+            conn.request("GET", "/api/v1/partner/affiliate", headers=headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/partner/affiliate\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/partner/affiliate")
+              .get()
+              .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: |-
+            require 'uri'
+            require 'net/http'
+
+            url = URI("https://api.woovi.com/api/v1/partner/affiliate")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+
+            request = Net::HTTP::Get.new(url)
+            request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
+
+            response = http.request(request)
+            puts response.read_body
   /api/v1/partner/application:
     post:
       tags:
