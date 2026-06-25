@@ -17,7 +17,8 @@ Todas as rotas ficam sob `/api/v1/stablecoin/` e exigem autenticação com o seu
 | --- | --- |
 | `STABLECOIN_DEPOSIT_CREATE` | `quote`, `deposit`, `deposit/approve` |
 | `STABLECOIN_DEPOSIT_LIST` | `deposit/find`, `deposit` (listar) |
-| `STABLECOIN_SUBACCOUNT_LIST` | `subaccount`, `subaccount/{subAccountId}` |
+| `STABLECOIN_SUBACCOUNT_CREATE` | `subaccount` (POST — solicitar KYB) |
+| `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar), `subaccount/{subAccountId}` |
 
 > A URL base de produção é `https://api.woovi.com`. Caso o App não tenha o escopo necessário, a resposta é `401` com `Application is missing required scope: ...`.
 
@@ -189,6 +190,54 @@ Lista os depósitos da empresa autenticada (paginado).
   "skip": 0
 }
 ```
+
+### Solicitar uma subconta (KYB)
+
+POST `/api/v1/stablecoin/subaccount`
+
+Solicita a criação de uma subconta de stablecoin para a empresa autenticada, reaproveitando os dados de KYC já presentes no `accountRegister` informado. A subconta no provedor é criada imediatamente e um registro `StableSubAccount` é persistido com status `IN_REVIEW` enquanto o KYB é processado.
+
+O processamento do KYB é **assíncrono**: quando ele é resolvido, a empresa recebe um webhook `STABLECOIN_SUBACCOUNT_CONFIRMED` ou `STABLECOIN_SUBACCOUNT_REJECTED` (veja [Webhooks](./stablecoin-webhooks.md)). Somente após o `STABLECOIN_SUBACCOUNT_CONFIRMED` a subconta pode ser usada em `POST /api/v1/stablecoin/deposit`.
+
+A rota é **idempotente** por `accountRegisterId`: uma chamada repetida retorna a subconta já existente (HTTP `200`), enquanto a primeira chamada (que cria) retorna HTTP `201`. Exige o escopo `STABLECOIN_SUBACCOUNT_CREATE`.
+
+Body:
+
+| campo | tipo | obrigatório | descrição |
+| --- | --- | --- | --- |
+| `accountRegisterId` | string | sim | id do `accountRegister` cujos dados de KYC serão usados no KYB |
+| `companyBankAccountId` | string | não | conta bancária da empresa a vincular; usa a conta padrão da empresa quando omitida |
+
+```bash
+curl --request POST \
+  --url https://api.woovi.com/api/v1/stablecoin/subaccount \
+  --header 'Authorization: <SEU_APP_ID>' \
+  --header 'content-type: application/json' \
+  --data '{
+    "accountRegisterId": "6650abc1234def567890aaaa"
+  }'
+```
+
+Resposta (`201` na criação, `200` quando a subconta já existia):
+
+```json
+{
+  "subAccountId": "sub_01HZ...",
+  "status": "IN_REVIEW",
+  "correlationId": "0f2c8d6a-1b3e-4f5a-9c7d-8e2a1b4c6d8f"
+}
+```
+
+Erros comuns:
+
+```json
+{ "error": "accountRegisterId is required" }
+{ "error": "INVALID_ACCOUNT_REGISTER_ID", "correlationId": "..." }
+{ "error": "ACCOUNT_REGISTER_NOT_FOUND", "correlationId": "..." }
+{ "error": "ACCOUNT_REGISTER_MISSING_OFFICIAL_NAME", "correlationId": "..." }
+```
+
+> Erros que o chamador pode corrigir (id inválido, `accountRegister` inexistente ou sem dados obrigatórios) retornam `400`. Falhas no provedor ou na persistência retornam `502` (ex.: `AVENIA_SUBACCOUNT_CREATE_FAILED`), indicando que a chamada pode ser repetida.
 
 ### Listar subcontas
 
