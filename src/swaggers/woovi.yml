@@ -15249,6 +15249,268 @@ paths:
 
             response = http.request(request)
             puts response.read_body
+    post:
+      tags:
+        - stablecoin
+      summary: Request a new stablecoin subaccount (KYB)
+      description: >
+        Requests the creation of a stablecoin subaccount for the authenticated
+        company,
+
+        reusing the KYC data already on the referenced account register.
+
+
+        Pass the company's `accountRegisterId`; the provider subaccount is
+        created
+
+        immediately and a `StableSubAccount` is persisted with status
+        `IN_REVIEW` while
+
+        the KYB is processed. When the KYB resolves, the merchant receives a
+
+        `STABLECOIN_SUBACCOUNT_CONFIRMED` or `STABLECOIN_SUBACCOUNT_REJECTED`
+        webhook.
+
+
+        The request is idempotent on `accountRegisterId`: a repeat call returns
+        the
+
+        existing subaccount (HTTP `200`) instead of creating a duplicate. The
+        first,
+
+        creating call returns HTTP `201`.
+
+
+        Requires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company
+        `STABLECOIN`
+
+        feature.
+      security:
+        - AppID: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StablecoinSubAccountCreateRequest'
+            examples:
+              MinimalRequest:
+                summary: Minimal request (uses the company's default bank account)
+                value:
+                  accountRegisterId: 6650abc1234def567890aaaa
+              WithCompanyBankAccount:
+                summary: Request choosing an explicit company bank account
+                value:
+                  accountRegisterId: 6650abc1234def567890aaaa
+                  companyBankAccountId: 6650def1234abc567890bbbb
+      responses:
+        '200':
+          description: Subaccount already requested for this account register
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StablecoinSubAccountCreateResponse'
+        '201':
+          description: Subaccount activation requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StablecoinSubAccountCreateResponse'
+        '400':
+          description: Invalid input or referenced account register
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StablecoinSubAccountCreateError'
+              examples:
+                MissingAccountRegisterId:
+                  value:
+                    error: accountRegisterId is required
+                InvalidAccountRegisterId:
+                  value:
+                    error: INVALID_ACCOUNT_REGISTER_ID
+                AccountRegisterNotFound:
+                  value:
+                    error: ACCOUNT_REGISTER_NOT_FOUND
+        '401':
+          description: Invalid credentials or missing required scope
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    error: Unauthorized
+                MissingScope:
+                  value:
+                    error: >-
+                      Application is missing required scope:
+                      STABLECOIN_SUBACCOUNT_CREATE
+        '502':
+          description: Provider or persistence failure while creating the subaccount
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StablecoinSubAccountCreateError'
+              examples:
+                ProviderFailed:
+                  value:
+                    error: AVENIA_SUBACCOUNT_CREATE_FAILED
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'POST',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/stablecoin/subaccount',
+              headers: {
+                Authorization: 'Bearer REPLACE_BEARER_TOKEN',
+                'content-type': 'application/json'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.write(JSON.stringify({
+              accountRegisterId: '6650abc1234def567890aaaa',
+              companyBankAccountId: '6650def1234abc567890bbbb'
+            }));
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url https://api.woovi.com/api/v1/stablecoin/subaccount \
+              --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+              --header 'content-type: application/json' \
+              --data '{"accountRegisterId":"6650abc1234def567890aaaa","companyBankAccountId":"6650def1234abc567890bbbb"}'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/stablecoin/subaccount",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode([
+                'accountRegisterId' => '6650abc1234def567890aaaa',
+                'companyBankAccountId' => '6650def1234abc567890bbbb'
+              ]),
+              CURLOPT_HTTPHEADER => [
+                "Authorization: Bearer REPLACE_BEARER_TOKEN",
+                "content-type: application/json"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            payload =
+            "{\"accountRegisterId\":\"6650abc1234def567890aaaa\",\"companyBankAccountId\":\"6650def1234abc567890bbbb\"}"
+
+
+            headers = {
+                'Authorization': "Bearer REPLACE_BEARER_TOKEN",
+                'content-type': "application/json"
+            }
+
+
+            conn.request("POST", "/api/v1/stablecoin/subaccount", payload,
+            headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/subaccount\"\n\n\tpayload := strings.NewReader(\"{\\\"accountRegisterId\\\":\\\"6650abc1234def567890aaaa\\\",\\\"companyBankAccountId\\\":\\\"6650def1234abc567890bbbb\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"accountRegisterId\":\"6650abc1234def567890aaaa\",\"companyBankAccountId\":\"6650def1234abc567890bbbb\"}");
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/stablecoin/subaccount")
+              .post(body)
+              .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
+              .addHeader("content-type", "application/json")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url = URI("https://api.woovi.com/api/v1/stablecoin/subaccount")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
+
+            request["content-type"] = 'application/json'
+
+            request.body =
+            "{\"accountRegisterId\":\"6650abc1234def567890aaaa\",\"companyBankAccountId\":\"6650def1234abc567890bbbb\"}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
   /api/v1/statement:
     get:
       tags:
@@ -21736,6 +21998,42 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StablecoinSubAccountItem'
+    StablecoinSubAccountCreateRequest:
+      type: object
+      required:
+        - accountRegisterId
+      properties:
+        accountRegisterId:
+          type: string
+          description: The account register id whose KYC data backs the KYB.
+          example: 6650abc1234def567890aaaa
+        companyBankAccountId:
+          type: string
+          description: >-
+            Company bank account to associate with the subaccount. Defaults to
+            the company's default bank account when omitted.
+          example: 6650def1234abc567890bbbb
+    StablecoinSubAccountCreateResponse:
+      type: object
+      properties:
+        subAccountId:
+          type: string
+          description: The provider subaccount id.
+          example: sub_01HZ...
+        status:
+          type: string
+          description: The StableSubAccount status (IN_REVIEW on creation).
+          example: IN_REVIEW
+        correlationId:
+          type: string
+          example: 3f1a2b3c-4d5e-6f70-8a9b-0c1d2e3f4a5b
+    StablecoinSubAccountCreateError:
+      type: object
+      properties:
+        error:
+          type: string
+        correlationId:
+          type: string
     Start: *ref_0
     SubAccount:
       type: object
