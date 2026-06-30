@@ -29,42 +29,7 @@ Ex.:
 
 Ao utilizar nossos webhooks, é necessário garantir que a rota que lida com os webhooks seja idempotente, pois é prática comum reenviar webhooks para garantir que pelo menos um deles chegou e foi processado. No final desse documento, tem exemplos de como você pode fazer essa implementação.
 
-### Pix Out e pagamentos: reuse o correlationID até o estado terminal
-
-O mesmo padrão vale para envios de Pix (`POST /api/v1/payment`). O `correlationID` é a **chave de idempotência do pagamento**: enquanto ele for o mesmo, o pagamento é criado uma única vez.
-
-- Se você reenviar uma requisição com o **mesmo** `correlationID` (retry por timeout, reprocessamento de planilha, etc.), a API rejeita a segunda chamada com `Já existe um pagamento com o correlationID fornecido` — o valor **não** sai duas vezes.
-- Se você enviar um `correlationID` **diferente** para o mesmo pagamento, a API trata como um pagamento **novo** e o valor **sai novamente**. Não existe uma trava por "mesmo valor para o mesmo destinatário" — a unicidade é garantida apenas pelo `correlationID`.
-
-Por isso, a regra de ouro ao reprocessar um pagamento é:
-
-> **Reuse o mesmo `correlationID` em todas as tentativas até o pagamento chegar a um estado terminal (`CONFIRMED` ou `REJECTED`). Só gere um novo `correlationID` depois disso.**
-
-Gerar um `correlationID` novo enquanto o pagamento ainda está pendente é a causa mais comum de pagamentos duplicados ou triplicados em integrações.
-
-```js
-// ERRADO: novo correlationID a cada tentativa => duplica o pagamento
-function pagarComRetry(pagamento) {
-  return api.post('/api/v1/payment', {
-    correlationID: uuidv4(), // <- ID novo a cada retry
-    value: pagamento.value,
-    destinationAlias: pagamento.pixKey,
-    destinationAliasType: pagamento.pixKeyType,
-  });
-}
-
-// CERTO: correlationID estável, gerado e persistido uma vez por pagamento
-function pagarComRetry(pagamento) {
-  // pagamento.correlationID é gerado e salvo no seu banco ao criar o pagamento,
-  // e reusado em todas as tentativas até CONFIRMED/REJECTED
-  return api.post('/api/v1/payment', {
-    correlationID: pagamento.correlationID,
-    value: pagamento.value,
-    destinationAlias: pagamento.pixKey,
-    destinationAliasType: pagamento.pixKeyType,
-  });
-}
-```
+Para pagamentos (Pix Out), o `correlationID` também é a chave de idempotência: reuse o mesmo `correlationID` em retries até o pagamento chegar a um estado terminal. Veja [Idempotência em Pagamentos](../payment/payment-idempotency.md) para os detalhes e exemplos.
 
 ### Por que idempotência é relevante?
 
