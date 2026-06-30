@@ -1,7 +1,7 @@
 ---
 id: payment-idempotency
 sidebar_position: 6
-title: Idempotência em Pagamentos: reuse o correlationID
+title: "Idempotência em Pagamentos: reuse o correlationID"
 tags:
   - payment
   - api
