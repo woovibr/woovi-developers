@@ -1,0 +1,13 @@
+{
+  "label": "Woovi Apps",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Woovi Apps visão geral"
+  },
+  "customProps": {
+    "description": "Woovi Apps documentação"
+  }
+}
