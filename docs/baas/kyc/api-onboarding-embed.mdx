@@ -64,6 +64,10 @@ Antes de incorporar, você precisa ter o `linkOnboarding` em mãos. Caso ainda n
 Para o schema, parâmetros e exemplos interativos do endpoint que gera o `linkOnboarding`, veja a [API Reference](https://developers.woovi.com/api#tag/kyc/POST/api/v1/kyc/onboarding).
 :::
 
+:::tip Experiência white-label (sem a logo da Woovi)
+Para uma integração white-label, você pode ocultar a logo da Woovi no topo do formulário adicionando `?embed=true` à URL de onboarding. Veja [Como ocultar a logo da Woovi no link de onboarding?](./api-onboarding-white-label.mdx).
+:::
+
 ## Opção 1 — Redirecionamento (recomendado)
 
 A forma mais simples e segura de integrar é redirecionar o merchant diretamente para o `linkOnboarding`. O merchant preenche todo o cadastro na página da Woovi e, quando terminar, você pode trazê-lo de volta via um botão no seu sistema ou consultando o status pela API.
