@@ -138,25 +138,12 @@ A resposta traz o `payment` com o **`status`** atual:
 }
 ```
 
-:::note Dados do boleto ainda não retornados nesta rota
-Por enquanto a consulta **não** inclui o objeto `boleto` (código de barras,
-vencimento). Para esses dados, use o payload do webhook
-`OPENPIX:MOVEMENT_CONFIRMED` (Forma 1). Vamos enriquecer esta resposta no futuro.
-:::
-
 Concilie olhando o campo **`payment.status`**:
 
 - **`CONFIRMED`** → boleto pago (estado final, pode conciliar).
 - **`FAILED`** → pagamento falhou (estado final).
 - **`CREATED` / `APPROVED` / `PROCESSING`** → ainda em andamento; consulte
   novamente mais tarde.
-
-:::note Conciliação por transação ainda não disponível
-Esta consulta valida o **pagamento** e o seu **status**. A conciliação por
-**transação** (detalhe da movimentação individual) ainda **não** está disponível
-via API — depende de uma nova rota de transações que será publicada em breve. Por
-enquanto, concilie pelo `payment.status`.
-:::
 
 ---
 
