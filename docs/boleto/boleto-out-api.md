@@ -230,7 +230,8 @@ CREATED ──aprovação──▶ APPROVED ──▶ PROCESSING ──▶ CONFI
 
 Como o pagamento é processado de forma assíncrona, acompanhe o status final pelo
 webhook de movimentação ou consultando
-`GET /api/v1/payment/{correlationID}`.
+`GET /api/v1/payment/{correlationID}`. Veja
+**[Conciliação do pagamento de boleto](/docs/boleto/boleto-out-reconciliation)**.
 
 ---
 
