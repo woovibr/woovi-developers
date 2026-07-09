@@ -1,4 +1,6 @@
 import { themes } from 'prism-react-renderer';
+import mdxMermaid from 'mdx-mermaid';
+
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
 
@@ -105,11 +107,20 @@ module.exports = {
             from: '/docs/getting-started',
             to: '/docs/intro/getting-started',
           },
+          {
+            from: '/docs/pix-automatic/pix-automatic-in-sandbox',
+            to: '/docs/test-environment/pix-automatic-in-sandbox',
+          },
         ],
       },
     ],
   ],
   themeConfig: {
+    mermaid: {
+      options: {
+        securityLevel: 'loose',
+      },
+    },
     navbar: {
       title: 'Woovi Developers',
       logo: {
@@ -196,11 +207,11 @@ module.exports = {
           showLastUpdateTime: true,
           path: './docs',
           sidebarPath: './sidebars.js',
-          editUrl: ({ locale, versionDocsDirPath, docPath }) => {
+          editUrl: ({ versionDocsDirPath, docPath }) => {
             return `https://github.com/Open-Pix/woovi-developers/edit/main/${versionDocsDirPath}/${docPath}`;
           },
           editCurrentVersion: true,
-          remarkPlugins: [require('mdx-mermaid')],
+          remarkPlugins: [mdxMermaid],
         },
         // "blog": {
         //   "path": "blog"

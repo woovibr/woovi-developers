@@ -1,0 +1,13 @@
+{
+  "label": "Recuperação de fundos (MED)",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Recuperação de fundos (MED) visão geral"
+  },
+  "customProps": {
+    "description": "Recuperação de fundos (MED) documentação"
+  }
+}

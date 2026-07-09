@@ -3,6 +3,7 @@ id: validate-bank-data-manual
 title: Como validar Dados bancários Usando agência e conta
 tags:
   - api
+draft: true
 ---
 
 Este documento irá ajudá-lo a validar os dados bancários de um beneficiário (agência e conta) sem precisar de uma chave Pix.

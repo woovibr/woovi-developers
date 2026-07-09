@@ -29,6 +29,8 @@ Ex.:
 
 Ao utilizar nossos webhooks, é necessário garantir que a rota que lida com os webhooks seja idempotente, pois é prática comum reenviar webhooks para garantir que pelo menos um deles chegou e foi processado. No final desse documento, tem exemplos de como você pode fazer essa implementação.
 
+Para pagamentos (Pix Out), o `correlationID` também é a chave de idempotência: reuse o mesmo `correlationID` em retries até o pagamento chegar a um estado terminal. Veja [Idempotência em Pagamentos](../payment/payment-idempotency.md) para os detalhes e exemplos.
+
 ### Por que idempotência é relevante?
 
 Um problema recorrente em sistemas orientados a eventos, é duplicação de eventos, isso pode ocorrer por diversas razões, como falhas de comunicação, invocações paralelas das funções que geram os eventos, etc.

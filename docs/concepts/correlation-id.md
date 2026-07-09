@@ -13,6 +13,8 @@ Ao lidar com a comunicação entre sistemas distribuídos e serviços em uma apl
 
 Um Correlation ID é um identificador exclusivo associado a uma transação ou solicitação específica que percorre todo o ciclo de vida da operação, desde a entrada até a saída do sistema. Isso é essencial para rastrear e correlacionar eventos e logs relacionados a uma determinada transação, facilitando a depuração e o monitoramento de sistemas complexos.
 
+Na plataforma da Woovi, o `correlationID` é também a **chave de idempotência** das nossas APIs: ele garante que uma cobrança ou um pagamento seja criado uma única vez, mesmo que a requisição seja reenviada. Para pagamentos (Pix Out), isso significa **reusar o mesmo `correlationID` em todas as tentativas até o pagamento chegar a um estado terminal** — gerar um ID novo para o mesmo pagamento cria uma duplicata. Veja [Idempotência](./idempotence.md) para os detalhes e exemplos.
+
 ## Formato Recomendado
 
 O formato do Correlation ID deve ser consistente e fácil de gerar, interpretar e comparar. Recomenda-se o uso de uma sequência alfanumérica única, como um UUID (Universally Unique Identifier) ou um GUID (Globally Unique Identifier). Esses formatos geralmente possuem uma estrutura semelhante a:

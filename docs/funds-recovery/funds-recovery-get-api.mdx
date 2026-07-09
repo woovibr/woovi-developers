@@ -1,0 +1,90 @@
+---
+id: funds-recovery-get-api
+sidebar_position: 3
+title: Como consultar uma recuperação de fundos (MED) usando a API?
+tags:
+  - funds-recovery
+  - med
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Para consultar uma recuperação de fundos (MED) usando a API, você deverá fazer uma chamada GET para o _endpoint_ `/api/v1/funds-recovery/{id}`, usando como `{id}` o `dictId` retornado na [criação](./funds-recovery-create-api.mdx) **ou** o `endToEndId` da transação Pix que originou a recuperação.
+
+Use este endpoint para acompanhar o andamento da recuperação de fundos através do campo `status` — veja o [ciclo de vida](./funds-recovery.md#ciclo-de-vida) completo.
+
+## Exemplo
+
+Se tudo ocorreu bem, o _status code_ da requisição será `200` e no `body` da resposta retornaremos a recuperação de fundos:
+
+```json
+{
+  "rootTransactionId": "E31680151202606101530AbCdEf12345",
+  "situationType": "SCAM",
+  "reportDetails": "Pagamento realizado para um falso vendedor. Após o pagamento, o vendedor parou de responder e não entregou o produto.",
+  "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+  "status": "AWAITING_ANALYSIS",
+  "direction": "SENT",
+  "reporterParticipant": "31680151",
+  "creationTime": "2026-06-11T00:30:00.000Z",
+  "lastModified": "2026-06-11T00:35:00.000Z",
+  "events": [
+    {
+      "id": "f3a1c9d2-8b47-4e6a-9c21-5d7e0a4b8f13",
+      "event": "AWAITING_ANALYSIS",
+      "timestamp": "2026-06-11T00:35:00.000Z"
+    }
+  ],
+  "createdAt": "2026-06-11T00:30:00.000Z",
+  "updatedAt": "2026-06-11T00:35:00.000Z"
+}
+```
+
+O campo `events` traz o histórico de eventos da recuperação de fundos, em ordem cronológica.
+
+## Possíveis erros
+
+| Status | Motivo                                                                                |
+| ------ | -------------------------------------------------------------------------------------- |
+| `401`  | `AppID` inválido ou ausente                                                             |
+| `403`  | Sua conta não possui a funcionalidade MED API ou o AppID não possui o escopo necessário |
+| `404`  | Recuperação de fundos não encontrada para a sua conta                                   |
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request GET \
+    --url https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568 \
+    --header 'Authorization: AUTHORIZATION'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch(
+  'https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568',
+  {
+    method: 'GET',
+    headers: {
+      Authorization: 'AUTHORIZATION',
+    },
+  },
+).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+O mesmo _endpoint_ aceita o `endToEndId` da transação no lugar do `dictId`, retornando a mesma recuperação de fundos:
+
+```sh
+curl --request GET \
+    --url https://api.woovi.com/api/v1/funds-recovery/E31680151202606101530AbCdEf12345 \
+    --header 'Authorization: AUTHORIZATION'
+```
