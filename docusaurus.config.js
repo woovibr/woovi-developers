@@ -1,4 +1,6 @@
 import { themes } from 'prism-react-renderer';
+import mdxMermaid from 'mdx-mermaid';
+
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
 
@@ -205,11 +207,11 @@ module.exports = {
           showLastUpdateTime: true,
           path: './docs',
           sidebarPath: './sidebars.js',
-          editUrl: ({ locale, versionDocsDirPath, docPath }) => {
+          editUrl: ({ versionDocsDirPath, docPath }) => {
             return `https://github.com/Open-Pix/woovi-developers/edit/main/${versionDocsDirPath}/${docPath}`;
           },
           editCurrentVersion: true,
-          remarkPlugins: [require('mdx-mermaid')],
+          remarkPlugins: [mdxMermaid],
         },
         // "blog": {
         //   "path": "blog"

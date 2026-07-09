@@ -22,2059 +22,2059 @@ type ApiEndpoint = {
 
 const endpoints: ApiEndpoint[] = [
   {
-    "id": "get-api-v1-account-accountid",
-    "method": "GET",
-    "path": "/api/v1/account/{accountId}",
-    "tag": "account",
-    "category": "Conta",
-    "summary": "Get an Account",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
+    'id': 'get-api-v1-account-accountid',
+    'method': 'GET',
+    'path': '/api/v1/account/{accountId}',
+    'tag': 'account',
+    'category': 'Conta',
+    'summary': 'Get an Account',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "default",
-        "value": {
-          "account": {
-            "accountId": "6290ccfd42831958a405debc",
-            "isDefault": true,
-            "balance": {
-              "total": 129430,
-              "blocked": 0,
-              "available": 129430,
-              "blockedBySecurity": 0,
-              "blockedByWithdrawSafety": 0
+        'name': 'default',
+        'value': {
+          'account': {
+            'accountId': '6290ccfd42831958a405debc',
+            'isDefault': true,
+            'balance': {
+              'total': 129430,
+              'blocked': 0,
+              'available': 129430,
+              'blockedBySecurity': 0,
+              'blockedByWithdrawSafety': 0,
             },
-            "taxId": "12345678901",
-            "officialName": "Company Name LLC",
-            "tradeName": "Company Trade Name",
-            "branch": "0001",
-            "account": "123456",
-            "accountName": "Main Account"
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "delete-api-v1-account-accountid",
-    "method": "DELETE",
-    "path": "/api/v1/account/{accountId}",
-    "tag": "account",
-    "category": "Conta",
-    "summary": "Close an Account",
-    "description": "Closes an Account.\n\nNotes:\n- Accounts with balance cannot be closed.\n",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "status": "OK",
-          "accountId": "6290ccfd42831958a405debc"
-        }
-      }
-    ]
-  },
-  {
-    "id": "get-api-v1-account",
-    "method": "GET",
-    "path": "/api/v1/account/",
-    "tag": "account",
-    "category": "Conta",
-    "summary": "Get a list of Accounts",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "pageInfo": {
-            "skip": 0,
-            "limit": 10,
-            "hasPreviousPage": false,
-            "hasNextPage": true
+            'taxId': '12345678901',
+            'officialName': 'Company Name LLC',
+            'tradeName': 'Company Trade Name',
+            'branch': '0001',
+            'account': '123456',
+            'accountName': 'Main Account',
           },
-          "accounts": [
-            {
-              "accountId": "6290ccfd42831958a405debc",
-              "isDefault": true,
-              "balance": {
-                "total": 129430,
-                "blocked": 0,
-                "available": 129430
-              }
-            },
-            {
-              "accountId": "6286b467a7910113577e00ce",
-              "isDefault": false,
-              "balance": {
-                "total": 130,
-                "blocked": 100,
-                "available": 30
-              }
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-account",
-    "method": "POST",
-    "path": "/api/v1/account",
-    "tag": "account",
-    "category": "Conta",
-    "summary": "Duplicates the Account",
-    "description": "Duplicates the account associated with the authorization appId. Requires the bank account feature to be enabled.",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "account": {
-            "accountId": "6290ccfd42831958a405debc",
-            "isDefault": true,
-            "balance": {
-              "total": 129430,
-              "blocked": 0,
-              "available": 129430
-            }
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-account-accountid-withdraw",
-    "method": "POST",
-    "path": "/api/v1/account/{accountId}/withdraw",
-    "tag": "account",
-    "category": "Conta",
-    "summary": "Withdraw from an Account",
-    "description": "An additional fee may be charged depending on the minimum free withdrawal amount. See more about at https://developers.openpix.com.br/docs/FAQ/faq-virtual-account/#onde-posso-consultar-as-taxas-da-minha-conta-virtual",
-    "requestExamples": [
-      {
-        "name": "default",
-        "value": {
-          "value": 7000
-        }
-      }
-    ],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "withdraw": {
-            "account": {
-              "accountId": "6290ccfd42831958a405debc",
-              "isDefault": true,
-              "balance": {
-                "total": 122430,
-                "blocked": 0,
-                "available": 122430
-              }
-            },
-            "transaction": {
-              "endToEndId": "E23114447202205191817cx6VMrbwtw6",
-              "transaction": 7000
-            }
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-application",
-    "method": "POST",
-    "path": "/api/v1/application",
-    "tag": "application",
-    "category": "Aplicação",
-    "summary": "Create a new application",
-    "description": "Creates a new application for a company.\nIf the company has the APPLICATION_SCOPES_REQUIRED feature enabled, the scopes field is required.\n",
-    "requestExamples": [
-      {
-        "name": "Application",
-        "value": {
-          "accountId": "507f1f77bcf86cd799439011",
-          "application": {
-            "name": "Test API",
-            "type": "API"
-          }
-        }
-      },
-      {
-        "name": "ApplicationWithScopes",
-        "value": {
-          "accountId": "507f1f77bcf86cd799439011",
-          "application": {
-            "name": "Test API with Scopes",
-            "type": "API",
-            "scopes": [
-              "CHARGE_POST",
-              "CHARGE_GET"
-            ]
-          }
-        }
-      }
-    ],
-    "responseExamples": [
-      {
-        "name": "ApplicationWithScopes",
-        "value": {
-          "application": {
-            "name": "Test API with Scopes",
-            "isActive": true,
-            "type": "API",
-            "clientId": "client_123abc",
-            "clientSecret": "secret_456def",
-            "appID": "app_789ghi",
-            "scopes": [
-              "CHARGE_POST",
-              "CHARGE_GET"
-            ]
-          }
         },
-        "summary": "Application with scopes (recommended)"
       },
+    ],
+  },
+  {
+    'id': 'delete-api-v1-account-accountid',
+    'method': 'DELETE',
+    'path': '/api/v1/account/{accountId}',
+    'tag': 'account',
+    'category': 'Conta',
+    'summary': 'Close an Account',
+    'description': 'Closes an Account.\n\nNotes:\n- Accounts with balance cannot be closed.\n',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "ApplicationWithoutScopes",
-        "value": {
-          "application": {
-            "name": "Test API",
-            "isActive": true,
-            "type": "API",
-            "clientId": "client_123abc",
-            "clientSecret": "secret_456def",
-            "appID": "app_789ghi"
-          }
+        'name': 'default',
+        'value': {
+          'status': 'OK',
+          'accountId': '6290ccfd42831958a405debc',
         },
-        "summary": "Application without scopes (legacy)"
-      }
-    ]
-  },
-  {
-    "id": "delete-api-v1-application",
-    "method": "DELETE",
-    "path": "/api/v1/application",
-    "tag": "application",
-    "category": "Aplicação",
-    "summary": "Delete an application",
-    "description": "Deactivates an application by setting isActive to false and adding a removedAt timestamp",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "success": true
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-cashback-fidelity",
-    "method": "POST",
-    "path": "/api/v1/cashback-fidelity",
-    "tag": "cashback-fidelity",
-    "category": "Cashback Fidelity",
-    "summary": "Get or create cashback for a customer.",
-    "description": "Create a new cashback exclusive for the customer with a given taxID. If the customer already has a pending excluisve cashback, this endpoint will return it instead.",
-    "requestExamples": [
-      {
-        "name": "default",
-        "value": {
-          "value": 100,
-          "taxID": 11111111111
-        }
-      }
+      },
     ],
-    "responseExamples": []
   },
   {
-    "id": "patch-api-v1-charge-id",
-    "method": "PATCH",
-    "path": "/api/v1/charge/{id}",
-    "tag": "charge",
-    "category": "Cobrança",
-    "summary": "Edit expiration date of a charge",
-    "description": "",
-    "requestExamples": [
+    'id': 'get-api-v1-account',
+    'method': 'GET',
+    'path': '/api/v1/account/',
+    'tag': 'account',
+    'category': 'Conta',
+    'summary': 'Get a list of Accounts',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "default",
-        "value": {
-          "expiresDate": "2021-04-01T17:28:51.882Z"
-        }
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "post-api-v1-charge",
-    "method": "POST",
-    "path": "/api/v1/charge",
-    "tag": "charge",
-    "category": "Cobrança",
-    "summary": "Create a new Charge",
-    "description": "Endpoint to create a new Charge for a customer",
-    "requestExamples": [
-      {
-        "name": "Charge",
-        "value": {
-          "correlationID": "9134e286-6f71-427a-bf00-241681624587",
-          "value": 100,
-          "comment": "good",
-          "customer": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "email": "email0@example.com",
-            "phone": "5511999999999"
+        'name': 'default',
+        'value': {
+          'pageInfo': {
+            'skip': 0,
+            'limit': 10,
+            'hasPreviousPage': false,
+            'hasNextPage': true,
           },
-          "additionalInfo": [
+          'accounts': [
             {
-              "key": "Product",
-              "value": "Pencil"
+              'accountId': '6290ccfd42831958a405debc',
+              'isDefault': true,
+              'balance': {
+                'total': 129430,
+                'blocked': 0,
+                'available': 129430,
+              },
             },
             {
-              "key": "Invoice",
-              "value": "18476"
+              'accountId': '6286b467a7910113577e00ce',
+              'isDefault': false,
+              'balance': {
+                'total': 130,
+                'blocked': 100,
+                'available': 30,
+              },
             },
-            {
-              "key": "Order",
-              "value": "302"
-            }
-          ]
-        }
+          ],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-account',
+    'method': 'POST',
+    'path': '/api/v1/account',
+    'tag': 'account',
+    'category': 'Conta',
+    'summary': 'Duplicates the Account',
+    'description': 'Duplicates the account associated with the authorization appId. Requires the bank account feature to be enabled.',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'account': {
+            'accountId': '6290ccfd42831958a405debc',
+            'isDefault': true,
+            'balance': {
+              'total': 129430,
+              'blocked': 0,
+              'available': 129430,
+            },
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-account-accountid-withdraw',
+    'method': 'POST',
+    'path': '/api/v1/account/{accountId}/withdraw',
+    'tag': 'account',
+    'category': 'Conta',
+    'summary': 'Withdraw from an Account',
+    'description': 'An additional fee may be charged depending on the minimum free withdrawal amount. See more about at https://developers.openpix.com.br/docs/FAQ/faq-virtual-account/#onde-posso-consultar-as-taxas-da-minha-conta-virtual',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'value': 7000,
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'withdraw': {
+            'account': {
+              'accountId': '6290ccfd42831958a405debc',
+              'isDefault': true,
+              'balance': {
+                'total': 122430,
+                'blocked': 0,
+                'available': 122430,
+              },
+            },
+            'transaction': {
+              'endToEndId': 'E23114447202205191817cx6VMrbwtw6',
+              'transaction': 7000,
+            },
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-application',
+    'method': 'POST',
+    'path': '/api/v1/application',
+    'tag': 'application',
+    'category': 'Aplicação',
+    'summary': 'Create a new application',
+    'description': 'Creates a new application for a company.\nIf the company has the APPLICATION_SCOPES_REQUIRED feature enabled, the scopes field is required.\n',
+    'requestExamples': [
+      {
+        'name': 'Application',
+        'value': {
+          'accountId': '507f1f77bcf86cd799439011',
+          'application': {
+            'name': 'Test API',
+            'type': 'API',
+          },
+        },
       },
       {
-        "name": "Charge with Interests and Fines",
-        "value": {
-          "type": "OVERDUE",
-          "correlationID": "9134e286-6f71-427a-bf00-241681624587",
-          "value": 100,
-          "comment": "good",
-          "daysForDueDate": 5,
-          "daysAfterDueDate": 5,
-          "interests": {
-            "value": 10,
-            "type": "PERCENTAGE"
+        'name': 'ApplicationWithScopes',
+        'value': {
+          'accountId': '507f1f77bcf86cd799439011',
+          'application': {
+            'name': 'Test API with Scopes',
+            'type': 'API',
+            'scopes': [
+              'CHARGE_POST',
+              'CHARGE_GET',
+            ],
           },
-          "fines": {
-            "value": 20,
-            "type": "FIXED"
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'ApplicationWithScopes',
+        'value': {
+          'application': {
+            'name': 'Test API with Scopes',
+            'isActive': true,
+            'type': 'API',
+            'clientId': 'client_123abc',
+            'clientSecret': 'secret_456def',
+            'appID': 'app_789ghi',
+            'scopes': [
+              'CHARGE_POST',
+              'CHARGE_GET',
+            ],
           },
-          "customer": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "email": "email0@example.com",
-            "phone": "5511999999999",
-            "address": {
-              "zipcode": "30421322",
-              "street": "Street",
-              "number": "100",
-              "neighborhood": "Neighborhood",
-              "city": "Belo Horizonte",
-              "state": "MG",
-              "complement": "APTO",
-              "country": "BR"
-            }
-          },
-          "additionalInfo": [
-            {
-              "key": "Product",
-              "value": "Pencil"
-            },
-            {
-              "key": "Invoice",
-              "value": "18476"
-            },
-            {
-              "key": "Order",
-              "value": "302"
-            }
-          ]
-        }
+        },
+        'summary': 'Application with scopes (recommended)',
       },
       {
-        "name": "Charge with Discount (fixed-date modality)",
-        "value": {
-          "type": "OVERDUE",
-          "correlationID": "9134e286-6f71-427a-bf00-241681624587",
-          "value": 1600,
-          "comment": "good",
-          "daysForDueDate": 10,
-          "daysAfterDueDate": 5,
-          "customer": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "email": "email0@example.com",
-            "phone": "5511999999999"
+        'name': 'ApplicationWithoutScopes',
+        'value': {
+          'application': {
+            'name': 'Test API',
+            'isActive': true,
+            'type': 'API',
+            'clientId': 'client_123abc',
+            'clientSecret': 'secret_456def',
+            'appID': 'app_789ghi',
           },
-          "discountSettings": {
-            "modality": "FIXED_VALUE_UNTIL_SPECIFIED_DATE",
-            "discountFixedDate": [
+        },
+        'summary': 'Application without scopes (legacy)',
+      },
+    ],
+  },
+  {
+    'id': 'delete-api-v1-application',
+    'method': 'DELETE',
+    'path': '/api/v1/application',
+    'tag': 'application',
+    'category': 'Aplicação',
+    'summary': 'Delete an application',
+    'description': 'Deactivates an application by setting isActive to false and adding a removedAt timestamp',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'success': true,
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-cashback-fidelity',
+    'method': 'POST',
+    'path': '/api/v1/cashback-fidelity',
+    'tag': 'cashback-fidelity',
+    'category': 'Cashback Fidelity',
+    'summary': 'Get or create cashback for a customer.',
+    'description': 'Create a new cashback exclusive for the customer with a given taxID. If the customer already has a pending excluisve cashback, this endpoint will return it instead.',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'value': 100,
+          'taxID': 11111111111,
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'patch-api-v1-charge-id',
+    'method': 'PATCH',
+    'path': '/api/v1/charge/{id}',
+    'tag': 'charge',
+    'category': 'Cobrança',
+    'summary': 'Edit expiration date of a charge',
+    'description': '',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'expiresDate': '2021-04-01T17:28:51.882Z',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-charge',
+    'method': 'POST',
+    'path': '/api/v1/charge',
+    'tag': 'charge',
+    'category': 'Cobrança',
+    'summary': 'Create a new Charge',
+    'description': 'Endpoint to create a new Charge for a customer',
+    'requestExamples': [
+      {
+        'name': 'Charge',
+        'value': {
+          'correlationID': '9134e286-6f71-427a-bf00-241681624587',
+          'value': 100,
+          'comment': 'good',
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+          },
+          'additionalInfo': [
+            {
+              'key': 'Product',
+              'value': 'Pencil',
+            },
+            {
+              'key': 'Invoice',
+              'value': '18476',
+            },
+            {
+              'key': 'Order',
+              'value': '302',
+            },
+          ],
+        },
+      },
+      {
+        'name': 'Charge with Interests and Fines',
+        'value': {
+          'type': 'OVERDUE',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624587',
+          'value': 100,
+          'comment': 'good',
+          'daysForDueDate': 5,
+          'daysAfterDueDate': 5,
+          'interests': {
+            'value': 10,
+            'type': 'PERCENTAGE',
+          },
+          'fines': {
+            'value': 20,
+            'type': 'FIXED',
+          },
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+            'address': {
+              'zipcode': '30421322',
+              'street': 'Street',
+              'number': '100',
+              'neighborhood': 'Neighborhood',
+              'city': 'Belo Horizonte',
+              'state': 'MG',
+              'complement': 'APTO',
+              'country': 'BR',
+            },
+          },
+          'additionalInfo': [
+            {
+              'key': 'Product',
+              'value': 'Pencil',
+            },
+            {
+              'key': 'Invoice',
+              'value': '18476',
+            },
+            {
+              'key': 'Order',
+              'value': '302',
+            },
+          ],
+        },
+      },
+      {
+        'name': 'Charge with Discount (fixed-date modality)',
+        'value': {
+          'type': 'OVERDUE',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624587',
+          'value': 1600,
+          'comment': 'good',
+          'daysForDueDate': 10,
+          'daysAfterDueDate': 5,
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+          },
+          'discountSettings': {
+            'modality': 'FIXED_VALUE_UNTIL_SPECIFIED_DATE',
+            'discountFixedDate': [
               {
-                "daysActive": 5,
-                "value": 100
+                'daysActive': 5,
+                'value': 100,
               },
               {
-                "daysActive": 8,
-                "value": 50
-              }
-            ]
-          }
-        }
+                'daysActive': 8,
+                'value': 50,
+              },
+            ],
+          },
+        },
       },
       {
-        "name": "Charge with Discount (percentage fixed-date modality)",
-        "value": {
-          "type": "OVERDUE",
-          "correlationID": "9134e286-6f71-427a-bf00-241681624588",
-          "value": 10000,
-          "comment": "5% off if paid in 5 days, 2% off if paid in 10 days",
-          "daysForDueDate": 30,
-          "daysAfterDueDate": 15,
-          "customer": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "email": "email0@example.com",
-            "phone": "5511999999999"
+        'name': 'Charge with Discount (percentage fixed-date modality)',
+        'value': {
+          'type': 'OVERDUE',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624588',
+          'value': 10000,
+          'comment': '5% off if paid in 5 days, 2% off if paid in 10 days',
+          'daysForDueDate': 30,
+          'daysAfterDueDate': 15,
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
           },
-          "discountSettings": {
-            "modality": "PERCENTAGE_UNTIL_SPECIFIED_DATE",
-            "discountFixedDate": [
+          'discountSettings': {
+            'modality': 'PERCENTAGE_UNTIL_SPECIFIED_DATE',
+            'discountFixedDate': [
               {
-                "daysActive": 5,
-                "value": 500
+                'daysActive': 5,
+                'value': 500,
               },
               {
-                "daysActive": 10,
-                "value": 200
-              }
-            ]
-          }
-        }
+                'daysActive': 10,
+                'value': 200,
+              },
+            ],
+          },
+        },
       },
       {
-        "name": "Charge with Discount (advance-day modality)",
-        "value": {
-          "type": "OVERDUE",
-          "correlationID": "9134e286-6f71-427a-bf00-241681624589",
-          "value": 10000,
-          "comment": "0.10% off per running day until due",
-          "daysForDueDate": 10,
-          "daysAfterDueDate": 5,
-          "customer": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "email": "email0@example.com",
-            "phone": "5511999999999"
+        'name': 'Charge with Discount (advance-day modality)',
+        'value': {
+          'type': 'OVERDUE',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624589',
+          'value': 10000,
+          'comment': '0.10% off per running day until due',
+          'daysForDueDate': 10,
+          'daysAfterDueDate': 5,
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
           },
-          "discountSettings": {
-            "modality": "PERCENTAGE_PER_RUNNING_DAY_ADVANCE",
-            "value": 10
+          'discountSettings': {
+            'modality': 'PERCENTAGE_PER_RUNNING_DAY_ADVANCE',
+            'value': 10,
           },
-          "interests": {
-            "value": 100
+          'interests': {
+            'value': 100,
           },
-          "fines": {
-            "value": 200,
-            "type": "PERCENTAGE"
-          }
-        }
+          'fines': {
+            'value': 200,
+            'type': 'PERCENTAGE',
+          },
+        },
       },
       {
-        "name": "Charge with Split Internal Transfer",
-        "value": {
-          "correlationID": "9134e286-6f71-427a-bf00-241681624587",
-          "value": 100,
-          "comment": "good",
-          "customer": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "email": "email0@example.com",
-            "phone": "5511999999999",
-            "address": {
-              "zipcode": "30421322",
-              "street": "Street",
-              "number": "100",
-              "neighborhood": "Neighborhood",
-              "city": "Belo Horizonte",
-              "state": "MG",
-              "complement": "APTO",
-              "country": "BR"
-            }
+        'name': 'Charge with Split Internal Transfer',
+        'value': {
+          'correlationID': '9134e286-6f71-427a-bf00-241681624587',
+          'value': 100,
+          'comment': 'good',
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+            'address': {
+              'zipcode': '30421322',
+              'street': 'Street',
+              'number': '100',
+              'neighborhood': 'Neighborhood',
+              'city': 'Belo Horizonte',
+              'state': 'MG',
+              'complement': 'APTO',
+              'country': 'BR',
+            },
           },
-          "additionalInfo": [
+          'additionalInfo': [
             {
-              "key": "Product",
-              "value": "Pencil"
+              'key': 'Product',
+              'value': 'Pencil',
             },
             {
-              "key": "Invoice",
-              "value": "18476"
+              'key': 'Invoice',
+              'value': '18476',
             },
             {
-              "key": "Order",
-              "value": "302"
-            }
+              'key': 'Order',
+              'value': '302',
+            },
           ],
-          "splits": [
+          'splits': [
             {
-              "value": 10,
-              "pixKey": "676bd1f8-93cb-4354-b094-5587179d56ad"
-            }
-          ]
-        }
+              'value': 10,
+              'pixKey': '676bd1f8-93cb-4354-b094-5587179d56ad',
+            },
+          ],
+        },
       },
       {
-        "name": "Charge with Split Subaccounts",
-        "value": {
-          "correlationID": "9134e286-6f71-427a-bf00-241681624587",
-          "value": 100,
-          "comment": "good",
-          "customer": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "email": "email0@example.com",
-            "phone": "5511999999999",
-            "address": {
-              "zipcode": "30421322",
-              "street": "Street",
-              "number": "100",
-              "neighborhood": "Neighborhood",
-              "city": "Belo Horizonte",
-              "state": "MG",
-              "complement": "APTO",
-              "country": "BR"
-            }
+        'name': 'Charge with Split Subaccounts',
+        'value': {
+          'correlationID': '9134e286-6f71-427a-bf00-241681624587',
+          'value': 100,
+          'comment': 'good',
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+            'address': {
+              'zipcode': '30421322',
+              'street': 'Street',
+              'number': '100',
+              'neighborhood': 'Neighborhood',
+              'city': 'Belo Horizonte',
+              'state': 'MG',
+              'complement': 'APTO',
+              'country': 'BR',
+            },
           },
-          "additionalInfo": [
+          'additionalInfo': [
             {
-              "key": "Product",
-              "value": "Pencil"
+              'key': 'Product',
+              'value': 'Pencil',
             },
             {
-              "key": "Invoice",
-              "value": "18476"
+              'key': 'Invoice',
+              'value': '18476',
             },
             {
-              "key": "Order",
-              "value": "302"
-            }
+              'key': 'Order',
+              'value': '302',
+            },
           ],
-          "splits": [
+          'splits': [
             {
-              "value": 10,
-              "pixKey": "676bd1f8-93cb-4354-b094-5587179d56ad",
-              "splitType": "SPLIT_SUB_ACCOUNT"
-            }
-          ]
-        }
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "post-api-v1-charge-id-refund",
-    "method": "POST",
-    "path": "/api/v1/charge/{id}/refund",
-    "tag": "charge refund",
-    "category": "Cobrança / Reembolso",
-    "summary": "Create a new refund for a charge",
-    "description": "Endpoint to create a new refund for a charge",
-    "requestExamples": [
-      {
-        "name": "default",
-        "value": {
-          "correlationID": "a273e72c-9547-4c75-a213-3b0a2735b8d5",
-          "value": 100,
-          "comment": "Comentário do reembolso"
-        }
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "get-api-v1-company",
-    "method": "GET",
-    "path": "/api/v1/company",
-    "tag": "company",
-    "category": "Empresa",
-    "summary": "Get a Company",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "company": {
-            "officialName": "Company Official Name",
-            "tradeName": "Company Trade Name",
-            "taxID": "12345678901234",
-            "correlationID": "corr-123456"
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-customer",
-    "method": "POST",
-    "path": "/api/v1/customer",
-    "tag": "customer",
-    "category": "Cliente",
-    "summary": "Create a new Customer",
-    "description": "Endpoint to create a new Customer",
-    "requestExamples": [
-      {
-        "name": "default",
-        "value": {
-          "name": "Dan",
-          "taxID": "31324227036",
-          "email": "email0@example.com",
-          "phone": "5511999999999",
-          "correlationID": "9134e286-6f71-427a-bf00-241681624586",
-          "address": {
-            "zipcode": "30421322",
-            "street": "Street",
-            "number": "100",
-            "neighborhood": "Neighborhood",
-            "city": "Belo Horizonte",
-            "state": "MG",
-            "complement": "APTO",
-            "country": "BR"
-          }
-        }
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "patch-api-v1-customer-correlationid",
-    "method": "PATCH",
-    "path": "/api/v1/customer/{correlationID}",
-    "tag": "customer",
-    "category": "Cliente",
-    "summary": "Update a Customer",
-    "description": "Endpoint to update a Customer",
-    "requestExamples": [
-      {
-        "name": "default",
-        "value": {
-          "name": "Dan",
-          "email": "email0@example.com",
-          "phone": "5511999999999",
-          "address": {
-            "zipcode": "30421322",
-            "street": "Street",
-            "number": "100",
-            "neighborhood": "Neighborhood",
-            "city": "Belo Horizonte",
-            "state": "MG",
-            "complement": "APTO",
-            "country": "BR"
-          }
-        }
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "post-api-v1-decode-emv",
-    "method": "POST",
-    "path": "/api/v1/decode/emv",
-    "tag": "decode",
-    "category": "Decode",
-    "summary": "Parse EMV (PIX) QR code and optionally resolve COB/REC locations",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "parsedWithRecLocation",
-        "value": {
-          "emv": {
-            "payloadFormatIndicator": "01",
-            "merchantAccountInformationPix": {
-              "gui": "br.gov.bcb.pix",
-              "pixKey": "f4c6089a-bfde-4c00-a2d9-9eaa584b0219",
-              "additionalInformation": "CobrancaEstatica"
+              'value': 10,
+              'pixKey': '676bd1f8-93cb-4354-b094-5587179d56ad',
+              'splitType': 'SPLIT_SUB_ACCOUNT',
             },
-            "merchantCategoryCode": "0000",
-            "transactionCurrency": "986",
-            "transactionAmount": "546.28",
-            "countryCode": "BR",
-            "merchantName": "Pix",
-            "merchantCity": "BRASILIA",
-            "additionalDataFieldTemplate": {
-              "referenceLabel": "84767c56c2ab4e65b6670de2a"
-            },
-            "unreservedTemplates": {
-              "gui": "br.gov.bcb.pix",
-              "url": "qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf0788691"
-            },
-            "crc": "4486"
+          ],
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-charge-id-refund',
+    'method': 'POST',
+    'path': '/api/v1/charge/{id}/refund',
+    'tag': 'charge refund',
+    'category': 'Cobrança / Reembolso',
+    'summary': 'Create a new refund for a charge',
+    'description': 'Endpoint to create a new refund for a charge',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'a273e72c-9547-4c75-a213-3b0a2735b8d5',
+          'value': 100,
+          'comment': 'Comentário do reembolso',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-company',
+    'method': 'GET',
+    'path': '/api/v1/company',
+    'tag': 'company',
+    'category': 'Empresa',
+    'summary': 'Get a Company',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'company': {
+            'officialName': 'Company Official Name',
+            'tradeName': 'Company Trade Name',
+            'taxID': '12345678901234',
+            'correlationID': 'corr-123456',
           },
-          "cobLocation": null,
-          "recLocation": {
-            "isValid": true,
-            "locationErrors": [],
-            "payload": {
-              "updates": [
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-customer',
+    'method': 'POST',
+    'path': '/api/v1/customer',
+    'tag': 'customer',
+    'category': 'Cliente',
+    'summary': 'Create a new Customer',
+    'description': 'Endpoint to create a new Customer',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'name': 'Dan',
+          'taxID': '31324227036',
+          'email': 'email0@example.com',
+          'phone': '5511999999999',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+          'address': {
+            'zipcode': '30421322',
+            'street': 'Street',
+            'number': '100',
+            'neighborhood': 'Neighborhood',
+            'city': 'Belo Horizonte',
+            'state': 'MG',
+            'complement': 'APTO',
+            'country': 'BR',
+          },
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'patch-api-v1-customer-correlationid',
+    'method': 'PATCH',
+    'path': '/api/v1/customer/{correlationID}',
+    'tag': 'customer',
+    'category': 'Cliente',
+    'summary': 'Update a Customer',
+    'description': 'Endpoint to update a Customer',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'name': 'Dan',
+          'email': 'email0@example.com',
+          'phone': '5511999999999',
+          'address': {
+            'zipcode': '30421322',
+            'street': 'Street',
+            'number': '100',
+            'neighborhood': 'Neighborhood',
+            'city': 'Belo Horizonte',
+            'state': 'MG',
+            'complement': 'APTO',
+            'country': 'BR',
+          },
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-decode-emv',
+    'method': 'POST',
+    'path': '/api/v1/decode/emv',
+    'tag': 'decode',
+    'category': 'Decode',
+    'summary': 'Parse EMV (PIX) QR code and optionally resolve COB/REC locations',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'parsedWithRecLocation',
+        'value': {
+          'emv': {
+            'payloadFormatIndicator': '01',
+            'merchantAccountInformationPix': {
+              'gui': 'br.gov.bcb.pix',
+              'pixKey': 'f4c6089a-bfde-4c00-a2d9-9eaa584b0219',
+              'additionalInformation': 'CobrancaEstatica',
+            },
+            'merchantCategoryCode': '0000',
+            'transactionCurrency': '986',
+            'transactionAmount': '546.28',
+            'countryCode': 'BR',
+            'merchantName': 'Pix',
+            'merchantCity': 'BRASILIA',
+            'additionalDataFieldTemplate': {
+              'referenceLabel': '84767c56c2ab4e65b6670de2a',
+            },
+            'unreservedTemplates': {
+              'gui': 'br.gov.bcb.pix',
+              'url': 'qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf0788691',
+            },
+            'crc': '4486',
+          },
+          'cobLocation': null,
+          'recLocation': {
+            'isValid': true,
+            'locationErrors': [],
+            'payload': {
+              'updates': [
                 {
-                  "date": "2025-10-24T18:42:58Z",
-                  "status": "CRIADA"
-                }
+                  'date': '2025-10-24T18:42:58Z',
+                  'status': 'CRIADA',
+                },
               ],
-              "calendar": {
-                "startDate": "2025-10-24",
-                "periodicity": "SEMANAL"
+              'calendar': {
+                'startDate': '2025-10-24',
+                'periodicity': 'SEMANAL',
               },
-              "idRec": "RN5481141720251024BnwNHejs9h9",
-              "retryPolicy": "NAO_PERMITE",
-              "receiver": {
-                "cnpj": "44720743000101",
-                "participantIspb": "54811417",
-                "name": "Woovi Demo"
+              'idRec': 'RN5481141720251024BnwNHejs9h9',
+              'retryPolicy': 'NAO_PERMITE',
+              'receiver': {
+                'cnpj': '44720743000101',
+                'participantIspb': '54811417',
+                'name': 'Woovi Demo',
               },
-              "value": {
-                "valueRec": "0.01"
+              'value': {
+                'valueRec': '0.01',
               },
-              "link": {
-                "contract": "Woovi Demo - Pix Automático",
-                "debtor": {
-                  "cpf": "15775023706",
-                  "name": "Pedro Cliente"
-                }
-              }
+              'link': {
+                'contract': 'Woovi Demo - Pix Automático',
+                'debtor': {
+                  'cpf': '15775023706',
+                  'name': 'Pedro Cliente',
+                },
+              },
             },
-            "url": "qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf0788691"
-          }
+            'url': 'qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/4b62d4a088fe4f51bcb4c64cf0788691',
+          },
         },
-        "summary": "EMV parsed and REC location resolved"
+        'summary': 'EMV parsed and REC location resolved',
       },
       {
-        "name": "parsedWithCobLocation",
-        "value": {
-          "emv": {
-            "payloadFormatIndicator": "01",
-            "pointOfInitiationMethod": "12",
-            "merchantAccountInformationPix": {
-              "gui": "br.gov.bcb.pix",
-              "url": "qr-h.woovi.digital/qr/v2/cob/fb274322-221c-43d4-b58b-fab36d87c75c"
+        'name': 'parsedWithCobLocation',
+        'value': {
+          'emv': {
+            'payloadFormatIndicator': '01',
+            'pointOfInitiationMethod': '12',
+            'merchantAccountInformationPix': {
+              'gui': 'br.gov.bcb.pix',
+              'url': 'qr-h.woovi.digital/qr/v2/cob/fb274322-221c-43d4-b58b-fab36d87c75c',
             },
-            "merchantCategoryCode": "0000",
-            "transactionCurrency": "986",
-            "transactionAmount": "10.00",
-            "countryCode": "BR",
-            "merchantName": "sibeliusip",
-            "merchantCity": "Sao_Paulo",
-            "additionalDataFieldTemplate": {
-              "referenceLabel": "fb274322-221c-43d4-b58b-f"
+            'merchantCategoryCode': '0000',
+            'transactionCurrency': '986',
+            'transactionAmount': '10.00',
+            'countryCode': 'BR',
+            'merchantName': 'sibeliusip',
+            'merchantCity': 'Sao_Paulo',
+            'additionalDataFieldTemplate': {
+              'referenceLabel': 'fb274322-221c-43d4-b58b-f',
             },
-            "crc": "0C98"
+            'crc': '0C98',
           },
-          "cobLocation": {
-            "isValid": true,
-            "locationErrors": [],
-            "payload": {
-              "calendar": {
-                "presentation": "2025-02-25T13:27:54.168Z",
-                "expiration": 86400,
-                "creation": "2025-02-12T16:59:22.939Z"
+          'cobLocation': {
+            'isValid': true,
+            'locationErrors': [],
+            'payload': {
+              'calendar': {
+                'presentation': '2025-02-25T13:27:54.168Z',
+                'expiration': 86400,
+                'creation': '2025-02-12T16:59:22.939Z',
               },
-              "key": "4004901d-bd85-4769-8e52-cb4c42c506dc",
-              "debtor": {
-                "cpf": "62550186362",
-                "name": "Fulano de Tal"
+              'key': '4004901d-bd85-4769-8e52-cb4c42c506dc',
+              'debtor': {
+                'cpf': '62550186362',
+                'name': 'Fulano de Tal',
               },
-              "additionalInfo": [
+              'additionalInfo': [
                 {
-                  "name": "Entrega",
-                  "value": "Residencial"
-                }
+                  'name': 'Entrega',
+                  'value': 'Residencial',
+                },
               ],
-              "revision": 0,
-              "status": "ATIVA",
-              "txid": "d71a2ffd7a7b468eba993cef83428583",
-              "value": {
-                "original": "120.58"
-              }
+              'revision': 0,
+              'status': 'ATIVA',
+              'txid': 'd71a2ffd7a7b468eba993cef83428583',
+              'value': {
+                'original': '120.58',
+              },
             },
-            "url": "qr-h.woovi.digital/qr/v2/cob/fb274322-221c-43d4-b58b-fab36d87c75c"
+            'url': 'qr-h.woovi.digital/qr/v2/cob/fb274322-221c-43d4-b58b-fab36d87c75c',
           },
-          "recLocation": null
+          'recLocation': null,
         },
-        "summary": "EMV parsed and COB location resolved"
-      }
-    ]
+        'summary': 'EMV parsed and COB location resolved',
+      },
+    ],
   },
   {
-    "id": "get-api-v1-dispute-id",
-    "method": "GET",
-    "path": "/api/v1/dispute/{id}",
-    "tag": "dispute",
-    "category": "Disputa",
-    "summary": "Get one dispute",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
+    'id': 'get-api-v1-dispute-id',
+    'method': 'GET',
+    'path': '/api/v1/dispute/{id}',
+    'tag': 'dispute',
+    'category': 'Disputa',
+    'summary': 'Get one dispute',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "default",
-        "value": {
-          "dispute": {
-            "status": "ACCEPTED",
-            "name": "John Doe",
-            "email": "john.doe@example.com",
-            "phoneNumber": "+5511999999999",
-            "value": 10000,
-            "disputeReason": "Product not received",
-            "endToEndId": "Ea9c291526ae54b4cb41d9909bdf6d792",
-            "type": "MED"
-          }
-        }
-      }
-    ]
+        'name': 'default',
+        'value': {
+          'dispute': {
+            'status': 'ACCEPTED',
+            'name': 'John Doe',
+            'email': 'john.doe@example.com',
+            'phoneNumber': '+5511999999999',
+            'value': 10000,
+            'disputeReason': 'Product not received',
+            'endToEndId': 'Ea9c291526ae54b4cb41d9909bdf6d792',
+            'type': 'MED',
+          },
+        },
+      },
+    ],
   },
   {
-    "id": "post-api-v1-funds-recovery-id-cancel",
-    "method": "POST",
-    "path": "/api/v1/funds-recovery/{id}/cancel",
-    "tag": "funds recovery",
-    "category": "Recuperação de fundos (MED)",
-    "summary": "Cancel a funds recovery (MED)",
-    "description": "Endpoint to cancel a funds recovery (MED). The request does not need a body.\n\nOnly funds recoveries opened by your account that have not reached a terminal status (`COMPLETED` or `CANCELLED`) can be cancelled.\n",
-    "requestExamples": [],
-    "responseExamples": [
+    'id': 'post-api-v1-funds-recovery-id-cancel',
+    'method': 'POST',
+    'path': '/api/v1/funds-recovery/{id}/cancel',
+    'tag': 'funds recovery',
+    'category': 'Recuperação de fundos (MED)',
+    'summary': 'Cancel a funds recovery (MED)',
+    'description': 'Endpoint to cancel a funds recovery (MED). The request does not need a body.\n\nOnly funds recoveries opened by your account that have not reached a terminal status (`COMPLETED` or `CANCELLED`) can be cancelled.\n',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "default",
-        "value": {
-          "rootTransactionId": "E31680151202606101530AbCdEf12345",
-          "situationType": "SCAM",
-          "reportDetails": "Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.",
-          "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
-          "status": "CANCELLED",
-          "direction": "SENT",
-          "reporterParticipant": "31680151",
-          "creationTime": "2026-06-11T00:30:00.000Z",
-          "lastModified": "2026-06-11T01:10:00.000Z",
-          "createdAt": "2026-06-11T00:30:00.000Z",
-          "updatedAt": "2026-06-11T01:10:00.000Z"
-        }
-      }
-    ]
+        'name': 'default',
+        'value': {
+          'rootTransactionId': 'E31680151202606101530AbCdEf12345',
+          'situationType': 'SCAM',
+          'reportDetails': 'Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.',
+          'dictId': '3e760cd5-39b2-45da-8ab6-b212cf205568',
+          'status': 'CANCELLED',
+          'direction': 'SENT',
+          'reporterParticipant': '31680151',
+          'creationTime': '2026-06-11T00:30:00.000Z',
+          'lastModified': '2026-06-11T01:10:00.000Z',
+          'createdAt': '2026-06-11T00:30:00.000Z',
+          'updatedAt': '2026-06-11T01:10:00.000Z',
+        },
+      },
+    ],
   },
   {
-    "id": "get-api-v1-funds-recovery-id",
-    "method": "GET",
-    "path": "/api/v1/funds-recovery/{id}",
-    "tag": "funds recovery",
-    "category": "Recuperação de fundos (MED)",
-    "summary": "Get one funds recovery (MED)",
-    "description": "Endpoint to get a funds recovery (MED). Use it to follow the progress of the funds recovery through the `status` and `events` fields.\n",
-    "requestExamples": [],
-    "responseExamples": [
+    'id': 'get-api-v1-funds-recovery-id',
+    'method': 'GET',
+    'path': '/api/v1/funds-recovery/{id}',
+    'tag': 'funds recovery',
+    'category': 'Recuperação de fundos (MED)',
+    'summary': 'Get one funds recovery (MED)',
+    'description': 'Endpoint to get a funds recovery (MED). Use it to follow the progress of the funds recovery through the `status` and `events` fields.\n',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "default",
-        "value": {
-          "rootTransactionId": "E31680151202606101530AbCdEf12345",
-          "situationType": "SCAM",
-          "reportDetails": "Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.",
-          "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
-          "status": "AWAITING_ANALYSIS",
-          "direction": "SENT",
-          "reporterParticipant": "31680151",
-          "creationTime": "2026-06-11T00:30:00.000Z",
-          "lastModified": "2026-06-11T00:35:00.000Z",
-          "events": [
+        'name': 'default',
+        'value': {
+          'rootTransactionId': 'E31680151202606101530AbCdEf12345',
+          'situationType': 'SCAM',
+          'reportDetails': 'Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.',
+          'dictId': '3e760cd5-39b2-45da-8ab6-b212cf205568',
+          'status': 'AWAITING_ANALYSIS',
+          'direction': 'SENT',
+          'reporterParticipant': '31680151',
+          'creationTime': '2026-06-11T00:30:00.000Z',
+          'lastModified': '2026-06-11T00:35:00.000Z',
+          'events': [
             {
-              "id": "f3a1c9d2-8b47-4e6a-9c21-5d7e0a4b8f13",
-              "event": "AWAITING_ANALYSIS",
-              "timestamp": "2026-06-11T00:35:00.000Z"
-            }
+              'id': 'f3a1c9d2-8b47-4e6a-9c21-5d7e0a4b8f13',
+              'event': 'AWAITING_ANALYSIS',
+              'timestamp': '2026-06-11T00:35:00.000Z',
+            },
           ],
-          "createdAt": "2026-06-11T00:30:00.000Z",
-          "updatedAt": "2026-06-11T00:35:00.000Z"
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-funds-recovery",
-    "method": "POST",
-    "path": "/api/v1/funds-recovery",
-    "tag": "funds recovery",
-    "category": "Recuperação de fundos (MED)",
-    "summary": "Open a funds recovery (MED)",
-    "description": "Endpoint to open a funds recovery (MED) for a Pix transaction sent from your account.\n\nOnly one funds recovery can be opened per transaction. The transaction must have been sent from your account and cannot have been rejected.\n",
-    "requestExamples": [
-      {
-        "name": "Funds recovery",
-        "value": {
-          "transactionEndToEndId": "E31680151202606101530AbCdEf12345",
-          "situationType": "SCAM",
-          "details": "Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product."
-        }
-      }
+          'createdAt': '2026-06-11T00:30:00.000Z',
+          'updatedAt': '2026-06-11T00:35:00.000Z',
+        },
+      },
     ],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "rootTransactionId": "E31680151202606101530AbCdEf12345",
-          "situationType": "SCAM",
-          "reportDetails": "Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.",
-          "dictId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
-          "status": "CREATED",
-          "direction": "SENT",
-          "reporterParticipant": "31680151",
-          "creationTime": "2026-06-11T00:30:00.000Z",
-          "lastModified": "2026-06-11T00:30:00.000Z",
-          "events": [],
-          "createdAt": "2026-06-11T00:30:00.000Z",
-          "updatedAt": "2026-06-11T00:30:00.000Z"
-        }
-      }
-    ]
   },
   {
-    "id": "post-api-v1-invoice-correlationid-cancel",
-    "method": "POST",
-    "path": "/api/v1/invoice/{correlationID}/cancel",
-    "tag": "invoice",
-    "category": "Invoice",
-    "summary": "Cancel an invoice",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
+    'id': 'post-api-v1-funds-recovery',
+    'method': 'POST',
+    'path': '/api/v1/funds-recovery',
+    'tag': 'funds recovery',
+    'category': 'Recuperação de fundos (MED)',
+    'summary': 'Open a funds recovery (MED)',
+    'description': 'Endpoint to open a funds recovery (MED) for a Pix transaction sent from your account.\n\nOnly one funds recovery can be opened per transaction. The transaction must have been sent from your account and cannot have been rejected.\n',
+    'requestExamples': [
       {
-        "name": "ok",
-        "value": {
-          "success": true
-        }
-      }
-    ]
-  },
-  {
-    "id": "get-api-v1-invoice",
-    "method": "GET",
-    "path": "/api/v1/invoice",
-    "tag": "invoice",
-    "category": "Invoice",
-    "summary": "Get invoices",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "ok",
-        "value": {
-          "invoices": [
-            {
-              "id": "67001bbf0b0621890af7dc28",
-              "value": 500,
-              "date": "2024-10-04T16:45:51.058Z",
-              "billingDate": "2024-10-04T16:45:51.058Z",
-              "status": "CONFIRMED",
-              "statusRaw": null,
-              "correlationID": "INV-123",
-              "customer": {
-                "correlationID": "6f46c15a-f471-4d54-bb28-207fe2568f69",
-                "name": "Gabriel"
-              },
-              "charge": {
-                "correlationID": "0c2df47d-4a90-4ef2-b04a-1f8673f1dbdd",
-                "value": 500,
-                "status": "COMPLETED",
-                "paidAt": "2024-10-04T16:44:18.000Z",
-                "date": "2024-10-04T16:43:20.931Z"
-              }
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-kyc-onboarding",
-    "method": "POST",
-    "path": "/api/v1/kyc/onboarding",
-    "tag": "kyc",
-    "category": "KYC",
-    "summary": "Create a KYC onboarding",
-    "description": "Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n",
-    "requestExamples": [
-      {
-        "name": "MinimalRequest",
-        "value": {
-          "taxID": "XX.XXX.XXX/0001-XX"
+        'name': 'Funds recovery',
+        'value': {
+          'transactionEndToEndId': 'E31680151202606101530AbCdEf12345',
+          'situationType': 'SCAM',
+          'details': 'Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.',
         },
-        "summary": "Minimal request with only taxID"
       },
-      {
-        "name": "WithCorrelationID",
-        "value": {
-          "taxID": "XX.XXX.XXX/0001-XX",
-          "correlationID": "my-unique-id"
-        },
-        "summary": "Request with correlationID for idempotency"
-      },
-      {
-        "name": "WithRedirectUrl",
-        "value": {
-          "taxID": "XX.XXX.XXX/0001-XX",
-          "correlationID": "my-unique-id",
-          "redirectUrl": "https://partner.example.com/kyc-done"
-        },
-        "summary": "Request with redirectUrl for post-onboarding redirect"
-      },
-      {
-        "name": "WithRepresentatives",
-        "value": {
-          "taxID": "XX.XXX.XXX/0001-XX",
-          "correlationID": "my-unique-id",
-          "representatives": [
-            {
-              "taxID": "XXX.XXX.XXX-XX"
-            },
-            {
-              "taxID": "XXX.XXX.XXX-XX"
-            }
-          ]
-        },
-        "summary": "Full request with representatives"
-      }
     ],
-    "responseExamples": []
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'rootTransactionId': 'E31680151202606101530AbCdEf12345',
+          'situationType': 'SCAM',
+          'reportDetails': 'Payment made to a fake seller. After the payment, the seller stopped responding and never delivered the product.',
+          'dictId': '3e760cd5-39b2-45da-8ab6-b212cf205568',
+          'status': 'CREATED',
+          'direction': 'SENT',
+          'reporterParticipant': '31680151',
+          'creationTime': '2026-06-11T00:30:00.000Z',
+          'lastModified': '2026-06-11T00:30:00.000Z',
+          'events': [],
+          'createdAt': '2026-06-11T00:30:00.000Z',
+          'updatedAt': '2026-06-11T00:30:00.000Z',
+        },
+      },
+    ],
   },
   {
-    "id": "get-api-v1-partner-affiliate",
-    "method": "GET",
-    "path": "/api/v1/partner/affiliate",
-    "tag": "partner (request access)",
-    "category": "Partner",
-    "summary": "Get every affiliate company that is managed by you.",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
+    'id': 'post-api-v1-invoice-correlationid-cancel',
+    'method': 'POST',
+    'path': '/api/v1/invoice/{correlationID}/cancel',
+    'tag': 'invoice',
+    'category': 'Invoice',
+    'summary': 'Cancel an invoice',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "default",
-        "value": {
-          "affiliates": [
+        'name': 'ok',
+        'value': {
+          'success': true,
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-invoice',
+    'method': 'GET',
+    'path': '/api/v1/invoice',
+    'tag': 'invoice',
+    'category': 'Invoice',
+    'summary': 'Get invoices',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'ok',
+        'value': {
+          'invoices': [
             {
-              "company": {
-                "id": "Q29tcGFueTo2MDE1MTQ0OWUzYzlhNDAwMTJhYjM0Y2Q=",
-                "name": "Affiliate Company One LTDA",
-                "taxID": "65914571000187",
-                "createdAt": "2026-01-15T13:22:41.000Z"
+              'id': '67001bbf0b0621890af7dc28',
+              'value': 500,
+              'date': '2024-10-04T16:45:51.058Z',
+              'billingDate': '2024-10-04T16:45:51.058Z',
+              'status': 'CONFIRMED',
+              'statusRaw': null,
+              'correlationID': 'INV-123',
+              'customer': {
+                'correlationID': '6f46c15a-f471-4d54-bb28-207fe2568f69',
+                'name': 'Gabriel',
               },
-              "account": {
-                "clientId": "Client_Id_5f3a1c9e8b7d4a2f",
-                "name": "Conta 1234",
-                "accountId": "60151449e3c9a40012ab34cd",
-                "branch": "0001",
-                "account": "1234567"
-              }
+              'charge': {
+                'correlationID': '0c2df47d-4a90-4ef2-b04a-1f8673f1dbdd',
+                'value': 500,
+                'status': 'COMPLETED',
+                'paidAt': '2024-10-04T16:44:18.000Z',
+                'date': '2024-10-04T16:43:20.931Z',
+              },
             },
-            {
-              "company": {
-                "id": "Q29tcGFueTo2MDE1MTQ0OWUzYzlhNDAwMTJjZDU2ZWY=",
-                "name": "Affiliate Company Two LTDA",
-                "taxID": "14380200000121",
-                "createdAt": "2026-01-12T09:05:18.000Z"
-              }
-            }
           ],
-          "pageInfo": {
-            "skip": 0,
-            "limit": 100,
-            "hasPreviousPage": false,
-            "hasNextPage": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-partner-application",
-    "method": "POST",
-    "path": "/api/v1/partner/application",
-    "tag": "partner (request access)",
-    "category": "Partner",
-    "summary": "Create a new application to some of your preregistration's company.",
-    "description": "As a partner company, you can create a new application to some of your companies.\nThe application should give access to our API to this companies, so they can use\nit too.\n",
-    "requestExamples": [
-      {
-        "name": "ApplicationWithScopes",
-        "value": {
-          "application": {
-            "name": "MyAPIAccessWithScopes",
-            "type": "API",
-            "scopes": [
-              "CHARGE_POST",
-              "CHARGE_GET"
-            ]
-          },
-          "taxID": {
-            "taxID": "65914571000187",
-            "type": "BR:CNPJ"
-          }
         },
-        "summary": "Application with scopes (recommended)"
       },
-      {
-        "name": "ApplicationWithoutScopes",
-        "value": {
-          "application": {
-            "name": "MyAPIAccess",
-            "type": "API"
-          },
-          "taxID": {
-            "taxID": "65914571000187",
-            "type": "BR:CNPJ"
-          }
-        },
-        "summary": "Application without scopes (legacy)"
-      }
     ],
-    "responseExamples": [
-      {
-        "name": "ApplicationWithScopes",
-        "value": {
-          "application": {
-            "name": "MyAPIAccessWithScopes",
-            "isActive": true,
-            "type": "API",
-            "clientId": "client_123abc",
-            "clientSecret": "secret_456def",
-            "scopes": [
-              "CHARGE_POST",
-              "CHARGE_GET"
-            ]
-          }
-        },
-        "summary": "Application with scopes (recommended)"
-      },
-      {
-        "name": "ApplicationWithoutScopes",
-        "value": {
-          "application": {
-            "name": "MyAPIAccess",
-            "isActive": true,
-            "type": "API",
-            "clientId": "client_123abc",
-            "clientSecret": "secret_456def"
-          }
-        },
-        "summary": "Application without scopes (legacy)"
-      }
-    ]
   },
   {
-    "id": "post-api-v1-partner-company",
-    "method": "POST",
-    "path": "/api/v1/partner/company",
-    "tag": "partner (request access)",
-    "category": "Partner",
-    "summary": "Create a pre registration with a partner reference (your company)",
-    "description": "As a partner company, you can create a new pre registration referencing your\ncompany as a partner.\n",
-    "requestExamples": [
+    'id': 'post-api-v1-kyc-onboarding',
+    'method': 'POST',
+    'path': '/api/v1/kyc/onboarding',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Create a KYC onboarding',
+    'description': 'Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n',
+    'requestExamples': [
       {
-        "name": "default",
-        "value": {
-          "preRegistration": {
-            "name": "Example LLC",
-            "taxID": {
-              "taxID": "11111111111111",
-              "type": "BR:CNPJ"
-            },
-            "website": "examplellc.com"
-          },
-          "user": {
-            "firstName": "John",
-            "lastName": "Doe",
-            "email": "johndoe@examplellc.com",
-            "phone": "+5511912345678",
-            "taxID": {
-              "taxID": "1111111111",
-              "type": "BR:CPF"
-            }
-          }
-        }
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "post-api-v1-payment-approve",
-    "method": "POST",
-    "path": "/api/v1/payment/approve",
-    "tag": "payment (request access)",
-    "category": "Pagamento (Pix Out)",
-    "summary": "Approve a Payment Request",
-    "description": "Endpoint to approve a payment",
-    "requestExamples": [
-      {
-        "name": "default",
-        "value": {
-          "correlationID": "payment1"
-        }
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "get-api-v1-payment",
-    "method": "GET",
-    "path": "/api/v1/payment",
-    "tag": "payment (request access)",
-    "category": "Pagamento (Pix Out)",
-    "summary": "Get a list of payments",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "pageInfo": {
-            "skip": 0,
-            "limit": 10,
-            "hasPreviousPage": false,
-            "hasNextPage": true
-          },
-          "payments": {
-            "payment": {
-              "value": 100,
-              "status": "CONFIRMED",
-              "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
-              "comment": "payment comment",
-              "correlationID": "payment1",
-              "sourceAccountId": "my-source-account-id"
-            },
-            "transaction": {
-              "value": 100,
-              "endToEndId": "transaction-end-to-end-id",
-              "time": "2023-03-20T13:14:17.000Z",
-              "debitParty": {
-                "account": {
-                  "branch": "0001",
-                  "account": "00000000000000023280",
-                  "accountType": "TRAN"
-                },
-                "psp": {
-                  "id": "123456",
-                  "name": "COMPANY DEBIT LTDA",
-                  "code": "123456789"
-                },
-                "holder": {
-                  "name": "name holder",
-                  "nameFriendly": "name friendly holder"
-                },
-                "taxID": {
-                  "taxID": "1212345600198",
-                  "type": "BR:CNPJ"
-                }
-              },
-              "creditParty": {
-                "pixKey": {
-                  "pixKey": "email@email.com.br",
-                  "type": "EMAIL"
-                },
-                "account": {
-                  "branch": "0001",
-                  "account": "00000000000000012345",
-                  "accountType": "TRAN"
-                },
-                "psp": {
-                  "id": "123456",
-                  "name": "COMPANY CREDIT LTDA"
-                },
-                "holder": {
-                  "name": "name holder",
-                  "nameFriendly": "name friendly",
-                  "taxID": {
-                    "taxID": "00123456000199",
-                    "type": "BR:CNPJ"
-                  }
-                }
-              }
-            },
-            "destination": {
-              "name": "Dan",
-              "taxID": "31324227036",
-              "pixKey": "c4249323-b4ca-43f2-8139-8232aab09b93",
-              "bank": "A Bank",
-              "branch": "1",
-              "account": "123456"
-            }
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-payment",
-    "method": "POST",
-    "path": "/api/v1/payment",
-    "tag": "payment (request access)",
-    "category": "Pagamento (Pix Out)",
-    "summary": "Create a Payment Request",
-    "description": "Endpoint to request a payment. Supports three payment types: Pix Key (`PIX_KEY`), QR Code (`QR_CODE`), and Manual (`MANUAL`).\n\nFor QR Code payments, the system decodes the BR Code string and extracts the destination and value automatically.\n\nSet `autoApprove: true` to create and immediately approve the payment in a single call, returning the enriched response with transaction and destination data. Without this flag, the payment is created in `CREATED` status and can be approved later via `POST /api/v1/payment/approve`.\n",
-    "requestExamples": [
-      {
-        "name": "pixKey",
-        "value": {
-          "type": "PIX_KEY",
-          "value": 100,
-          "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
-          "destinationAliasType": "RANDOM",
-          "comment": "payment comment",
-          "correlationID": "payment1",
-          "pixKeyEndToEndId": "E1234567890",
-          "metadata": {
-            "orderId": "order-123",
-            "userId": "user-456",
-            "source": "mobile-app"
-          }
+        'name': 'MinimalRequest',
+        'value': {
+          'taxID': 'XX.XXX.XXX/0001-XX',
         },
-        "summary": "Pay via Pix Key"
+        'summary': 'Minimal request with only taxID',
       },
       {
-        "name": "pixKeyAutoApprove",
-        "value": {
-          "value": 100,
-          "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
-          "destinationAliasType": "RANDOM",
-          "comment": "payment comment",
-          "correlationID": "payment-auto-approve",
-          "autoApprove": true
+        'name': 'WithCorrelationID',
+        'value': {
+          'taxID': 'XX.XXX.XXX/0001-XX',
+          'correlationID': 'my-unique-id',
         },
-        "summary": "Pay via Pix Key with auto-approval"
+        'summary': 'Request with correlationID for idempotency',
       },
       {
-        "name": "qrCode",
-        "value": {
-          "type": "QR_CODE",
-          "correlationID": "payment-qrcode-1",
-          "qrCode": "00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA EXEMPLO LTDA6009SAO PAULO6229052512345678901234567890163049A2F",
-          "comment": "payment comment",
-          "metadata": {
-            "qrCodeSource": "store-terminal",
-            "storeId": "store-789"
-          }
+        'name': 'WithRedirectUrl',
+        'value': {
+          'taxID': 'XX.XXX.XXX/0001-XX',
+          'correlationID': 'my-unique-id',
+          'redirectUrl': 'https://partner.example.com/kyc-done',
         },
-        "summary": "Pay a QR Code (BR Code)"
+        'summary': 'Request with redirectUrl for post-onboarding redirect',
       },
       {
-        "name": "qrCodeWithValue",
-        "value": {
-          "type": "QR_CODE",
-          "correlationID": "payment-qrcode-2",
-          "qrCode": "00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA EXEMPLO LTDA6009SAO PAULO6229052512345678901234567890163049A2F",
-          "value": 3000,
-          "comment": "payment with custom value"
-        },
-        "summary": "Pay a QR Code with custom value (for QR Codes without fixed value)"
-      },
-      {
-        "name": "manual",
-        "value": {
-          "type": "MANUAL",
-          "value": 100,
-          "pixKeyEndToEndId": "E1234567890",
-          "correlationID": "manual-payment-26",
-          "holder": {
-            "name": "Hodlis 3",
-            "taxID": {
-              "type": "BR:CNPJ",
-              "taxID": "20244827000158"
-            }
-          },
-          "account": {
-            "account": "00000000000000000981",
-            "branch": "0001",
-            "accountType": "TRAN"
-          },
-          "psp": {
-            "id": "54811417",
-            "name": "WOOVI INSTITUICAO DE PAGAMENTO"
-          },
-          "metadata": {
-            "businessUnit": "finance",
-            "approver": "manager-001",
-            "priority": "high"
-          }
-        },
-        "summary": "Pay via manual bank details"
-      }
-    ],
-    "responseExamples": [
-      {
-        "name": "pixKey",
-        "value": {
-          "payment": {
-            "type": "PIX_KEY",
-            "value": 100,
-            "status": "CREATED",
-            "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
-            "destinationAliasType": "RANDOM",
-            "comment": "payment comment",
-            "correlationID": "payment1"
-          }
-        },
-        "summary": "Pix Key response"
-      },
-      {
-        "name": "qrCode",
-        "value": {
-          "payment": {
-            "type": "QR_CODE",
-            "value": 3000,
-            "status": "CREATED",
-            "qrCode": "00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA EXEMPLO LTDA6009SAO PAULO6229052512345678901234567890163049A2F",
-            "comment": "payment comment",
-            "correlationID": "payment-qrcode-1"
-          },
-          "destination": {
-            "name": "LOJA EXEMPLO LTDA",
-            "taxID": "11222333000181",
-            "bank": "Banco Exemplo S.A."
-          }
-        },
-        "summary": "QR Code response"
-      },
-      {
-        "name": "manual",
-        "value": {
-          "payment": {
-            "type": "MANUAL",
-            "value": 100,
-            "status": "CREATED",
-            "correlationID": "manual-payment-1",
-            "holder": {
-              "name": "Hodlis 3",
-              "taxID": {
-                "type": "BR:CNPJ",
-                "taxID": "20244827000158"
-              }
-            },
-            "account": {
-              "account": "00000000000000000981",
-              "branch": "0001",
-              "accountType": "TRAN"
-            },
-            "psp": {
-              "id": "54811417",
-              "name": "WOOVI INSTITUICAO DE PAGAMENTO"
-            }
-          }
-        },
-        "summary": "Manual Payment response"
-      },
-      {
-        "name": "autoApproved",
-        "value": {
-          "payment": {
-            "value": 100,
-            "status": "APPROVED",
-            "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
-            "destinationAliasType": "RANDOM",
-            "comment": "payment comment",
-            "correlationID": "payment1"
-          },
-          "transaction": {
-            "value": 100,
-            "endToEndId": "transaction-end-to-end-id",
-            "time": "2023-03-20T13:14:17.000Z"
-          },
-          "destination": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "pixKey": "c4249323-b4ca-43f2-8139-8232aab09b93",
-            "bank": "A Bank",
-            "branch": "1",
-            "account": "123456"
-          }
-        },
-        "summary": "Auto-approved payment response (autoApprove true)"
-      }
-    ]
-  },
-  {
-    "id": "get-api-v1-pix-keys-tokens-logs",
-    "method": "GET",
-    "path": "/api/v1/pix-keys/tokens/logs",
-    "tag": "pixKey",
-    "category": "Chave Pix",
-    "summary": "Get token bucket logs",
-    "description": "Get a list of token bucket operation logs",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "pageInfo": {
-            "skip": 0,
-            "limit": 100,
-            "hasPreviousPage": false,
-            "hasNextPage": false
-          },
-          "logs": [
+        'name': 'WithRepresentatives',
+        'value': {
+          'taxID': 'XX.XXX.XXX/0001-XX',
+          'correlationID': 'my-unique-id',
+          'representatives': [
             {
-              "operation": "REMOVE",
-              "reason": "pixKeyCheck",
-              "tokens": 1,
-              "tokensBefore": 100,
-              "tokensAfter": 99,
-              "endToEndId": "E18236120202012032010s0133872GZA",
-              "pixKey": "31324227036",
-              "createdAt": "2024-01-15T10:30:00.000Z",
-              "updatedAt": "2024-01-15T10:30:00.000Z"
+              'taxID': 'XXX.XXX.XXX-XX',
             },
             {
-              "operation": "ADD",
-              "reason": "refill",
-              "tokens": 10,
-              "tokensBefore": 90,
-              "tokensAfter": 100,
-              "createdAt": "2024-01-15T11:00:00.000Z",
-              "updatedAt": "2024-01-15T11:00:00.000Z"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-qrcode-static",
-    "method": "POST",
-    "path": "/api/v1/qrcode-static",
-    "tag": "pixQrCode",
-    "category": "QR Code Estático",
-    "summary": "Create a new Pix QrCode Static",
-    "description": "Endpoint to create a new Pix QrCode Static",
-    "requestExamples": [
-      {
-        "name": "default",
-        "value": {
-          "name": "my-qr-code",
-          "correlationID": "9134e286-6f71-427a-bf00-241681624586",
-          "value": 100,
-          "comment": "good"
-        }
-      }
+              'taxID': 'XXX.XXX.XXX-XX',
+            },
+          ],
+        },
+        'summary': 'Full request with representatives',
+      },
     ],
-    "responseExamples": []
+    'responseExamples': [],
   },
   {
-    "id": "get-api-v1-transaction-id",
-    "method": "GET",
-    "path": "/api/v1/transaction/{id}",
-    "tag": "transactions",
-    "category": "Transação",
-    "summary": "Get a Transaction",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
+    'id': 'get-api-v1-partner-affiliate',
+    'method': 'GET',
+    'path': '/api/v1/partner/affiliate',
+    'tag': 'partner (request access)',
+    'category': 'Partner',
+    'summary': 'Get every affiliate company that is managed by you.',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "default",
-        "value": {
-          "transaction": {
-            "customer": {
-              "name": "Dan",
-              "email": "email0@example.com",
-              "phone": "5511999999999",
-              "taxID": {
-                "taxID": "31324227036",
-                "type": "BR:CPF"
+        'name': 'default',
+        'value': {
+          'affiliates': [
+            {
+              'company': {
+                'id': 'Q29tcGFueTo2MDE1MTQ0OWUzYzlhNDAwMTJhYjM0Y2Q=',
+                'name': 'Affiliate Company One LTDA',
+                'taxID': '65914571000187',
+                'createdAt': '2026-01-15T13:22:41.000Z',
               },
-              "correlationID": "9134e286-6f71-427a-bf00-241681624586"
+              'account': {
+                'clientId': 'Client_Id_5f3a1c9e8b7d4a2f',
+                'name': 'Conta 1234',
+                'accountId': '60151449e3c9a40012ab34cd',
+                'branch': '0001',
+                'account': '1234567',
+              },
             },
-            "payer": {
-              "name": "Dan",
-              "email": "email0@example.com",
-              "phone": "5511999999999",
-              "taxID": {
-                "taxID": "31324227036",
-                "type": "BR:CPF"
+            {
+              'company': {
+                'id': 'Q29tcGFueTo2MDE1MTQ0OWUzYzlhNDAwMTJjZDU2ZWY=',
+                'name': 'Affiliate Company Two LTDA',
+                'taxID': '14380200000121',
+                'createdAt': '2026-01-12T09:05:18.000Z',
               },
-              "correlationID": "9134e286-6f71-427a-bf00-241681624586"
             },
-            "charge": {
-              "status": "ACTIVE",
-              "customer": "603f81fcc6bccc24326ffb43",
-              "correlationID": "9134e286-6f71-427a-bf00-241681624586",
-              "createdAt": "2021-03-03T12:33:00.546Z",
-              "updatedAt": "2021-03-03T12:33:00.546Z"
-            },
-            "withdraw": {
-              "value": 100,
-              "time": "2021-03-03T12:33:00.536Z",
-              "infoPagador": "payer info 1",
-              "endToEndId": "E18236120202012032010s01345689XBY",
-              "createdAt": "2021-03-03T12:33:00.546Z"
-            },
-            "infoPagador": "payer info 0",
-            "value": 100,
-            "time": "2021-03-03T12:33:00.536Z",
-            "transactionID": "transactionID",
-            "type": "PAYMENT",
-            "endToEndId": "E18236120202012032010s0133872GZA",
-            "globalID": "UGl4VHJhbnNhY3Rpb246NzE5MWYxYjAyMDQ2YmY1ZjUzZGNmYTBi",
-            "creditParty": {
-              "account": {
-                "account": "00000000000005469660",
-                "accountType": "CACC",
-                "branch": "8615"
-              },
-              "holder": {
-                "name": "CREDIT PARTY NAME",
-                "nameFriendly": "CREDIT PARTY NAME FRIENDLY",
-                "taxID": {
-                  "taxID": "28613271892",
-                  "type": "BR:CPF"
-                }
-              },
-              "psp": {
-                "id": "00000001",
-                "name": "BCO DO BRASIL S.A."
-              }
-            },
-            "debitParty": {
-              "account": {
-                "account": "1235678",
-                "accountType": "TRAN",
-                "branch": "1"
-              },
-              "holder": {
-                "name": "Awesome Company 1",
-                "nameFriendly": "Call me Awesome"
-              },
-              "psp": {
-                "code": "54811417",
-                "id": "FROZEN-ID",
-                "name": "WOOVI IP LTDA"
-              }
-            }
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "get-api-v1-transaction",
-    "method": "GET",
-    "path": "/api/v1/transaction",
-    "tag": "transactions",
-    "category": "Transação",
-    "summary": "Get a list of transactions",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "pageInfo": {
-            "skip": 0,
-            "limit": 10,
-            "hasPreviousPage": false,
-            "hasNextPage": true
+          ],
+          'pageInfo': {
+            'skip': 0,
+            'limit': 100,
+            'hasPreviousPage': false,
+            'hasNextPage': true,
           },
-          "transactions": {
-            "customer": {
-              "name": "Dan",
-              "email": "email0@example.com",
-              "phone": "5511999999999",
-              "taxID": {
-                "taxID": "31324227036",
-                "type": "BR:CPF"
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-partner-application',
+    'method': 'POST',
+    'path': '/api/v1/partner/application',
+    'tag': 'partner (request access)',
+    'category': 'Partner',
+    'summary': "Create a new application to some of your preregistration's company.",
+    'description': 'As a partner company, you can create a new application to some of your companies.\nThe application should give access to our API to this companies, so they can use\nit too.\n',
+    'requestExamples': [
+      {
+        'name': 'ApplicationWithScopes',
+        'value': {
+          'application': {
+            'name': 'MyAPIAccessWithScopes',
+            'type': 'API',
+            'scopes': [
+              'CHARGE_POST',
+              'CHARGE_GET',
+            ],
+          },
+          'taxID': {
+            'taxID': '65914571000187',
+            'type': 'BR:CNPJ',
+          },
+        },
+        'summary': 'Application with scopes (recommended)',
+      },
+      {
+        'name': 'ApplicationWithoutScopes',
+        'value': {
+          'application': {
+            'name': 'MyAPIAccess',
+            'type': 'API',
+          },
+          'taxID': {
+            'taxID': '65914571000187',
+            'type': 'BR:CNPJ',
+          },
+        },
+        'summary': 'Application without scopes (legacy)',
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'ApplicationWithScopes',
+        'value': {
+          'application': {
+            'name': 'MyAPIAccessWithScopes',
+            'isActive': true,
+            'type': 'API',
+            'clientId': 'client_123abc',
+            'clientSecret': 'secret_456def',
+            'scopes': [
+              'CHARGE_POST',
+              'CHARGE_GET',
+            ],
+          },
+        },
+        'summary': 'Application with scopes (recommended)',
+      },
+      {
+        'name': 'ApplicationWithoutScopes',
+        'value': {
+          'application': {
+            'name': 'MyAPIAccess',
+            'isActive': true,
+            'type': 'API',
+            'clientId': 'client_123abc',
+            'clientSecret': 'secret_456def',
+          },
+        },
+        'summary': 'Application without scopes (legacy)',
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-partner-company',
+    'method': 'POST',
+    'path': '/api/v1/partner/company',
+    'tag': 'partner (request access)',
+    'category': 'Partner',
+    'summary': 'Create a pre registration with a partner reference (your company)',
+    'description': 'As a partner company, you can create a new pre registration referencing your\ncompany as a partner.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'preRegistration': {
+            'name': 'Example LLC',
+            'taxID': {
+              'taxID': '11111111111111',
+              'type': 'BR:CNPJ',
+            },
+            'website': 'examplellc.com',
+          },
+          'user': {
+            'firstName': 'John',
+            'lastName': 'Doe',
+            'email': 'johndoe@examplellc.com',
+            'phone': '+5511912345678',
+            'taxID': {
+              'taxID': '1111111111',
+              'type': 'BR:CPF',
+            },
+          },
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-payment-approve',
+    'method': 'POST',
+    'path': '/api/v1/payment/approve',
+    'tag': 'payment (request access)',
+    'category': 'Pagamento (Pix Out)',
+    'summary': 'Approve a Payment Request',
+    'description': 'Endpoint to approve a payment',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'payment1',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-payment',
+    'method': 'GET',
+    'path': '/api/v1/payment',
+    'tag': 'payment (request access)',
+    'category': 'Pagamento (Pix Out)',
+    'summary': 'Get a list of payments',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pageInfo': {
+            'skip': 0,
+            'limit': 10,
+            'hasPreviousPage': false,
+            'hasNextPage': true,
+          },
+          'payments': {
+            'payment': {
+              'value': 100,
+              'status': 'CONFIRMED',
+              'destinationAlias': 'c4249323-b4ca-43f2-8139-8232aab09b93',
+              'comment': 'payment comment',
+              'correlationID': 'payment1',
+              'sourceAccountId': 'my-source-account-id',
+            },
+            'transaction': {
+              'value': 100,
+              'endToEndId': 'transaction-end-to-end-id',
+              'time': '2023-03-20T13:14:17.000Z',
+              'debitParty': {
+                'account': {
+                  'branch': '0001',
+                  'account': '00000000000000023280',
+                  'accountType': 'TRAN',
+                },
+                'psp': {
+                  'id': '123456',
+                  'name': 'COMPANY DEBIT LTDA',
+                  'code': '123456789',
+                },
+                'holder': {
+                  'name': 'name holder',
+                  'nameFriendly': 'name friendly holder',
+                },
+                'taxID': {
+                  'taxID': '1212345600198',
+                  'type': 'BR:CNPJ',
+                },
               },
-              "correlationID": "9134e286-6f71-427a-bf00-241681624586"
-            },
-            "payer": {
-              "name": "Dan",
-              "email": "email0@example.com",
-              "phone": "5511999999999",
-              "taxID": {
-                "taxID": "31324227036",
-                "type": "BR:CPF"
+              'creditParty': {
+                'pixKey': {
+                  'pixKey': 'email@email.com.br',
+                  'type': 'EMAIL',
+                },
+                'account': {
+                  'branch': '0001',
+                  'account': '00000000000000012345',
+                  'accountType': 'TRAN',
+                },
+                'psp': {
+                  'id': '123456',
+                  'name': 'COMPANY CREDIT LTDA',
+                },
+                'holder': {
+                  'name': 'name holder',
+                  'nameFriendly': 'name friendly',
+                  'taxID': {
+                    'taxID': '00123456000199',
+                    'type': 'BR:CNPJ',
+                  },
+                },
               },
-              "correlationID": "9134e286-6f71-427a-bf00-241681624586"
             },
-            "charge": {
-              "status": "ACTIVE",
-              "customer": "603f81fcc6bccc24326ffb43",
-              "correlationID": "9134e286-6f71-427a-bf00-241681624586",
-              "createdAt": "2021-03-03T12:33:00.546Z",
-              "updatedAt": "2021-03-03T12:33:00.546Z"
+            'destination': {
+              'name': 'Dan',
+              'taxID': '31324227036',
+              'pixKey': 'c4249323-b4ca-43f2-8139-8232aab09b93',
+              'bank': 'A Bank',
+              'branch': '1',
+              'account': '123456',
             },
-            "withdraw": {
-              "value": 100,
-              "time": "2021-03-03T12:33:00.536Z",
-              "infoPagador": "payer info 1",
-              "endToEndId": "E18236120202012032010s01345689XBY"
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-payment',
+    'method': 'POST',
+    'path': '/api/v1/payment',
+    'tag': 'payment (request access)',
+    'category': 'Pagamento (Pix Out)',
+    'summary': 'Create a Payment Request',
+    'description': 'Endpoint to request a payment. Supports three payment types: Pix Key (`PIX_KEY`), QR Code (`QR_CODE`), and Manual (`MANUAL`).\n\nFor QR Code payments, the system decodes the BR Code string and extracts the destination and value automatically.\n\nSet `autoApprove: true` to create and immediately approve the payment in a single call, returning the enriched response with transaction and destination data. Without this flag, the payment is created in `CREATED` status and can be approved later via `POST /api/v1/payment/approve`.\n',
+    'requestExamples': [
+      {
+        'name': 'pixKey',
+        'value': {
+          'type': 'PIX_KEY',
+          'value': 100,
+          'destinationAlias': 'c4249323-b4ca-43f2-8139-8232aab09b93',
+          'destinationAliasType': 'RANDOM',
+          'comment': 'payment comment',
+          'correlationID': 'payment1',
+          'pixKeyEndToEndId': 'E1234567890',
+          'metadata': {
+            'orderId': 'order-123',
+            'userId': 'user-456',
+            'source': 'mobile-app',
+          },
+        },
+        'summary': 'Pay via Pix Key',
+      },
+      {
+        'name': 'pixKeyAutoApprove',
+        'value': {
+          'value': 100,
+          'destinationAlias': 'c4249323-b4ca-43f2-8139-8232aab09b93',
+          'destinationAliasType': 'RANDOM',
+          'comment': 'payment comment',
+          'correlationID': 'payment-auto-approve',
+          'autoApprove': true,
+        },
+        'summary': 'Pay via Pix Key with auto-approval',
+      },
+      {
+        'name': 'qrCode',
+        'value': {
+          'type': 'QR_CODE',
+          'correlationID': 'payment-qrcode-1',
+          'qrCode': '00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA EXEMPLO LTDA6009SAO PAULO6229052512345678901234567890163049A2F',
+          'comment': 'payment comment',
+          'metadata': {
+            'qrCodeSource': 'store-terminal',
+            'storeId': 'store-789',
+          },
+        },
+        'summary': 'Pay a QR Code (BR Code)',
+      },
+      {
+        'name': 'qrCodeWithValue',
+        'value': {
+          'type': 'QR_CODE',
+          'correlationID': 'payment-qrcode-2',
+          'qrCode': '00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA EXEMPLO LTDA6009SAO PAULO6229052512345678901234567890163049A2F',
+          'value': 3000,
+          'comment': 'payment with custom value',
+        },
+        'summary': 'Pay a QR Code with custom value (for QR Codes without fixed value)',
+      },
+      {
+        'name': 'manual',
+        'value': {
+          'type': 'MANUAL',
+          'value': 100,
+          'pixKeyEndToEndId': 'E1234567890',
+          'correlationID': 'manual-payment-26',
+          'holder': {
+            'name': 'Hodlis 3',
+            'taxID': {
+              'type': 'BR:CNPJ',
+              'taxID': '20244827000158',
             },
-            "type": "PAYMENT",
-            "infoPagador": "payer info 0",
-            "value": 100,
-            "time": "2021-03-03T12:33:00.536Z",
-            "transactionID": "transactionID",
-            "endToEndId": "E18236120202012032010s0133872GZA",
-            "webhookSent": [
+          },
+          'account': {
+            'account': '00000000000000000981',
+            'branch': '0001',
+            'accountType': 'TRAN',
+          },
+          'psp': {
+            'id': '54811417',
+            'name': 'WOOVI INSTITUICAO DE PAGAMENTO',
+          },
+          'metadata': {
+            'businessUnit': 'finance',
+            'approver': 'manager-001',
+            'priority': 'high',
+          },
+        },
+        'summary': 'Pay via manual bank details',
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'pixKey',
+        'value': {
+          'payment': {
+            'type': 'PIX_KEY',
+            'value': 100,
+            'status': 'CREATED',
+            'destinationAlias': 'c4249323-b4ca-43f2-8139-8232aab09b93',
+            'destinationAliasType': 'RANDOM',
+            'comment': 'payment comment',
+            'correlationID': 'payment1',
+          },
+        },
+        'summary': 'Pix Key response',
+      },
+      {
+        'name': 'qrCode',
+        'value': {
+          'payment': {
+            'type': 'QR_CODE',
+            'value': 3000,
+            'status': 'CREATED',
+            'qrCode': '00020101021226850014BR.GOV.BCB.PIX2563qrcode.example.com/pix/v2/abc12345-defg-6789-hijk-lmnopqrstuvw52040000530398654041.005802BR5925LOJA EXEMPLO LTDA6009SAO PAULO6229052512345678901234567890163049A2F',
+            'comment': 'payment comment',
+            'correlationID': 'payment-qrcode-1',
+          },
+          'destination': {
+            'name': 'LOJA EXEMPLO LTDA',
+            'taxID': '11222333000181',
+            'bank': 'Banco Exemplo S.A.',
+          },
+        },
+        'summary': 'QR Code response',
+      },
+      {
+        'name': 'manual',
+        'value': {
+          'payment': {
+            'type': 'MANUAL',
+            'value': 100,
+            'status': 'CREATED',
+            'correlationID': 'manual-payment-1',
+            'holder': {
+              'name': 'Hodlis 3',
+              'taxID': {
+                'type': 'BR:CNPJ',
+                'taxID': '20244827000158',
+              },
+            },
+            'account': {
+              'account': '00000000000000000981',
+              'branch': '0001',
+              'accountType': 'TRAN',
+            },
+            'psp': {
+              'id': '54811417',
+              'name': 'WOOVI INSTITUICAO DE PAGAMENTO',
+            },
+          },
+        },
+        'summary': 'Manual Payment response',
+      },
+      {
+        'name': 'autoApproved',
+        'value': {
+          'payment': {
+            'value': 100,
+            'status': 'APPROVED',
+            'destinationAlias': 'c4249323-b4ca-43f2-8139-8232aab09b93',
+            'destinationAliasType': 'RANDOM',
+            'comment': 'payment comment',
+            'correlationID': 'payment1',
+          },
+          'transaction': {
+            'value': 100,
+            'endToEndId': 'transaction-end-to-end-id',
+            'time': '2023-03-20T13:14:17.000Z',
+          },
+          'destination': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'pixKey': 'c4249323-b4ca-43f2-8139-8232aab09b93',
+            'bank': 'A Bank',
+            'branch': '1',
+            'account': '123456',
+          },
+        },
+        'summary': 'Auto-approved payment response (autoApprove true)',
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-pix-keys-tokens-logs',
+    'method': 'GET',
+    'path': '/api/v1/pix-keys/tokens/logs',
+    'tag': 'pixKey',
+    'category': 'Chave Pix',
+    'summary': 'Get token bucket logs',
+    'description': 'Get a list of token bucket operation logs',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pageInfo': {
+            'skip': 0,
+            'limit': 100,
+            'hasPreviousPage': false,
+            'hasNextPage': false,
+          },
+          'logs': [
+            {
+              'operation': 'REMOVE',
+              'reason': 'pixKeyCheck',
+              'tokens': 1,
+              'tokensBefore': 100,
+              'tokensAfter': 99,
+              'endToEndId': 'E18236120202012032010s0133872GZA',
+              'pixKey': '31324227036',
+              'createdAt': '2024-01-15T10:30:00.000Z',
+              'updatedAt': '2024-01-15T10:30:00.000Z',
+            },
+            {
+              'operation': 'ADD',
+              'reason': 'refill',
+              'tokens': 10,
+              'tokensBefore': 90,
+              'tokensAfter': 100,
+              'createdAt': '2024-01-15T11:00:00.000Z',
+              'updatedAt': '2024-01-15T11:00:00.000Z',
+            },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-qrcode-static',
+    'method': 'POST',
+    'path': '/api/v1/qrcode-static',
+    'tag': 'pixQrCode',
+    'category': 'QR Code Estático',
+    'summary': 'Create a new Pix QrCode Static',
+    'description': 'Endpoint to create a new Pix QrCode Static',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'name': 'my-qr-code',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+          'value': 100,
+          'comment': 'good',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-transaction-id',
+    'method': 'GET',
+    'path': '/api/v1/transaction/{id}',
+    'tag': 'transactions',
+    'category': 'Transação',
+    'summary': 'Get a Transaction',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'transaction': {
+            'customer': {
+              'name': 'Dan',
+              'email': 'email0@example.com',
+              'phone': '5511999999999',
+              'taxID': {
+                'taxID': '31324227036',
+                'type': 'BR:CPF',
+              },
+              'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+            },
+            'payer': {
+              'name': 'Dan',
+              'email': 'email0@example.com',
+              'phone': '5511999999999',
+              'taxID': {
+                'taxID': '31324227036',
+                'type': 'BR:CPF',
+              },
+              'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+            },
+            'charge': {
+              'status': 'ACTIVE',
+              'customer': '603f81fcc6bccc24326ffb43',
+              'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+              'createdAt': '2021-03-03T12:33:00.546Z',
+              'updatedAt': '2021-03-03T12:33:00.546Z',
+            },
+            'withdraw': {
+              'value': 100,
+              'time': '2021-03-03T12:33:00.536Z',
+              'infoPagador': 'payer info 1',
+              'endToEndId': 'E18236120202012032010s01345689XBY',
+              'createdAt': '2021-03-03T12:33:00.546Z',
+            },
+            'infoPagador': 'payer info 0',
+            'value': 100,
+            'time': '2021-03-03T12:33:00.536Z',
+            'transactionID': 'transactionID',
+            'type': 'PAYMENT',
+            'endToEndId': 'E18236120202012032010s0133872GZA',
+            'globalID': 'UGl4VHJhbnNhY3Rpb246NzE5MWYxYjAyMDQ2YmY1ZjUzZGNmYTBi',
+            'creditParty': {
+              'account': {
+                'account': '00000000000005469660',
+                'accountType': 'CACC',
+                'branch': '8615',
+              },
+              'holder': {
+                'name': 'CREDIT PARTY NAME',
+                'nameFriendly': 'CREDIT PARTY NAME FRIENDLY',
+                'taxID': {
+                  'taxID': '28613271892',
+                  'type': 'BR:CPF',
+                },
+              },
+              'psp': {
+                'id': '00000001',
+                'name': 'BCO DO BRASIL S.A.',
+              },
+            },
+            'debitParty': {
+              'account': {
+                'account': '1235678',
+                'accountType': 'TRAN',
+                'branch': '1',
+              },
+              'holder': {
+                'name': 'Awesome Company 1',
+                'nameFriendly': 'Call me Awesome',
+              },
+              'psp': {
+                'code': '54811417',
+                'id': 'FROZEN-ID',
+                'name': 'WOOVI IP LTDA',
+              },
+            },
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-transaction',
+    'method': 'GET',
+    'path': '/api/v1/transaction',
+    'tag': 'transactions',
+    'category': 'Transação',
+    'summary': 'Get a list of transactions',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pageInfo': {
+            'skip': 0,
+            'limit': 10,
+            'hasPreviousPage': false,
+            'hasNextPage': true,
+          },
+          'transactions': {
+            'customer': {
+              'name': 'Dan',
+              'email': 'email0@example.com',
+              'phone': '5511999999999',
+              'taxID': {
+                'taxID': '31324227036',
+                'type': 'BR:CPF',
+              },
+              'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+            },
+            'payer': {
+              'name': 'Dan',
+              'email': 'email0@example.com',
+              'phone': '5511999999999',
+              'taxID': {
+                'taxID': '31324227036',
+                'type': 'BR:CPF',
+              },
+              'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+            },
+            'charge': {
+              'status': 'ACTIVE',
+              'customer': '603f81fcc6bccc24326ffb43',
+              'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+              'createdAt': '2021-03-03T12:33:00.546Z',
+              'updatedAt': '2021-03-03T12:33:00.546Z',
+            },
+            'withdraw': {
+              'value': 100,
+              'time': '2021-03-03T12:33:00.536Z',
+              'infoPagador': 'payer info 1',
+              'endToEndId': 'E18236120202012032010s01345689XBY',
+            },
+            'type': 'PAYMENT',
+            'infoPagador': 'payer info 0',
+            'value': 100,
+            'time': '2021-03-03T12:33:00.536Z',
+            'transactionID': 'transactionID',
+            'endToEndId': 'E18236120202012032010s0133872GZA',
+            'webhookSent': [
               {
-                "OPENPIX:TRANSACTION_RECEIVED": {
-                  "status": 200,
-                  "time": "2021-03-03T12:33:00.546Z"
+                'OPENPIX:TRANSACTION_RECEIVED': {
+                  'status': 200,
+                  'time': '2021-03-03T12:33:00.546Z',
                 },
-                "isRetry": false
-              }
-            ]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-refund",
-    "method": "POST",
-    "path": "/api/v1/refund",
-    "tag": "refund",
-    "category": "Reembolso",
-    "summary": "Create a new refund",
-    "description": "Endpoint to create a new refund for a customer",
-    "requestExamples": [
-      {
-        "name": "default",
-        "value": {
-          "transactionEndToEndId": "9134e286-6f71-427a-bf00-241681624586",
-          "correlationID": "9134e286-6f71-427a-bf00-241681624586",
-          "value": 100,
-          "comment": "Comentário do reembolso"
-        }
-      }
+                'isRetry': false,
+              },
+            ],
+          },
+        },
+      },
     ],
-    "responseExamples": []
   },
   {
-    "id": "get-api-v1-psp",
-    "method": "GET",
-    "path": "/api/v1/psp",
-    "tag": "psp",
-    "category": "PSP",
-    "summary": "Get a list of PSPs (Payment Service Providers)",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
+    'id': 'post-api-v1-refund',
+    'method': 'POST',
+    'path': '/api/v1/refund',
+    'tag': 'refund',
+    'category': 'Reembolso',
+    'summary': 'Create a new refund',
+    'description': 'Endpoint to create a new refund for a customer',
+    'requestExamples': [
       {
-        "name": "default",
-        "value": {
-          "success": true,
-          "psps": [
+        'name': 'default',
+        'value': {
+          'transactionEndToEndId': '9134e286-6f71-427a-bf00-241681624586',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624586',
+          'value': 100,
+          'comment': 'Comentário do reembolso',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-psp',
+    'method': 'GET',
+    'path': '/api/v1/psp',
+    'tag': 'psp',
+    'category': 'PSP',
+    'summary': 'Get a list of PSPs (Payment Service Providers)',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'success': true,
+          'psps': [
             {
-              "name": "BCO DO BRASIL S.A.",
-              "ispb": "00000000",
-              "code": "00000000",
-              "compe": "001"
+              'name': 'BCO DO BRASIL S.A.',
+              'ispb': '00000000',
+              'code': '00000000',
+              'compe': '001',
             },
             {
-              "name": "CAIXA ECONOMICA FEDERAL",
-              "ispb": "00360305",
-              "code": "00360305",
-              "compe": "104"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    "id": "post-api-v1-stablecoin-deposit-approve",
-    "method": "POST",
-    "path": "/api/v1/stablecoin/deposit/approve",
-    "tag": "stablecoin",
-    "category": "stablecoin",
-    "summary": "Approve (settle) a stablecoin deposit",
-    "description": "Approves a previously created stablecoin deposit identified by its `correlationId`,\ntriggering the on-chain settlement (pay the stable qrcode) for the company's deposit.\n\nThe deposit moves to `PROCESSING` while settlement is in flight. The call is rejected\nwith `400` when the deposit cannot be approved, e.g. it was already `COMPLETED`, it is\nalready `PROCESSING`, there is no source account to pay it, or the provider quote/payment\nfails.\n\nRequires the `STABLECOIN_DEPOSIT_CREATE` scope.\n",
-    "requestExamples": [
-      {
-        "name": "ApproveByCorrelationId",
-        "value": {
-          "correlationId": "my-unique-id"
-        },
-        "summary": "Approve a deposit by its correlationId"
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "post-api-v1-stablecoin-deposit",
-    "method": "POST",
-    "path": "/api/v1/stablecoin/deposit",
-    "tag": "stablecoin",
-    "category": "stablecoin",
-    "summary": "Create a stablecoin deposit",
-    "description": "Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON\n  - USDC: POLYGON, ETHEREUM, BASE, CELO\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n",
-    "requestExamples": [
-      {
-        "name": "MinimalRequest",
-        "value": {
-          "value": 10000,
-          "currency": "USDT"
-        },
-        "summary": "Minimal request (defaults network to POLYGON)"
-      },
-      {
-        "name": "WithNetwork",
-        "value": {
-          "value": 10000,
-          "currency": "USDC",
-          "network": "BASE"
-        },
-        "summary": "Request choosing an explicit network"
-      },
-      {
-        "name": "WithCorrelationId",
-        "value": {
-          "value": 10000,
-          "currency": "BRLA",
-          "network": "POLYGON",
-          "correlationId": "my-unique-id"
-        },
-        "summary": "Request with correlationId for idempotency"
-      },
-      {
-        "name": "WithDestinationWallet",
-        "value": {
-          "value": 10000,
-          "currency": "USDT",
-          "network": "POLYGON",
-          "destinationWalletAddress": "0x0000000000000000000000000000000000000000"
-        },
-        "summary": "Request sending to an explicit destination wallet"
-      }
-    ],
-    "responseExamples": []
-  },
-  {
-    "id": "post-api-v1-subaccount-id-withdraw",
-    "method": "POST",
-    "path": "/api/v1/subaccount/{id}/withdraw",
-    "tag": "subaccount",
-    "category": "Subconta",
-    "summary": "Withdraw from a Sub Account",
-    "description": "Withdraw from a Sub Account and return the withdrawal transaction information",
-    "requestExamples": [
-      {
-        "name": "SubAccount",
-        "value": {
-          "value": 1000
-        }
-      }
-    ],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "transaction": {
-            "status": "CREATED",
-            "value": 100,
-            "endToEndId": "ENDTOENDID_1234567890",
-            "correlationID": "TESTING1323",
-            "destinationAlias": "pixKeyTest@test.com",
-            "comment": "testing-transaction"
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "get-api-v1-subaccount",
-    "method": "GET",
-    "path": "/api/v1/subaccount",
-    "tag": "subaccount",
-    "category": "Subconta",
-    "summary": "Get a list of subaccounts",
-    "description": "",
-    "requestExamples": [],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "subAccounts": [
-            {
-              "name": "test-sub-account",
-              "pixKey": "c4249323-b4ca-43f2-8139-8232aab09b93",
-              "balance": 100,
-              "withdrawBlocked": false
-            }
+              'name': 'CAIXA ECONOMICA FEDERAL',
+              'ispb': '00360305',
+              'code': '00360305',
+              'compe': '104',
+            },
           ],
-          "pageInfo": {
-            "skip": 0,
-            "limit": 10,
-            "hasPreviousPage": false,
-            "hasNextPage": true
-          }
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   {
-    "id": "post-api-v1-subaccount",
-    "method": "POST",
-    "path": "/api/v1/subaccount",
-    "tag": "subaccount",
-    "category": "Subconta",
-    "summary": "Create a subaccount",
-    "description": "",
-    "requestExamples": [
+    'id': 'post-api-v1-stablecoin-deposit-approve',
+    'method': 'POST',
+    'path': '/api/v1/stablecoin/deposit/approve',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Approve (settle) a stablecoin deposit',
+    'description': "Approves a previously created stablecoin deposit identified by its `correlationId`,\ntriggering the on-chain settlement (pay the stable qrcode) for the company's deposit.\n\nThe deposit moves to `PROCESSING` while settlement is in flight. The call is rejected\nwith `400` when the deposit cannot be approved, e.g. it was already `COMPLETED`, it is\nalready `PROCESSING`, there is no source account to pay it, or the provider quote/payment\nfails.\n\nRequires the `STABLECOIN_DEPOSIT_CREATE` scope.\n",
+    'requestExamples': [
       {
-        "name": "SubAccount",
-        "value": {
-          "pixKey": "9134e286-6f71-427a-bf00-241681624587",
-          "name": "Test Account"
-        }
-      }
+        'name': 'ApproveByCorrelationId',
+        'value': {
+          'correlationId': 'my-unique-id',
+        },
+        'summary': 'Approve a deposit by its correlationId',
+      },
     ],
-    "responseExamples": []
+    'responseExamples': [],
   },
   {
-    "id": "post-api-v1-subaccount-id-credit",
-    "method": "POST",
-    "path": "/api/v1/subaccount/{id}/credit",
-    "tag": "subaccount",
-    "category": "Subconta",
-    "summary": "Credit subaccount",
-    "description": "Transfers the amount from the main account to the subaccount.",
-    "requestExamples": [
+    'id': 'post-api-v1-stablecoin-deposit',
+    'method': 'POST',
+    'path': '/api/v1/stablecoin/deposit',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Create a stablecoin deposit',
+    'description': 'Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON\n  - USDC: POLYGON, ETHEREUM, BASE, CELO\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n',
+    'requestExamples': [
       {
-        "name": "ValidCredit",
-        "value": {
-          "value": 100,
-          "description": "Monthly deposit"
-        }
-      }
+        'name': 'MinimalRequest',
+        'value': {
+          'value': 10000,
+          'currency': 'USDT',
+        },
+        'summary': 'Minimal request (defaults network to POLYGON)',
+      },
+      {
+        'name': 'WithNetwork',
+        'value': {
+          'value': 10000,
+          'currency': 'USDC',
+          'network': 'BASE',
+        },
+        'summary': 'Request choosing an explicit network',
+      },
+      {
+        'name': 'WithCorrelationId',
+        'value': {
+          'value': 10000,
+          'currency': 'BRLA',
+          'network': 'POLYGON',
+          'correlationId': 'my-unique-id',
+        },
+        'summary': 'Request with correlationId for idempotency',
+      },
+      {
+        'name': 'WithDestinationWallet',
+        'value': {
+          'value': 10000,
+          'currency': 'USDT',
+          'network': 'POLYGON',
+          'destinationWalletAddress': '0x0000000000000000000000000000000000000000',
+        },
+        'summary': 'Request sending to an explicit destination wallet',
+      },
     ],
-    "responseExamples": []
+    'responseExamples': [],
   },
   {
-    "id": "post-api-v1-subaccount-id-debit",
-    "method": "POST",
-    "path": "/api/v1/subaccount/{id}/debit",
-    "tag": "subaccount",
-    "category": "Subconta",
-    "summary": "Debit subaccount",
-    "description": "Transfers the amount from the subaccount to the main account.",
-    "requestExamples": [
+    'id': 'post-api-v1-subaccount-id-withdraw',
+    'method': 'POST',
+    'path': '/api/v1/subaccount/{id}/withdraw',
+    'tag': 'subaccount',
+    'category': 'Subconta',
+    'summary': 'Withdraw from a Sub Account',
+    'description': 'Withdraw from a Sub Account and return the withdrawal transaction information',
+    'requestExamples': [
       {
-        "name": "ValidDebit",
-        "value": {
-          "value": 50,
-          "description": "Monthly payment"
-        }
-      }
+        'name': 'SubAccount',
+        'value': {
+          'value': 1000,
+        },
+      },
     ],
-    "responseExamples": []
-  },
-  {
-    "id": "post-api-v1-subaccount-transfer",
-    "method": "POST",
-    "path": "/api/v1/subaccount/transfer",
-    "tag": "subaccount",
-    "category": "Subconta",
-    "summary": "Transfer between subaccounts",
-    "description": "Transfer between subaccounts",
-    "requestExamples": [
+    'responseExamples': [
       {
-        "name": "SubAccount",
-        "value": {
-          "value": 65,
-          "fromPixKey": "c4249323-b4ca-43f2-8139-874baab09b93",
-          "fromPixKeyType": "RANDOM",
-          "toPixKey": "3143da48-2bc7-49a4-89bd-4e22f73bfb0c",
-          "toPixKeyType": "RANDOM"
-        }
-      }
-    ],
-    "responseExamples": [
-      {
-        "name": "default",
-        "value": {
-          "value": 65,
-          "destinationSubaccount": {
-            "name": "test-sub-account-1",
-            "pixKey": "c4249323-b4ca-43f2-8139-874baab09b93",
-            "balance": 100
+        'name': 'default',
+        'value': {
+          'transaction': {
+            'status': 'CREATED',
+            'value': 100,
+            'endToEndId': 'ENDTOENDID_1234567890',
+            'correlationID': 'TESTING1323',
+            'destinationAlias': 'pixKeyTest@test.com',
+            'comment': 'testing-transaction',
           },
-          "originSubaccount": {
-            "name": "test-sub-account-2",
-            "pixKey": "3143da48-2bc7-49a4-89bd-4e22f73bfb0c",
-            "balance": 100
-          }
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   {
-    "id": "post-api-v1-subscriptions",
-    "method": "POST",
-    "path": "/api/v1/subscriptions",
-    "tag": "subscription",
-    "category": "Assinatura",
-    "summary": "Create a new Subscription",
-    "description": "Endpoint to create a new Subcription",
-    "requestExamples": [
+    'id': 'get-api-v1-subaccount',
+    'method': 'GET',
+    'path': '/api/v1/subaccount',
+    'tag': 'subaccount',
+    'category': 'Subconta',
+    'summary': 'Get a list of subaccounts',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
       {
-        "name": "Subscription",
-        "value": {
-          "name": "Pix Automático",
-          "value": 100,
-          "customer": {
-            "name": "Dan",
-            "taxID": "31324227036",
-            "email": "email0@example.com",
-            "phone": "5511999999999",
-            "address": {
-              "zipcode": "04556300",
-              "street": "rua de são paulo",
-              "number": "3432",
-              "neighborhood": "BROOKLIN PAULISTA",
-              "city": "SAO PAULO",
-              "state": "SP",
-              "complement": "CONJ 26"
-            }
+        'name': 'default',
+        'value': {
+          'subAccounts': [
+            {
+              'name': 'test-sub-account',
+              'pixKey': 'c4249323-b4ca-43f2-8139-8232aab09b93',
+              'balance': 100,
+              'withdrawBlocked': false,
+            },
+          ],
+          'pageInfo': {
+            'skip': 0,
+            'limit': 10,
+            'hasPreviousPage': false,
+            'hasNextPage': true,
           },
-          "correlationID": "My-UniqueID",
-          "comment": "Comentários",
-          "frequency": "WEEKLY",
-          "type": "PIX_RECURRING",
-          "pixRecurringOptions": {
-            "journey": "ONLY_RECURRENCY",
-            "retryPolicy": "NON_PERMITED"
-          },
-          "dayGenerateCharge": 25,
-          "dayDue": 3
-        }
-      }
+        },
+      },
     ],
-    "responseExamples": []
   },
   {
-    "id": "post-api-v1-transfer",
-    "method": "POST",
-    "path": "/api/v1/transfer",
-    "tag": "transfer (request access)",
-    "category": "Transferência",
-    "summary": "Create a Transfer",
-    "description": "Endpoint to to transfer values between accounts",
-    "requestExamples": [
+    'id': 'post-api-v1-subaccount',
+    'method': 'POST',
+    'path': '/api/v1/subaccount',
+    'tag': 'subaccount',
+    'category': 'Subconta',
+    'summary': 'Create a subaccount',
+    'description': '',
+    'requestExamples': [
       {
-        "name": "default",
-        "value": {
-          "value": 100,
-          "fromPixKey": "from@openpix.com.br",
-          "toPixKey": "to@openpix.com.br",
-          "correlationID": "123e4567-e89b-12d3-a456-426614174000"
-        }
-      }
+        'name': 'SubAccount',
+        'value': {
+          'pixKey': '9134e286-6f71-427a-bf00-241681624587',
+          'name': 'Test Account',
+        },
+      },
     ],
-    "responseExamples": []
-  }
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-subaccount-id-credit',
+    'method': 'POST',
+    'path': '/api/v1/subaccount/{id}/credit',
+    'tag': 'subaccount',
+    'category': 'Subconta',
+    'summary': 'Credit subaccount',
+    'description': 'Transfers the amount from the main account to the subaccount.',
+    'requestExamples': [
+      {
+        'name': 'ValidCredit',
+        'value': {
+          'value': 100,
+          'description': 'Monthly deposit',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-subaccount-id-debit',
+    'method': 'POST',
+    'path': '/api/v1/subaccount/{id}/debit',
+    'tag': 'subaccount',
+    'category': 'Subconta',
+    'summary': 'Debit subaccount',
+    'description': 'Transfers the amount from the subaccount to the main account.',
+    'requestExamples': [
+      {
+        'name': 'ValidDebit',
+        'value': {
+          'value': 50,
+          'description': 'Monthly payment',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-subaccount-transfer',
+    'method': 'POST',
+    'path': '/api/v1/subaccount/transfer',
+    'tag': 'subaccount',
+    'category': 'Subconta',
+    'summary': 'Transfer between subaccounts',
+    'description': 'Transfer between subaccounts',
+    'requestExamples': [
+      {
+        'name': 'SubAccount',
+        'value': {
+          'value': 65,
+          'fromPixKey': 'c4249323-b4ca-43f2-8139-874baab09b93',
+          'fromPixKeyType': 'RANDOM',
+          'toPixKey': '3143da48-2bc7-49a4-89bd-4e22f73bfb0c',
+          'toPixKeyType': 'RANDOM',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'value': 65,
+          'destinationSubaccount': {
+            'name': 'test-sub-account-1',
+            'pixKey': 'c4249323-b4ca-43f2-8139-874baab09b93',
+            'balance': 100,
+          },
+          'originSubaccount': {
+            'name': 'test-sub-account-2',
+            'pixKey': '3143da48-2bc7-49a4-89bd-4e22f73bfb0c',
+            'balance': 100,
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-subscriptions',
+    'method': 'POST',
+    'path': '/api/v1/subscriptions',
+    'tag': 'subscription',
+    'category': 'Assinatura',
+    'summary': 'Create a new Subscription',
+    'description': 'Endpoint to create a new Subcription',
+    'requestExamples': [
+      {
+        'name': 'Subscription',
+        'value': {
+          'name': 'Pix Automático',
+          'value': 100,
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+            'address': {
+              'zipcode': '04556300',
+              'street': 'rua de são paulo',
+              'number': '3432',
+              'neighborhood': 'BROOKLIN PAULISTA',
+              'city': 'SAO PAULO',
+              'state': 'SP',
+              'complement': 'CONJ 26',
+            },
+          },
+          'correlationID': 'My-UniqueID',
+          'comment': 'Comentários',
+          'frequency': 'WEEKLY',
+          'type': 'PIX_RECURRING',
+          'pixRecurringOptions': {
+            'journey': 'ONLY_RECURRENCY',
+            'retryPolicy': 'NON_PERMITED',
+          },
+          'dayGenerateCharge': 25,
+          'dayDue': 3,
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-transfer',
+    'method': 'POST',
+    'path': '/api/v1/transfer',
+    'tag': 'transfer (request access)',
+    'category': 'Transferência',
+    'summary': 'Create a Transfer',
+    'description': 'Endpoint to to transfer values between accounts',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'value': 100,
+          'fromPixKey': 'from@openpix.com.br',
+          'toPixKey': 'to@openpix.com.br',
+          'correlationID': '123e4567-e89b-12d3-a456-426614174000',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
 ];
 
 export type { ApiEndpoint, ApiExample };
