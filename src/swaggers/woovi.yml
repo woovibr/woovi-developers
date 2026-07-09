@@ -21521,6 +21521,9 @@ components:
               type: string
               enum:
                 - PIX_KEY
+                - QR_CODE
+                - MANUAL
+                - BOLETO
               description: type of the payment
             value:
               type: number
@@ -21562,7 +21565,10 @@ components:
             type:
               type: string
               enum:
+                - PIX_KEY
                 - QR_CODE
+                - MANUAL
+                - BOLETO
               description: type of the payment
             qrCode:
               type: string
@@ -21601,7 +21607,10 @@ components:
             type:
               type: string
               enum:
+                - PIX_KEY
+                - QR_CODE
                 - MANUAL
+                - BOLETO
               description: type of the payment
             value:
               type: number
@@ -21668,6 +21677,9 @@ components:
             type:
               type: string
               enum:
+                - PIX_KEY
+                - QR_CODE
+                - MANUAL
                 - BOLETO
               description: type of the payment
             boletoBarcode:

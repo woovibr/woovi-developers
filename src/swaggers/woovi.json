@@ -16484,7 +16484,10 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "PIX_KEY"
+                  "PIX_KEY",
+                  "QR_CODE",
+                  "MANUAL",
+                  "BOLETO"
                 ],
                 "description": "type of the payment"
               },
@@ -16538,7 +16541,10 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "QR_CODE"
+                  "PIX_KEY",
+                  "QR_CODE",
+                  "MANUAL",
+                  "BOLETO"
                 ],
                 "description": "type of the payment"
               },
@@ -16584,7 +16590,10 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "MANUAL"
+                  "PIX_KEY",
+                  "QR_CODE",
+                  "MANUAL",
+                  "BOLETO"
                 ],
                 "description": "type of the payment"
               },
@@ -16675,6 +16684,9 @@
               "type": {
                 "type": "string",
                 "enum": [
+                  "PIX_KEY",
+                  "QR_CODE",
+                  "MANUAL",
                   "BOLETO"
                 ],
                 "description": "type of the payment"
