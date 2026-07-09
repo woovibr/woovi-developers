@@ -95,14 +95,14 @@ A resposta traz os dados do boleto:
 
 Se o código for inválido, a API responde `400` com o detalhe do erro.
 
-📖 Endpoint completo na **[Referência da API — Validar boleto](<https://developers.woovi.com/api#tag/boleto/paths/~1api~1v1~1boleto~1validate/post>)**.
+📖 Endpoint completo na **[Referência da API — Validar boleto](<https://developers.woovi.com/api#tag/boleto/POST/api/v1/boleto/validate>)**.
 
 ---
 
 ## 2. Criar o pagamento
 
 Com o boleto validado, crie o pagamento no endpoint
-[Create Payment request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post>).
+[Create Payment request](<https://developers.woovi.com/api#tag/payment-request-access/POST/api/v1/payment>).
 Para pagar um boleto, use `type: "BOLETO"` e informe o **`boletoBarcode`**:
 
 | Campo | Obrigatório | Descrição |
@@ -199,7 +199,7 @@ aprovação automática é sempre feita na criação.
 
 Quando o pagamento foi criado sem `autoApprove`, ele fica em `CREATED` e você o
 aprova em uma segunda chamada, enviando o `correlationID`
-([Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>)).
+([Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-request-access/POST/api/v1/payment/approve>)).
 
 ```bash
 curl --request POST \
@@ -268,6 +268,6 @@ Os endpoints usados neste guia, na Referência da API:
 
 | Passo | Endpoint | Referência |
 | --- | --- | --- |
-| 1. Validar | `POST /api/v1/boleto/validate` | [Validar boleto](<https://developers.woovi.com/api#tag/boleto/paths/~1api~1v1~1boleto~1validate/post>) |
-| 2. Criar | `POST /api/v1/payment` | [Create Payment request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post>) |
-| 3. Aprovar | `POST /api/v1/payment/approve` | [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>) |
+| 1. Validar | `POST /api/v1/boleto/validate` | [Validar boleto](<https://developers.woovi.com/api#tag/boleto/POST/api/v1/boleto/validate>) |
+| 2. Criar | `POST /api/v1/payment` | [Create Payment request](<https://developers.woovi.com/api#tag/payment-request-access/POST/api/v1/payment>) |
+| 3. Aprovar | `POST /api/v1/payment/approve` | [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-request-access/POST/api/v1/payment/approve>) |
