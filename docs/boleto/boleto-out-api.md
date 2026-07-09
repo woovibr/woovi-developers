@@ -95,6 +95,8 @@ A resposta traz os dados do boleto:
 
 Se o código for inválido, a API responde `400` com o detalhe do erro.
 
+📖 Endpoint completo na **[Referência da API — Validar boleto](<https://developers.woovi.com/api#tag/boleto/paths/~1api~1v1~1boleto~1validate/post>)**.
+
 ---
 
 ## 2. Criar o pagamento
@@ -257,3 +259,15 @@ Para habilitar o pagamento de boletos, entre em contato com o suporte da Woovi
 pelo chat da plataforma. Veja também
 [Como criar e aprovar um pagamento em uma única chamada](../payment/payment-how-to-auto-approve.md).
 :::
+
+---
+
+## Referência da API
+
+Os endpoints usados neste guia, na Referência da API:
+
+| Passo | Endpoint | Referência |
+| --- | --- | --- |
+| 1. Validar | `POST /api/v1/boleto/validate` | [Validar boleto](<https://developers.woovi.com/api#tag/boleto/paths/~1api~1v1~1boleto~1validate/post>) |
+| 2. Criar | `POST /api/v1/payment` | [Create Payment request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post>) |
+| 3. Aprovar | `POST /api/v1/payment/approve` | [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>) |
