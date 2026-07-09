@@ -39,6 +39,8 @@ Todos os valores (`value`, `totalValue`) são expressos em **centavos**
   veja [Como solicitar acesso a pagamentos](../payment/payment-how-to-request-access.md).
 - O **pagamento de boletos (Boleto OUT)** habilitado na conta — precisa ser
   solicitado ao suporte. Veja [Ativação](#ativação).
+- O escopo **`BOLETO_VALIDATE_POST`** presente na sua aplicação — necessário
+  para chamar o endpoint de validação (passo 1).
 
 ---
 
@@ -46,6 +48,11 @@ Todos os valores (`value`, `totalValue`) são expressos em **centavos**
 
 Antes de pagar, valide o código de barras para confirmar valor, vencimento e
 beneficiário. Envie **apenas** o `barcode` (com 44, 47 ou 48 dígitos):
+
+:::note Escopo necessário
+Este endpoint exige que sua aplicação tenha o escopo **`BOLETO_VALIDATE_POST`**.
+Se a validação retornar `403`, confira os escopos da aplicação.
+:::
 
 ```bash
 curl --request POST \
