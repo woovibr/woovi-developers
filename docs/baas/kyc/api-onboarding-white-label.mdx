@@ -1,0 +1,82 @@
+---
+id: kyc-api-onboarding-white-label
+title: Como ocultar a logo da Woovi no link de onboarding?
+tags:
+  - api
+  - kyc
+  - onboarding
+  - embed
+  - white-label
+  - logo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Ao incorporar o KYC Onboarding no seu produto (via [iframe, redirecionamento ou popup](./api-onboarding-embed.mdx)), você pode querer uma experiência **white-label**, sem a logo da Woovi no topo da página.
+
+Para isso, o formulário tem um **modo embedded**: basta adicionar o parâmetro de query **`?embed=true`** à URL de onboarding. Quando presente, o cabeçalho com a logo da Woovi **não é exibido**.
+
+:::info Como funciona
+O modo embedded é controlado pela própria URL. Não há configuração de conta, feature ou chamada de API extra para ativá-lo — é só o parâmetro `?embed=true`. Você pode aplicá-lo a qualquer `linkOnboarding`.
+:::
+
+## O que o `?embed=true` oculta (e o que não oculta)
+
+| Elemento | Com `?embed=true` |
+|----------|-------------------|
+| Cabeçalho com a logo da Woovi (topo da página) | **Ocultado** |
+| Formulário multi-step (dados, endereço, sócios, documentos, termos) | Inalterado |
+| Texto contratual ("WOOVI INSTITUIÇÃO DE PAGAMENTO LTDA." nos Termos) | **Mantido** — é conteúdo regulatório e não pode ser removido |
+| Link "termos de uso e política de privacidade da Woovi" | Mantido |
+| Título da aba do navegador (`Woovi \| KYC`) | Inalterado |
+
+:::caution
+O `?embed=true` remove apenas o **elemento visual de branding** (a logo no cabeçalho). As menções contratuais à Woovi nos Termos de Abertura de Conta são obrigatórias por regulação (BACEN) e permanecem no documento.
+:::
+
+## Como aplicar
+
+O `linkOnboarding` retornado pela API [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx) vem **sem** o parâmetro. Para o modo white-label, basta anexá-lo ao link que você recebeu:
+
+```
+https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...?embed=true
+```
+
+:::tip Combinando com outros parâmetros
+Se a URL já tiver uma query string, use `&embed=true` em vez de `?embed=true`. Ex.: `...?foo=bar&embed=true`.
+:::
+
+<Tabs>
+  <TabItem value="iframe" label="Iframe" default>
+
+```html
+<iframe
+  src="https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...?embed=true"
+  width="100%"
+  height="900"
+  style="border: 0; max-width: 640px;"
+  title="Cadastro KYC"
+  allow="camera; clipboard-read; clipboard-write"
+></iframe>
+```
+
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
+
+```js
+// linkOnboarding recebido do seu backend (sem embed)
+const url = new URL(data.linkOnboarding);
+url.searchParams.set('embed', 'true');
+
+// Redireciona / abre em modo white-label
+window.location.href = url.toString();
+```
+
+  </TabItem>
+</Tabs>
+
+## Veja também
+
+- [Como criar um onboarding KYC via API?](./api-onboarding-create.mdx)
+- [Como incorporar o link de KYC Onboarding no seu site?](./api-onboarding-embed.mdx)
