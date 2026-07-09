@@ -1754,6 +1754,273 @@ paths:
             response = http.request(request)
 
             puts response.read_body
+  /api/v1/boleto/validate:
+    post:
+      tags:
+        - boleto
+      summary: Validate a boleto by barcode
+      x-required-scope: BOLETO_VALIDATE_POST
+      security:
+        - AppID:
+            - BOLETO_VALIDATE_POST
+      description: >
+        Validates a boleto by its barcode before paying it. This is step 1 of
+        the
+
+        Boleto OUT flow: it confirms the amount, due date and beneficiary so you
+        can
+
+        review the boleto before creating the payment.
+
+
+        The barcode must have 44, 47 or 48 digits. All monetary values are
+        returned in cents.
+
+
+        Requires the `BOLETO_VALIDATE_POST` scope on the application and the
+        Boleto OUT
+
+        feature enabled on the company.
+
+
+        After validating, create the payment with `POST /api/v1/payment` using
+
+        `type: "BOLETO"` and the `boletoBarcode`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoletoValidateRequest'
+            examples:
+              Barcode:
+                summary: Validate by barcode
+                value:
+                  barcode: '34195148200000003001095517077320772982609000'
+      responses:
+        '200':
+          description: Boleto validated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoletoValidateResponse'
+              examples:
+                Validated:
+                  summary: Validated boleto
+                  value:
+                    boleto:
+                      barcode: '34195148200000003001095517077320772982609000'
+                      expiresDate: 2026-06-27T02:59:59.999Z
+                      totalValue: 300
+                      issuingEntity:
+                        code: '341'
+                        name: ITAU UNIBANCO S/A
+                      finalBeneficiary:
+                        name: WOOVI
+                        taxID: '44720743000101'
+        '400':
+          description: Invalid barcode or unknown boleto provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoletoValidateError'
+              examples:
+                InvalidBarcode:
+                  summary: Barcode with an invalid length
+                  value:
+                    error: Barcode must have exactly 44, 47 or 48 characters
+                UnknownProvider:
+                  summary: No boleto provider resolved for the account
+                  value:
+                    error: Unknown boleto provider id
+                    errorCode: BOLETO_PROVIDER_ID_UNKNOWN
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    error: Unauthorized
+        '403':
+          description: Missing scope or Boleto OUT not enabled for the company
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  errorCode:
+                    type: string
+              examples:
+                MissingScope:
+                  summary: Application does not carry the required scope
+                  value:
+                    error: >-
+                      Application is missing required scope:
+                      BOLETO_VALIDATE_POST
+                BoletoOutDisabled:
+                  summary: Company does not have Boleto OUT enabled
+                  value:
+                    error: User not allowed
+                    errorCode: BOLETO_OUT_DISABLED_COMPANY
+      x-codeSamples:
+        - lang: Node + Native
+          source: >-
+            const http = require('https');
+
+
+            const options = {
+              method: 'POST',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/boleto/validate',
+              headers: {
+                Authorization: 'Bearer REPLACE_BEARER_TOKEN',
+                'content-type': 'application/json'
+              }
+            };
+
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+
+            req.write(JSON.stringify({barcode:
+            '34195148200000003001095517077320772982609000'}));
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url https://api.woovi.com/api/v1/boleto/validate \
+              --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+              --header 'content-type: application/json' \
+              --data '{"barcode":"34195148200000003001095517077320772982609000"}'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/boleto/validate",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode([
+                'barcode' => '34195148200000003001095517077320772982609000'
+              ]),
+              CURLOPT_HTTPHEADER => [
+                "Authorization: Bearer REPLACE_BEARER_TOKEN",
+                "content-type: application/json"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            payload =
+            "{\"barcode\":\"34195148200000003001095517077320772982609000\"}"
+
+
+            headers = {
+                'Authorization': "Bearer REPLACE_BEARER_TOKEN",
+                'content-type': "application/json"
+            }
+
+
+            conn.request("POST", "/api/v1/boleto/validate", payload, headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/boleto/validate\"\n\n\tpayload := strings.NewReader(\"{\\\"barcode\\\":\\\"34195148200000003001095517077320772982609000\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"barcode\":\"34195148200000003001095517077320772982609000\"}");
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/boleto/validate")
+              .post(body)
+              .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
+              .addHeader("content-type", "application/json")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url = URI("https://api.woovi.com/api/v1/boleto/validate")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
+
+            request["content-type"] = 'application/json'
+
+            request.body =
+            "{\"barcode\":\"34195148200000003001095517077320772982609000\"}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
   /api/v1/cashback-fidelity/balance/{taxID}:
     get:
       tags:
@@ -10838,12 +11105,20 @@ paths:
         - AppID:
             - PAYMENT_POST
       description: >
-        Endpoint to request a payment. Supports three payment types: Pix Key
-        (`PIX_KEY`), QR Code (`QR_CODE`), and Manual (`MANUAL`).
+        Endpoint to request a payment. Supports four payment types: Pix Key
+        (`PIX_KEY`), QR Code (`QR_CODE`), Manual (`MANUAL`), and Boleto
+        (`BOLETO`).
 
 
         For QR Code payments, the system decodes the BR Code string and extracts
         the destination and value automatically.
+
+
+        For Boleto payments, send `type: "BOLETO"` and the `boletoBarcode`. The
+        amount, due date and beneficiary are resolved from the boleto, so
+        `value` and destination are not sent in the body. Validate the barcode
+        first with `POST /api/v1/boleto/validate`. Requires the Boleto OUT
+        feature enabled on the company.
 
 
         Set `autoApprove: true` to create and immediately approve the payment in
@@ -10939,6 +11214,21 @@ paths:
                     businessUnit: finance
                     approver: manager-001
                     priority: high
+              boleto:
+                summary: Pay a boleto (Boleto OUT)
+                value:
+                  type: BOLETO
+                  boletoBarcode: '34195148200000003001095517077320772982609000'
+                  comment: boleto payment
+                  correlationID: boleto-out-1
+              boletoAutoApprove:
+                summary: Pay a boleto with auto-approval
+                value:
+                  type: BOLETO
+                  boletoBarcode: '34195148200000003001095517077320772982609000'
+                  comment: boleto payment
+                  correlationID: boleto-out-auto-approve
+                  autoApprove: true
       responses:
         '200':
           description: >-
@@ -11007,6 +11297,25 @@ paths:
                       psp:
                         id: '54811417'
                         name: WOOVI INSTITUICAO DE PAGAMENTO
+                boleto:
+                  summary: Boleto payment response
+                  value:
+                    payment:
+                      value: 300
+                      status: CREATED
+                      comment: boleto payment
+                      correlationID: boleto-out-1
+                      sourceAccountId: 6a0382bc2dd3cd1010cbc72d
+                      boleto:
+                        barcode: '34195148200000003001095517077320772982609000'
+                        expiresDate: 2026-06-27T02:59:59.999Z
+                        totalValue: 300
+                        issuingEntity:
+                          code: '341'
+                          name: ITAU UNIBANCO S/A
+                        finalBeneficiary:
+                          name: WOOVI
+                          taxID: '44720743000101'
                 autoApproved:
                   summary: Auto-approved payment response (autoApprove true)
                   value:
@@ -15248,6 +15557,268 @@ paths:
             request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
 
             response = http.request(request)
+            puts response.read_body
+    post:
+      tags:
+        - stablecoin
+      summary: Request a new stablecoin subaccount (KYB)
+      description: >
+        Requests the creation of a stablecoin subaccount for the authenticated
+        company,
+
+        reusing the KYC data already on the referenced account register.
+
+
+        Pass the company's `accountRegisterId`; the provider subaccount is
+        created
+
+        immediately and a `StableSubAccount` is persisted with status
+        `IN_REVIEW` while
+
+        the KYB is processed. When the KYB resolves, the merchant receives a
+
+        `STABLECOIN_SUBACCOUNT_CONFIRMED` or `STABLECOIN_SUBACCOUNT_REJECTED`
+        webhook.
+
+
+        The request is idempotent on `accountRegisterId`: a repeat call returns
+        the
+
+        existing subaccount (HTTP `200`) instead of creating a duplicate. The
+        first,
+
+        creating call returns HTTP `201`.
+
+
+        Requires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company
+        `STABLECOIN`
+
+        feature.
+      security:
+        - AppID: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StablecoinSubAccountCreateRequest'
+            examples:
+              MinimalRequest:
+                summary: Minimal request (uses the company's default bank account)
+                value:
+                  accountRegisterId: 6650abc1234def567890aaaa
+              WithCompanyBankAccount:
+                summary: Request choosing an explicit company bank account
+                value:
+                  accountRegisterId: 6650abc1234def567890aaaa
+                  companyBankAccountId: 6650def1234abc567890bbbb
+      responses:
+        '200':
+          description: Subaccount already requested for this account register
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StablecoinSubAccountCreateResponse'
+        '201':
+          description: Subaccount activation requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StablecoinSubAccountCreateResponse'
+        '400':
+          description: Invalid input or referenced account register
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StablecoinSubAccountCreateError'
+              examples:
+                MissingAccountRegisterId:
+                  value:
+                    error: accountRegisterId is required
+                InvalidAccountRegisterId:
+                  value:
+                    error: INVALID_ACCOUNT_REGISTER_ID
+                AccountRegisterNotFound:
+                  value:
+                    error: ACCOUNT_REGISTER_NOT_FOUND
+        '401':
+          description: Invalid credentials or missing required scope
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    error: Unauthorized
+                MissingScope:
+                  value:
+                    error: >-
+                      Application is missing required scope:
+                      STABLECOIN_SUBACCOUNT_CREATE
+        '502':
+          description: Provider or persistence failure while creating the subaccount
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StablecoinSubAccountCreateError'
+              examples:
+                ProviderFailed:
+                  value:
+                    error: AVENIA_SUBACCOUNT_CREATE_FAILED
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'POST',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/stablecoin/subaccount',
+              headers: {
+                Authorization: 'Bearer REPLACE_BEARER_TOKEN',
+                'content-type': 'application/json'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.write(JSON.stringify({
+              accountRegisterId: '6650abc1234def567890aaaa',
+              companyBankAccountId: '6650def1234abc567890bbbb'
+            }));
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url https://api.woovi.com/api/v1/stablecoin/subaccount \
+              --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+              --header 'content-type: application/json' \
+              --data '{"accountRegisterId":"6650abc1234def567890aaaa","companyBankAccountId":"6650def1234abc567890bbbb"}'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/stablecoin/subaccount",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode([
+                'accountRegisterId' => '6650abc1234def567890aaaa',
+                'companyBankAccountId' => '6650def1234abc567890bbbb'
+              ]),
+              CURLOPT_HTTPHEADER => [
+                "Authorization: Bearer REPLACE_BEARER_TOKEN",
+                "content-type: application/json"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            payload =
+            "{\"accountRegisterId\":\"6650abc1234def567890aaaa\",\"companyBankAccountId\":\"6650def1234abc567890bbbb\"}"
+
+
+            headers = {
+                'Authorization': "Bearer REPLACE_BEARER_TOKEN",
+                'content-type': "application/json"
+            }
+
+
+            conn.request("POST", "/api/v1/stablecoin/subaccount", payload,
+            headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/subaccount\"\n\n\tpayload := strings.NewReader(\"{\\\"accountRegisterId\\\":\\\"6650abc1234def567890aaaa\\\",\\\"companyBankAccountId\\\":\\\"6650def1234abc567890bbbb\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"accountRegisterId\":\"6650abc1234def567890aaaa\",\"companyBankAccountId\":\"6650def1234abc567890bbbb\"}");
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/stablecoin/subaccount")
+              .post(body)
+              .addHeader("Authorization", "Bearer REPLACE_BEARER_TOKEN")
+              .addHeader("content-type", "application/json")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url = URI("https://api.woovi.com/api/v1/stablecoin/subaccount")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["Authorization"] = 'Bearer REPLACE_BEARER_TOKEN'
+
+            request["content-type"] = 'application/json'
+
+            request.body =
+            "{\"accountRegisterId\":\"6650abc1234def567890aaaa\",\"companyBankAccountId\":\"6650def1234abc567890bbbb\"}"
+
+
+            response = http.request(request)
+
             puts response.read_body
   /api/v1/statement:
     get:
@@ -19822,6 +20393,70 @@ components:
         clientId:
           type: string
           description: The client ID of the application to delete
+    BoletoValidateRequest:
+      type: object
+      required:
+        - barcode
+      properties:
+        barcode:
+          type: string
+          description: The boleto barcode. Must have 44, 47 or 48 digits.
+          example: '34195148200000003001095517077320772982609000'
+    BoletoValidatedInfo:
+      type: object
+      required:
+        - barcode
+        - totalValue
+      properties:
+        barcode:
+          type: string
+          description: Normalized boleto barcode.
+          example: '34195148200000003001095517077320772982609000'
+        digitable:
+          type: string
+          description: Digitable line, when the provider returns it.
+        expiresDate:
+          type: string
+          description: Due date (ISO 8601), when available.
+          example: 2026-06-27T02:59:59.999Z
+        totalValue:
+          type: number
+          description: Total amount to pay, in cents.
+          example: 300
+        issuingEntity:
+          type: object
+          description: Issuing institution, when available.
+          properties:
+            code:
+              type: string
+              example: '341'
+            name:
+              type: string
+              example: ITAU UNIBANCO S/A
+        finalBeneficiary:
+          type: object
+          description: Final beneficiary, when available.
+          properties:
+            name:
+              type: string
+              example: WOOVI
+            taxID:
+              type: string
+              example: '44720743000101'
+    BoletoValidateResponse:
+      type: object
+      properties:
+        boleto:
+          $ref: '#/components/schemas/BoletoValidatedInfo'
+    BoletoValidateError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Human readable error message.
+        errorCode:
+          type: string
+          description: Machine readable error code, present for provider/business errors.
     Charge:
       type: object
       properties:
@@ -21034,6 +21669,37 @@ components:
               type: object
               additionalProperties: true
               description: additional metadata for the payment (max 30 keys)
+        - title: Boleto
+          type: object
+          required:
+            - type
+            - boletoBarcode
+            - correlationID
+          properties:
+            type:
+              type: string
+              enum:
+                - BOLETO
+              description: type of the payment
+            boletoBarcode:
+              type: string
+              description: >-
+                the boleto barcode to be paid (44, 47 or 48 digits). The amount,
+                due date and beneficiary are resolved from the validated boleto,
+                so value and destination are not sent in the body
+            correlationID:
+              type: string
+              description: a unique identifier for your payment
+            sourceAccountId:
+              type: string
+              description: optional source account ID to use for the payment
+            comment:
+              type: string
+              description: the comment that will be sent alongside your payment
+            metadata:
+              type: object
+              additionalProperties: true
+              description: additional metadata for the payment (max 30 keys)
     Payment:
       type: object
       properties:
@@ -21043,6 +21709,7 @@ components:
             - PIX_KEY
             - QR_CODE
             - MANUAL
+            - BOLETO
           description: type of the payment
         value:
           type: number
@@ -21068,6 +21735,9 @@ components:
         comment:
           type: string
           description: the comment that will be sent alongside your payment
+        sourceAccountId:
+          type: string
+          description: the source account the payment was created from
         status:
           type: string
           description: payment status
@@ -21076,6 +21746,35 @@ components:
             - FAILED
             - CONFIRMED
             - DENIED
+        boleto:
+          type: object
+          description: >-
+            present for boleto payments (type BOLETO), resolved from the
+            validated boleto
+          properties:
+            barcode:
+              type: string
+              description: the boleto barcode
+            expiresDate:
+              type: string
+              description: due date (ISO 8601)
+            totalValue:
+              type: number
+              description: total amount to pay, in cents
+            issuingEntity:
+              type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  type: string
+            finalBeneficiary:
+              type: object
+              properties:
+                name:
+                  type: string
+                taxID:
+                  type: string
     Party:
       type: object
       properties:
@@ -21736,6 +22435,42 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StablecoinSubAccountItem'
+    StablecoinSubAccountCreateRequest:
+      type: object
+      required:
+        - accountRegisterId
+      properties:
+        accountRegisterId:
+          type: string
+          description: The account register id whose KYC data backs the KYB.
+          example: 6650abc1234def567890aaaa
+        companyBankAccountId:
+          type: string
+          description: >-
+            Company bank account to associate with the subaccount. Defaults to
+            the company's default bank account when omitted.
+          example: 6650def1234abc567890bbbb
+    StablecoinSubAccountCreateResponse:
+      type: object
+      properties:
+        subAccountId:
+          type: string
+          description: The provider subaccount id.
+          example: sub_01HZ...
+        status:
+          type: string
+          description: The StableSubAccount status (IN_REVIEW on creation).
+          example: IN_REVIEW
+        correlationId:
+          type: string
+          example: 3f1a2b3c-4d5e-6f70-8a9b-0c1d2e3f4a5b
+    StablecoinSubAccountCreateError:
+      type: object
+      properties:
+        error:
+          type: string
+        correlationId:
+          type: string
     Start: *ref_0
     SubAccount:
       type: object
@@ -22452,6 +23187,26 @@ tags:
   - name: application
     description: |
       Endpoints to manage applications for authentication and API access.
+  - name: boleto
+    description: >
+      Endpoints to validate and pay boletos (Boleto OUT).
+
+
+      The Boleto OUT flow has three steps:
+
+
+      1. **Validate** the boleto by its barcode (`POST /api/v1/boleto/validate`)
+      to confirm the amount, due date and beneficiary.
+
+      2. **Create the payment** (`POST /api/v1/payment`) with `type: "BOLETO"`
+      and the `boletoBarcode`.
+
+      3. **Approve the payment** (`POST /api/v1/payment/approve`), unless it was
+      created with `autoApprove: true`.
+
+
+      Requires the `BOLETO_VALIDATE_POST` scope on the application and the
+      Boleto OUT feature enabled on the company.
   - name: cashback-fidelity
     description: |
       Endpoint to manage exclusive cashbacks
