@@ -1288,6 +1288,668 @@ paths:
             response = http.request(request)
 
             puts response.read_body
+  /api/v1/anticipation/balance/batch:
+    post:
+      tags:
+        - anticipation
+      summary: Bulk-sync beneficiary balances
+      description: >
+        Absolute set of availableAmount/maxAdvanceableAmount for up to 1000
+        beneficiaries in one call (nightly payroll sync). Returns a per-item
+        report so partial failures can be reconciled.
+      x-required-scope: ANTICIPATION_BALANCE_POST
+      security:
+        - AppID:
+            - ANTICIPATION_BALANCE_POST
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnticipationBalanceBatchPayload'
+            examples:
+              batch:
+                value:
+                  items:
+                    - taxID: '12345678909'
+                      availableAmount: 500000
+                      maxAdvanceableAmount: 350000
+                    - taxID: '98765432100'
+                      availableAmount: 120000
+                      maxAdvanceableAmount: 120000
+      responses:
+        '200':
+          description: Per-item processing report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnticipationBalanceBatchResult'
+        '400':
+          description: items missing, empty or above 1000
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Invalid app_id or IP not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                example:
+                  data: null
+                  errors:
+                    - message: Invalid appID
+        '403':
+          description: Missing scope or Anticipation not enabled for the company
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      x-codeSamples:
+        - lang: Node + Native
+          source: >-
+            const http = require('https');
+
+
+            const options = {
+              method: 'POST',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/anticipation/balance/batch',
+              headers: {
+                Authorization: '{APP_ID}',
+                'content-type': 'application/json'
+              }
+            };
+
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+
+            req.write(JSON.stringify({items: [{taxID: 'string', availableAmount:
+            0, maxAdvanceableAmount: 0}]}));
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url https://api.woovi.com/api/v1/anticipation/balance/batch \
+              --header 'Authorization: {APP_ID}' \
+              --header 'content-type: application/json' \
+              --data '{"items":[{"taxID":"string","availableAmount":0,"maxAdvanceableAmount":0}]}'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/anticipation/balance/batch",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode([
+                'items' => [
+                    [
+                            'taxID' => 'string',
+                            'availableAmount' => 0,
+                            'maxAdvanceableAmount' => 0
+                    ]
+                ]
+              ]),
+              CURLOPT_HTTPHEADER => [
+                "Authorization: {APP_ID}",
+                "content-type: application/json"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            payload =
+            "{\"items\":[{\"taxID\":\"string\",\"availableAmount\":0,\"maxAdvanceableAmount\":0}]}"
+
+
+            headers = {
+                'Authorization': "{APP_ID}",
+                'content-type': "application/json"
+            }
+
+
+            conn.request("POST", "/api/v1/anticipation/balance/batch", payload,
+            headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/anticipation/balance/batch\"\n\n\tpayload := strings.NewReader(\"{\\\"items\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"items\":[{\"taxID\":\"string\",\"availableAmount\":0,\"maxAdvanceableAmount\":0}]}");
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/anticipation/balance/batch")
+              .post(body)
+              .addHeader("Authorization", "{APP_ID}")
+              .addHeader("content-type", "application/json")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url = URI("https://api.woovi.com/api/v1/anticipation/balance/batch")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["Authorization"] = '{APP_ID}'
+
+            request["content-type"] = 'application/json'
+
+            request.body =
+            "{\"items\":[{\"taxID\":\"string\",\"availableAmount\":0,\"maxAdvanceableAmount\":0}]}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
+  /api/v1/anticipation/beneficiary/{taxID}/activate:
+    post:
+      tags:
+        - anticipation
+      summary: Activate a beneficiary
+      description: Reactivates a beneficiary previously deactivated.
+      x-required-scope: ANTICIPATION_BENEFICIARY_POST
+      security:
+        - AppID:
+            - ANTICIPATION_BENEFICIARY_POST
+      parameters:
+        - name: taxID
+          in: path
+          required: true
+          description: Payout key (CPF or CNPJ), with or without mask.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Beneficiary updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary:
+                    $ref: '#/components/schemas/AnticipationBeneficiary'
+        '400':
+          description: Invalid taxID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Invalid app_id or IP not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                example:
+                  data: null
+                  errors:
+                    - message: Invalid appID
+        '403':
+          description: Missing scope or Anticipation not enabled for the company
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Beneficiary not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      x-codeSamples: []
+  /api/v1/anticipation/beneficiary/{taxID}/deactivate:
+    post:
+      tags:
+        - anticipation
+      summary: Deactivate a beneficiary
+      description: Deactivates a beneficiary; blocks new anticipations and app login.
+      x-required-scope: ANTICIPATION_BENEFICIARY_POST
+      security:
+        - AppID:
+            - ANTICIPATION_BENEFICIARY_POST
+      parameters:
+        - name: taxID
+          in: path
+          required: true
+          description: Payout key (CPF or CNPJ), with or without mask.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Beneficiary updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary:
+                    $ref: '#/components/schemas/AnticipationBeneficiary'
+        '400':
+          description: Invalid taxID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Invalid app_id or IP not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                example:
+                  data: null
+                  errors:
+                    - message: Invalid appID
+        '403':
+          description: Missing scope or Anticipation not enabled for the company
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Beneficiary not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      x-codeSamples: []
+  /api/v1/anticipation/beneficiary:
+    post:
+      tags:
+        - anticipation
+      summary: Register a beneficiary
+      description: >
+        Registers a beneficiary bound to the company resolved from the app_id.
+        Idempotent on the payout key: send `?return_existing=true` to get the
+        existing beneficiary (200) instead of a 409.
+      x-required-scope: ANTICIPATION_BENEFICIARY_POST
+      security:
+        - AppID:
+            - ANTICIPATION_BENEFICIARY_POST
+      parameters:
+        - name: return_existing
+          in: query
+          required: false
+          description: >-
+            When `true`, an already-existing beneficiary is returned with 200
+            instead of a 409.
+          schema:
+            type: boolean
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnticipationBeneficiaryCreatePayload'
+            examples:
+              beneficiary:
+                value:
+                  name: João da Silva
+                  taxID: '12345678909'
+                  notifyEmail: joao@empresa.com
+                  notifyPhone: '+5511999999999'
+                  availableAmount: 500000
+                  maxAdvanceableAmount: 350000
+                  correlationID: erp-benef-42
+      responses:
+        '200':
+          description: Beneficiary registered (or existing one, with return_existing)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary:
+                    $ref: '#/components/schemas/AnticipationBeneficiary'
+                  correlationID:
+                    type: string
+                    nullable: true
+        '400':
+          description: Invalid body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Invalid app_id or IP not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                example:
+                  data: null
+                  errors:
+                    - message: Invalid appID
+        '403':
+          description: Missing scope or Anticipation not enabled for the company
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '409':
+          description: Beneficiary already exists for the CPF/CNPJ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'POST',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE',
+              headers: {
+                Authorization: '{APP_ID}',
+                'content-type': 'application/json'
+              }
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.write(JSON.stringify({
+              name: 'string',
+              taxID: 'string',
+              cpf: 'string',
+              notifyEmail: 'user@example.com',
+              notifyPhone: 'string',
+              availableAmount: 0,
+              maxAdvanceableAmount: 0,
+              autoApprove: true,
+              feeDestinationAccountId: 'string',
+              paymentDaysOverride: [1],
+              frequencyOverride: {maxAdvances: 1, periodDays: 1},
+              correlationID: 'string'
+            }));
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url 'https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE' \
+              --header 'Authorization: {APP_ID}' \
+              --header 'content-type: application/json' \
+              --data '{"name":"string","taxID":"string","cpf":"string","notifyEmail":"user@example.com","notifyPhone":"string","availableAmount":0,"maxAdvanceableAmount":0,"autoApprove":true,"feeDestinationAccountId":"string","paymentDaysOverride":[1],"frequencyOverride":{"maxAdvances":1,"periodDays":1},"correlationID":"string"}'
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode([
+                'name' => 'string',
+                'taxID' => 'string',
+                'cpf' => 'string',
+                'notifyEmail' => 'user@example.com',
+                'notifyPhone' => 'string',
+                'availableAmount' => 0,
+                'maxAdvanceableAmount' => 0,
+                'autoApprove' => null,
+                'feeDestinationAccountId' => 'string',
+                'paymentDaysOverride' => [
+                    1
+                ],
+                'frequencyOverride' => [
+                    'maxAdvances' => 1,
+                    'periodDays' => 1
+                ],
+                'correlationID' => 'string'
+              ]),
+              CURLOPT_HTTPHEADER => [
+                "Authorization: {APP_ID}",
+                "content-type: application/json"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            payload =
+            "{\"name\":\"string\",\"taxID\":\"string\",\"cpf\":\"string\",\"notifyEmail\":\"user@example.com\",\"notifyPhone\":\"string\",\"availableAmount\":0,\"maxAdvanceableAmount\":0,\"autoApprove\":true,\"feeDestinationAccountId\":\"string\",\"paymentDaysOverride\":[1],\"frequencyOverride\":{\"maxAdvances\":1,\"periodDays\":1},\"correlationID\":\"string\"}"
+
+
+            headers = {
+                'Authorization': "{APP_ID}",
+                'content-type': "application/json"
+            }
+
+
+            conn.request("POST",
+            "/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE",
+            payload, headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"cpf\\\":\\\"string\\\",\\\"notifyEmail\\\":\\\"user@example.com\\\",\\\"notifyPhone\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0,\\\"autoApprove\\\":true,\\\"feeDestinationAccountId\\\":\\\"string\\\",\\\"paymentDaysOverride\\\":[1],\\\"frequencyOverride\\\":{\\\"maxAdvances\\\":1,\\\"periodDays\\\":1},\\\"correlationID\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"name\":\"string\",\"taxID\":\"string\",\"cpf\":\"string\",\"notifyEmail\":\"user@example.com\",\"notifyPhone\":\"string\",\"availableAmount\":0,\"maxAdvanceableAmount\":0,\"autoApprove\":true,\"feeDestinationAccountId\":\"string\",\"paymentDaysOverride\":[1],\"frequencyOverride\":{\"maxAdvances\":1,\"periodDays\":1},\"correlationID\":\"string\"}");
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE")
+              .post(body)
+              .addHeader("Authorization", "{APP_ID}")
+              .addHeader("content-type", "application/json")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["Authorization"] = '{APP_ID}'
+
+            request["content-type"] = 'application/json'
+
+            request.body =
+            "{\"name\":\"string\",\"taxID\":\"string\",\"cpf\":\"string\",\"notifyEmail\":\"user@example.com\",\"notifyPhone\":\"string\",\"availableAmount\":0,\"maxAdvanceableAmount\":0,\"autoApprove\":true,\"feeDestinationAccountId\":\"string\",\"paymentDaysOverride\":[1],\"frequencyOverride\":{\"maxAdvances\":1,\"periodDays\":1},\"correlationID\":\"string\"}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
   /api/v1/application:
     delete:
       tags:
@@ -20317,6 +20979,158 @@ components:
         success:
           type: boolean
           example: false
+    AnticipationBeneficiaryCreatePayload:
+      type: object
+      required:
+        - name
+        - taxID
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 120
+          description: Beneficiary name.
+        taxID:
+          type: string
+          description: Payout key (CPF or CNPJ), with or without mask.
+        cpf:
+          type: string
+          nullable: true
+          description: The person's CPF. Required when taxID is a CNPJ.
+        notifyEmail:
+          type: string
+          format: email
+          nullable: true
+          description: Email used for notifications.
+        notifyPhone:
+          type: string
+          nullable: true
+          description: Phone used for notifications.
+        availableAmount:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Available balance, in cents.
+        maxAdvanceableAmount:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Advanceable limit, in cents.
+        autoApprove:
+          type: boolean
+          nullable: true
+          description: Per-beneficiary override of the company auto-approval.
+        feeDestinationAccountId:
+          type: string
+          nullable: true
+          description: Fee destination account (overrides the company setting).
+        paymentDaysOverride:
+          type: array
+          nullable: true
+          items:
+            type: integer
+            minimum: 1
+            maximum: 31
+          description: Per-beneficiary payment days (1-31).
+        frequencyOverride:
+          type: object
+          nullable: true
+          properties:
+            maxAdvances:
+              type: integer
+              minimum: 1
+            periodDays:
+              type: integer
+              minimum: 1
+          description: Per-beneficiary rolling frequency window.
+        correlationID:
+          type: string
+          nullable: true
+          description: Your correlation ID, echoed back in the response.
+    AnticipationBeneficiary:
+      type: object
+      properties:
+        name:
+          type: string
+        taxID:
+          type: object
+          properties:
+            taxID:
+              type: string
+            type:
+              type: string
+              enum:
+                - BR:CPF
+                - BR:CNPJ
+        isActive:
+          type: boolean
+        availableAmount:
+          type: integer
+          nullable: true
+          description: Available balance, in cents.
+        maxAdvanceableAmount:
+          type: integer
+          description: Advanceable limit, in cents.
+        notifyEmail:
+          type: string
+          nullable: true
+        notifyPhone:
+          type: string
+          nullable: true
+        verified:
+          type: boolean
+          description: Whether the beneficiary completed identity verification (pix-auth).
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+    AnticipationBalanceBatchPayload:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          minItems: 1
+          maxItems: 1000
+          items:
+            type: object
+            required:
+              - taxID
+              - availableAmount
+              - maxAdvanceableAmount
+            properties:
+              taxID:
+                type: string
+                description: Beneficiary payout key (CPF or CNPJ).
+              availableAmount:
+                type: integer
+                minimum: 0
+                description: Available balance, in cents.
+              maxAdvanceableAmount:
+                type: integer
+                minimum: 0
+                description: Advanceable limit, in cents. Cannot exceed availableAmount.
+    AnticipationBalanceBatchResult:
+      type: object
+      properties:
+        processed:
+          type: integer
+        succeeded:
+          type: integer
+        failed:
+          type: integer
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              taxID:
+                type: string
+              ok:
+                type: boolean
+              error:
+                type: string
     Application:
       type: object
       properties:
@@ -23179,12 +23993,18 @@ components:
             WEBHOOK_POST: Create a new Webhook
             WEBHOOK_DELETE: Delete a Webhook
             WEBHOOK_IPS_GET: Get a list of webhook IPs
+            ANTICIPATION_BENEFICIARY_POST: Register, activate and deactivate anticipation beneficiaries
+            ANTICIPATION_BALANCE_POST: Bulk-sync anticipation beneficiary balances
 tags:
   - name: account
     description: |
       Endpoint to manage Accounts
   - name: account register
     description: Endpoint to manage account registrations.
+  - name: anticipation
+    description: |
+      Endpoints to integrate the Anticipation product: register beneficiaries
+      and sync their advanceable balances from an ERP/payroll.
   - name: application
     description: |
       Endpoints to manage applications for authentication and API access.
