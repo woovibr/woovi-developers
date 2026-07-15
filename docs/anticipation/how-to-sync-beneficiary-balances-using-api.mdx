@@ -1,0 +1,103 @@
+---
+id: how-to-sync-beneficiary-balances-using-api
+title: Como sincronizar saldos de beneficiários em lote via API?
+sidebar_label: Sincronizar saldos (lote)
+sidebar_position: 3
+tags:
+  - api
+  - anticipation
+  - antecipacao
+  - balance
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Para atualizar os saldos antecipáveis de vários beneficiários de uma vez — o caso
+típico é a carga noturna vinda da folha de pagamento — use o _endpoint_
+`POST /api/v1/anticipation/balance/batch`.
+
+Requer o escopo `anticipation.balance.write`.
+
+## Como funciona
+
+- O valor é um **set absoluto**: `availableAmount` e `maxAdvanceableAmount`
+  passam a valer exatamente o que você enviar (não é incremento). Por isso a
+  operação é naturalmente idempotente — reenviar o mesmo lote é seguro.
+- Cada lote aceita no **máximo 1000 itens**.
+- Falhas parciais **não** abortam o lote: a resposta traz um relatório por item
+  para você reconciliar no ERP.
+
+## Campos do corpo
+
+| Campo | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `items` | array | Sim | Lista de itens (1 a 1000). |
+| `items[].taxID` | string | Sim | Chave de pagamento (CPF ou CNPJ) do beneficiário. |
+| `items[].availableAmount` | integer | Sim | Saldo disponível, em centavos (≥ 0). |
+| `items[].maxAdvanceableAmount` | integer | Sim | Limite antecipável, em centavos (≥ 0, ≤ `availableAmount`). |
+
+:::caution
+Regras de validação por item: `taxID` obrigatório, valores inteiros não
+negativos e `maxAdvanceableAmount` não pode exceder `availableAmount`. Itens que
+violem qualquer regra — ou cujo beneficiário não exista na empresa — retornam
+`ok: false` com o motivo, sem afetar os demais.
+:::
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl 'https://api.woovi.com/api/v1/anticipation/balance/batch' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{
+      "items": [
+        { "taxID": "12345678909", "availableAmount": 500000, "maxAdvanceableAmount": 350000 },
+        { "taxID": "98765432100", "availableAmount": 120000, "maxAdvanceableAmount": 120000 }
+      ]
+    }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/anticipation/balance/batch', {
+  method: 'POST',
+  headers: {
+    Authorization: '{SEU_APP_ID}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    items: [
+      { taxID: '12345678909', availableAmount: 500000, maxAdvanceableAmount: 350000 },
+      { taxID: '98765432100', availableAmount: 120000, maxAdvanceableAmount: 120000 },
+    ],
+  }),
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+### Exemplo de resposta
+
+```json
+{
+  "processed": 2,
+  "succeeded": 1,
+  "failed": 1,
+  "results": [
+    { "taxID": "12345678909", "ok": true },
+    { "taxID": "98765432100", "ok": false, "error": "beneficiary not found" }
+  ]
+}
+```
+
+O beneficiário precisa já estar cadastrado (veja
+[Cadastrar beneficiário](./how-to-register-a-beneficiary-using-api.mdx)); itens
+apontando para um `taxID` inexistente na empresa voltam com
+`error: "beneficiary not found"`.
