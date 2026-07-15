@@ -1,0 +1,91 @@
+---
+id: anticipation-api-overview
+title: Visão geral da API de Antecipação
+sidebar_label: Visão geral
+sidebar_position: 1
+description: Como autenticar e integrar a API REST de Antecipação da Woovi para cadastrar beneficiários e sincronizar saldos a partir do seu ERP ou folha de pagamento.
+tags:
+  - api
+  - anticipation
+  - antecipacao
+---
+
+A **API de Antecipação** permite que um sistema externo (ERP, folha de pagamento
+ou backoffice) cadastre beneficiários e sincronize os saldos antecipáveis de uma
+empresa que utiliza o produto de Antecipação da Woovi.
+
+É uma API REST no estilo OpenPix: autenticação por `app_id` no cabeçalho
+`Authorization`, corpo em JSON, valores monetários **em centavos** e escopos por
+funcionalidade.
+
+:::info
+Para utilizar esta API é necessário que a empresa possua a funcionalidade de
+Antecipação (Pix Out) habilitada. Caso contrário, as requisições retornam `403`.
+:::
+
+## Ambiente e URL base
+
+A API de Antecipação usa os mesmos hosts das demais APIs Woovi:
+
+| Ambiente | URL base |
+| --- | --- |
+| Produção | `https://api.woovi.com` |
+| Sandbox (testes) | `https://api.woovi-sandbox.com` |
+
+Todos os endpoints ficam sob o prefixo `/api/v1/anticipation`.
+
+## Autenticação
+
+A autenticação segue o mesmo modelo das demais APIs Woovi: um **App ID** enviado
+no cabeçalho `Authorization`.
+
+1. Crie uma aplicação em [app.woovi.com](https://app.woovi.com) e copie o `app_id`.
+2. Envie-o no cabeçalho `Authorization` de toda requisição.
+3. A empresa é resolvida a partir do `app_id` — você nunca informa o `companyId`.
+
+```sh
+Authorization: {SEU_APP_ID}
+Content-Type: application/json
+```
+
+Além do `app_id`, a autenticação valida:
+
+- **IP allowlist** — se a aplicação tiver lista de IPs configurada, o IP de
+  origem precisa estar liberado.
+- **Escopo** — a aplicação precisa possuir o escopo exigido pelo endpoint.
+- **Funcionalidade** — a empresa precisa ter Antecipação (Pix Out) habilitada.
+
+### Escopos
+
+| Escopo | Permite |
+| --- | --- |
+| `anticipation.beneficiary.write` | Cadastrar, ativar e desativar beneficiários |
+| `anticipation.balance.write` | Sincronizar saldos de beneficiários em lote |
+
+## Convenções
+
+- **Valores monetários** são sempre inteiros **em centavos** (ex.: `10000` = R$ 100,00).
+- **`taxID`** (chave de pagamento do beneficiário) pode ser CPF ou CNPJ, com ou
+  sem máscara — os dígitos são normalizados no servidor.
+- Datas são retornadas como strings **ISO 8601**.
+
+## Endpoints
+
+| Método | Endpoint | Escopo |
+| --- | --- | --- |
+| `POST` | `/api/v1/anticipation/beneficiary` | `anticipation.beneficiary.write` |
+| `POST` | `/api/v1/anticipation/balance/batch` | `anticipation.balance.write` |
+| `POST` | `/api/v1/anticipation/beneficiary/{taxID}/activate` | `anticipation.beneficiary.write` |
+| `POST` | `/api/v1/anticipation/beneficiary/{taxID}/deactivate` | `anticipation.beneficiary.write` |
+
+Consulte a referência completa na página [API](/api-redoc/) (tag **anticipation**).
+
+## Erros
+
+| Status | Significado |
+| --- | --- |
+| `400` | Corpo/parâmetros inválidos. Formato: `{ "error": "mensagem" }` |
+| `401` | `app_id` inválido ou IP não autorizado. Formato: `{ "data": null, "errors": [{ "message": "Invalid appID" }] }` |
+| `403` | Escopo ausente ou Antecipação não habilitada para a empresa. Formato: `{ "error": "mensagem" }` |
+| `404` | Beneficiário não encontrado (nas rotas por `taxID`). |
+| `409` | Beneficiário já existe para o CPF/CNPJ (no cadastro). |

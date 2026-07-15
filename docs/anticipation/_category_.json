@@ -1,0 +1,12 @@
+{
+  "label": "Antecipação",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Antecipação visão geral"
+  },
+  "customProps": {
+    "description": "Documentação da API REST de Antecipação (integração ERP/folha de pagamento)"
+  }
+}

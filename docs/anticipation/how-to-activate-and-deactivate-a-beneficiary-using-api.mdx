@@ -1,0 +1,84 @@
+---
+id: how-to-activate-and-deactivate-a-beneficiary-using-api
+title: Como ativar ou desativar um beneficiário via API?
+sidebar_label: Ativar / desativar beneficiário
+sidebar_position: 4
+tags:
+  - api
+  - anticipation
+  - antecipacao
+  - beneficiary
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Você pode ativar ou desativar um beneficiário pelo seu `taxID` (a chave de
+pagamento, CPF ou CNPJ). Um beneficiário **desativado** não consegue solicitar
+novas antecipações nem acessar o aplicativo.
+
+Ambos os _endpoints_ exigem o escopo `anticipation.beneficiary.write`.
+
+| Ação | Endpoint |
+| --- | --- |
+| Ativar | `POST /api/v1/anticipation/beneficiary/{taxID}/activate` |
+| Desativar | `POST /api/v1/anticipation/beneficiary/{taxID}/deactivate` |
+
+O `{taxID}` pode ir com ou sem máscara — apenas os dígitos são considerados. Se
+não existir beneficiário com aquele `taxID` na empresa, a resposta é `404`.
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+# Desativar
+curl 'https://api.woovi.com/api/v1/anticipation/beneficiary/12345678909/deactivate' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}"
+
+# Ativar
+curl 'https://api.woovi.com/api/v1/anticipation/beneficiary/12345678909/activate' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}"
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+const taxID = '12345678909';
+
+fetch(`https://api.woovi.com/api/v1/anticipation/beneficiary/${taxID}/deactivate`, {
+  method: 'POST',
+  headers: {
+    Authorization: '{SEU_APP_ID}',
+    'Content-Type': 'application/json',
+  },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+### Exemplo de resposta
+
+```json
+{
+  "beneficiary": {
+    "name": "João da Silva",
+    "taxID": {
+      "taxID": "12345678909",
+      "type": "BR:CPF"
+    },
+    "isActive": false,
+    "availableAmount": 500000,
+    "maxAdvanceableAmount": 350000,
+    "notifyEmail": "joao@empresa.com",
+    "notifyPhone": "+5511999999999",
+    "verified": true,
+    "createdAt": "2026-07-15T12:00:00.000Z"
+  }
+}
+```

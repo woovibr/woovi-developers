@@ -1,0 +1,116 @@
+---
+id: how-to-register-a-beneficiary-using-api
+title: Como cadastrar um beneficiário via API?
+sidebar_label: Cadastrar beneficiário
+sidebar_position: 2
+tags:
+  - api
+  - anticipation
+  - antecipacao
+  - beneficiary
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Para cadastrar um beneficiário na Antecipação você utiliza o _endpoint_
+`POST /api/v1/anticipation/beneficiary`.
+
+O beneficiário fica vinculado à empresa identificada pelo `app_id` do cabeçalho
+`Authorization`. Requer o escopo `anticipation.beneficiary.write`.
+
+## Campos do corpo
+
+| Campo | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `name` | string | Sim | Nome do beneficiário (2 a 120 caracteres). |
+| `taxID` | string | Sim | Chave de pagamento (CPF ou CNPJ), com ou sem máscara. |
+| `cpf` | string | Condicional | CPF da pessoa. Obrigatório quando `taxID` é um CNPJ. |
+| `notifyEmail` | string | Não | E-mail para notificações. |
+| `notifyPhone` | string | Não | Telefone para notificações. |
+| `availableAmount` | integer | Não | Saldo disponível, em centavos. |
+| `maxAdvanceableAmount` | integer | Não | Limite antecipável, em centavos. |
+| `autoApprove` | boolean | Não | Sobrescreve a aprovação automática da empresa para este beneficiário. |
+| `feeDestinationAccountId` | string | Não | Conta de destino da taxa (sobrescreve a configuração da empresa). |
+| `paymentDaysOverride` | integer[] | Não | Dias de pagamento (1–31) específicos deste beneficiário. |
+| `frequencyOverride` | object | Não | `{ maxAdvances, periodDays }` — janela de frequência específica. |
+| `correlationID` | string | Não | Identificador seu, devolvido na resposta para reconciliação. |
+
+## Idempotência
+
+O `taxID` é único por empresa. Se você reenviar um `taxID` já cadastrado, a API
+retorna `409`. Para tornar a chamada idempotente, envie a _query string_
+`?return_existing=true`: nesse caso o beneficiário existente é retornado com
+`200` em vez de erro.
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl 'https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=true' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{
+      "name": "João da Silva",
+      "taxID": "12345678909",
+      "notifyEmail": "joao@empresa.com",
+      "notifyPhone": "+5511999999999",
+      "availableAmount": 500000,
+      "maxAdvanceableAmount": 350000,
+      "correlationID": "erp-benef-42"
+    }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=true', {
+  method: 'POST',
+  headers: {
+    Authorization: '{SEU_APP_ID}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: 'João da Silva',
+    taxID: '12345678909',
+    notifyEmail: 'joao@empresa.com',
+    notifyPhone: '+5511999999999',
+    availableAmount: 500000,
+    maxAdvanceableAmount: 350000,
+    correlationID: 'erp-benef-42',
+  }),
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+### Exemplo de resposta
+
+```json
+{
+  "beneficiary": {
+    "name": "João da Silva",
+    "taxID": {
+      "taxID": "12345678909",
+      "type": "BR:CPF"
+    },
+    "isActive": true,
+    "availableAmount": 500000,
+    "maxAdvanceableAmount": 350000,
+    "notifyEmail": "joao@empresa.com",
+    "notifyPhone": "+5511999999999",
+    "verified": false,
+    "createdAt": "2026-07-15T12:00:00.000Z"
+  },
+  "correlationID": "erp-benef-42"
+}
+```
+
+:::note
+`type` é `BR:CPF` ou `BR:CNPJ`. `verified` indica se o beneficiário já concluiu a
+verificação de identidade (pix-auth) no aplicativo.
+:::
