@@ -59,8 +59,8 @@ Além do `app_id`, a autenticação valida:
 
 | Escopo | Permite |
 | --- | --- |
-| `anticipation.beneficiary.write` | Cadastrar, ativar e desativar beneficiários |
-| `anticipation.balance.write` | Sincronizar saldos de beneficiários em lote |
+| `ANTICIPATION_BENEFICIARY_POST` | Cadastrar, ativar e desativar beneficiários |
+| `ANTICIPATION_BALANCE_POST` | Sincronizar saldos de beneficiários em lote |
 
 ## Convenções
 
@@ -73,10 +73,10 @@ Além do `app_id`, a autenticação valida:
 
 | Método | Endpoint | Escopo |
 | --- | --- | --- |
-| `POST` | `/api/v1/anticipation/beneficiary` | `anticipation.beneficiary.write` |
-| `POST` | `/api/v1/anticipation/balance/batch` | `anticipation.balance.write` |
-| `POST` | `/api/v1/anticipation/beneficiary/{taxID}/activate` | `anticipation.beneficiary.write` |
-| `POST` | `/api/v1/anticipation/beneficiary/{taxID}/deactivate` | `anticipation.beneficiary.write` |
+| `POST` | `/api/v1/anticipation/beneficiary` | `ANTICIPATION_BENEFICIARY_POST` |
+| `POST` | `/api/v1/anticipation/balance/batch` | `ANTICIPATION_BALANCE_POST` |
+| `POST` | `/api/v1/anticipation/beneficiary/{taxID}/activate` | `ANTICIPATION_BENEFICIARY_POST` |
+| `POST` | `/api/v1/anticipation/beneficiary/{taxID}/deactivate` | `ANTICIPATION_BENEFICIARY_POST` |
 
 Consulte a referência completa na página [API](/api-redoc/) (tag **anticipation**).
 

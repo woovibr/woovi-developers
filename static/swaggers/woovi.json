@@ -1061,6 +1061,592 @@
         ]
       }
     },
+    "/api/v1/anticipation/balance/batch": {
+      "post": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "Bulk-sync beneficiary balances",
+        "description": "Absolute set of availableAmount/maxAdvanceableAmount for up to 1000 beneficiaries in one call (nightly payroll sync). Returns a per-item report so partial failures can be reconciled.\n",
+        "x-required-scope": "ANTICIPATION_BALANCE_POST",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_BALANCE_POST"
+            ]
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnticipationBalanceBatchPayload"
+              },
+              "examples": {
+                "batch": {
+                  "value": {
+                    "items": [
+                      {
+                        "taxID": "12345678909",
+                        "availableAmount": 500000,
+                        "maxAdvanceableAmount": 350000
+                      },
+                      {
+                        "taxID": "98765432100",
+                        "availableAmount": 120000,
+                        "maxAdvanceableAmount": 120000
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Per-item processing report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationBalanceBatchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "items missing, empty or above 1000",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "data": null,
+                    "errors": [
+                      {
+                        "message": "Invalid appID"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing scope or Anticipation not enabled for the company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/anticipation/balance/batch',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({items: [{taxID: 'string', availableAmount: 0, maxAdvanceableAmount: 0}]}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/anticipation/balance/batch \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"items\":[{\"taxID\":\"string\",\"availableAmount\":0,\"maxAdvanceableAmount\":0}]}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/anticipation/balance/batch\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'items' => [\n        [\n                'taxID' => 'string',\n                'availableAmount' => 0,\n                'maxAdvanceableAmount' => 0\n        ]\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"items\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0}]}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/anticipation/balance/batch\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/anticipation/balance/batch\"\n\n\tpayload := strings.NewReader(\"{\\\"items\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"items\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0}]}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/anticipation/balance/batch\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/anticipation/balance/batch\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"items\\\":[{\\\"taxID\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0}]}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/anticipation/beneficiary/{taxID}/activate": {
+      "post": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "Activate a beneficiary",
+        "description": "Reactivates a beneficiary previously deactivated.",
+        "x-required-scope": "ANTICIPATION_BENEFICIARY_POST",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_BENEFICIARY_POST"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "taxID",
+            "in": "path",
+            "required": true,
+            "description": "Payout key (CPF or CNPJ), with or without mask.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Beneficiary updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "beneficiary": {
+                      "$ref": "#/components/schemas/AnticipationBeneficiary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid taxID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "data": null,
+                    "errors": [
+                      {
+                        "message": "Invalid appID"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing scope or Anticipation not enabled for the company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Beneficiary not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
+      }
+    },
+    "/api/v1/anticipation/beneficiary/{taxID}/deactivate": {
+      "post": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "Deactivate a beneficiary",
+        "description": "Deactivates a beneficiary; blocks new anticipations and app login.",
+        "x-required-scope": "ANTICIPATION_BENEFICIARY_POST",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_BENEFICIARY_POST"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "taxID",
+            "in": "path",
+            "required": true,
+            "description": "Payout key (CPF or CNPJ), with or without mask.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Beneficiary updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "beneficiary": {
+                      "$ref": "#/components/schemas/AnticipationBeneficiary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid taxID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "data": null,
+                    "errors": [
+                      {
+                        "message": "Invalid appID"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing scope or Anticipation not enabled for the company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Beneficiary not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
+      }
+    },
+    "/api/v1/anticipation/beneficiary": {
+      "post": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "Register a beneficiary",
+        "description": "Registers a beneficiary bound to the company resolved from the app_id. Idempotent on the payout key: send `?return_existing=true` to get the existing beneficiary (200) instead of a 409.\n",
+        "x-required-scope": "ANTICIPATION_BENEFICIARY_POST",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_BENEFICIARY_POST"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "return_existing",
+            "in": "query",
+            "required": false,
+            "description": "When `true`, an already-existing beneficiary is returned with 200 instead of a 409.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnticipationBeneficiaryCreatePayload"
+              },
+              "examples": {
+                "beneficiary": {
+                  "value": {
+                    "name": "João da Silva",
+                    "taxID": "12345678909",
+                    "notifyEmail": "joao@empresa.com",
+                    "notifyPhone": "+5511999999999",
+                    "availableAmount": 500000,
+                    "maxAdvanceableAmount": 350000,
+                    "correlationID": "erp-benef-42"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Beneficiary registered (or existing one, with return_existing)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "beneficiary": {
+                      "$ref": "#/components/schemas/AnticipationBeneficiary"
+                    },
+                    "correlationID": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "data": null,
+                    "errors": [
+                      {
+                        "message": "Invalid appID"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing scope or Anticipation not enabled for the company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Beneficiary already exists for the CPF/CNPJ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  name: 'string',\n  taxID: 'string',\n  cpf: 'string',\n  notifyEmail: 'user@example.com',\n  notifyPhone: 'string',\n  availableAmount: 0,\n  maxAdvanceableAmount: 0,\n  autoApprove: true,\n  feeDestinationAccountId: 'string',\n  paymentDaysOverride: [1],\n  frequencyOverride: {maxAdvances: 1, periodDays: 1},\n  correlationID: 'string'\n}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url 'https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE' \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"name\":\"string\",\"taxID\":\"string\",\"cpf\":\"string\",\"notifyEmail\":\"user@example.com\",\"notifyPhone\":\"string\",\"availableAmount\":0,\"maxAdvanceableAmount\":0,\"autoApprove\":true,\"feeDestinationAccountId\":\"string\",\"paymentDaysOverride\":[1],\"frequencyOverride\":{\"maxAdvances\":1,\"periodDays\":1},\"correlationID\":\"string\"}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'name' => 'string',\n    'taxID' => 'string',\n    'cpf' => 'string',\n    'notifyEmail' => 'user@example.com',\n    'notifyPhone' => 'string',\n    'availableAmount' => 0,\n    'maxAdvanceableAmount' => 0,\n    'autoApprove' => null,\n    'feeDestinationAccountId' => 'string',\n    'paymentDaysOverride' => [\n        1\n    ],\n    'frequencyOverride' => [\n        'maxAdvances' => 1,\n        'periodDays' => 1\n    ],\n    'correlationID' => 'string'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"cpf\\\":\\\"string\\\",\\\"notifyEmail\\\":\\\"user@example.com\\\",\\\"notifyPhone\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0,\\\"autoApprove\\\":true,\\\"feeDestinationAccountId\\\":\\\"string\\\",\\\"paymentDaysOverride\\\":[1],\\\"frequencyOverride\\\":{\\\"maxAdvances\\\":1,\\\"periodDays\\\":1},\\\"correlationID\\\":\\\"string\\\"}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"cpf\\\":\\\"string\\\",\\\"notifyEmail\\\":\\\"user@example.com\\\",\\\"notifyPhone\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0,\\\"autoApprove\\\":true,\\\"feeDestinationAccountId\\\":\\\"string\\\",\\\"paymentDaysOverride\\\":[1],\\\"frequencyOverride\\\":{\\\"maxAdvances\\\":1,\\\"periodDays\\\":1},\\\"correlationID\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"cpf\\\":\\\"string\\\",\\\"notifyEmail\\\":\\\"user@example.com\\\",\\\"notifyPhone\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0,\\\"autoApprove\\\":true,\\\"feeDestinationAccountId\\\":\\\"string\\\",\\\"paymentDaysOverride\\\":[1],\\\"frequencyOverride\\\":{\\\"maxAdvances\\\":1,\\\"periodDays\\\":1},\\\"correlationID\\\":\\\"string\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/anticipation/beneficiary?return_existing=SOME_BOOLEAN_VALUE\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"name\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"cpf\\\":\\\"string\\\",\\\"notifyEmail\\\":\\\"user@example.com\\\",\\\"notifyPhone\\\":\\\"string\\\",\\\"availableAmount\\\":0,\\\"maxAdvanceableAmount\\\":0,\\\"autoApprove\\\":true,\\\"feeDestinationAccountId\\\":\\\"string\\\",\\\"paymentDaysOverride\\\":[1],\\\"frequencyOverride\\\":{\\\"maxAdvances\\\":1,\\\"periodDays\\\":1},\\\"correlationID\\\":\\\"string\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
     "/api/v1/application": {
       "delete": {
         "tags": [
@@ -11793,166 +12379,6 @@
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/subaccount\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"accountRegisterId\\\":\\\"6650abc1234def567890aaaa\\\",\\\"companyBankAccountId\\\":\\\"6650def1234abc567890bbbb\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
-      },
-      "post": {
-        "tags": [
-          "stablecoin"
-        ],
-        "summary": "Request a new stablecoin subaccount (KYB)",
-        "description": "Requests the creation of a stablecoin subaccount for the authenticated company,\nreusing the KYC data already on the referenced account register.\n\nPass the company's `accountRegisterId`; the provider subaccount is created\nimmediately and a `StableSubAccount` is persisted with status `IN_REVIEW` while\nthe KYB is processed. When the KYB resolves, the merchant receives a\n`STABLECOIN_SUBACCOUNT_CONFIRMED` or `STABLECOIN_SUBACCOUNT_REJECTED` webhook.\n\nThe request is idempotent on `accountRegisterId`: a repeat call returns the\nexisting subaccount (HTTP `200`) instead of creating a duplicate. The first,\ncreating call returns HTTP `201`.\n\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company `STABLECOIN`\nfeature.\n",
-        "security": [
-          {
-            "AppID": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StablecoinSubAccountCreateRequest"
-              },
-              "examples": {
-                "MinimalRequest": {
-                  "summary": "Minimal request (uses the company's default bank account)",
-                  "value": {
-                    "accountRegisterId": "6650abc1234def567890aaaa"
-                  }
-                },
-                "WithCompanyBankAccount": {
-                  "summary": "Request choosing an explicit company bank account",
-                  "value": {
-                    "accountRegisterId": "6650abc1234def567890aaaa",
-                    "companyBankAccountId": "6650def1234abc567890bbbb"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Subaccount already requested for this account register",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StablecoinSubAccountCreateResponse"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Subaccount activation requested",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StablecoinSubAccountCreateResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input or referenced account register",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StablecoinSubAccountCreateError"
-                },
-                "examples": {
-                  "MissingAccountRegisterId": {
-                    "value": {
-                      "error": "accountRegisterId is required"
-                    }
-                  },
-                  "InvalidAccountRegisterId": {
-                    "value": {
-                      "error": "INVALID_ACCOUNT_REGISTER_ID"
-                    }
-                  },
-                  "AccountRegisterNotFound": {
-                    "value": {
-                      "error": "ACCOUNT_REGISTER_NOT_FOUND"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid credentials or missing required scope",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "examples": {
-                  "Unauthorized": {
-                    "value": {
-                      "error": "Unauthorized"
-                    }
-                  },
-                  "MissingScope": {
-                    "value": {
-                      "error": "Application is missing required scope: STABLECOIN_SUBACCOUNT_CREATE"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Provider or persistence failure while creating the subaccount",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StablecoinSubAccountCreateError"
-                },
-                "examples": {
-                  "ProviderFailed": {
-                    "value": {
-                      "error": "AVENIA_SUBACCOUNT_CREATE_FAILED"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "x-codeSamples": [
-          {
-            "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/subaccount',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  accountRegisterId: '6650abc1234def567890aaaa',\n  companyBankAccountId: '6650def1234abc567890bbbb'\n}));\nreq.end();"
-          },
-          {
-            "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/stablecoin/subaccount \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"accountRegisterId\":\"6650abc1234def567890aaaa\",\"companyBankAccountId\":\"6650def1234abc567890bbbb\"}'"
-          },
-          {
-            "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/subaccount\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'accountRegisterId' => '6650abc1234def567890aaaa',\n    'companyBankAccountId' => '6650def1234abc567890bbbb'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
-          },
-          {
-            "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"accountRegisterId\\\":\\\"6650abc1234def567890aaaa\\\",\\\"companyBankAccountId\\\":\\\"6650def1234abc567890bbbb\\\"}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/stablecoin/subaccount\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
-          },
-          {
-            "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/subaccount\"\n\n\tpayload := strings.NewReader(\"{\\\"accountRegisterId\\\":\\\"6650abc1234def567890aaaa\\\",\\\"companyBankAccountId\\\":\\\"6650def1234abc567890bbbb\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-          },
-          {
-            "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"accountRegisterId\\\":\\\"6650abc1234def567890aaaa\\\",\\\"companyBankAccountId\\\":\\\"6650def1234abc567890bbbb\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/subaccount\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
-          },
-          {
-            "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/subaccount\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"accountRegisterId\\\":\\\"6650abc1234def567890aaaa\\\",\\\"companyBankAccountId\\\":\\\"6650def1234abc567890bbbb\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
-          }
-        ]
       }
     },
     "/api/v1/statement": {
@@ -15175,6 +15601,213 @@
           "success": {
             "type": "boolean",
             "example": false
+          }
+        }
+      },
+      "AnticipationBeneficiaryCreatePayload": {
+        "type": "object",
+        "required": [
+          "name",
+          "taxID"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 120,
+            "description": "Beneficiary name."
+          },
+          "taxID": {
+            "type": "string",
+            "description": "Payout key (CPF or CNPJ), with or without mask."
+          },
+          "cpf": {
+            "type": "string",
+            "nullable": true,
+            "description": "The person's CPF. Required when taxID is a CNPJ."
+          },
+          "notifyEmail": {
+            "type": "string",
+            "format": "email",
+            "nullable": true,
+            "description": "Email used for notifications."
+          },
+          "notifyPhone": {
+            "type": "string",
+            "nullable": true,
+            "description": "Phone used for notifications."
+          },
+          "availableAmount": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true,
+            "description": "Available balance, in cents."
+          },
+          "maxAdvanceableAmount": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true,
+            "description": "Advanceable limit, in cents."
+          },
+          "autoApprove": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "Per-beneficiary override of the company auto-approval."
+          },
+          "feeDestinationAccountId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Fee destination account (overrides the company setting)."
+          },
+          "paymentDaysOverride": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 31
+            },
+            "description": "Per-beneficiary payment days (1-31)."
+          },
+          "frequencyOverride": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "maxAdvances": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "periodDays": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "description": "Per-beneficiary rolling frequency window."
+          },
+          "correlationID": {
+            "type": "string",
+            "nullable": true,
+            "description": "Your correlation ID, echoed back in the response."
+          }
+        }
+      },
+      "AnticipationBeneficiary": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "taxID": {
+            "type": "object",
+            "properties": {
+              "taxID": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "BR:CPF",
+                  "BR:CNPJ"
+                ]
+              }
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "availableAmount": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Available balance, in cents."
+          },
+          "maxAdvanceableAmount": {
+            "type": "integer",
+            "description": "Advanceable limit, in cents."
+          },
+          "notifyEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "notifyPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified": {
+            "type": "boolean",
+            "description": "Whether the beneficiary completed identity verification (pix-auth)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "AnticipationBalanceBatchPayload": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "taxID",
+                "availableAmount",
+                "maxAdvanceableAmount"
+              ],
+              "properties": {
+                "taxID": {
+                  "type": "string",
+                  "description": "Beneficiary payout key (CPF or CNPJ)."
+                },
+                "availableAmount": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Available balance, in cents."
+                },
+                "maxAdvanceableAmount": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Advanceable limit, in cents. Cannot exceed availableAmount."
+                }
+              }
+            }
+          }
+        }
+      },
+      "AnticipationBalanceBatchResult": {
+        "type": "object",
+        "properties": {
+          "processed": {
+            "type": "integer"
+          },
+          "succeeded": {
+            "type": "integer"
+          },
+          "failed": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "taxID": {
+                  "type": "string"
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -18750,7 +19383,9 @@
               "WEBHOOK_EVENTS_GET_LIST": "Get a list of webhook events",
               "WEBHOOK_POST": "Create a new Webhook",
               "WEBHOOK_DELETE": "Delete a Webhook",
-              "WEBHOOK_IPS_GET": "Get a list of webhook IPs"
+              "WEBHOOK_IPS_GET": "Get a list of webhook IPs",
+              "ANTICIPATION_BENEFICIARY_POST": "Register, activate and deactivate anticipation beneficiaries",
+              "ANTICIPATION_BALANCE_POST": "Bulk-sync anticipation beneficiary balances"
             }
           }
         }
@@ -18765,6 +19400,10 @@
     {
       "name": "account register",
       "description": "Endpoint to manage account registrations."
+    },
+    {
+      "name": "anticipation",
+      "description": "Endpoints to integrate the Anticipation product: register beneficiaries\nand sync their advanceable balances from an ERP/payroll.\n"
     },
     {
       "name": "application",
