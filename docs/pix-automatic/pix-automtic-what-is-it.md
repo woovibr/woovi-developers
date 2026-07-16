@@ -16,7 +16,7 @@ O Funcionamento do pix automático é composto por 2 etapas:
 1. Criação da Assinatura
 2. Autorização da assinatura pelo cliente
 
-Após aprovação do cliente, as cobranças serão criadas a partir da configuração feita pela assinatura, podendo ser semanal, mensal, semestral ou anual.
+Após aprovação do cliente, as cobranças serão criadas a partir da configuração feita pela assinatura, podendo ser semanal, mensal, trimestral, semestral ou anual.
 
 ## Jornadas
 

@@ -23441,15 +23441,18 @@ components:
             - WEEKLY
             - MONTHLY
             - BIMONTHLY
-            - TRIMONTHLY
             - QUARTERLY
             - SEMIANNUALLY
             - ANNUALLY
-          description: >
-            Frequency of the subscription.
-
-            When `type` is `PIX_RECURRING`, only the BCB-allowed subset applies:
-            `WEEKLY`, `MONTHLY`, `QUARTERLY`, `SEMIANNUALLY`, `ANNUALLY`.
+          description: |
+            Frequency of the subscription — the interval between charges:
+              - `WEEKLY`: every week
+              - `MONTHLY`: every month
+              - `BIMONTHLY`: every 2 months
+              - `QUARTERLY`: every 3 months (trimestral)
+              - `SEMIANNUALLY`: every 6 months
+              - `ANNUALLY`: every 12 months
+            For Pix Automático (`type: PIX_RECURRING`), only the frequencies allowed by the Central Bank apply: `WEEKLY`, `MONTHLY`, `QUARTERLY`, `SEMIANNUALLY` and `ANNUALLY` (`BIMONTHLY` is not supported).
         installmentsCount:
           type: number
           nullable: true
@@ -23575,11 +23578,18 @@ components:
             - WEEKLY
             - MONTHLY
             - BIMONTHLY
-            - TRIMONTHLY
             - QUARTERLY
             - SEMIANNUALLY
             - ANNUALLY
-          description: Frequency of the subscription
+          description: |
+            Frequency of the subscription — the interval between charges (defaults to `MONTHLY` when omitted):
+              - `WEEKLY`: every week
+              - `MONTHLY`: every month
+              - `BIMONTHLY`: every 2 months
+              - `QUARTERLY`: every 3 months (trimestral)
+              - `SEMIANNUALLY`: every 6 months
+              - `ANNUALLY`: every 12 months
+            For Pix Automático (`type: PIX_RECURRING`), only the frequencies allowed by the Central Bank apply: `WEEKLY`, `MONTHLY`, `QUARTERLY`, `SEMIANNUALLY` and `ANNUALLY` (`BIMONTHLY` is not supported).
         type:
           type: string
           enum:
