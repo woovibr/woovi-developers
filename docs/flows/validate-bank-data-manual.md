@@ -3,7 +3,6 @@ id: validate-bank-data-manual
 title: Como validar Dados bancários Usando agência e conta
 tags:
   - api
-draft: true
 ---
 
 Este documento irá ajudá-lo a validar os dados bancários de um beneficiário (agência e conta) sem precisar de uma chave Pix.
@@ -144,12 +143,9 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
 
 ### O que é retornado ?
 
-Os dados do titular da conta vêm no campo `destination`. Como o Pix é enviado de forma assíncrona, esse campo **não** está na resposta imediata do `autoApprove` — ele fica disponível quando o pagamento é confirmado, em uma destas fontes:
+Os dados do titular da conta vêm no campo `destination`. Como o Pix é enviado de forma assíncrona, esse campo **não** está na resposta imediata do `autoApprove` nem nos webhooks — o webhook [`OPENPIX:MOVEMENT_CONFIRMED`](#3-webhooks) avisa apenas que o pagamento foi confirmado, sem trazer os dados do titular.
 
-- o webhook [`OPENPIX:MOVEMENT_CONFIRMED`](#3-webhooks), que carrega o `destination`; ou
-- uma consulta `GET /api/v1/payment/{correlationID}` após a confirmação.
-
-No fluxo de dois passos, o `destination` também vem na resposta do `/api/v1/payment/approve`.
+Para obter o `destination`, consulte o endpoint [`GET /api/v1/transaction`](<https://developers.woovi.com/api#tag/transactions/paths/~1api~1v1~1transaction/get>) após a confirmação do pagamento, filtrando pela transação correspondente (por exemplo, pelo `endToEndId` recebido no webhook).
 
 ```json
 {
@@ -210,16 +206,11 @@ Após a criação e confirmação do pagamento, você receberá webhooks com o s
     "value": 1,
     "time": "2025-07-08T15:27:19.687Z",
     "endToEndId": "E54811417202507081527dYr4Cp2gfAp"
-  },
-  "destination": {
-    "name": "Carlos",
-    "taxID": "949***95*1",
-    "bank": "Mercado pago",
-    "branch": "****",
-    "account": "********"
   }
 }
 ```
+
+> Este webhook **não** traz os dados do titular da conta (`destination`). Para obtê-los, consulte o endpoint [`GET /api/v1/transaction`](<https://developers.woovi.com/api#tag/transactions/paths/~1api~1v1~1transaction/get>) — veja [O que é retornado](#o-que-é-retornado-).
 
 Se não souber como configurar o webhook, acesse: [Criando um webhook para interceptar um Pix e chamar uma API](https://developers.woovi.com/docs/webhook/platform/webhook-platform-api).
 
@@ -252,9 +243,9 @@ Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra
 > }
 > ```
 >
-> **Resposta de sucesso (200)**: o payload traz `destination` com `name`, `taxID`, `bank`, `branch` e `account` do titular.
+> **Resposta de sucesso (200)**: confirma que o pagamento foi criado/aprovado, mas **não** traz os dados do titular (`destination`) — nem os webhooks trazem. Para obtê-los, consulte `GET /api/v1/transaction` após a confirmação, filtrando pela transação correspondente.
 >
 > **Detalhes importantes**:
 > - `autoApprove: true` exige permissão especial na conta; sem ela, crie o pagamento e aprove depois com `POST /api/v1/payment/approve` enviando o `correlationID`.
 > - O `psp.id` é o código ISPB (8 dígitos) do banco — consulte `GET /api/v1/psp` para descobrir.
-> - Trate os webhooks `OPENPIX:MOVEMENT_CONFIRMED` (aprovado) e `OPENPIX:MOVEMENT_FAILED` (rejeitado) para o status final da validação.
+> - Trate os webhooks `OPENPIX:MOVEMENT_CONFIRMED` (aprovado) e `OPENPIX:MOVEMENT_FAILED` (rejeitado) para o status final da validação — os dados do titular (`destination`) vêm de `GET /api/v1/transaction`, não do webhook.
