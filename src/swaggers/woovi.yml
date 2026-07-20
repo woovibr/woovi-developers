@@ -19094,6 +19094,30 @@ paths:
                     retryPolicy: NON_PERMITED
                   dayGenerateCharge: 25
                   dayDue: 3
+              SubscriptionBoleto:
+                summary: Subscription charged via boleto
+                value:
+                  name: Assinatura Boleto
+                  value: 15000
+                  customer:
+                    name: Dan
+                    taxID: '31324227036'
+                    email: email0@example.com
+                    phone: '5511999999999'
+                    address:
+                      zipcode: '04556300'
+                      street: rua de são paulo
+                      number: '3432'
+                      neighborhood: BROOKLIN PAULISTA
+                      city: SAO PAULO
+                      state: SP
+                      complement: CONJ 26
+                  correlationID: My-UniqueID
+                  frequency: MONTHLY
+                  type: RECURRENT
+                  chargeType: BOLETO
+                  dayGenerateCharge: 25
+                  dayDue: 3
       responses:
         '200':
           description: The subscription created
@@ -19204,7 +19228,8 @@ paths:
               installmentCount: 0,
               correlationID: 'string',
               additionalInfo: [{key: 'string', value: 'string'}],
-              pixRecurringOptions: {retryPolicy: 'NON_PERMITED', journey: 'PAYMENT_ON_APPROVAL', minimumValue: 0}
+              pixRecurringOptions: {retryPolicy: 'NON_PERMITED', journey: 'PAYMENT_ON_APPROVAL', minimumValue: 0},
+              chargeType: 'DYNAMIC'
             }));
             req.end();
         - lang: Shell + Curl
@@ -19213,7 +19238,7 @@ paths:
               --url https://api.woovi.com/api/v1/subscriptions \
               --header 'Authorization: {APP_ID}' \
               --header 'content-type: application/json' \
-              --data '{"customer":{"name":"string","email":"string","phone":"string","taxID":"string","address":{"zipcode":"string","street":"string","number":"string","neighborhood":"string","city":"string","state":"string","complement":"string","country":"string"}},"value":0,"name":"string","comment":"string","dayGenerateCharge":5,"frequency":"WEEKLY","type":"PIX_RECURRING","dayDue":7,"installmentCount":0,"correlationID":"string","additionalInfo":[{"key":"string","value":"string"}],"pixRecurringOptions":{"retryPolicy":"NON_PERMITED","journey":"PAYMENT_ON_APPROVAL","minimumValue":0}}'
+              --data '{"customer":{"name":"string","email":"string","phone":"string","taxID":"string","address":{"zipcode":"string","street":"string","number":"string","neighborhood":"string","city":"string","state":"string","complement":"string","country":"string"}},"value":0,"name":"string","comment":"string","dayGenerateCharge":5,"frequency":"WEEKLY","type":"PIX_RECURRING","dayDue":7,"installmentCount":0,"correlationID":"string","additionalInfo":[{"key":"string","value":"string"}],"pixRecurringOptions":{"retryPolicy":"NON_PERMITED","journey":"PAYMENT_ON_APPROVAL","minimumValue":0},"chargeType":"DYNAMIC"}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -19264,7 +19289,8 @@ paths:
                     'retryPolicy' => 'NON_PERMITED',
                     'journey' => 'PAYMENT_ON_APPROVAL',
                     'minimumValue' => 0
-                ]
+                ],
+                'chargeType' => 'DYNAMIC'
               ]),
               CURLOPT_HTTPHEADER => [
                 "Authorization: {APP_ID}",
@@ -19291,7 +19317,7 @@ paths:
 
 
             payload =
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}"
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0},\"chargeType\":\"DYNAMIC\"}"
 
 
             headers = {
@@ -19310,7 +19336,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subscriptions\"\n\n\tpayload := strings.NewReader(\"{\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"value\\\":0,\\\"name\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"dayGenerateCharge\\\":5,\\\"frequency\\\":\\\"WEEKLY\\\",\\\"type\\\":\\\"PIX_RECURRING\\\",\\\"dayDue\\\":7,\\\"installmentCount\\\":0,\\\"correlationID\\\":\\\"string\\\",\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"pixRecurringOptions\\\":{\\\"retryPolicy\\\":\\\"NON_PERMITED\\\",\\\"journey\\\":\\\"PAYMENT_ON_APPROVAL\\\",\\\"minimumValue\\\":0}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subscriptions\"\n\n\tpayload := strings.NewReader(\"{\\\"customer\\\":{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}},\\\"value\\\":0,\\\"name\\\":\\\"string\\\",\\\"comment\\\":\\\"string\\\",\\\"dayGenerateCharge\\\":5,\\\"frequency\\\":\\\"WEEKLY\\\",\\\"type\\\":\\\"PIX_RECURRING\\\",\\\"dayDue\\\":7,\\\"installmentCount\\\":0,\\\"correlationID\\\":\\\"string\\\",\\\"additionalInfo\\\":[{\\\"key\\\":\\\"string\\\",\\\"value\\\":\\\"string\\\"}],\\\"pixRecurringOptions\\\":{\\\"retryPolicy\\\":\\\"NON_PERMITED\\\",\\\"journey\\\":\\\"PAYMENT_ON_APPROVAL\\\",\\\"minimumValue\\\":0},\\\"chargeType\\\":\\\"DYNAMIC\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -19319,7 +19345,7 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}");
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0},\"chargeType\":\"DYNAMIC\"}");
 
             Request request = new Request.Builder()
               .url("https://api.woovi.com/api/v1/subscriptions")
@@ -19351,7 +19377,7 @@ paths:
             request["content-type"] = 'application/json'
 
             request.body =
-            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0}}"
+            "{\"customer\":{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}},\"value\":0,\"name\":\"string\",\"comment\":\"string\",\"dayGenerateCharge\":5,\"frequency\":\"WEEKLY\",\"type\":\"PIX_RECURRING\",\"dayDue\":7,\"installmentCount\":0,\"correlationID\":\"string\",\"additionalInfo\":[{\"key\":\"string\",\"value\":\"string\"}],\"pixRecurringOptions\":{\"retryPolicy\":\"NON_PERMITED\",\"journey\":\"PAYMENT_ON_APPROVAL\",\"minimumValue\":0},\"chargeType\":\"DYNAMIC\"}"
 
 
             response = http.request(request)
@@ -23444,7 +23470,7 @@ components:
             - QUARTERLY
             - SEMIANNUALLY
             - ANNUALLY
-          description: |
+          description: >
             Frequency of the subscription — the interval between charges:
               - `WEEKLY`: every week
               - `MONTHLY`: every month
@@ -23452,7 +23478,9 @@ components:
               - `QUARTERLY`: every 3 months (trimestral)
               - `SEMIANNUALLY`: every 6 months
               - `ANNUALLY`: every 12 months
-            For Pix Automático (`type: PIX_RECURRING`), only the frequencies allowed by the Central Bank apply: `WEEKLY`, `MONTHLY`, `QUARTERLY`, `SEMIANNUALLY` and `ANNUALLY` (`BIMONTHLY` is not supported).
+            For Pix Automático (`type: PIX_RECURRING`), only the frequencies
+            allowed by the Central Bank apply: `WEEKLY`, `MONTHLY`, `QUARTERLY`,
+            `SEMIANNUALLY` and `ANNUALLY` (`BIMONTHLY` is not supported).
         installmentsCount:
           type: number
           nullable: true
@@ -23581,15 +23609,18 @@ components:
             - QUARTERLY
             - SEMIANNUALLY
             - ANNUALLY
-          description: |
-            Frequency of the subscription — the interval between charges (defaults to `MONTHLY` when omitted):
+          description: >
+            Frequency of the subscription — the interval between charges
+            (defaults to `MONTHLY` when omitted):
               - `WEEKLY`: every week
               - `MONTHLY`: every month
               - `BIMONTHLY`: every 2 months
               - `QUARTERLY`: every 3 months (trimestral)
               - `SEMIANNUALLY`: every 6 months
               - `ANNUALLY`: every 12 months
-            For Pix Automático (`type: PIX_RECURRING`), only the frequencies allowed by the Central Bank apply: `WEEKLY`, `MONTHLY`, `QUARTERLY`, `SEMIANNUALLY` and `ANNUALLY` (`BIMONTHLY` is not supported).
+            For Pix Automático (`type: PIX_RECURRING`), only the frequencies
+            allowed by the Central Bank apply: `WEEKLY`, `MONTHLY`, `QUARTERLY`,
+            `SEMIANNUALLY` and `ANNUALLY` (`BIMONTHLY` is not supported).
         type:
           type: string
           enum:
@@ -23634,6 +23665,20 @@ components:
             minimumValue:
               type: number
               description: Minimum value for each cobr
+        chargeType:
+          type: string
+          enum:
+            - DYNAMIC
+            - OVERDUE
+            - BOLETO
+          description: >
+            Charge method used for each charge generated by the subscription
+            (defaults to `DYNAMIC` when omitted):
+              - `DYNAMIC`: a standard Pix charge.
+              - `OVERDUE`: a Pix charge with a due date (supports interest and fine).
+              - `BOLETO`: each charge is issued as a boleto, which can also be paid through its Pix QR Code. Requires the boleto feature enabled for your account — talk to our support.
+            Only applies to `type: RECURRENT` subscriptions; it is ignored for
+            Pix Automático (`type: PIX_RECURRING`).
       required:
         - customer
         - value

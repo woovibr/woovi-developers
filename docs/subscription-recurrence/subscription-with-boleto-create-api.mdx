@@ -1,0 +1,175 @@
+---
+id: subscription-with-boleto-create-api
+sidebar_position: 2
+title: Como criar uma Assinatura cobrada com Boleto usando a API?
+tags:
+  - subscription
+  - boleto
+  - recurrence
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Você pode criar uma assinatura em que **cada parcela é cobrada por Boleto**. A cada
+ciclo (mensal, semanal, etc.) geramos automaticamente um novo boleto para o seu
+cliente — que também pode ser pago via Pix, pois todo boleto emitido pela Woovi
+expõe um QR Code Pix.
+
+:::info Boleto precisa estar habilitado
+A cobrança por boleto exige que a funcionalidade esteja ativa na sua conta. Entre
+em contato com o nosso time para analisarmos o seu modelo de negócio e habilitar.
+:::
+
+Para criar a assinatura você deverá fazer uma chamada POST para o _endpoint_
+`/api/v1/subscriptions`.
+
+Você pode acessar [aqui](https://developers.woovi.com/api#tag/subscription/POST/api/v1/subscriptions)
+a documentação referente a esse _endpoint_.
+
+Como parte do `body` da requisição, esperamos o envio dos seguintes itens:
+
+- **`value`**: O valor em centavos da assinatura a ser criada.
+- **`customer`**: O cliente da assinatura a ser cobrado com o endereço. Este campo é [idempotente](../concepts/idempotence.md), o que significa que se você enviar dados de um cliente que já exista, utilizaremos o existente ao invés de criar um novo.
+- **`type`**: O tipo da assinatura. Para cobrança por boleto, use `RECURRENT`.
+- **`chargeType`**: O método de cobrança de cada parcela. Para gerar boletos, informe o valor `BOLETO`.
+
+O body também aceita outros campos **opcionais**:
+
+- **`frequency`**: A frequência entre as cobranças (`WEEKLY`, `MONTHLY`, `BIMONTHLY`, `QUARTERLY`, `SEMIANNUALLY`, `ANNUALLY`). Quando omitido, o padrão é `MONTHLY`.
+- **`dayGenerateCharge`**: Dia do mês em que as cobranças (boletos) serão geradas.
+- **`dayDue`**: Prazo, em dias, para o boleto vencer a partir da geração.
+
+## Exemplo
+
+O body da sua requisição será semelhante a este exemplo:
+
+```json
+{
+  "value": 15000,
+  "customer": {
+    "name": "Dan",
+    "taxID": "31324227036",
+    "email": "email0@example.com",
+    "phone": "5511999999999",
+    "address": {
+      "zipcode": "30421322",
+      "street": "Street",
+      "number": "100",
+      "neighborhood": "Neighborhood",
+      "city": "Belo Horizonte",
+      "state": "MG",
+      "complement": "APTO",
+      "country": "BR"
+    }
+  },
+  "type": "RECURRENT",
+  "chargeType": "BOLETO"
+}
+```
+
+Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisição será
+`2xx` e no `body` da resposta, retornaremos a assinatura criada.
+
+Retornaremos a seguinte resposta de exemplo:
+
+```json
+{
+  "subscription": {
+    "customer": {
+      "name": "Fernando Silva",
+      "email": "fernando@woovi.com",
+      "phone": "+5531988472275",
+      "taxID": { "taxID": "13225476617", "type": "BR:CPF" },
+      "correlationID": "1b112444-6530-46dd-934b-71d50d6c84bc",
+      "address": {
+        "zipcode": "30421322",
+        "street": "Street",
+        "number": "100",
+        "neighborhood": "Neighborhood",
+        "city": "Belo Horizonte",
+        "state": "MG",
+        "complement": "APTO",
+        "country": "BR",
+        "location": { "coordinates": [] },
+        "_id": "64b7d32db5a5555c9b750bc0"
+      }
+    },
+    "dayGenerateCharge": 5,
+    "value": 15000,
+    "status": "ACTIVE",
+    "correlationID": "My-UniqueID",
+    "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM="
+  }
+}
+```
+
+## Ciclo de vida da cobrança
+
+A cada parcela da assinatura geramos uma **cobrança do tipo boleto**. Essa
+cobrança segue o mesmo formato da
+[cobrança de boleto avulsa](../boleto/boleto-api.md): traz `paymentMethods.boleto`
+(com `boletoBarcode` e `boletoDigitable`) e também um Pix, de modo que o cliente
+pode quitar por qualquer uma das duas formas.
+
+Quando o boleto de uma parcela é **pago**, disparamos o webhook
+`OPENPIX:CHARGE_COMPLETED`, exatamente como no fluxo de boleto avulso. Veja
+[Webhook de Boleto pago](../boleto/boleto-webhook.md) para o payload completo e
+como validar a assinatura.
+
+:::warning Pagamento não é liquidação
+O webhook indica que o boleto foi **pago**, não que o valor já está disponível. A
+**liquidação** ocorre depois (tipicamente D+3). Trate o webhook como "parcela
+quitada", não como saldo disponível.
+:::
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+ curl --request POST \
+     --url https://api.openpix.com.br/api/v1/subscriptions \
+     --header 'Authorization: AUTHORIZATION' \
+     --header 'content-type: application/json' \
+     --data '{"value": 15000,"type":"RECURRENT","chargeType":"BOLETO","customer": {"name":"Dan","taxID":"31324227036","email":"email0@example.com","phone":"5511999999999", "address":{"zipcode":"30421322","street":"Street","number":"100","neighborhood":"Neighborhood","city":"Belo Horizonte","state":"MG","complement":"APTO","country":"BR"}}}'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.openpix.com.br/api/v1/subscriptions', {
+  method: 'POST',
+  body: JSON.stringify({
+    value: 15000,
+    type: 'RECURRENT',
+    chargeType: 'BOLETO',
+    customer: {
+      name: 'Dan',
+      taxID: '31324227036',
+      email: 'email0@example.com',
+      phone: '5511999999999',
+      address: {
+        zipcode: '30421322',
+        street: 'Street',
+        number: '100',
+        neighborhood: 'Neighborhood',
+        city: 'Belo Horizonte',
+        state: 'MG',
+        complement: 'APTO',
+        country: 'BR',
+      },
+    },
+  }),
+  headers: {
+    Authorization: 'AUTHORIZATION',
+    'Content-Type': 'application/json',
+  },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
