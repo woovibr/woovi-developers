@@ -89,7 +89,7 @@ A API utiliza os seguintes indicadores de período:
 
 ### cURL
 ```bash
-curl -X GET "https://api.openpix.com.br/api/v1/fraud-validation/taxId/12345678901" \
+curl -X GET "https://api.woovi.com/api/v1/fraud-validation/taxId/12345678901" \
   -H "Authorization: SEU_APP_ID_AQUI"
 ```
 

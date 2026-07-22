@@ -12,7 +12,7 @@ conduzimos a depreciação de recursos com prazo de _sunset_ e comunicação pr�
 
 ## Versionamento
 
-- A API é versionada no **caminho da URL**: `https://api.openpix.com.br/api/v1/...`
+- A API é versionada no **caminho da URL**: `https://api.woovi.com/api/v1/...`
   (produção) e `https://api.woovi-sandbox.com/api/v1/...` (sandbox).
 - Seguimos **[SemVer](https://semver.org/lang/pt-BR/)**: a versão é composta por
   `major.minor.patch`. **Mudanças compatíveis não geram nova versão _major_.**

@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 Para criar uma cobrança Pix com split para sub conta, você utiliza o _endpoint_ `/api/v1/charge` da API.
 
-Você pode acessar [aqui](https://developers.openpix.com.br/api#tag/charge/paths/~1api~1v1~1charge/post)
+Você pode acessar [aqui](https://developers.woovi.com/api#tag/charge/paths/~1api~1v1~1charge/post)
 a documentação referente a esse _endpoint_.
 
 Os campos obrigatórios para criar uma cobrança Pix com Split são os seguintes:
@@ -62,7 +62,7 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
   <TabItem value="shell-curl" label="Shell + cURL" default>
 
 ```sh
-  curl 'https://api.openpix.com.br/api/v1/charge' -X POST \
+  curl 'https://api.woovi.com/api/v1/charge' -X POST \
       -H "Accept: application/json" \
       -H "Content-Type: application/json" \
       -H "user-agent: node-fetch" \
@@ -73,7 +73,7 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
   <TabItem value="javascript" label="JavaScript + Fetch" default>
 
 ```js
-fetch('https://api.openpix.com.br/api/v1/charge', {
+fetch('https://api.woovi.com/api/v1/charge', {
   method: 'POST',
   body: JSON.stringify({
     value: 100,

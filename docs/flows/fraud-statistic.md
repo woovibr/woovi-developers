@@ -143,7 +143,7 @@ A API utiliza os seguintes indicadores de período:
 
 ### cURL
 ```bash
-curl -X GET "https://api.openpix.com.br/api/v1/pix-keys/12345678901/fraud-validation" \
+curl -X GET "https://api.woovi.com/api/v1/pix-keys/12345678901/fraud-validation" \
   -H "Authorization: SEU_APP_ID_AQUI"
 ```
 
