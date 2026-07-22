@@ -16,11 +16,11 @@ Como parte do `body` da requisição, esperamos o envio dos seguintes itens:
 - **`value`**: O valor em centavos da assinatura a ser criada.
 - **`customer`**: O cliente da assinatura a ser cobrado. É obrigatório o envio do endereço do cliente. Este campo é [idempotente](../concepts/idempotence.md), o que significa que se você enviar dados de um cliente que já exista, utilizaremos o existente ao invés de criar um novo.
 - **`type`**: Deve ser definido como `PIX_RECURRING`
-- **`dayGenerateCharge`**: Dia do mês em que as cobranças serão geradas. 
+- **`dayGenerateCharge`**: Dia do mês em que as cobranças serão geradas. Aceita um número de 1 a 31 (dia do mês) ou uma data ISO 8601 completa (ex.: `"2026-02-22T00:00:00.000Z"`) para definir a data de início da recorrência.
+**Caso seja escolhido a jornada 3 (``PAYMENT_ON_APPROVAL``) a data deve ser o dia atual**. 
+Caso o dia informado seja inferior ao dia atual, a primeira cobrança ocorrerá apenas no próximo mês.
 - **`dayDue`**: Quantos dias para expirar cobrança. 
-**Caso seja escolhido a jornada 3 (``PAYMENT_ON_APPROVAL``) a data da cobrança deve ser o dia atual**. 
-Outra observação desse campo, caso o valor seja inferior ao dia atual, a primeira cobrança ocorrerá apenas no próximo mês
-- **`comment`**: A descrição da cobrança aparecerá para o seu cliente ao ler o qrcode no aplicativo do banco.
+- **`comment`**: Texto usado como o contrato de adesão da recorrência (campo `contrato` do mandato). Deve ter menos de 30 caracteres. No Pix Automático o nome exibido para o pagador no aplicativo do banco é a razão social / nome fantasia do CNPJ da sua conta, não o `comment`.
 - **`frequency`**: A frequência da recorrência. Valores aceitos no Pix Automático: `WEEKLY` (semanal), `MONTHLY` (mensal), `QUARTERLY` (trimestral, a cada 3 meses), `SEMIANNUALLY` (semestral) e `ANNUALLY` (anual). `BIMONTHLY` (bimestral) não é suportado pelo Pix Automático.
 
 Dentro do objeto `pixRecurringOptions` você precisa definir alguns parâmetros exclusivos do pix automático:
@@ -105,5 +105,50 @@ Retornarmeros a seguinte resposta de exemplo:
         },
         "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2ODljYWZlMWQ3OTQzYWM2NDI1MTg1NGY="
     }
+}
+```
+
+## Início no mês seguinte
+
+Para criar o mandato agora e cobrar o cliente apenas no próximo mês (ou em uma data futura), use a jornada 2 (`ONLY_RECURRENCY`). Nessa jornada nenhuma cobrança é disparada na criação — apenas o mandato de recorrência é registrado, e a primeira cobrança é gerada somente na data de início.
+
+A data de início é definida pelo `dayGenerateCharge`, de duas formas:
+
+- **Data ISO 8601** (recomendado): envie a data completa (ex.: `"2026-02-22T00:00:00.000Z"`). Ela passa a ser o início da recorrência e o dia dela vira o dia fixo das cobranças seguintes.
+- **Número**: se o dia informado for menor que o dia de hoje, a primeira cobrança ocorre no próximo mês; se maior, ainda no mês atual.
+
+Na jornada `ONLY_RECURRENCY`, a data de início precisa estar a pelo menos 3 dias de hoje, caso contrário a criação é rejeitada.
+
+O `body` para uma assinatura mensal que começa apenas em 22/02/2026 seria semelhante a este:
+
+```json
+{
+  "name": "Pix Automático",
+  "value": 100,
+  "customer": {
+    "name": "Dan",
+    "taxID": "31324227036",
+    "email": "email0@example.com",
+    "phone": "5511999999999",
+    "address": {
+        "zipcode": "04556300",
+        "street": "rua de são paulo",
+        "number": "3432",
+        "neighborhood": "BROOKLIN PAULISTA",
+        "city": "SAO PAULO",
+        "state": "SP",
+        "complement": "CONJ 26"
+    }
+  },
+  "correlationID": "UniqueID",
+  "comment": "Assinatura mensal",
+  "frequency": "MONTHLY",
+  "type": "PIX_RECURRING",
+  "pixRecurringOptions": {
+    "journey": "ONLY_RECURRENCY",
+    "retryPolicy": "THREE_RETRIES_7_DAYS"
+  },
+  "dayGenerateCharge": "2026-02-22T00:00:00.000Z",
+  "dayDue": 3
 }
 ```
