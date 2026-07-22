@@ -20,7 +20,7 @@ Como parte do `body` da requisição, esperamos o envio dos seguintes itens:
 **Caso seja escolhido a jornada 3 (``PAYMENT_ON_APPROVAL``) a data deve ser o dia atual**. 
 Caso o dia informado seja inferior ao dia atual, a primeira cobrança ocorrerá apenas no próximo mês.
 - **`dayDue`**: Quantos dias para expirar cobrança. 
-- **`comment`**: A descrição da cobrança aparecerá para o seu cliente ao ler o qrcode no aplicativo do banco.
+- **`comment`**: A descrição da cobrança aparecerá para o seu cliente ao ler o qrcode no aplicativo do banco. Deve ter menos de 30 caracteres.
 - **`frequency`**: A frequência da recorrência. Valores aceitos no Pix Automático: `WEEKLY` (semanal), `MONTHLY` (mensal), `QUARTERLY` (trimestral, a cada 3 meses), `SEMIANNUALLY` (semestral) e `ANNUALLY` (anual). `BIMONTHLY` (bimestral) não é suportado pelo Pix Automático.
 
 Dentro do objeto `pixRecurringOptions` você precisa definir alguns parâmetros exclusivos do pix automático:
