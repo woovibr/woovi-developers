@@ -7,12 +7,12 @@ tags:
 
 ## Validando o webhook de teste
 
-Quando é criado um novo webhook, a OpenPix envia uma requisição de teste para o seu endpoint. 
+Quando é criado um novo webhook, a Woovi envia uma requisição de teste para o seu endpoint. 
 Essa requisição é enviada para garantir que o seu endpoint está funcionando corretamente.
 
 ### 1. Recebendo o webhook de teste
 
-Quando a OpenPix envia um webhook de teste, o corpo da requisição é:
+Quando a Woovi envia um webhook de teste, o corpo da requisição é:
 
 ```json
 {

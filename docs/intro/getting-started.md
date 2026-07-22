@@ -34,7 +34,7 @@ Se a sua empresa utiliza SAML, poderá entrar automaticamente no Woovi SAML Serv
 
 ## Segurança e Firewall
 
-### Lista de Domínios Openpix permitidos
+### Lista de Domínios Woovi permitidos
 
 A fim de operar corretamente os usuários da sua empresa precisam ter acesso aos servidores da Woovi. A Woovi utiliza tecnologias web padrão e aplica a encriptação em todas as comunicações, na maioria dos casos a sua configuração deve funcionar fora da caixa, sem requisitos adicionais.
 
@@ -46,7 +46,7 @@ Se você se deparar com problemas utilizando a plataforma, por favor verifique o
 
 - Certifique-se de que não está bloqueando os e-mails do domínio da Woovi.
   
-  > Tem que listar todos os domínios permitidos da Openpix *.woovi.com em seu fornecedor de e-mail
+  > Tem que listar todos os domínios permitidos da Woovi *.woovi.com em seu fornecedor de e-mail
   
 - Não armazenar em cache
 

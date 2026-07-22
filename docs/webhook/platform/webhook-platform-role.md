@@ -7,7 +7,7 @@ tags:
 - permission
 ---
 
-Pela Openpix é possível criar webhooks para interceptar quando um pix for realizado. Hoje, há duas maneiras de realizar a criação do mesmo: via plataforma ou API.
+Pela Woovi é possível criar webhooks para interceptar quando um pix for realizado. Hoje, há duas maneiras de realizar a criação do mesmo: via plataforma ou API.
 
 Para adicionar um novo usuário através da plataforma para ter acesso as funcionalidades de API e Webhook siga o seguinte passo a passo:
 

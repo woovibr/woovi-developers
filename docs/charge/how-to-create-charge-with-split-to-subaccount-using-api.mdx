@@ -31,7 +31,7 @@ O body da sua requisição será semelhante a este exemplo:
   "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a",
   "splits": [
     {
-      "pixKey": "destinatario@openpix.com.br",
+      "pixKey": "destinatario@example.com",
       "value": 15,
       "splitType": "SPLIT_SUB_ACCOUNT"
     }
@@ -48,7 +48,7 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
   "charge": {
     ...Charge Payload
     "splits": [
-      { "pixKey": "destinatario@openpix.com.br", "value": 15, splitType: "SPLIT_SUB_ACCOUNT" },
+      { "pixKey": "destinatario@example.com", "value": 15, splitType: "SPLIT_SUB_ACCOUNT" },
     ]
   },
   "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a",
@@ -66,7 +66,7 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
       -H "Accept: application/json" \
       -H "Content-Type: application/json" \
       -H "user-agent: node-fetch" \
-      --data-binary '{"correlationID":"c782e0ac-833d-4a89-9e73-9b60b2b41d3a","value":100, "splits": [{ "pixKey": "destinatario@openpix.com.br", "value": 15, splitType:"SPLIT_SUB_ACCOUNT"  }]}'
+      --data-binary '{"correlationID":"c782e0ac-833d-4a89-9e73-9b60b2b41d3a","value":100, "splits": [{ "pixKey": "destinatario@example.com", "value": 15, splitType:"SPLIT_SUB_ACCOUNT"  }]}'
 ```
 
   </TabItem>
@@ -80,7 +80,7 @@ fetch('https://api.woovi.com/api/v1/charge', {
     correlationID: 'c782e0ac-833d-4a89-9e73-9b60b2b41d3a',
     splits: [
       {
-        pixKey: 'destinatario@openpix.com.br',
+        pixKey: 'destinatario@example.com',
         value: 15,
         splitType: 'SPLIT_SUB_ACCOUNT',
       },
