@@ -6,7 +6,7 @@ tags:
   - api
 ---
 
-A Woovi/OpenPix se compromete a **não quebrar silenciosamente** integrações em produção.
+A Woovi se compromete a **não quebrar silenciosamente** integrações em produção.
 Esta página descreve como versionamos a API, o que garantimos de compatibilidade, e como
 conduzimos a depreciação de recursos com prazo de _sunset_ e comunicação prévia.
 
