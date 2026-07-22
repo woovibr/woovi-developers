@@ -96,7 +96,7 @@ Retornarmeros a seguinte resposta de exemplo:
 
 ```sh
  curl --request POST \
-     --url https://api.openpix.com.br/api/v1/subscriptions \
+     --url https://api.woovi.com/api/v1/subscriptions \
      --header 'Authorization: AUTHORIZATION' \
      --header 'content-type: application/json' \
      --data '{"value": 100,"customer": {"name":"Dan","taxID":"31324227036","email":"email0@example.com","phone":"5511999999999", "address":{"zipcode":"30421322","street":"Street","number":"100","neighborhood":"Neighborhood","city":"Belo Horizonte","state":"MG","complement":"APTO","country":"BR"}},"chargeType":"OVERDUE"}'
@@ -106,7 +106,7 @@ Retornarmeros a seguinte resposta de exemplo:
   <TabItem value="javascript" label="JavaScript + Fetch" default>
 
 ```js
-fetch('https://api.openpix.com.br/api/v1/subscriptions', {
+fetch('https://api.woovi.com/api/v1/subscriptions', {
   method: 'POST',
   body: JSON.stringify({
     value: 100,
