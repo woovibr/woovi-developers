@@ -131,7 +131,7 @@ quitada", não como saldo disponível.
 
 ```sh
  curl --request POST \
-     --url https://api.openpix.com.br/api/v1/subscriptions \
+     --url https://api.woovi.com/api/v1/subscriptions \
      --header 'Authorization: AUTHORIZATION' \
      --header 'content-type: application/json' \
      --data '{"value": 15000,"type":"RECURRENT","chargeType":"BOLETO","customer": {"name":"Dan","taxID":"31324227036","email":"email0@example.com","phone":"5511999999999", "address":{"zipcode":"30421322","street":"Street","number":"100","neighborhood":"Neighborhood","city":"Belo Horizonte","state":"MG","complement":"APTO","country":"BR"}}}'
@@ -141,7 +141,7 @@ quitada", não como saldo disponível.
   <TabItem value="javascript" label="JavaScript + Fetch" default>
 
 ```js
-fetch('https://api.openpix.com.br/api/v1/subscriptions', {
+fetch('https://api.woovi.com/api/v1/subscriptions', {
   method: 'POST',
   body: JSON.stringify({
     value: 15000,
