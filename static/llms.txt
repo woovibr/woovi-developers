@@ -1,0 +1,170 @@
+# Woovi Developers
+
+> Woovi (formerly OpenPix) is an instant-payments platform for Brazil built around Pix. This documentation covers the REST API, webhooks, SDKs, plugins and product integrations used to create and manage Pix charges (cobranças), Pix Automático (recurring), Pix Crediário (installments), Boleto, refunds, disputes (MED), split payments, sub-accounts, BaaS/KYC and stablecoin conversions. Base site: https://developers.woovi.com — API base URL: https://api.woovi.com (sandbox available). Auth is via an AppID/API key sent in the `Authorization` header.
+
+## Getting Started
+- [Introdução / Getting Started](https://developers.woovi.com/docs/intro/getting-started): first steps and account setup.
+- [Ambiente de teste (Sandbox)](https://developers.woovi.com/docs/intro/test-environment): test environment and credentials.
+- [Getting Started with the API](https://developers.woovi.com/docs/apis/api-getting-started): authentication (AppID) and first request.
+- [Common API fields](https://developers.woovi.com/docs/apis/api-common-fields): shared request/response fields.
+- [Ajuda / Help](https://developers.woovi.com/docs/intro/help): where to get support.
+
+## API Reference (interactive)
+- [API Explorer](https://developers.woovi.com/docs/apis/api-explorer): interactive explorer for the API.
+- [Main API reference](https://developers.woovi.com/api): charges, customers, refunds, subscriptions, payments, transfers, sub-accounts, webhooks, account.
+- [Pix API reference](https://developers.woovi.com/pix): raw Pix endpoints.
+- [DICT API reference](https://developers.woovi.com/dict): Pix key directory (DICT) endpoints.
+- [Pix Indireto API reference](https://developers.woovi.com/indirect): indirect participant endpoints ([overview](https://developers.woovi.com/docs/indireto/pix-indirect-overview)).
+- [Webhook events reference](https://developers.woovi.com/webhook-events): catalog of webhook event payloads.
+- [Postman collection](https://developers.woovi.com/docs/apis/api-postman) · [Code samples](https://developers.woovi.com/docs/apis/api-samples) · [Changelog](https://developers.woovi.com/docs/apis/api-changelog) · [Versioning & deprecation](https://developers.woovi.com/docs/apis/api-versioning-deprecation)
+- [API Master (partner/master key)](https://developers.woovi.com/docs/apis/api-master) · [IP whitelist security](https://developers.woovi.com/docs/apis/api-security-ip-whitelist) · [API time/timezone](https://developers.woovi.com/docs/apis/api-time)
+
+## Core Concepts
+- [Charge (cobrança)](https://developers.woovi.com/docs/concepts/charge)
+- [Customer (cliente)](https://developers.woovi.com/docs/concepts/customer)
+- [Transaction](https://developers.woovi.com/docs/concepts/transaction)
+- [Refund (reembolso)](https://developers.woovi.com/docs/concepts/refund)
+- [Correlation ID](https://developers.woovi.com/docs/concepts/correlation-id)
+- [Idempotence](https://developers.woovi.com/docs/concepts/idempotence)
+- [State machine](https://developers.woovi.com/docs/concepts/state-machine)
+- [Basis points](https://developers.woovi.com/docs/concepts/basis-points)
+
+## Charges (Cobrança)
+- [Create a charge via API](https://developers.woovi.com/docs/charge/how-to-create-charge-using-api)
+- [Charge flow (create charge API)](https://developers.woovi.com/docs/flows/flow-create-charge-api) · [Charge state machine](https://developers.woovi.com/docs/flows/charge-flow-state-machine)
+- [Charge expiration](https://developers.woovi.com/docs/charge/how-to-charge-expiration) · [Edit default expiration](https://developers.woovi.com/docs/flows/flow-edit-default-expiration)
+- [Additional info on a charge](https://developers.woovi.com/docs/charge/how-charge-additional-info) · [Extra completed info](https://developers.woovi.com/docs/charge/how-create-charge-email-completed-info)
+- [Select account when creating a charge](https://developers.woovi.com/docs/charge/charge-how-to-select-an-account-when-creating-a-charge)
+- [Require customer registration](https://developers.woovi.com/docs/charge/how-to-create-charge-requesting-customer-registration)
+- [Share a charge](https://developers.woovi.com/docs/charge/how-to-charge-share) · [Woovi QR](https://developers.woovi.com/docs/charge/how-to-woovi-qr)
+- [Discount simulator](https://developers.woovi.com/docs/charge/discount-simulator)
+- [Block payment from a different taxID](https://developers.woovi.com/docs/charge/how-to-block-payment-different-taxid) · [Block payments](https://developers.woovi.com/docs/charge/block-payments)
+- [Filter charges by customer](https://developers.woovi.com/docs/charge/how-to/charge-how-to-filter-charges-by-customer) · [Redirect user after paid](https://developers.woovi.com/docs/charge/how-to/charge-how-to-redirect-user-after-charge-paid)
+- [Create a COBV charge via API](https://developers.woovi.com/docs/charge/how-to-create-cobv-using-api)
+- [Charge webhook: created](https://developers.woovi.com/docs/charge/webhook/charge-webhook-example-charge-created) · [completed](https://developers.woovi.com/docs/charge/webhook/charge-webhook-example-charge-completed) · [expired](https://developers.woovi.com/docs/charge/webhook/charge-webhook-example-charge-expired)
+
+## Static QR Code
+- [Create a static QR Code via API](https://developers.woovi.com/docs/qrcode-static/how-to-create-qrcode-static-using-api)
+- [Static QR Code report](https://developers.woovi.com/docs/qrcode-static/qrcode-static-report)
+
+## Customers
+- [Create a customer via API](https://developers.woovi.com/docs/customer/how-to-create-customer-using-api)
+- [Create customers in batch](https://developers.woovi.com/docs/customer/how-to-create-customer-in-batch)
+- [Update customer data](https://developers.woovi.com/docs/customer/how-to-update-customer-data)
+
+## Refunds & Disputes (MED)
+- [Create a refund via API](https://developers.woovi.com/docs/refund/charge-refund-create-api) · [List refunds](https://developers.woovi.com/docs/refund/charge-refund-get-all-api)
+- [What is a dispute](https://developers.woovi.com/docs/disputa/what-is-dispute) · [Create a dispute](https://developers.woovi.com/docs/disputa/how-to-create-dispute) · [Add evidence](https://developers.woovi.com/docs/disputa/how-add-new-evidence-in-dispute) · [Dispute webhook](https://developers.woovi.com/docs/disputa/webhook-dispute)
+- [Funds recovery: create](https://developers.woovi.com/docs/funds-recovery/funds-recovery-create-api) · [get](https://developers.woovi.com/docs/funds-recovery/funds-recovery-get-api) · [cancel](https://developers.woovi.com/docs/funds-recovery/funds-recovery-cancel-api)
+
+## Webhooks
+- [Create a webhook (flow)](https://developers.woovi.com/docs/flows/webhook/flow-create-webhook)
+- [Webhook events reference](https://developers.woovi.com/webhook-events)
+- [Charge webhooks](https://developers.woovi.com/docs/charge/webhook/charge-webhook-example-charge-completed) · [Dispute webhook](https://developers.woovi.com/docs/disputa/webhook-dispute) · [Boleto webhook](https://developers.woovi.com/docs/boleto/boleto-webhook) · [Pix Automático webhooks](https://developers.woovi.com/docs/pix-automatic/webhooks/pix-automatic-webhooks) · [Stablecoin webhooks](https://developers.woovi.com/docs/stablecoin/stablecoin-webhooks)
+
+## Payments (Pagamentos / cash-out)
+- [How it works](https://developers.woovi.com/docs/payment/payment-how-it-works) · [Payment flow](https://developers.woovi.com/docs/payment/payment-flow) · [State machine](https://developers.woovi.com/docs/payment/payment-state-machine)
+- [Request access](https://developers.woovi.com/docs/payment/payment-how-to-request-access) · [Add funds](https://developers.woovi.com/docs/payment/payment-how-to-add-funds) · [Get account id](https://developers.woovi.com/docs/payment/payment-how-to-get-account-id)
+- [Create a payment via API](https://developers.woovi.com/docs/payment/payment-how-to-use-api-to-create) · [Approve via API](https://developers.woovi.com/docs/payment/payment-how-to-use-api-to-approve-a) · [Auto-approve](https://developers.woovi.com/docs/payment/payment-how-to-auto-approve)
+- [Batch: create](https://developers.woovi.com/docs/payment/payment-how-to-create-batch) · [approve](https://developers.woovi.com/docs/payment/payment-how-to-approve-batch) · [List](https://developers.woovi.com/docs/payment/payment-how-to-list) · [Pay bills](https://developers.woovi.com/docs/payment/payment-how-to-pay-bills) · [Idempotency](https://developers.woovi.com/docs/payment/payment-idempotency)
+- [Check a Pix key](https://developers.woovi.com/docs/payment/check-pix-key) · [Decode EMV](https://developers.woovi.com/docs/payment/decode-emv) · [Failed payment errors](https://developers.woovi.com/docs/payment/payment-failed-errors)
+
+## Pix Keys & DICT
+- [Create a new Pix key](https://developers.woovi.com/docs/pix-keys/how-to-create-new-pix-key)
+- [Pix key campaign](https://developers.woovi.com/docs/flows/api-pix-key-campaign)
+- [Validate bank data](https://developers.woovi.com/docs/flows/validate-bank-data) · [manual](https://developers.woovi.com/docs/flows/validate-bank-data-manual)
+
+## Pix Automático (recurring)
+- [What is it](https://developers.woovi.com/docs/pix-automatic/pix-automatic-what-is-it) · [Step by step](https://developers.woovi.com/docs/pix-automatic/pix-automatic-step-by-step) · [How to create](https://developers.woovi.com/docs/pix-automatic/pix-automatic-how-to-create)
+- [API routes](https://developers.woovi.com/docs/pix-automatic/pix-api-routes) (POST/GET/PUT `/api/v1/subscriptions`, `/api/v1/installments`) · [API errors](https://developers.woovi.com/docs/pix-automatic/pix-api-errors)
+- [Choose journey](https://developers.woovi.com/docs/pix-automatic/pix-automatic-how-to-choose-journey) · [Dynamic value](https://developers.woovi.com/docs/pix-automatic/pix-automatic-dynamic-value) · [Manual COBR](https://developers.woovi.com/docs/pix-automatic/pix-automatic-cobr-manual) · [State machine](https://developers.woovi.com/docs/pix-automatic/pix-automatic-state-machine)
+- [Webhooks flow](https://developers.woovi.com/docs/pix-automatic/webhooks/pix-automatic-flow) · [Webhooks](https://developers.woovi.com/docs/pix-automatic/webhooks/pix-automatic-webhooks)
+
+## Subscriptions & Recurrence
+- [Create a subscription](https://developers.woovi.com/docs/subscription-recurrence/subscription-recurrence-create) · [via API](https://developers.woovi.com/docs/subscription-recurrence/subscription-recurrence-create-api) · [get](https://developers.woovi.com/docs/subscription-recurrence/subscription-recurrence-get-api)
+- [Subscription with boleto](https://developers.woovi.com/docs/subscription-recurrence/subscription-with-boleto-create-api) · [with interests & fines](https://developers.woovi.com/docs/subscription-recurrence/subscription-with-interests-and-fines-create-api)
+
+## Pix Crediário (installments)
+- [Intro](https://developers.woovi.com/docs/pix-crediary/pix-crediary-intro) · [How it works](https://developers.woovi.com/docs/pix-crediary/pix-crediary-how-work) · [FAQ](https://developers.woovi.com/docs/pix-crediary/pix-crediary-faq)
+- [Create charge with Woovi Parcelado](https://developers.woovi.com/docs/charge/how-to-create-charge-woovi-parcelado)
+
+## Boleto
+- [Boleto](https://developers.woovi.com/docs/boleto/boleto) · [Assinatura](https://developers.woovi.com/docs/boleto/boleto-assinatura) · [Juros/Multa](https://developers.woovi.com/docs/boleto/boleto-juros-multa)
+- [Boleto out API](https://developers.woovi.com/docs/boleto/boleto-out-api) · [Reconciliation](https://developers.woovi.com/docs/boleto/boleto-reconciliation) · [Out reconciliation](https://developers.woovi.com/docs/boleto/boleto-out-reconciliation)
+- [Prazo de confirmação](https://developers.woovi.com/docs/boleto/boleto-prazo-confirmacao) · [Webhook](https://developers.woovi.com/docs/boleto/boleto-webhook)
+
+## Split & Sub-accounts
+- [Split introduction](https://developers.woovi.com/docs/splits/split-introduction) · [Calculate split by percentage](https://developers.woovi.com/docs/splits/how-to-calculate-split-with-percentage) · [Internal transfer](https://developers.woovi.com/docs/splits/split-internal-transfer)
+- [Create charge with split (API)](https://developers.woovi.com/docs/charge/how-to-create-charge-with-split-using-api) · [split to sub-account (API)](https://developers.woovi.com/docs/charge/how-to-create-charge-with-split-to-subbaccount-using-api) · [with plugin](https://developers.woovi.com/docs/subaccount/how-to-create-charge-with-splits-with-plugin)
+- [Create a sub-account](https://developers.woovi.com/docs/subaccount/how-to-create-a-subbaccount) · [Balance & details](https://developers.woovi.com/docs/subaccount/how-to-get-balance-and-details-of-subaccount-using-api) · [List](https://developers.woovi.com/docs/subaccount/how-to-list-subaccounts-of-a-company-using-api) · [Withdraw](https://developers.woovi.com/docs/subaccount/how-to-withdraw-from-subaccount-using-api) · [Transfer between](https://developers.woovi.com/docs/subaccount/how-to-make-a-transfer-between-subaccounts)
+- [Use cases](https://developers.woovi.com/docs/subaccount/split-sub-account-usecases) · [Integration with a sub-account](https://developers.woovi.com/docs/subaccount/how-to-create-a-integration-with-a-subaccount)
+
+## Checkout & ClickPix
+- [Create a checkout via platform](https://developers.woovi.com/docs/checkout/checkout-how-to-create-a-checkout-via-platform) · [Split by sub-accounts](https://developers.woovi.com/docs/checkout/checkout-how-to-configure-split-by-subaccounts) · [Identify via webhook](https://developers.woovi.com/docs/checkout/checkout-how-to-identify-a-charge-created-by-checkout-via-webhook)
+- [ClickPix getting started](https://developers.woovi.com/docs/clickpix/click-pix-starting) · [Customize button](https://developers.woovi.com/docs/clickpix/customizing-click-pix-button)
+
+## Invoices, Receipts & Exports
+- [Issue invoice by API](https://developers.woovi.com/docs/invoice/how-to-issue-invoice-by-api) · [Get invoice files](https://developers.woovi.com/docs/invoice/how-to-get-invoice-files-by-api) · [Cancel invoice](https://developers.woovi.com/docs/invoice/how-to-cancel-issued-invoice-by-api)
+- [Invoice integration](https://developers.woovi.com/docs/integrations/invoice/invoice-how-to-integrate) · [Issue manually](https://developers.woovi.com/docs/integrations/invoice/invoice-how-to-issue-manually)
+- [Get receipt with API](https://developers.woovi.com/docs/recibo/get-receipt-with-api) · [Export intro](https://developers.woovi.com/docs/export/export-intro)
+
+## Anticipation & Account Limits
+- [Anticipation overview](https://developers.woovi.com/docs/anticipation/anticipation-api-overview) · [Register beneficiary](https://developers.woovi.com/docs/anticipation/how-to-register-a-beneficiary-using-api) · [Activate/deactivate](https://developers.woovi.com/docs/anticipation/how-to-activate-and-deactivate-a-beneficiary-using-api) · [Sync balances](https://developers.woovi.com/docs/anticipation/how-to-sync-beneficiary-balances-using-api)
+- [Account limits API](https://developers.woovi.com/docs/account-limits/account-limits-api-getting-started) · [Get limits](https://developers.woovi.com/docs/account-limits/account-limits-api-limits-get)
+- [Account duplicates](https://developers.woovi.com/docs/account/account-duplicates)
+
+## BaaS & KYC
+- [BaaS concepts](https://developers.woovi.com/docs/baas/conceitos-baas) · [Basic BaaS flow](https://developers.woovi.com/docs/baas/basic-flux-baas) · [BaaS API master](https://developers.woovi.com/docs/baas/baas-api-master) · [Split](https://developers.woovi.com/docs/baas/baas-split) · [MED](https://developers.woovi.com/docs/baas/med-baas) · [Compliance](https://developers.woovi.com/docs/baas/baas-compliance) · [Necessary documents](https://developers.woovi.com/docs/baas/documents-nescessary) · [Support](https://developers.woovi.com/docs/baas/suporte-baas)
+- [KYC getting started](https://developers.woovi.com/docs/baas/kyc/kyc-api-getting-started) · [Onboarding create](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-create) · [Embed](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-embed) · [White-label](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-white-label) · [Account register get](https://developers.woovi.com/docs/baas/kyc/kyc-api-account-register-get) · [React SDK](https://developers.woovi.com/docs/baas/kyc/kyc-woovi-kyc-react)
+
+## Stablecoin
+- [What is it](https://developers.woovi.com/docs/stablecoin/stablecoin-what-is-it) · [Flow](https://developers.woovi.com/docs/stablecoin/stablecoin-flow) · [Endpoints](https://developers.woovi.com/docs/stablecoin/stablecoin-endpoints) · [Fees](https://developers.woovi.com/docs/stablecoin/stablecoin-fees) · [Limits](https://developers.woovi.com/docs/stablecoin/stablecoin-limits) · [Webhooks](https://developers.woovi.com/docs/stablecoin/stablecoin-webhooks)
+
+## Partnerships
+- [How to integrate as a Woovi partner](https://developers.woovi.com/docs/partnerships/how-to-integrate-as-woovi-partner) · [Create affiliate company via API](https://developers.woovi.com/docs/partnerships/how-to-create-a-affiliate-company-via-api) · [Access API via affiliated company](https://developers.woovi.com/docs/partnerships/how-to-access-api-via-affiliated-company) · [Webhook to affiliated company](https://developers.woovi.com/docs/partnerships/how-to-create-a-webhook-to-affiliated-company) · [Register lot company](https://developers.woovi.com/docs/partnerships/how-register-lot-company)
+- [Custom fee (what is)](https://developers.woovi.com/docs/partnerships/custom-fee/partner-custom-fee-what-is) · [Customize fee for affiliate](https://developers.woovi.com/docs/partnerships/custom-fee/how-to-customize-the-fee-for-a-affiliate) · [Split partner config](https://developers.woovi.com/docs/split/partner-config) · [config fee](https://developers.woovi.com/docs/split/partner-config-fee)
+
+## SDKs
+- [Node.js](https://developers.woovi.com/docs/sdk/node/sdk-node-what-is): [usage](https://developers.woovi.com/docs/sdk/node/sdk-node-usage) · [sandbox](https://developers.woovi.com/docs/sdk/node/how-to-configure-for-sandbox) · [error handling](https://developers.woovi.com/docs/sdk/node/sdk-node-error-handling) · [resources](https://developers.woovi.com/docs/sdk/node/sdk-node-resources)
+- [PHP](https://developers.woovi.com/docs/sdk/php/sdk-php-what-is): [usage](https://developers.woovi.com/docs/sdk/php/sdk-php-usage) · [examples](https://developers.woovi.com/docs/sdk/php/sdk-php-examples) · [custom HTTP](https://developers.woovi.com/docs/sdk/php/sdk-php-customized-http-requests) · [Laravel](https://developers.woovi.com/docs/sdk/php/frameworks/laravel/sdk-php-laravel-getting-started)
+- [Java](https://developers.woovi.com/docs/sdk/java/java-sdk-what-is): [usage](https://developers.woovi.com/docs/sdk/java/java-sdk-usage) · [resources](https://developers.woovi.com/docs/sdk/java/java-sdk-resources)
+- [Ruby](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-what-is): [installation](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-installation) · [resources](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-resources)
+
+## Frontend Plugin
+- [Plugin concept](https://developers.woovi.com/docs/plugin/plugin-concept) · [App ID](https://developers.woovi.com/docs/plugin/app-id) · [Order](https://developers.woovi.com/docs/plugin/plugin-order) · [Static QR Code](https://developers.woovi.com/docs/plugin/plugin-qrcode-static) · [React](https://developers.woovi.com/docs/plugin/plugin-react) · [Render without modal](https://developers.woovi.com/docs/plugin/how-to/how-to-render-plugin-without-modal) · [Samples](https://developers.woovi.com/docs/plugin/plugin-samples) · [FAQ](https://developers.woovi.com/docs/plugin/plugin-faq)
+
+## E-commerce Plugins
+- [WooCommerce](https://developers.woovi.com/docs/ecommerce/woocommerce/woocommerce-plugin) (crediary, subscriptions, one-click, refund, redirect, permalink)
+- [Magento 1](https://developers.woovi.com/docs/ecommerce/magento1/magento1-plugin) · [Magento 2](https://developers.woovi.com/docs/ecommerce/magento2/magento2-plugin)
+- [Nuvemshop](https://developers.woovi.com/docs/ecommerce/nuvemshop/nuvemshop-integrating) · [VTEX](https://developers.woovi.com/docs/ecommerce/vtex/vtex-integrating) · [Wake](https://developers.woovi.com/docs/ecommerce/wake/wake-integrating)
+- [OpenCart 3](https://developers.woovi.com/docs/ecommerce/opencart/opencart3-extension) · [OpenCart 4](https://developers.woovi.com/docs/ecommerce/opencart/opencart4-extension) · [PrestaShop](https://developers.woovi.com/docs/ecommerce/prestashop/plugin-set-up) · [Oracle Commerce Cloud](https://developers.woovi.com/docs/ecommerce/oracle/occ-integrating) · [Easy Digital Downloads](https://developers.woovi.com/docs/ecommerce/easydigitaldownloads)
+- [Shopify](https://developers.woovi.com/docs/integrations/shopify/shopify-how-to-integrate-with-openpix)
+
+## Integrations & Automation
+- [WhatsApp (Pix)](https://developers.woovi.com/docs/integrations/integrating-pix-with-whatsapp) · [WhatsApp via official API](https://developers.woovi.com/docs/charge/how-to-send-whatsapp-via-official-api) · [Telegram](https://developers.woovi.com/docs/integrations/integration-telegram) · [Discord](https://developers.woovi.com/docs/integrations/integration-discord)
+- [n8n (with plugin)](https://developers.woovi.com/docs/integrations/n8n-with-woovi) · [n8n (without plugin)](https://developers.woovi.com/docs/integrations/n8n-without-plugin) · [n8n trigger](https://developers.woovi.com/docs/integrations/woovi-trigger-n8n) · [Zapier](https://developers.woovi.com/docs/integrations/zapier-with-woovi) · [Make](https://developers.woovi.com/docs/integrations/make/make-how-to-integration-api)
+- [Google Sheets](https://developers.woovi.com/docs/integrations/integration-sheets) · [AWS Lambda](https://developers.woovi.com/docs/integrations/integration-aws-lambda) · [Bubble.io](https://developers.woovi.com/docs/integrations/integrating-woovi-with-bubbleio) · [Typebot](https://developers.woovi.com/docs/integrations/integrating-woovi-with-typebot) · [Tracken](https://developers.woovi.com/docs/integrations/integrating-woovi-with-tracken) · [SocPanel](https://developers.woovi.com/docs/integrations/socpanel-woovi) · [Assine Online](https://developers.woovi.com/docs/integrations/assine-online-with-woovi)
+- [Meta Pixel](https://developers.woovi.com/docs/meta-pixel/integrating-with-woovi) · [Woovi Bridge](https://developers.woovi.com/docs/integrations/woovi-bridge)
+
+## Maquininha Pix (POS)
+- [Setup](https://developers.woovi.com/docs/pix-machine/setup-pix-machine) · [Install](https://developers.woovi.com/docs/pix-machine/how-to-install-pix-machine) · [Print a charge](https://developers.woovi.com/docs/pix-machine/how-to-print-a-charge) · [FAQ](https://developers.woovi.com/docs/pix-machine/pix-machine-faq)
+
+## Bank Integrations
+- [Overview](https://developers.woovi.com/docs/bank-integrations/integration-overview) · [Supported banks](https://developers.woovi.com/docs/bank-integrations/integration-supported-banks) (index of 400+ banks under `/docs/supported-banks/...`)
+- Direct integrations: [Banco do Brasil](https://developers.woovi.com/docs/bank-integrations/integration-banco-do-brasil-bank) · [Itaú](https://developers.woovi.com/docs/bank-integrations/integration-itau-bank) · [Bradesco](https://developers.woovi.com/docs/bank-integrations/integration-bradesco-bank) · [Santander](https://developers.woovi.com/docs/bank-integrations/integration-santander) · [Sicoob](https://developers.woovi.com/docs/bank-integrations/integration-sicoob) · [BS2](https://developers.woovi.com/docs/bank-integrations/integration-bs2) · [Gerencianet](https://developers.woovi.com/docs/bank-integrations/integration-gerencianet-bank) · [Original](https://developers.woovi.com/docs/bank-integrations/integration-original-bank) · [Flagship](https://developers.woovi.com/docs/bank-integrations/integration-flagship)
+
+## Cashback
+- [What is cashback](https://developers.woovi.com/docs/cashback/cashback-what-is) · [Config](https://developers.woovi.com/docs/cashback/cashback-how-to-config) · [Use](https://developers.woovi.com/docs/cashback/cashback-how-to-use) · [APIs](https://developers.woovi.com/docs/cashback/cashback-apis)
+- [Cashback fidelidade](https://developers.woovi.com/docs/cashback-fidelity/cashback-fidelity-what-is) · [APIs](https://developers.woovi.com/docs/cashback-fidelity/cashback-fidelity-apis)
+
+## Login & Security
+- [Single Sign-On](https://developers.woovi.com/docs/login/single-sign-on-getting-started) · [Domain restrictions](https://developers.woovi.com/docs/login/domain-restrictions)
+- [Security policy](https://developers.woovi.com/docs/security/security-policy) · [Guidelines](https://developers.woovi.com/docs/security/security-guidelines) · [User MFA](https://developers.woovi.com/docs/security/security-user-mfa) · [Backup policy](https://developers.woovi.com/docs/security/backup-policy) · [Self-assessment](https://developers.woovi.com/docs/security/security-self-assessment)
+
+## Errors & Flows
+- [Error codes (payment)](https://developers.woovi.com/docs/flows/error-codes-payment) · [Sandbox error simulation](https://developers.woovi.com/docs/flows/sandbox-error-simulation) · [E-commerce workflow](https://developers.woovi.com/docs/integrations/ecommerce-workflow)
+
+## Optional
+- [FAQ index](https://developers.woovi.com/docs/category/faq): [charge](https://developers.woovi.com/docs/faq/faq-charge) · [transactions](https://developers.woovi.com/docs/faq/faq-transactions) · [banks](https://developers.woovi.com/docs/faq/faq-banks) · [users](https://developers.woovi.com/docs/faq/faq-users) · [withdraw](https://developers.woovi.com/docs/faq/faq-withdraw) · [plans](https://developers.woovi.com/docs/faq/faq-plans) · [SSL](https://developers.woovi.com/docs/faq/faq-ssl) · [Cloudflare](https://developers.woovi.com/docs/faq/faq-cloudflare) · [virtual account](https://developers.woovi.com/docs/faq/faq-virtual-account)
+- [Tags index](https://developers.woovi.com/docs/tags) · [Blog](https://developers.woovi.com/blog) · [COBV simulator](https://developers.woovi.com/cobv-simulator)
+- Alternate API renderers: [Scalar](https://developers.woovi.com/api-scalar) · [Redoc](https://developers.woovi.com/api-redoc) · [Elements](https://developers.woovi.com/api-elements)
