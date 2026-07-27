@@ -1,0 +1,324 @@
+---
+id: kyc-api-account-register-post
+title: "Como enviar o cadastro (KYC) via API? (legado)"
+unlisted: true
+sidebar_class_name: sidebar-hidden
+tags:
+  - api
+  - kyc
+  - onboarding
+  - account-register
+  - legado
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::caution Endpoint descontinuado (legado)
+O _endpoint_ `POST /api/v1/account-register` é o **formato antigo** de cadastro (KYC) por API e está **descontinuado**. Ele é mantido apenas para os clientes que já estão integrados com ele e por isso esta página **não aparece no menu lateral nem na busca** — o acesso é somente por link direto.
+
+Para **novas integrações**, use o link de onboarding: [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx). Nesse fluxo o seu cliente final preenche os dados e envia os documentos por uma tela hospedada pela Woovi, sem que você precise coletar, hospedar e enviar arquivos.
+
+Este endpoint também **não está publicado** na [API Reference](https://developers.woovi.com/api) — o schema abaixo é a documentação de referência dele.
+:::
+
+Neste formato legado, é a **sua aplicação** que coleta todos os dados cadastrais da empresa (razão social, CNPJ, endereço de cobrança, dados do negócio), dos sócios e as URLs dos documentos, e envia tudo de uma vez para a Woovi através do _endpoint_ `POST /api/v1/account-register`.
+
+O cadastro é criado com `status` `PENDING` e segue para análise. Depois disso, você acompanha o andamento e recupera os dados pelo _endpoint_ [`GET /api/v1/account-register/:id`](./api-account-register-get.mdx).
+
+:::info
+Antes de usar este endpoint, garanta que sua empresa possui a feature **BAAS** habilitada e que sua aplicação tenha o scope **`ACCOUNT_REGISTER_POST`**. A autenticação é feita pelo header `Authorization` com o seu **AppID**, igual ao [endpoint de consulta](./api-account-register-get.mdx). Veja [Primeiros passos com a API de KYC Onboarding](./api-getting-started.mdx) para detalhes de autenticação.
+:::
+
+:::tip Você provavelmente quer o link de onboarding
+Se você ainda não está integrado com este endpoint, pare por aqui e siga [Como criar um onboarding KYC via API?](./api-onboarding-create.mdx). O fluxo com link é o suportado hoje e evita que você precise armazenar documentos e dados sensíveis dos sócios.
+:::
+
+## Requisição
+
+- **Método/URL**: `POST https://api.woovi.com/api/v1/account-register`
+- **Content-Type**: `application/json`
+- **Scope necessário**: `ACCOUNT_REGISTER_POST`
+
+## Campos do body
+
+### Obrigatórios
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `officialName` | `string` | Razão social da empresa |
+| `tradeName` | `string` | Nome fantasia da empresa |
+| `taxID` | `string` | CNPJ da empresa |
+| `documents` | `array` | Documentos da empresa (veja [Documentos da empresa](#documentos-da-empresa)) |
+| `representatives` | `array` | Sócios/representantes (veja [Representantes](#representantes)) |
+| `billingAddress` | `object` | Endereço de cobrança (veja [Endereço de cobrança](#endereço-de-cobrança)) |
+| `businessDescription` | `string` | Website ou portal de vendas |
+| `businessProduct` | `string` | Serviços que a empresa provê |
+| `businessLifetime` | `string` | Há quanto tempo a empresa opera no mercado |
+| `businessGoal` | `string` | Objetivo ao usar a Woovi |
+
+### Opcionais
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `correlationID` | `string` | Identificador único do registro de conta. Se não informado, um `uuid` é gerado |
+
+### Documentos da empresa
+
+Cada item de `documents` é um objeto:
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `url` | `string` | URL pública do documento |
+| `type` | `enum` | `SOCIAL_CONTRACT` (contrato social), `ATA` (ata) ou `BYLAWS` (estatuto) |
+
+### Representantes
+
+Cada item de `representatives` é um sócio. Campos **obrigatórios**: `name`, `birthDate`, `email`, `phone`, `taxID`, `address` e `documents`.
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `name` | `string` | Nome do sócio |
+| `birthDate` | `string` | Data de nascimento (ex: `1990-01-01T00:00:00.000Z`) |
+| `email` | `string` | E-mail do sócio (formato `email`) |
+| `phone` | `string` | Telefone do sócio |
+| `taxID` | `string` | CPF do sócio |
+| `type` | `enum` | `ADMIN` |
+| `address` | `object` | Endereço do sócio (veja abaixo) |
+| `documents` | `array` | Documentos do sócio (veja abaixo) |
+
+Cada item de `representatives[].documents`:
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `url` | `string` | URL pública do documento — **obrigatório** |
+| `type` | `enum` | **Obrigatório**. `IDENTITY_FRONT` (RG frente), `IDENTITY_BACK` (RG verso), `CNH_FRONT` (CNH frente), `CNH_BACK` (CNH verso) ou `PICTURE` (selfie) |
+
+O `address` do representante tem os campos `zipcode`, `street`, `number`, `neighborhood`, `city`, `state`, `complement` e `taxID` — todos obrigatórios **exceto** `complement`.
+
+### Endereço de cobrança
+
+O `billingAddress` tem os campos `zipcode`, `street`, `number`, `neighborhood`, `city`, `state` e `complement` — todos obrigatórios **exceto** `complement`.
+
+## Exemplo de requisição
+
+```json
+{
+  "officialName": "Company Official Name",
+  "tradeName": "Company Trade Name",
+  "taxID": "12345678901234",
+  "billingAddress": {
+    "zipcode": "12345678",
+    "street": "Test Street",
+    "number": "123",
+    "neighborhood": "Test Neighborhood",
+    "city": "Test City"
+  },
+  "businessDescription": "Technology and Financial Services",
+  "businessProduct": "Digital payment solutions and banking services",
+  "businessLifetime": "3 years",
+  "businessGoal": "To expand digital payment capabilities and improve customer experience",
+  "representatives": [
+    {
+      "name": "John Doe",
+      "birthDate": "1990-01-01T00:00:00.000Z",
+      "email": "john@example.com",
+      "taxID": "12345678901",
+      "type": "ADMIN",
+      "address": {
+        "zipcode": "12345678",
+        "street": "Test Street",
+        "number": "123",
+        "neighborhood": "Test Neighborhood",
+        "city": "Test City",
+        "state": "ST"
+      }
+    }
+  ]
+}
+```
+
+## Exemplo de resposta
+
+Após uma requisição bem-sucedida, o _status code_ será `200` e o `body` da resposta retornará o `AccountRegister` criado:
+
+```json
+{
+  "officialName": "Company Official Name",
+  "tradeName": "Company Trade Name",
+  "taxID": {
+    "taxID": "12345678901234"
+  },
+  "status": "PENDING",
+  "requestedDocuments": [],
+  "correlationID": "6fe18d8e-5009-4f57-8f1d-5b084b6b83ac",
+  "missingDocumentsDescription": ""
+}
+```
+
+:::warning Documentos pendentes
+Quando faltarem documentos para a análise, os campos `requestedDocuments` e `missingDocumentsDescription` indicam o que ainda precisa ser enviado. O cadastro permanece em `PENDING` até que a documentação esteja completa.
+:::
+
+## Códigos de resposta
+
+| Status | Descrição |
+|--------|-----------|
+| `200` | Cadastro criado com sucesso |
+| `400` | Erro de validação, header `Authorization` inválido ou empresa não encontrada |
+| `403` | Feature não habilitada para a sua empresa |
+| `500` | Erro interno |
+
+### Exemplos de erro
+
+O campo `error` pode ser uma **string** ou um **array** de erros de validação (`code`, `message`, `path`).
+
+```json
+{
+  "error": "Invalid Authorization header"
+}
+```
+
+```json
+{
+  "error": "Company not found"
+}
+```
+
+```json
+{
+  "error": [
+    {
+      "code": "too_small",
+      "message": "Official name is required",
+      "path": ["officialName"]
+    }
+  ]
+}
+```
+
+```json
+{
+  "error": "This feature is not enabled for your company. Contact us to active."
+}
+```
+
+## Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request POST \
+    --url 'https://api.woovi.com/api/v1/account-register' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: SEU_APPID_AQUI' \
+    --header 'Content-Type: application/json' \
+    --data '{
+      "officialName": "Company Official Name",
+      "tradeName": "Company Trade Name",
+      "taxID": "12345678901234",
+      "billingAddress": {
+        "zipcode": "12345678",
+        "street": "Test Street",
+        "number": "123",
+        "neighborhood": "Test Neighborhood",
+        "city": "Test City"
+      },
+      "businessDescription": "Technology and Financial Services",
+      "businessProduct": "Digital payment solutions and banking services",
+      "businessLifetime": "3 years",
+      "businessGoal": "To expand digital payment capabilities and improve customer experience",
+      "representatives": [
+        {
+          "name": "John Doe",
+          "birthDate": "1990-01-01T00:00:00.000Z",
+          "email": "john@example.com",
+          "taxID": "12345678901",
+          "type": "ADMIN",
+          "address": {
+            "zipcode": "12345678",
+            "street": "Test Street",
+            "number": "123",
+            "neighborhood": "Test Neighborhood",
+            "city": "Test City",
+            "state": "ST"
+          }
+        }
+      ]
+    }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch">
+
+```js
+const appId = 'SEU_APPID_AQUI';
+
+const accountRegisterPayload = {
+  officialName: 'Company Official Name',
+  tradeName: 'Company Trade Name',
+  taxID: '12345678901234',
+  billingAddress: {
+    zipcode: '12345678',
+    street: 'Test Street',
+    number: '123',
+    neighborhood: 'Test Neighborhood',
+    city: 'Test City',
+  },
+  businessDescription: 'Technology and Financial Services',
+  businessProduct: 'Digital payment solutions and banking services',
+  businessLifetime: '3 years',
+  businessGoal:
+    'To expand digital payment capabilities and improve customer experience',
+  representatives: [
+    {
+      name: 'John Doe',
+      birthDate: '1990-01-01T00:00:00.000Z',
+      email: 'john@example.com',
+      taxID: '12345678901',
+      type: 'ADMIN',
+      address: {
+        zipcode: '12345678',
+        street: 'Test Street',
+        number: '123',
+        neighborhood: 'Test Neighborhood',
+        city: 'Test City',
+        state: 'ST',
+      },
+    },
+  ],
+};
+
+const response = await fetch('https://api.woovi.com/api/v1/account-register', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': appId,
+  },
+  body: JSON.stringify(accountRegisterPayload),
+});
+
+const accountRegister = await response.json();
+
+console.log(accountRegister.status);
+// PENDING
+
+console.log(accountRegister.correlationID);
+// 6fe18d8e-5009-4f57-8f1d-5b084b6b83ac
+```
+
+  </TabItem>
+</Tabs>
+
+## Fluxo (legado)
+
+1. **Colete os dados** da empresa, dos sócios e hospede os documentos em URLs acessíveis.
+2. **Envie o cadastro** com `POST /api/v1/account-register` — o registro é criado em `PENDING`.
+3. **Guarde o `correlationID`** retornado; ele é a chave para consultar o cadastro depois.
+4. **Acompanhe o status** com [`GET /api/v1/account-register/:id`](./api-account-register-get.mdx) até que ele seja `APPROVED` (conta provisionada) ou `REJECTED`.
+
+:::tip Migrando para o fluxo atual
+Para migrar, troque o passo 1 e 2 por uma chamada a [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx) e envie o `linkOnboarding` retornado ao seu cliente. Os passos 3 e 4 continuam iguais — a consulta é feita pelo mesmo [endpoint de consulta](./api-account-register-get.mdx).
+:::
