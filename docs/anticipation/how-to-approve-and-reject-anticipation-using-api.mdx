@@ -33,6 +33,35 @@ curl 'https://api.woovi.com/api/v1/anticipation?status=PENDING' \
     -H "Authorization: {SEU_APP_ID}"
 ```
 
+### Exemplo de resposta
+
+```json
+{
+  "anticipations": [
+    {
+      "id": "6290ccfd42831958a405debc",
+      "status": "PENDING",
+      "beneficiaryTaxID": "12345678909",
+      "requestedAmount": 100000,
+      "feeAmount": 7000,
+      "netAmount": 93000,
+      "feeMode": "PERCENTAGE",
+      "monthlyFeePercentage": 7,
+      "daysUntilDue": 7,
+      "dueDate": "2026-07-25T03:00:00.000Z",
+      "approvedAt": null,
+      "cancelledAt": null,
+      "cancelReason": null,
+      "endToEndId": null,
+      "failureCode": null,
+      "failureReason": null,
+      "createdAt": "2026-07-18T11:59:00.000Z"
+    }
+  ],
+  "count": 1
+}
+```
+
 ## 2. Aprove (dispara o Pix Out)
 
 ```sh
@@ -44,6 +73,32 @@ curl 'https://api.woovi.com/api/v1/anticipation/{id}/approve' -X POST \
 Aprovar dispara a liquidação: o status passa a `PROCESSING` e depois a
 `CONFIRMED` quando o pagamento é enviado.
 
+### Exemplo de resposta
+
+```json
+{
+  "anticipation": {
+    "id": "6290ccfd42831958a405debc",
+    "status": "PROCESSING",
+    "beneficiaryTaxID": "12345678909",
+    "requestedAmount": 100000,
+    "feeAmount": 7000,
+    "netAmount": 93000,
+    "feeMode": "PERCENTAGE",
+    "monthlyFeePercentage": 7,
+    "daysUntilDue": 7,
+    "dueDate": "2026-07-25T03:00:00.000Z",
+    "approvedAt": "2026-07-18T12:00:00.000Z",
+    "cancelledAt": null,
+    "cancelReason": null,
+    "endToEndId": null,
+    "failureCode": null,
+    "failureReason": null,
+    "createdAt": "2026-07-18T11:59:00.000Z"
+  }
+}
+```
+
 ## 3. Rejeite (opcionalmente com motivo)
 
 ```sh
@@ -51,6 +106,32 @@ curl 'https://api.woovi.com/api/v1/anticipation/{id}/reject' -X POST \
     -H "Content-Type: application/json" \
     -H "Authorization: {SEU_APP_ID}" \
     -d '{"reason": "acima do limite"}'
+```
+
+### Exemplo de resposta
+
+```json
+{
+  "anticipation": {
+    "id": "6290ccfd42831958a405debc",
+    "status": "CANCELED",
+    "beneficiaryTaxID": "12345678909",
+    "requestedAmount": 100000,
+    "feeAmount": 7000,
+    "netAmount": 93000,
+    "feeMode": "PERCENTAGE",
+    "monthlyFeePercentage": 7,
+    "daysUntilDue": 7,
+    "dueDate": "2026-07-25T03:00:00.000Z",
+    "approvedAt": null,
+    "cancelledAt": "2026-07-18T12:05:00.000Z",
+    "cancelReason": "acima do limite",
+    "endToEndId": null,
+    "failureCode": null,
+    "failureReason": null,
+    "createdAt": "2026-07-18T11:59:00.000Z"
+  }
+}
 ```
 
 ## Idempotência e estados

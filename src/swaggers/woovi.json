@@ -1123,6 +1123,30 @@
                       "type": "integer"
                     }
                   }
+                },
+                "example": {
+                  "anticipations": [
+                    {
+                      "id": "6290ccfd42831958a405debc",
+                      "status": "PENDING",
+                      "beneficiaryTaxID": "12345678909",
+                      "requestedAmount": 100000,
+                      "feeAmount": 7000,
+                      "netAmount": 93000,
+                      "feeMode": "PERCENTAGE",
+                      "monthlyFeePercentage": 7,
+                      "daysUntilDue": 7,
+                      "dueDate": "2026-07-25T03:00:00.000Z",
+                      "approvedAt": null,
+                      "cancelledAt": null,
+                      "cancelReason": null,
+                      "endToEndId": null,
+                      "failureCode": null,
+                      "failureReason": null,
+                      "createdAt": "2026-07-18T11:59:00.000Z"
+                    }
+                  ],
+                  "count": 1
                 }
               }
             }
@@ -1187,6 +1211,27 @@
                     "anticipation": {
                       "$ref": "#/components/schemas/AnticipationRequest"
                     }
+                  }
+                },
+                "example": {
+                  "anticipation": {
+                    "id": "6290ccfd42831958a405debc",
+                    "status": "PROCESSING",
+                    "beneficiaryTaxID": "12345678909",
+                    "requestedAmount": 100000,
+                    "feeAmount": 7000,
+                    "netAmount": 93000,
+                    "feeMode": "PERCENTAGE",
+                    "monthlyFeePercentage": 7,
+                    "daysUntilDue": 7,
+                    "dueDate": "2026-07-25T03:00:00.000Z",
+                    "approvedAt": "2026-07-18T12:00:00.000Z",
+                    "cancelledAt": null,
+                    "cancelReason": null,
+                    "endToEndId": null,
+                    "failureCode": null,
+                    "failureReason": null,
+                    "createdAt": "2026-07-18T11:59:00.000Z"
                   }
                 }
               }
@@ -1288,6 +1333,27 @@
                     "anticipation": {
                       "$ref": "#/components/schemas/AnticipationRequest"
                     }
+                  }
+                },
+                "example": {
+                  "anticipation": {
+                    "id": "6290ccfd42831958a405debc",
+                    "status": "CANCELED",
+                    "beneficiaryTaxID": "12345678909",
+                    "requestedAmount": 100000,
+                    "feeAmount": 7000,
+                    "netAmount": 93000,
+                    "feeMode": "PERCENTAGE",
+                    "monthlyFeePercentage": 7,
+                    "daysUntilDue": 7,
+                    "dueDate": "2026-07-25T03:00:00.000Z",
+                    "approvedAt": null,
+                    "cancelledAt": "2026-07-18T12:05:00.000Z",
+                    "cancelReason": "acima do limite",
+                    "endToEndId": null,
+                    "failureCode": null,
+                    "failureReason": null,
+                    "createdAt": "2026-07-18T11:59:00.000Z"
                   }
                 }
               }
