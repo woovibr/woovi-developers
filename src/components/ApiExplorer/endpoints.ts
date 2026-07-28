@@ -1084,6 +1084,89 @@ const endpoints: ApiEndpoint[] = [
     ],
   },
   {
+    'id': 'get-api-v1-invoice-integration',
+    'method': 'GET',
+    'path': '/api/v1/invoice/integration',
+    'tag': 'invoice',
+    'category': 'Invoice',
+    'summary': 'Get the NFe.io integration status and config for the authenticated company',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'ok',
+        'value': {
+          'integration': {
+            'id': '67001bbf0b0621890af7dc28',
+            'type': 'NFEIO',
+            'status': 'CONFIGURED',
+            'isActive': true,
+            'metadata': {
+              'nfeio': {
+                'nfeioCompanyId': 'nfeio-company-id',
+                'cityServiceCode': '2690',
+                'municipalSubscription': '123456',
+                'taxRegime': 'SimplesNacional',
+              },
+            },
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-invoice-integration',
+    'method': 'POST',
+    'path': '/api/v1/invoice/integration',
+    'tag': 'invoice',
+    'category': 'Invoice',
+    'summary': 'Create or upsert the NFe.io integration for the authenticated company',
+    'description': 'Upserts the NFe.io integration for the authenticated company and sets its tax fields. Optionally activates it (only allowed once configured).\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'ok',
+        'value': {
+          'integration': {
+            'id': '67001bbf0b0621890af7dc28',
+            'type': 'NFEIO',
+            'status': 'CONFIGURING',
+            'isActive': false,
+            'metadata': {
+              'nfeio': {
+                'cityServiceCode': '2690',
+                'municipalSubscription': '123456',
+              },
+            },
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'patch-api-v1-invoice-integration',
+    'method': 'PATCH',
+    'path': '/api/v1/invoice/integration',
+    'tag': 'invoice',
+    'category': 'Invoice',
+    'summary': 'Activate or deactivate the NFe.io integration for the authenticated company',
+    'description': '',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'ok',
+        'value': {
+          'integration': {
+            'id': '67001bbf0b0621890af7dc28',
+            'type': 'NFEIO',
+            'status': 'CONFIGURED',
+            'isActive': true,
+          },
+        },
+      },
+    ],
+  },
+  {
     'id': 'post-api-v1-kyc-onboarding',
     'method': 'POST',
     'path': '/api/v1/kyc/onboarding',
@@ -2216,6 +2299,35 @@ const endpoints: ApiEndpoint[] = [
           'dayGenerateCharge': 25,
           'dayDue': 3,
         },
+      },
+      {
+        'name': 'SubscriptionBoleto',
+        'value': {
+          'name': 'Assinatura Boleto',
+          'value': 15000,
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+            'address': {
+              'zipcode': '04556300',
+              'street': 'rua de são paulo',
+              'number': '3432',
+              'neighborhood': 'BROOKLIN PAULISTA',
+              'city': 'SAO PAULO',
+              'state': 'SP',
+              'complement': 'CONJ 26',
+            },
+          },
+          'correlationID': 'My-UniqueID',
+          'frequency': 'MONTHLY',
+          'type': 'RECURRENT',
+          'chargeType': 'BOLETO',
+          'dayGenerateCharge': 25,
+          'dayDue': 3,
+        },
+        'summary': 'Subscription charged via boleto',
       },
     ],
     'responseExamples': [],
