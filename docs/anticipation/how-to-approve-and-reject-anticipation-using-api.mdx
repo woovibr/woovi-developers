@@ -1,0 +1,64 @@
+---
+id: how-to-approve-and-reject-anticipation-using-api
+title: Como aprovar ou rejeitar uma antecipação via API?
+sidebar_label: Aprovar / rejeitar antecipação
+sidebar_position: 5
+tags:
+  - api
+  - anticipation
+  - antecipacao
+  - approval
+---
+
+Quando a empresa pagadora exige aprovação, cada antecipação solicitada pelo
+beneficiário fica no status `PENDING` **antes da liquidação** (Pix Out). Você
+aprova ou rejeita cada solicitação via API antes que o pagamento seja enviado.
+
+| Ação | Endpoint | Escopo |
+| --- | --- | --- |
+| Listar pendentes | `GET /api/v1/anticipation?status=PENDING` | `anticipation.request.read` |
+| Aprovar | `POST /api/v1/anticipation/{id}/approve` | `anticipation.request.approve` |
+| Rejeitar | `POST /api/v1/anticipation/{id}/reject` | `anticipation.request.approve` |
+
+O `{id}` é o `id` da antecipação retornado na listagem. Todas as respostas são
+escopadas à sua empresa (uma antecipação de outra empresa responde `404`).
+
+## 1. Descubra as solicitações pendentes
+
+Faça _polling_ das solicitações `PENDING` (o `beneficiaryTaxID` ajuda a
+reconciliar com o seu sistema):
+
+```sh
+curl 'https://api.woovi.com/api/v1/anticipation?status=PENDING' \
+    -H "Authorization: {SEU_APP_ID}"
+```
+
+## 2. Aprove (dispara o Pix Out)
+
+```sh
+curl 'https://api.woovi.com/api/v1/anticipation/{id}/approve' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}"
+```
+
+Aprovar dispara a liquidação: o status passa a `PROCESSING` e depois a
+`CONFIRMED` quando o pagamento é enviado.
+
+## 3. Rejeite (opcionalmente com motivo)
+
+```sh
+curl 'https://api.woovi.com/api/v1/anticipation/{id}/reject' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{"reason": "acima do limite"}'
+```
+
+## Idempotência e estados
+
+- As duas ações são **idempotentes**: reenviar a mesma decisão retorna `200`
+  com o estado atual. Aprovar uma solicitação já aprovada, ou rejeitar uma já
+  cancelada, é um _no-op_.
+- Uma decisão que conflita com o estado atual (ex.: aprovar uma rejeitada)
+  retorna `409`.
+- Se você não decidir, a solicitação **expira** automaticamente conforme o
+  prazo configurado (`expirationDays`) e é cancelada.
