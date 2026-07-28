@@ -1061,119 +1061,6 @@
         ]
       }
     },
-    "/api/v1/anticipation": {
-      "get": {
-        "tags": [
-          "anticipation"
-        ],
-        "summary": "List anticipation requests",
-        "description": "Lists the company's anticipation requests. Poll `?status=PENDING` to discover requests awaiting your approval before settlement. Requires the `anticipation.request.read` scope.",
-        "x-required-scope": "ANTICIPATION_REQUEST_READ",
-        "security": [
-          {
-            "AppID": [
-              "ANTICIPATION_REQUEST_READ"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "description": "Filter by status.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "PENDING",
-                "PROCESSING",
-                "CONFIRMED",
-                "CANCELED",
-                "PAID",
-                "OVERDUE",
-                "FAILED"
-              ]
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "description": "Max items to return (default 100, capped at 1000).",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Anticipation requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "anticipations": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/AnticipationRequest"
-                      }
-                    },
-                    "count": {
-                      "type": "integer"
-                    }
-                  }
-                },
-                "example": {
-                  "anticipations": [
-                    {
-                      "id": "6290ccfd42831958a405debc",
-                      "status": "PENDING",
-                      "beneficiaryTaxID": "12345678909",
-                      "requestedAmount": 100000,
-                      "feeAmount": 7000,
-                      "netAmount": 93000,
-                      "feeMode": "PERCENTAGE",
-                      "monthlyFeePercentage": 7,
-                      "daysUntilDue": 7,
-                      "dueDate": "2026-07-25T03:00:00.000Z",
-                      "approvedAt": null,
-                      "cancelledAt": null,
-                      "cancelReason": null,
-                      "endToEndId": null,
-                      "failureCode": null,
-                      "failureReason": null,
-                      "createdAt": "2026-07-18T11:59:00.000Z"
-                    }
-                  ],
-                  "count": 1
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid status filter",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnticipationError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid app_id or IP not allowed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnticipationUnauthorized"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/anticipation/{id}/approve": {
       "post": {
         "tags": [
@@ -1277,129 +1164,8 @@
               }
             }
           }
-        }
-      }
-    },
-    "/api/v1/anticipation/{id}/reject": {
-      "post": {
-        "tags": [
-          "anticipation"
-        ],
-        "summary": "Reject an anticipation request",
-        "description": "Rejects a PENDING request (releases the reserved cycle limit). Idempotent: re-rejecting a canceled request returns 200; an approved/terminal one returns 409. Requires the `anticipation.request.approve` scope.",
-        "x-required-scope": "ANTICIPATION_REQUEST_APPROVE",
-        "security": [
-          {
-            "AppID": [
-              "ANTICIPATION_REQUEST_APPROVE"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Anticipation request id.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "reason": {
-                    "type": "string",
-                    "description": "Optional rejection reason (audited)."
-                  }
-                }
-              }
-            }
-          }
         },
-        "responses": {
-          "200": {
-            "description": "Rejected (or already canceled)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "anticipation": {
-                      "$ref": "#/components/schemas/AnticipationRequest"
-                    }
-                  }
-                },
-                "example": {
-                  "anticipation": {
-                    "id": "6290ccfd42831958a405debc",
-                    "status": "CANCELED",
-                    "beneficiaryTaxID": "12345678909",
-                    "requestedAmount": 100000,
-                    "feeAmount": 7000,
-                    "netAmount": 93000,
-                    "feeMode": "PERCENTAGE",
-                    "monthlyFeePercentage": 7,
-                    "daysUntilDue": 7,
-                    "dueDate": "2026-07-25T03:00:00.000Z",
-                    "approvedAt": null,
-                    "cancelledAt": "2026-07-18T12:05:00.000Z",
-                    "cancelReason": "acima do limite",
-                    "endToEndId": null,
-                    "failureCode": null,
-                    "failureReason": null,
-                    "createdAt": "2026-07-18T11:59:00.000Z"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnticipationError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid app_id or IP not allowed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnticipationUnauthorized"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Anticipation not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnticipationError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Cannot reject in the current status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnticipationError"
-                }
-              }
-            }
-          }
-        }
+        "x-codeSamples": []
       }
     },
     "/api/v1/anticipation/balance/batch": {
@@ -1988,6 +1754,272 @@
         ]
       }
     },
+    "/api/v1/anticipation": {
+      "get": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "List anticipation requests",
+        "description": "Lists the company's anticipation requests. Poll `?status=PENDING` to discover requests awaiting your approval before settlement. Requires the `anticipation.request.read` scope.",
+        "x-required-scope": "ANTICIPATION_REQUEST_READ",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_REQUEST_READ"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter by status.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "PROCESSING",
+                "CONFIRMED",
+                "CANCELED",
+                "PAID",
+                "OVERDUE",
+                "FAILED"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Max items to return (default 100, capped at 1000).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Anticipation requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "anticipations": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AnticipationRequest"
+                      }
+                    },
+                    "count": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "example": {
+                  "anticipations": [
+                    {
+                      "id": "6290ccfd42831958a405debc",
+                      "status": "PENDING",
+                      "beneficiaryTaxID": "12345678909",
+                      "requestedAmount": 100000,
+                      "feeAmount": 7000,
+                      "netAmount": 93000,
+                      "feeMode": "PERCENTAGE",
+                      "monthlyFeePercentage": 7,
+                      "daysUntilDue": 7,
+                      "dueDate": "2026-07-25T03:00:00.000Z",
+                      "approvedAt": null,
+                      "cancelledAt": null,
+                      "cancelReason": null,
+                      "endToEndId": null,
+                      "failureCode": null,
+                      "failureReason": null,
+                      "createdAt": "2026-07-18T11:59:00.000Z"
+                    }
+                  ],
+                  "count": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationUnauthorized"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/anticipation?status=SOME_STRING_VALUE&limit=SOME_INTEGER_VALUE',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/anticipation?status=SOME_STRING_VALUE&limit=SOME_INTEGER_VALUE' \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/anticipation?status=SOME_STRING_VALUE&limit=SOME_INTEGER_VALUE\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/anticipation?status=SOME_STRING_VALUE&limit=SOME_INTEGER_VALUE\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/anticipation?status=SOME_STRING_VALUE&limit=SOME_INTEGER_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/anticipation?status=SOME_STRING_VALUE&limit=SOME_INTEGER_VALUE\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/anticipation?status=SOME_STRING_VALUE&limit=SOME_INTEGER_VALUE\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/anticipation/{id}/reject": {
+      "post": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "Reject an anticipation request",
+        "description": "Rejects a PENDING request (releases the reserved cycle limit). Idempotent: re-rejecting a canceled request returns 200; an approved/terminal one returns 409. Requires the `anticipation.request.approve` scope.",
+        "x-required-scope": "ANTICIPATION_REQUEST_APPROVE",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_REQUEST_APPROVE"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Anticipation request id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "description": "Optional rejection reason (audited)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rejected (or already canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "anticipation": {
+                      "$ref": "#/components/schemas/AnticipationRequest"
+                    }
+                  }
+                },
+                "example": {
+                  "anticipation": {
+                    "id": "6290ccfd42831958a405debc",
+                    "status": "CANCELED",
+                    "beneficiaryTaxID": "12345678909",
+                    "requestedAmount": 100000,
+                    "feeAmount": 7000,
+                    "netAmount": 93000,
+                    "feeMode": "PERCENTAGE",
+                    "monthlyFeePercentage": 7,
+                    "daysUntilDue": 7,
+                    "dueDate": "2026-07-25T03:00:00.000Z",
+                    "approvedAt": null,
+                    "cancelledAt": "2026-07-18T12:05:00.000Z",
+                    "cancelReason": "acima do limite",
+                    "endToEndId": null,
+                    "failureCode": null,
+                    "failureReason": null,
+                    "createdAt": "2026-07-18T11:59:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Anticipation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cannot reject in the current status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
+      }
+    },
     "/api/v1/application": {
       "delete": {
         "tags": [
@@ -2357,6 +2389,358 @@
           {
             "lang": "Ruby + Native",
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/application\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"accountId\\\":\\\"string\\\",\\\"application\\\":{\\\"name\\\":\\\"string\\\",\\\"type\\\":\\\"API\\\",\\\"scopes\\\":[\\\"string\\\"]}}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/boleto-transaction": {
+      "get": {
+        "tags": [
+          "boleto"
+        ],
+        "summary": "List boleto transactions",
+        "x-required-scope": "BOLETO_TRANSACTION_GET_LIST",
+        "security": [
+          {
+            "AppID": [
+              "BOLETO_TRANSACTION_GET_LIST"
+            ]
+          }
+        ],
+        "description": "Lists the boleto transactions of your company, most recent first, so you can\nreconcile boleto receivables and payments against your own records.\n\nA transaction is either a `BOLETO_IN` — a boleto your payer paid — or a\n`BOLETO_OUT` — a boleto your company paid. All monetary values are in cents.\n\n`value` is the amount that actually moved, which for a boleto paid after the\ndue date is above the emitted amount in `charge.value` because of interest\nand fine.\n\nTwo independent date ranges are offered because they answer different\nquestions: `start`/`end` filter by when the transaction was created, and\n`settledStart`/`settledEnd` by when Woovi credited the amount to your\naccount. Both dates come back on every item.\n\nRequires the `BOLETO_TRANSACTION_GET_LIST` scope on the application.\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BOLETO_IN",
+                "BOLETO_OUT"
+              ]
+            },
+            "description": "Only transactions of this type."
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CREATED",
+                "PROCESSING",
+                "PENDING",
+                "CONFIRMED",
+                "REJECTED"
+              ]
+            },
+            "description": "Only transactions in this status."
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Only transactions created from this date on.",
+            "example": "2026-07-01T00:00:00.000Z"
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Only transactions created up to this date."
+          },
+          {
+            "in": "query",
+            "name": "settledStart",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Only transactions settled from this date on."
+          },
+          {
+            "in": "query",
+            "name": "settledEnd",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Only transactions settled up to this date."
+          },
+          {
+            "in": "query",
+            "name": "skip",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "maximum": 10000
+            },
+            "description": "Rows to skip. Capped at 10000 — past that, narrow the window with the\ndate filters instead of paginating deeper.\n"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "maximum": 100
+            },
+            "description": "Rows to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Boleto transactions listed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoletoTransactionListResponse"
+                },
+                "examples": {
+                  "Listed": {
+                    "summary": "A settled boleto IN and a boleto OUT",
+                    "value": {
+                      "status": "OK",
+                      "pageInfo": {
+                        "skip": 0,
+                        "limit": 100,
+                        "hasPreviousPage": false,
+                        "hasNextPage": false
+                      },
+                      "boletoTransactions": [
+                        {
+                          "boletoTransactionID": "btx_019fa55beec9775faf8a069d64dcde54",
+                          "type": "BOLETO_IN",
+                          "status": "CONFIRMED",
+                          "value": 245000,
+                          "fee": 299,
+                          "createdAt": "2026-07-26T13:04:11.212Z",
+                          "settledAt": "2026-07-27T10:00:00.000Z",
+                          "charge": {
+                            "value": 242898,
+                            "status": "COMPLETED",
+                            "boletoBarcode": "34191120100002428981103069645110772982609000",
+                            "boletoDigitable": "34191103036964511077129826090002112010000242898"
+                          }
+                        },
+                        {
+                          "boletoTransactionID": "btx_019fa4e1b3227a1c9f0e5d3a71b8c204",
+                          "type": "BOLETO_OUT",
+                          "status": "CONFIRMED",
+                          "value": 50000,
+                          "fee": 150,
+                          "createdAt": "2026-07-25T09:12:44.001Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoletoTransactionError"
+                },
+                "examples": {
+                  "InvalidType": {
+                    "summary": "Unknown type",
+                    "value": {
+                      "error": "type must be one of BOLETO_IN, BOLETO_OUT"
+                    }
+                  },
+                  "InvalidDate": {
+                    "summary": "Unparseable date filter",
+                    "value": {
+                      "error": "start, end, settledStart and settledEnd must be dates"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoletoTransactionError"
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoletoTransactionError"
+                },
+                "examples": {
+                  "MissingScope": {
+                    "value": {
+                      "error": "Application is missing required scope: BOLETO_TRANSACTION_GET_LIST"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoletoTransactionError"
+                },
+                "examples": {
+                  "SkipTooDeep": {
+                    "value": {
+                      "error": "skip cannot exceed 10000 — narrow the range with start/end instead"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE' \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/boleto-transaction/{boletoTransactionID}": {
+      "get": {
+        "tags": [
+          "boleto"
+        ],
+        "summary": "Get a boleto transaction",
+        "x-required-scope": "BOLETO_TRANSACTION_GET",
+        "security": [
+          {
+            "AppID": [
+              "BOLETO_TRANSACTION_GET"
+            ]
+          }
+        ],
+        "description": "Returns one boleto transaction of your company.\n\nThe id is the `boletoTransactionID` delivered in the `BOLETO_SETTLED`\nwebhook, so you can confirm a settlement you were notified about.\n\nRequires the `BOLETO_TRANSACTION_GET` scope on the application.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "boletoTransactionID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The boleto transaction id, as delivered in the webhook.",
+            "example": "btx_019fa55beec9775faf8a069d64dcde54"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Boleto transaction found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "boletoTransaction": {
+                      "$ref": "#/components/schemas/BoletoTransaction"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No boleto transaction with this id belongs to your company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoletoTransactionError"
+                },
+                "examples": {
+                  "NotFound": {
+                    "value": {
+                      "error": "Boleto transaction not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/boleto-transaction/btx_019fa55beec9775faf8a069d64dcde54',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/boleto-transaction/btx_019fa55beec9775faf8a069d64dcde54 \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/boleto-transaction/btx_019fa55beec9775faf8a069d64dcde54\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/boleto-transaction/btx_019fa55beec9775faf8a069d64dcde54\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/boleto-transaction/btx_019fa55beec9775faf8a069d64dcde54\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/boleto-transaction/btx_019fa55beec9775faf8a069d64dcde54\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/boleto-transaction/btx_019fa55beec9775faf8a069d64dcde54\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -17038,6 +17422,74 @@
           }
         }
       },
+      "AnticipationBalanceBatchPayload": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "taxID",
+                "availableAmount",
+                "maxAdvanceableAmount"
+              ],
+              "properties": {
+                "taxID": {
+                  "type": "string",
+                  "description": "Beneficiary payout key (CPF or CNPJ)."
+                },
+                "availableAmount": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Available balance, in cents."
+                },
+                "maxAdvanceableAmount": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Advanceable limit, in cents. Cannot exceed availableAmount."
+                }
+              }
+            }
+          }
+        }
+      },
+      "AnticipationBalanceBatchResult": {
+        "type": "object",
+        "properties": {
+          "processed": {
+            "type": "integer"
+          },
+          "succeeded": {
+            "type": "integer"
+          },
+          "failed": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "taxID": {
+                  "type": "string"
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "AnticipationRequest": {
         "type": "object",
         "properties": {
@@ -17144,74 +17596,6 @@
               "type": "object",
               "properties": {
                 "message": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "AnticipationBalanceBatchPayload": {
-        "type": "object",
-        "required": [
-          "items"
-        ],
-        "properties": {
-          "items": {
-            "type": "array",
-            "minItems": 1,
-            "maxItems": 1000,
-            "items": {
-              "type": "object",
-              "required": [
-                "taxID",
-                "availableAmount",
-                "maxAdvanceableAmount"
-              ],
-              "properties": {
-                "taxID": {
-                  "type": "string",
-                  "description": "Beneficiary payout key (CPF or CNPJ)."
-                },
-                "availableAmount": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "description": "Available balance, in cents."
-                },
-                "maxAdvanceableAmount": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "description": "Advanceable limit, in cents. Cannot exceed availableAmount."
-                }
-              }
-            }
-          }
-        }
-      },
-      "AnticipationBalanceBatchResult": {
-        "type": "object",
-        "properties": {
-          "processed": {
-            "type": "integer"
-          },
-          "succeeded": {
-            "type": "integer"
-          },
-          "failed": {
-            "type": "integer"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "taxID": {
-                  "type": "string"
-                },
-                "ok": {
-                  "type": "boolean"
-                },
-                "error": {
                   "type": "string"
                 }
               }
@@ -17394,6 +17778,122 @@
           "errorCode": {
             "type": "string",
             "description": "Machine readable error code, present for provider/business errors."
+          }
+        }
+      },
+      "BoletoTransaction": {
+        "type": "object",
+        "required": [
+          "boletoTransactionID",
+          "type",
+          "status",
+          "value",
+          "createdAt"
+        ],
+        "properties": {
+          "boletoTransactionID": {
+            "type": "string",
+            "description": "Id of this transaction, the same one delivered in the `BOLETO_SETTLED`\nwebhook. Use it to look the transaction up.\n",
+            "example": "btx_019fa55beec9775faf8a069d64dcde54"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "BOLETO_IN",
+              "BOLETO_OUT"
+            ],
+            "description": "`BOLETO_IN` is a boleto your payer paid, `BOLETO_OUT` a boleto your\ncompany paid.\n"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "PROCESSING",
+              "PENDING",
+              "CONFIRMED",
+              "REJECTED"
+            ]
+          },
+          "value": {
+            "type": "integer",
+            "description": "Amount that moved, in cents. On a boleto paid after the due date this\nis above the emitted amount in `charge.value`, because of interest and\nfine.\n",
+            "example": 245000
+          },
+          "fee": {
+            "type": "integer",
+            "description": "Woovi fee for this transaction, in cents.",
+            "example": 299
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "settledAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the amount was credited to your account. Only present on a\nsettled `BOLETO_IN` — it is not the moment the payer paid, and a\n`BOLETO_OUT` never carries it.\n"
+          },
+          "charge": {
+            "type": "object",
+            "description": "The charge the payer settled. Only present on `BOLETO_IN`; a\n`BOLETO_OUT` is driven by a payment, not a charge.\n",
+            "properties": {
+              "value": {
+                "type": "integer",
+                "description": "Emitted amount of the charge, in cents.",
+                "example": 242898
+              },
+              "status": {
+                "type": "string",
+                "example": "COMPLETED"
+              },
+              "boletoBarcode": {
+                "type": "string"
+              },
+              "boletoDigitable": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "BoletoTransactionListResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "OK"
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "skip": {
+                "type": "integer"
+              },
+              "limit": {
+                "type": "integer"
+              },
+              "hasPreviousPage": {
+                "type": "boolean"
+              },
+              "hasNextPage": {
+                "type": "boolean"
+              }
+            }
+          },
+          "boletoTransactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BoletoTransaction"
+            }
+          }
+        }
+      },
+      "BoletoTransactionError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Human readable error message."
           }
         }
       },
