@@ -127,6 +127,15 @@ Esse evento é enviado quando uma disputa é cancelada
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-canceled-payload)
 
+## Eventos de boleto
+
+### BOLETO_SETTLED
+Esse evento é enviado quando um boleto é **liquidado**, ou seja quando o valor é creditado na sua conta — o que acontece em até 3 dias úteis após o pagamento, e não no ato dele. O pagamento em si é notificado pelo `OPENPIX:CHARGE_COMPLETED`.
+
+O corpo repete os blocos `charge` e `boleto` do evento de cobrança paga e acrescenta o `boleto.settledAt`, além do `boleto.boletoTransactionID`, que é o id usado para consultar a transação na API.
+
+[Ver como conciliar →](/docs/boleto/boleto-reconciliation)
+
 ## Eventos de Registro de contas 
 
 ### ACCOUNT_REGISTER_APPROVED

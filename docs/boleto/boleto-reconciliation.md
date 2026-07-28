@@ -25,9 +25,13 @@ O webhook de boleto (**`OPENPIX:CHARGE_COMPLETED`**) é disparado no
 Para conferência financeira (bater o valor recebido com a venda) e liberação de
 produto, o momento que importa é a **liquidação**.
 
-Este guia mostra como, a partir do webhook de pagamento, acompanhar a
-**liquidação** consultando a **API de cobrança** pelo status **`SETTLED`** e pelo
-campo **`settledAt`** do método de pagamento `boleto`.
+Para a liquidação você tem três caminhos, do mais recomendado ao de reforço:
+
+| Forma | Quando usar |
+| --- | --- |
+| **Webhook `BOLETO_SETTLED`** | Você quer ser **avisado** no momento em que o valor é creditado, sem polling. É o caminho recomendado. |
+| **`GET /api/v1/boleto-transaction`** | Você quer conciliar **em lote**, listando o que liquidou em um período (filtro por `settledStart`/`settledEnd`). |
+| **API de cobrança pelo `correlationID`** (`paymentMethods.boleto.status` = `SETTLED` + `settledAt`) | Você já integra a cobrança e quer verificar **uma** venda pontualmente, pelo mesmo `correlationID` que já usa. |
 
 ---
 
@@ -159,15 +163,128 @@ Valores monetários (`value`, `fee`) são expressos em **centavos**
 
 ---
 
+## Webhook de liquidação — `BOLETO_SETTLED`
+
+Em vez de consultar a cobrança até virar `SETTLED`, você pode receber o webhook
+**`BOLETO_SETTLED`**, disparado no momento em que o valor é **creditado na sua
+conta**. Ele dispensa o polling do passo anterior.
+
+O corpo repete os blocos `charge` e `boleto` do `OPENPIX:CHARGE_COMPLETED` de
+boleto — quem já trata o evento de pagamento reaproveita o mesmo parsing — e
+acrescenta o **`boleto.settledAt`**:
+
+```json
+{
+  "event": "BOLETO_SETTLED",
+  "charge": {
+    "correlationID": "minha-venda-123",
+    "value": 242898,
+    "status": "COMPLETED"
+  },
+  "boleto": {
+    "boletoTransactionID": "btx_019fa55beec9775faf8a069d64dcde54",
+    "value": 245000,
+    "status": "SETTLED",
+    "boletoBarcode": "34191120100002428981103069645110772982609000",
+    "boletoDigitable": "34191103036964511077129826090002112010000242898",
+    "fee": 299,
+    "settledAt": "2026-07-27T10:00:00.000Z"
+  }
+}
+```
+
+Amarre pelo **`charge.correlationID`**, o mesmo que você já usa no evento de
+pagamento.
+
+:::note `boleto.value` pode ser maior que `charge.value`
+`charge.value` é o valor **emitido**; `boleto.value` é o que o pagador
+**efetivamente pagou**, que fica acima do emitido quando o boleto é pago depois do
+vencimento (juros e multa). Concilie o crédito pelo `boleto.value`.
+:::
+
+Guarde o **`boletoTransactionID`**: é o id público da transação, e com ele você
+consulta o detalhe na API abaixo.
+
+Para configurar a URL e validar a assinatura, veja
+**[Webhook](/docs/webhook/webhook-events-type)**.
+
+---
+
+## Conciliação em lote — `GET /api/v1/boleto-transaction`
+
+Para fechar um período, liste as transações filtrando pela **data de liquidação**
+(`settledStart` / `settledEnd`) e por `type=BOLETO_IN`:
+
+```bash
+curl --request GET \
+  --url 'https://api.woovi.com/api/v1/boleto-transaction?type=BOLETO_IN&settledStart=2026-07-01T00:00:00.000Z&settledEnd=2026-07-31T23:59:59.000Z' \
+  --header 'Authorization: {APP_ID}'
+```
+
+```json
+{
+  "status": "OK",
+  "pageInfo": {
+    "skip": 0,
+    "limit": 100,
+    "hasPreviousPage": false,
+    "hasNextPage": false
+  },
+  "boletoTransactions": [
+    {
+      "boletoTransactionID": "btx_019fa55beec9775faf8a069d64dcde54",
+      "type": "BOLETO_IN",
+      "status": "CONFIRMED",
+      "value": 245000,
+      "fee": 299,
+      "createdAt": "2026-07-26T13:04:11.212Z",
+      "settledAt": "2026-07-27T10:00:00.000Z",
+      "charge": {
+        "value": 242898,
+        "status": "COMPLETED",
+        "boletoBarcode": "34191120100002428981103069645110772982609000",
+        "boletoDigitable": "34191103036964511077129826090002112010000242898"
+      }
+    }
+  ]
+}
+```
+
+Existem **dois intervalos de data independentes**, porque respondem perguntas
+diferentes: `start`/`end` filtram por **criação** e `settledStart`/`settledEnd`
+por **liquidação**. Para conferência financeira use o de liquidação — as duas datas
+voltam em todo item, então dá para bater uma contra a outra.
+
+O detalhe de uma transação sai pelo id recebido no webhook:
+
+```bash
+curl --request GET \
+  --url https://api.woovi.com/api/v1/boleto-transaction/btx_019fa55beec9775faf8a069d64dcde54 \
+  --header 'Authorization: {APP_ID}'
+```
+
+:::note Escopos da aplicação
+A listagem exige **`BOLETO_TRANSACTION_GET_LIST`** e o detalhe exige
+**`BOLETO_TRANSACTION_GET`**. Sem o escopo, a chamada responde **`403`**.
+:::
+
+---
+
 ## Fluxo recomendado
 
 1. Crie a cobrança com um `correlationID` próprio da sua venda.
 2. Ao receber `OPENPIX:CHARGE_COMPLETED`, marque a venda como **paga** e guarde o
    `correlationID` da charge (`charge.correlationID`).
-3. Consulte a API de cobrança pelo `correlationID` e verifique
-   `paymentMethods.boleto.status`. Quando for **`SETTLED`**, use
-   `paymentMethods.boleto.settledAt` como a **data de liquidação**, concilie o
-   recebimento e libere o produto.
+3. Assine o webhook **`BOLETO_SETTLED`**. Ao recebê-lo, use `boleto.settledAt` como
+   a **data de liquidação**, concilie o recebimento pelo `boleto.value` e libere o
+   produto. Guarde o `boleto.boletoTransactionID`.
+4. No fechamento do período, rode
+   **`GET /api/v1/boleto-transaction?type=BOLETO_IN`** com `settledStart`/`settledEnd`
+   para conferir tudo que liquidou de uma vez.
+5. Se preferir não depender de webhook, consulte a API de cobrança pelo
+   `correlationID` e verifique `paymentMethods.boleto.status`. Quando for
+   **`SETTLED`**, use `paymentMethods.boleto.settledAt` como a **data de
+   liquidação**, concilie o recebimento e libere o produto.
 
 ---
 
