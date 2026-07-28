@@ -1061,6 +1061,281 @@
         ]
       }
     },
+    "/api/v1/anticipation": {
+      "get": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "List anticipation requests",
+        "description": "Lists the company's anticipation requests. Poll `?status=PENDING` to discover requests awaiting your approval before settlement. Requires the `anticipation.request.read` scope.",
+        "x-required-scope": "ANTICIPATION_REQUEST_READ",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_REQUEST_READ"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter by status.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "PROCESSING",
+                "CONFIRMED",
+                "CANCELED",
+                "PAID",
+                "OVERDUE",
+                "FAILED"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Max items to return (default 100, capped at 1000).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Anticipation requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "anticipations": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AnticipationRequest"
+                      }
+                    },
+                    "count": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationUnauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/anticipation/{id}/approve": {
+      "post": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "Approve an anticipation request",
+        "description": "Approves a PENDING request and triggers the Pix Out to the beneficiary. Idempotent: re-approving an already-approved request returns 200 with the current state; a rejected/terminal one returns 409. Requires the `anticipation.request.approve` scope.",
+        "x-required-scope": "ANTICIPATION_REQUEST_APPROVE",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_REQUEST_APPROVE"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Anticipation request id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Approved (or already approved)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "anticipation": {
+                      "$ref": "#/components/schemas/AnticipationRequest"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Anticipation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cannot approve in the current status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/anticipation/{id}/reject": {
+      "post": {
+        "tags": [
+          "anticipation"
+        ],
+        "summary": "Reject an anticipation request",
+        "description": "Rejects a PENDING request (releases the reserved cycle limit). Idempotent: re-rejecting a canceled request returns 200; an approved/terminal one returns 409. Requires the `anticipation.request.approve` scope.",
+        "x-required-scope": "ANTICIPATION_REQUEST_APPROVE",
+        "security": [
+          {
+            "AppID": [
+              "ANTICIPATION_REQUEST_APPROVE"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Anticipation request id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "description": "Optional rejection reason (audited)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rejected (or already canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "anticipation": {
+                      "$ref": "#/components/schemas/AnticipationRequest"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid app_id or IP not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Anticipation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cannot reject in the current status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnticipationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/anticipation/balance/batch": {
       "post": {
         "tags": [
@@ -16694,6 +16969,119 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          }
+        }
+      },
+      "AnticipationRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Anticipation request id (use it on the approve/reject routes)."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "PROCESSING",
+              "CONFIRMED",
+              "CANCELED",
+              "PAID",
+              "OVERDUE",
+              "FAILED"
+            ]
+          },
+          "beneficiaryTaxID": {
+            "type": "string",
+            "nullable": true,
+            "description": "Beneficiary payout key (CPF or CNPJ)."
+          },
+          "requestedAmount": {
+            "type": "integer",
+            "description": "Advanced amount, in cents."
+          },
+          "feeAmount": {
+            "type": "integer",
+            "description": "Fee charged to the beneficiary, in cents."
+          },
+          "netAmount": {
+            "type": "integer",
+            "description": "Net amount paid to the beneficiary, in cents."
+          },
+          "feeMode": {
+            "type": "string"
+          },
+          "monthlyFeePercentage": {
+            "type": "number"
+          },
+          "daysUntilDue": {
+            "type": "integer"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "approvedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cancelledAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cancelReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "endToEndId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Pix end-to-end id of the settled payout."
+          },
+          "failureCode": {
+            "type": "string",
+            "nullable": true,
+            "description": "Coded failure cause when status is FAILED."
+          },
+          "failureReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "AnticipationError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "AnticipationUnauthorized": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
