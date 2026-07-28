@@ -6993,6 +6993,932 @@
         ]
       }
     },
+    "/api/v1/invoice/integration/certificate": {
+      "post": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Upload the NFe.io A1 certificate for the invoice integration",
+        "description": "Uploads the company's NFe.io A1 certificate (base64-encoded pkcs12) to the configured NFEIO integration. The response returns only the resulting integration status and never echoes the certificate, passphrase or credentials.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pcks12": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "The A1 certificate (pkcs12) encoded as a base64 string"
+                  },
+                  "passphrase": {
+                    "type": "string",
+                    "description": "The certificate password"
+                  },
+                  "test": {
+                    "type": "boolean",
+                    "description": "If true, the certificate is not uploaded to NFe.io (validation and upload are skipped)"
+                  }
+                },
+                "required": [
+                  "pcks12",
+                  "passphrase"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Certificate configured successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "integration": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalidCertificate": {
+                    "value": {
+                      "error": "Error uploading certificate, check if the password or the certificate is correct"
+                    }
+                  },
+                  "invalidBody": {
+                    "value": {
+                      "error": "pcks12 must be a base64-encoded string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Forbidden - Missing required feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Integration not configured",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "missingIntegration": {
+                    "value": {
+                      "error": "You need to configure the invoice integration"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/invoice/integration/certificate',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({pcks12: 'string', passphrase: 'string', test: true}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/invoice/integration/certificate \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"pcks12\":\"string\",\"passphrase\":\"string\",\"test\":true}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/invoice/integration/certificate\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'pcks12' => 'string',\n    'passphrase' => 'string',\n    'test' => null\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"pcks12\\\":\\\"string\\\",\\\"passphrase\\\":\\\"string\\\",\\\"test\\\":true}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/invoice/integration/certificate\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice/integration/certificate\"\n\n\tpayload := strings.NewReader(\"{\\\"pcks12\\\":\\\"string\\\",\\\"passphrase\\\":\\\"string\\\",\\\"test\\\":true}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"pcks12\\\":\\\"string\\\",\\\"passphrase\\\":\\\"string\\\",\\\"test\\\":true}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/invoice/integration/certificate\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/invoice/integration/certificate\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"pcks12\\\":\\\"string\\\",\\\"passphrase\\\":\\\"string\\\",\\\"test\\\":true}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/invoice/integration": {
+      "get": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Get the NFe.io integration status and config for the authenticated company",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ok": {
+                    "value": {
+                      "integration": {
+                        "id": "67001bbf0b0621890af7dc28",
+                        "type": "NFEIO",
+                        "status": "CONFIGURED",
+                        "isActive": true,
+                        "metadata": {
+                          "nfeio": {
+                            "nfeioCompanyId": "nfeio-company-id",
+                            "cityServiceCode": "2690",
+                            "municipalSubscription": "123456",
+                            "taxRegime": "SimplesNacional"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Forbidden - Missing required feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "missingFeature": {
+                    "value": {
+                      "error": "You need feature Invoice to access this endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "integrationNotFound": {
+                    "value": {
+                      "error": "Integration not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/invoice/integration',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/invoice/integration \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/invoice/integration\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/invoice/integration\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice/integration\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/invoice/integration\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/invoice/integration\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Activate or deactivate the NFe.io integration for the authenticated company",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "isActive": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "isActive"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Integration updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "integration": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "isActive": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "ok": {
+                    "value": {
+                      "integration": {
+                        "id": "67001bbf0b0621890af7dc28",
+                        "type": "NFEIO",
+                        "status": "CONFIGURED",
+                        "isActive": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "notConfigured": {
+                    "value": {
+                      "error": "It is not possible to active an Integration not configured. Configure first, then active it"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Forbidden - Missing required feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "missingFeature": {
+                    "value": {
+                      "error": "You need feature Invoice to access this endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "integrationNotFound": {
+                    "value": {
+                      "error": "Integration not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'PATCH',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/invoice/integration',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({isActive: true}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request PATCH \\\n  --url https://api.woovi.com/api/v1/invoice/integration \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"isActive\":true}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/invoice/integration\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"PATCH\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'isActive' => null\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"isActive\\\":true}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"PATCH\", \"/api/v1/invoice/integration\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice/integration\"\n\n\tpayload := strings.NewReader(\"{\\\"isActive\\\":true}\")\n\n\treq, _ := http.NewRequest(\"PATCH\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"isActive\\\":true}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/invoice/integration\")\n  .patch(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/invoice/integration\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Patch.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"isActive\\\":true}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Create or upsert the NFe.io integration for the authenticated company",
+        "description": "Upserts the NFe.io integration for the authenticated company and sets its tax fields. Optionally activates it (only allowed once configured).\n",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cityServiceCode": {
+                    "type": "string"
+                  },
+                  "municipalSubscription": {
+                    "type": "string"
+                  },
+                  "rpsNumber": {
+                    "type": "string"
+                  },
+                  "specialTax": {
+                    "type": "string"
+                  },
+                  "taxRegime": {
+                    "type": "string"
+                  },
+                  "federalTaxDetermination": {
+                    "type": "string"
+                  },
+                  "municipalTaxDetermination": {
+                    "type": "string"
+                  },
+                  "isPortalNacional": {
+                    "type": "boolean"
+                  },
+                  "isActive": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Integration created/updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "integration": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "isActive": {
+                          "type": "boolean"
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "properties": {
+                            "nfeio": {
+                              "type": "object",
+                              "properties": {
+                                "nfeioCompanyId": {
+                                  "type": "string"
+                                },
+                                "cityServiceCode": {
+                                  "type": "string"
+                                },
+                                "nbs": {
+                                  "type": "string"
+                                },
+                                "isPortalNacional": {
+                                  "type": "boolean"
+                                },
+                                "municipalSubscription": {
+                                  "type": "string"
+                                },
+                                "rpsNumber": {
+                                  "type": "string"
+                                },
+                                "specialTax": {
+                                  "type": "string"
+                                },
+                                "taxRegime": {
+                                  "type": "string"
+                                },
+                                "federalTaxDetermination": {
+                                  "type": "string"
+                                },
+                                "municipalTaxDetermination": {
+                                  "type": "string"
+                                },
+                                "legalNature": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "ok": {
+                    "value": {
+                      "integration": {
+                        "id": "67001bbf0b0621890af7dc28",
+                        "type": "NFEIO",
+                        "status": "CONFIGURING",
+                        "isActive": false,
+                        "metadata": {
+                          "nfeio": {
+                            "cityServiceCode": "2690",
+                            "municipalSubscription": "123456"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "bankAccountRequired": {
+                    "value": {
+                      "error": "Integration nfe requires a virtual company bank account"
+                    }
+                  },
+                  "cityInvalid": {
+                    "value": {
+                      "error": "Company city not supported"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your IP is not in the allowed list"
+          },
+          "403": {
+            "description": "Forbidden - Missing required feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "missingFeature": {
+                    "value": {
+                      "error": "You need feature Invoice to access this endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "companyNotFound": {
+                    "value": {
+                      "error": "Company not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict - the integration already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "alreadyExists": {
+                    "value": {
+                      "error": "Integration already exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/invoice/integration',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  cityServiceCode: 'string',\n  municipalSubscription: 'string',\n  rpsNumber: 'string',\n  specialTax: 'string',\n  taxRegime: 'string',\n  federalTaxDetermination: 'string',\n  municipalTaxDetermination: 'string',\n  isPortalNacional: true,\n  isActive: true\n}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/invoice/integration \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"cityServiceCode\":\"string\",\"municipalSubscription\":\"string\",\"rpsNumber\":\"string\",\"specialTax\":\"string\",\"taxRegime\":\"string\",\"federalTaxDetermination\":\"string\",\"municipalTaxDetermination\":\"string\",\"isPortalNacional\":true,\"isActive\":true}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/invoice/integration\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'cityServiceCode' => 'string',\n    'municipalSubscription' => 'string',\n    'rpsNumber' => 'string',\n    'specialTax' => 'string',\n    'taxRegime' => 'string',\n    'federalTaxDetermination' => 'string',\n    'municipalTaxDetermination' => 'string',\n    'isPortalNacional' => null,\n    'isActive' => null\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"cityServiceCode\\\":\\\"string\\\",\\\"municipalSubscription\\\":\\\"string\\\",\\\"rpsNumber\\\":\\\"string\\\",\\\"specialTax\\\":\\\"string\\\",\\\"taxRegime\\\":\\\"string\\\",\\\"federalTaxDetermination\\\":\\\"string\\\",\\\"municipalTaxDetermination\\\":\\\"string\\\",\\\"isPortalNacional\\\":true,\\\"isActive\\\":true}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/invoice/integration\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice/integration\"\n\n\tpayload := strings.NewReader(\"{\\\"cityServiceCode\\\":\\\"string\\\",\\\"municipalSubscription\\\":\\\"string\\\",\\\"rpsNumber\\\":\\\"string\\\",\\\"specialTax\\\":\\\"string\\\",\\\"taxRegime\\\":\\\"string\\\",\\\"federalTaxDetermination\\\":\\\"string\\\",\\\"municipalTaxDetermination\\\":\\\"string\\\",\\\"isPortalNacional\\\":true,\\\"isActive\\\":true}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"cityServiceCode\\\":\\\"string\\\",\\\"municipalSubscription\\\":\\\"string\\\",\\\"rpsNumber\\\":\\\"string\\\",\\\"specialTax\\\":\\\"string\\\",\\\"taxRegime\\\":\\\"string\\\",\\\"federalTaxDetermination\\\":\\\"string\\\",\\\"municipalTaxDetermination\\\":\\\"string\\\",\\\"isPortalNacional\\\":true,\\\"isActive\\\":true}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/invoice/integration\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/invoice/integration\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"cityServiceCode\\\":\\\"string\\\",\\\"municipalSubscription\\\":\\\"string\\\",\\\"rpsNumber\\\":\\\"string\\\",\\\"specialTax\\\":\\\"string\\\",\\\"taxRegime\\\":\\\"string\\\",\\\"federalTaxDetermination\\\":\\\"string\\\",\\\"municipalTaxDetermination\\\":\\\"string\\\",\\\"isPortalNacional\\\":true,\\\"isActive\\\":true}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Update the tax fields of the invoice integration",
+        "description": "Updates the tax configuration of the authenticated company's existing NFEIO integration (city service code, municipal subscription, rps number, special tax, tax regime, legal nature and tax determination fields). The integration must already exist; otherwise a 404 is returned. The response never echoes credentials.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cityServiceCode": {
+                    "type": "string"
+                  },
+                  "municipalSubscription": {
+                    "type": "string"
+                  },
+                  "rpsNumber": {
+                    "type": "string"
+                  },
+                  "specialTax": {
+                    "type": "string"
+                  },
+                  "taxRegime": {
+                    "type": "string"
+                  },
+                  "legalNature": {
+                    "type": "string"
+                  },
+                  "federalTaxDetermination": {
+                    "type": "string"
+                  },
+                  "municipalTaxDetermination": {
+                    "type": "string"
+                  },
+                  "isPortalNacional": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Integration tax information updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "integration": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Integration not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "integrationNotFound": {
+                    "value": {
+                      "error": "Integration not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'PUT',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/invoice/integration',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  cityServiceCode: 'string',\n  municipalSubscription: 'string',\n  rpsNumber: 'string',\n  specialTax: 'string',\n  taxRegime: 'string',\n  legalNature: 'string',\n  federalTaxDetermination: 'string',\n  municipalTaxDetermination: 'string',\n  isPortalNacional: true\n}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request PUT \\\n  --url https://api.woovi.com/api/v1/invoice/integration \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"cityServiceCode\":\"string\",\"municipalSubscription\":\"string\",\"rpsNumber\":\"string\",\"specialTax\":\"string\",\"taxRegime\":\"string\",\"legalNature\":\"string\",\"federalTaxDetermination\":\"string\",\"municipalTaxDetermination\":\"string\",\"isPortalNacional\":true}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/invoice/integration\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"PUT\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'cityServiceCode' => 'string',\n    'municipalSubscription' => 'string',\n    'rpsNumber' => 'string',\n    'specialTax' => 'string',\n    'taxRegime' => 'string',\n    'legalNature' => 'string',\n    'federalTaxDetermination' => 'string',\n    'municipalTaxDetermination' => 'string',\n    'isPortalNacional' => null\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"cityServiceCode\\\":\\\"string\\\",\\\"municipalSubscription\\\":\\\"string\\\",\\\"rpsNumber\\\":\\\"string\\\",\\\"specialTax\\\":\\\"string\\\",\\\"taxRegime\\\":\\\"string\\\",\\\"legalNature\\\":\\\"string\\\",\\\"federalTaxDetermination\\\":\\\"string\\\",\\\"municipalTaxDetermination\\\":\\\"string\\\",\\\"isPortalNacional\\\":true}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"PUT\", \"/api/v1/invoice/integration\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice/integration\"\n\n\tpayload := strings.NewReader(\"{\\\"cityServiceCode\\\":\\\"string\\\",\\\"municipalSubscription\\\":\\\"string\\\",\\\"rpsNumber\\\":\\\"string\\\",\\\"specialTax\\\":\\\"string\\\",\\\"taxRegime\\\":\\\"string\\\",\\\"legalNature\\\":\\\"string\\\",\\\"federalTaxDetermination\\\":\\\"string\\\",\\\"municipalTaxDetermination\\\":\\\"string\\\",\\\"isPortalNacional\\\":true}\")\n\n\treq, _ := http.NewRequest(\"PUT\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"cityServiceCode\\\":\\\"string\\\",\\\"municipalSubscription\\\":\\\"string\\\",\\\"rpsNumber\\\":\\\"string\\\",\\\"specialTax\\\":\\\"string\\\",\\\"taxRegime\\\":\\\"string\\\",\\\"legalNature\\\":\\\"string\\\",\\\"federalTaxDetermination\\\":\\\"string\\\",\\\"municipalTaxDetermination\\\":\\\"string\\\",\\\"isPortalNacional\\\":true}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/invoice/integration\")\n  .put(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/invoice/integration\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Put.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"cityServiceCode\\\":\\\"string\\\",\\\"municipalSubscription\\\":\\\"string\\\",\\\"rpsNumber\\\":\\\"string\\\",\\\"specialTax\\\":\\\"string\\\",\\\"taxRegime\\\":\\\"string\\\",\\\"legalNature\\\":\\\"string\\\",\\\"federalTaxDetermination\\\":\\\"string\\\",\\\"municipalTaxDetermination\\\":\\\"string\\\",\\\"isPortalNacional\\\":true}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/invoice/integration/test": {
+      "post": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": "Issue a NFe.io test invoice for the invoice integration",
+        "description": "Issues a test NFe.io invoice for the authenticated company's NFEIO integration. This is the bootstrap step that moves the integration to VALIDATING; once NFe.io confirms the test note via webhook the integration becomes CONFIGURED and active, which unblocks real invoice issuance. A configured integration can no longer issue test invoices.",
+        "responses": {
+          "200": {
+            "description": "Test invoice issued successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "invoice": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "integration": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "alreadyConfigured": {
+                    "value": {
+                      "error": "Configured integration cannot issue test invoices anymore"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NFE integration not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "integrationNotFound": {
+                    "value": {
+                      "error": "NFE integration not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/invoice/integration/test',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/invoice/integration/test \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/invoice/integration/test\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"POST\", \"/api/v1/invoice/integration/test\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice/integration/test\"\n\n\treq, _ := http.NewRequest(\"POST\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/invoice/integration/test\")\n  .post(null)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/invoice/integration/test\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
     "/api/v1/invoice/{correlationID}/pdf": {
       "get": {
         "tags": [
