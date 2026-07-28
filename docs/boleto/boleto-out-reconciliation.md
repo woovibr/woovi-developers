@@ -15,16 +15,19 @@ tags:
 
 Depois de **pagar um boleto** pela API (fluxo *Boleto OUT* — veja
 **[Como pagar um boleto via API](/docs/boleto/boleto-out-api)**), o pagamento é
-processado de forma **assíncrona**. Este guia mostra as duas formas de
+processado de forma **assíncrona**. Este guia mostra as três formas de
 **conciliar** e saber que o boleto foi efetivamente pago:
 
 | Forma | Quando usar |
 | --- | --- |
 | **Webhook `OPENPIX:MOVEMENT_CONFIRMED`** | Você quer ser **avisado** no momento em que o pagamento é confirmado, sem ficar consultando a API. |
-| **`GET /api/v1/payment/{id}`** | Você quer **consultar** o estado atual do pagamento pontualmente (polling ou verificação sob demanda). |
+| **`GET /api/v1/payment/{id}`** | Você quer **consultar** o estado atual de **um** pagamento pontualmente (polling ou verificação sob demanda). |
+| **`GET /api/v1/boleto-transaction`** | Você quer conciliar **em lote**, listando todos os boletos pagos em um período — e precisa da **tarifa** cobrada em cada um. |
 
-Nas duas formas, a amarração com a sua operação é feita pelo **`correlationID`**
-que você definiu na criação do pagamento.
+Nas duas primeiras formas, a amarração com a sua operação é feita pelo
+**`correlationID`** que você definiu na criação do pagamento. A terceira atende
+aos dois casos: **listar** as transações de um período ou consultar **uma**
+transação específica pelo **`boletoTransactionID`**, o id público da transação.
 
 :::note Valores em centavos
 Todos os valores (`value`) são expressos em **centavos** (`300` = R$ 3,00).
@@ -147,6 +150,95 @@ Concilie olhando o campo **`payment.status`**:
 
 ---
 
+## Forma 3 — Listar as transações de boleto (`GET /api/v1/boleto-transaction`)
+
+As duas formas anteriores respondem sobre **um** pagamento. Quando o que você
+precisa é fechar um período — conferir tudo que foi pago entre duas datas, com a
+**tarifa** de cada boleto — use a API de transações de boleto.
+
+Filtre por `type=BOLETO_OUT` para trazer apenas os boletos que a **sua empresa
+pagou** (sem `BOLETO_OUT`, a listagem também traz os boletos que os seus
+pagadores pagaram):
+
+```bash
+curl --request GET \
+  --url 'https://api.woovi.com/api/v1/boleto-transaction?type=BOLETO_OUT&start=2026-07-01T00:00:00.000Z&end=2026-07-31T23:59:59.000Z' \
+  --header 'Authorization: {APP_ID}'
+```
+
+```json
+{
+  "status": "OK",
+  "pageInfo": {
+    "skip": 0,
+    "limit": 100,
+    "hasPreviousPage": false,
+    "hasNextPage": false
+  },
+  "boletoTransactions": [
+    {
+      "boletoTransactionID": "btx_019f6123d8ff7332a4a16de2ed15a3cb",
+      "type": "BOLETO_OUT",
+      "status": "CONFIRMED",
+      "value": 3827,
+      "fee": 115,
+      "createdAt": "2026-07-14T14:59:27.103Z"
+    }
+  ]
+}
+```
+
+Concilie pelo campo **`status`**: **`CONFIRMED`** é o boleto pago. O **`value`** é
+o valor que saiu da sua conta e o **`fee`** é a tarifa cobrada pela operação.
+
+Para o detalhe de **uma** transação, consulte pelo `boletoTransactionID` — é o
+mesmo id que a listagem devolve e que você pode guardar na sua base para conferir
+a transação depois, sem varrer o período de novo:
+
+```bash
+curl --request GET \
+  --url https://api.woovi.com/api/v1/boleto-transaction/btx_019f6123d8ff7332a4a16de2ed15a3cb \
+  --header 'Authorization: {APP_ID}'
+```
+
+```json
+{
+  "boletoTransaction": {
+    "boletoTransactionID": "btx_019f6123d8ff7332a4a16de2ed15a3cb",
+    "type": "BOLETO_OUT",
+    "status": "CONFIRMED",
+    "value": 3827,
+    "fee": 115,
+    "createdAt": "2026-07-14T14:59:27.103Z"
+  }
+}
+```
+
+:::note De onde vem o `boletoTransactionID`
+No **boleto OUT** o id vem da **listagem**: o webhook `OPENPIX:MOVEMENT_CONFIRMED`
+não o inclui — ele identifica o pagamento pelo `payment.correlationID`. Já no
+**boleto IN** o id chega direto no webhook `BOLETO_SETTLED`, e aí você consulta a
+transação sem listar nada — veja
+**[Conciliação de liquidação do Boleto](/docs/boleto/boleto-reconciliation)**.
+:::
+
+:::note Escopos da aplicação
+A listagem exige o escopo **`BOLETO_TRANSACTION_GET_LIST`** e o detalhe exige
+**`BOLETO_TRANSACTION_GET`**. Sem o escopo correspondente a chamada responde
+**`403`**.
+:::
+
+:::note Boleto OUT não tem `settledAt` nem `charge`
+Esses dois campos aparecem só em transações **`BOLETO_IN`** — a liquidação é o
+crédito na sua conta de um boleto que o seu pagador pagou. No `BOLETO_OUT` o
+estado final é o **`status`** `CONFIRMED`.
+:::
+
+Os filtros de data (`start`/`end`) e a paginação (`skip`/`limit`) estão descritos
+na **[referência da API](https://developers.woovi.com/api#tag/boleto)**.
+
+---
+
 ## Fluxo recomendado
 
 1. Crie e aprove o pagamento com um `correlationID` próprio da sua operação
@@ -156,3 +248,6 @@ Concilie olhando o campo **`payment.status`**:
 3. Como alternativa ou reforço, consulte **`GET /api/v1/payment/{correlationID}`**
    e verifique `payment.status` até chegar em `CONFIRMED` (pago) ou `FAILED`
    (falha).
+4. No fechamento do dia ou do mês, rode **`GET /api/v1/boleto-transaction?type=BOLETO_OUT`**
+   com o período desejado para conferir todos os pagamentos de uma vez e apurar as
+   tarifas.
