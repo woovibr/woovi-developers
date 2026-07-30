@@ -15,7 +15,7 @@ Ele permite decidir um valor predeterminado ou deixar o pagador escolher o valor
 ## Casos de Uso
 
 - Aceitar pagamentos em eventos presenciais
-- Aceitar pagamentos em lives [https://www.twitch.tv/](Twitch)
+- Aceitar pagamentos em lives [Twitch](https://www.twitch.tv/)
 - Aceitar doações
 - Aceitar pagamentos em lojas físicas
 - Aceitar pagamentos em `vending maching`

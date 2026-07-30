@@ -156,7 +156,7 @@ const cards = [
     content: 'Criar cobranças Pix usando PHP',
     icon: <FaPhp color={'#787cb5'} size={30} />,
     docsTo:
-      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin.',
+      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin',
     to: 'https://app.woovi.com/home/applications/php/add',
   },
   {
@@ -164,7 +164,7 @@ const cards = [
     content: 'Criar cobranças Pix usando Shell',
     icon: <TbBrandPowershell color={'#787cb5'} size={30} />,
     docsTo:
-      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin.',
+      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin',
     to: 'https://app.woovi.com/home/applications/shell/add',
   },
   {
@@ -172,7 +172,7 @@ const cards = [
     content: 'Criar cobranças Pix usando Nodejs',
     icon: <SiNodedotjs color={'#80bd41'} size={30} />,
     docsTo:
-      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin.',
+      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin',
     to: 'https://app.woovi.com/home/applications/nodejs/add',
   },
   {
@@ -180,7 +180,7 @@ const cards = [
     content: 'Criar cobranças Pix usando C#',
     icon: <TbBrandCSharp color={'#9b4f97'} size={30} />,
     docsTo:
-      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin.',
+      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin',
     to: 'https://app.woovi.com/home/applications/csharp/add',
   },
   {
@@ -188,7 +188,7 @@ const cards = [
     content: 'Criar cobranças Pix usando Java',
     icon: <FaJava color={'#000000de'} size={30} />,
     docsTo:
-      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin.',
+      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin',
     to: 'https://app.woovi.com/home/applications/java/add',
   },
   {
@@ -196,7 +196,7 @@ const cards = [
     content: 'Criar cobranças Pix usando Python',
     icon: <FaPython size={30} />,
     docsTo:
-      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin.',
+      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin',
     to: 'https://app.woovi.com/home/applications/python/add',
   },
   {
@@ -204,7 +204,7 @@ const cards = [
     content: 'Criar cobranças Pix usando Delphi',
     icon: <SiDelphi color={'#f42736'} size={30} />,
     docsTo:
-      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin.',
+      '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin',
     to: 'https://app.woovi.com/home/applications/delphi/add',
   },
   {

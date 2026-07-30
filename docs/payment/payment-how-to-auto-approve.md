@@ -79,7 +79,7 @@ Consultando o pagamento depois de confirmado, a resposta inclui `transaction` e 
 
 ## Comportamento sem o flag
 
-Quando `autoApprove` é omitido ou `false`, o pagamento é criado normalmente com status `CREATED` e pode ser aprovado posteriormente via [`POST /api/v1/payment/approve`](./payment-how-to-use-api-to-approve.md).
+Quando `autoApprove` é omitido ou `false`, o pagamento é criado normalmente com status `CREATED` e pode ser aprovado posteriormente via [`POST /api/v1/payment/approve`](./payment-how-to-use-api-to-approve-a-payment.md).
 
 ```json
 {
