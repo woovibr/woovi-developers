@@ -30,6 +30,23 @@ Para criar uma cobrança do tipo *Boleto* você precisará acessar o endpoint de
 
 O processo de criaçao de um boleto é bem simples. Basta utilizar o mesmo endpoint que o de cobrança, porém, com a adição do parâmetro `type` com o valor `BOLETO`.
 
+:::warning Endereço do cliente é obrigatório
+Diferente de uma cobrança Pix, o Boleto **exige os dados do cliente (`customer`), incluindo o endereço completo (`address`)**. Caso algum campo do endereço esteja ausente, a criação da cobrança falha com um erro como `{"error":"O código do estado do cliente é obrigatório"}`.
+
+Os campos obrigatórios do cliente são:
+
+- `name` — nome do cliente
+- `taxID` — CPF/CNPJ do cliente
+- `address.street` — logradouro
+- `address.number` — número
+- `address.zipcode` — CEP
+- `address.neighborhood` — bairro
+- `address.city` — cidade
+- `address.state` — sigla do estado (UF, ex.: `SP`)
+
+O campo `address.complement` é opcional.
+:::
+
 ```json
 {
   "correlationID": "9134e286-6f71-427a-bf00-241681624587",
@@ -40,7 +57,16 @@ O processo de criaçao de um boleto é bem simples. Basta utilizar o mesmo endpo
     "name": "Dan",
     "taxID": "31324227036",
     "email": "email0@example.com",
-    "phone": "5511999999999"
+    "phone": "5511999999999",
+    "address": {
+      "street": "Av. Paulista",
+      "number": "1000",
+      "complement": "Sala 10",
+      "zipcode": "01310100",
+      "neighborhood": "Bela Vista",
+      "city": "São Paulo",
+      "state": "SP"
+    }
   },
   "additionalInfo": [
     {
@@ -67,7 +93,7 @@ A resposta deve ser algo como:
 		"customer": {
 			"name": "Dan",
 			"email": "email0@example.com",
-			"phone": "+5511999999999",
+			"phone": "+551****9999",
 			"taxID": {
 				"taxID": "31324227036",
 				"type": "BR:CPF"
@@ -124,6 +150,3 @@ A resposta deve ser algo como:
 ```
 
 A criação de um boleto também gera um pix. É possível pagar com qualquer uma das duas opções.
-
-
-
