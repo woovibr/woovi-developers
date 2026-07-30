@@ -305,7 +305,117 @@
         ]
       }
     },
-    "/api/v1/account/": {
+    "/api/v1/account": {
+      "post": {
+        "tags": [
+          "account"
+        ],
+        "summary": "Duplicates the Account",
+        "description": "Duplicates the account associated with the authorization appId. Requires the bank account feature to be enabled.",
+        "x-required-scope": "ACCOUNT_POST",
+        "security": [
+          {
+            "AppID": [
+              "ACCOUNT_POST"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The created Account information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "account": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/CompanyBankAccount"
+                    }
+                  }
+                },
+                "example": {
+                  "account": {
+                    "accountId": "6290ccfd42831958a405debc",
+                    "isDefault": true,
+                    "balance": {
+                      "total": 129430,
+                      "blocked": 0,
+                      "available": 129430
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Bank account feature is not enabled"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Wrong API type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Wrong API type"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/account',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/account \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/account\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"POST\", \"/api/v1/account\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account\"\n\n\treq, _ := http.NewRequest(\"POST\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/account\")\n  .post(null)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/account\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      },
       "get": {
         "tags": [
           "account"
@@ -482,118 +592,6 @@
         ]
       }
     },
-    "/api/v1/account": {
-      "post": {
-        "tags": [
-          "account"
-        ],
-        "summary": "Duplicates the Account",
-        "description": "Duplicates the account associated with the authorization appId. Requires the bank account feature to be enabled.",
-        "x-required-scope": "ACCOUNT_POST",
-        "security": [
-          {
-            "AppID": [
-              "ACCOUNT_POST"
-            ]
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The created Account information",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "account": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/CompanyBankAccount"
-                    }
-                  }
-                },
-                "example": {
-                  "account": {
-                    "accountId": "6290ccfd42831958a405debc",
-                    "isDefault": true,
-                    "balance": {
-                      "total": 129430,
-                      "blocked": 0,
-                      "available": 129430
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "An error message",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Bank account feature is not enabled"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - Wrong API type",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Wrong API type"
-                }
-              }
-            }
-          }
-        },
-        "x-codeSamples": [
-          {
-            "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/account',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
-          },
-          {
-            "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/account \\\n  --header 'Authorization: {APP_ID}'"
-          },
-          {
-            "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/account\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
-          },
-          {
-            "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"POST\", \"/api/v1/account\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
-          },
-          {
-            "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/account\"\n\n\treq, _ := http.NewRequest(\"POST\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-          },
-          {
-            "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/account\")\n  .post(null)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
-          },
-          {
-            "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/account\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
-          }
-        ]
-      }
-    },
     "/api/v1/account-register/{id}": {
       "delete": {
         "tags": [
@@ -611,10 +609,10 @@
         ],
         "parameters": [
           {
-            "name": "correlationID",
+            "name": "id",
             "in": "path",
             "required": true,
-            "description": "CorrelationID of the account register to delete",
+            "description": "Mongo _id or correlationID of the account register to delete",
             "schema": {
               "type": "string",
               "minLength": 1
@@ -726,15 +724,13 @@
           }
         },
         "x-codeSamples": []
-      }
-    },
-    "/api/v1/account-register": {
+      },
       "get": {
         "tags": [
           "account register"
         ],
-        "summary": "Get account register by CorrelationID",
-        "description": "Retrieves an existing account registration by CorrelationID",
+        "summary": "Get account register by id",
+        "description": "Retrieves an existing account registration by its Mongo _id, taxId or correlationID.",
         "x-required-scope": "ACCOUNT_REGISTER_GET",
         "security": [
           {
@@ -745,10 +741,10 @@
         ],
         "parameters": [
           {
-            "name": "CorrelationID",
+            "name": "id",
             "in": "path",
             "required": true,
-            "description": "CorrelationID of the account register",
+            "description": "Mongo _id, taxId or correlationID of the account register",
             "schema": {
               "type": "string",
               "example": "6fe18d8e-5009-4f57-8f1d-5b084b6b83ac"
@@ -4898,6 +4894,147 @@
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
+      },
+      "patch": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "Update a Customer",
+        "x-required-scope": "CUSTOMER_PATCH",
+        "security": [
+          {
+            "AppID": [
+              "CUSTOMER_PATCH"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Customer id or correlationID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "correlationID": {
+                "value": "fe7834b4060c488a9b0f89811be5f5cf"
+              }
+            }
+          }
+        ],
+        "description": "Endpoint to update a Customer",
+        "requestBody": {
+          "description": "Data to update a existent customer",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/CustomerPatchPayload"
+              },
+              "example": {
+                "name": "Dan",
+                "email": "email0@example.com",
+                "phone": "5511999999999",
+                "address": {
+                  "zipcode": "30421322",
+                  "street": "Street",
+                  "number": "100",
+                  "neighborhood": "Neighborhood",
+                  "city": "Belo Horizonte",
+                  "state": "MG",
+                  "complement": "APTO",
+                  "country": "BR"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  },
+                  "example": {
+                    "customer": {
+                      "name": "Dan",
+                      "email": "email0@example.com",
+                      "phone": "5511999999999",
+                      "taxID": {
+                        "taxID": "31324227036",
+                        "type": "BR:CPF"
+                      },
+                      "address": {
+                        "zipcode": "30421322",
+                        "street": "Street",
+                        "number": "100",
+                        "neighborhood": "Neighborhood",
+                        "city": "Belo Horizonte",
+                        "state": "MG",
+                        "complement": "APTO",
+                        "country": "BR"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'PATCH',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  name: 'string',\n  email: 'string',\n  phone: 'string',\n  taxID: 'string',\n  address: {\n    zipcode: 'string',\n    street: 'string',\n    number: 'string',\n    neighborhood: 'string',\n    city: 'string',\n    state: 'string',\n    complement: 'string',\n    country: 'string'\n  }\n}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request PATCH \\\n  --url https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"PATCH\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'name' => 'string',\n    'email' => 'string',\n    'phone' => 'string',\n    'taxID' => 'string',\n    'address' => [\n        'zipcode' => 'string',\n        'street' => 'string',\n        'number' => 'string',\n        'neighborhood' => 'string',\n        'city' => 'string',\n        'state' => 'string',\n        'complement' => 'string',\n        'country' => 'string'\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"PATCH\", \"/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\")\n\n\treq, _ := http.NewRequest(\"PATCH\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\")\n  .patch(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Patch.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
       }
     },
     "/api/v1/customer": {
@@ -5162,149 +5299,6 @@
           {
             "lang": "Ruby + Native",
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/customer\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\"\n\nresponse = http.request(request)\nputs response.read_body"
-          }
-        ]
-      }
-    },
-    "/api/v1/customer/{correlationID}": {
-      "patch": {
-        "tags": [
-          "customer"
-        ],
-        "summary": "Update a Customer",
-        "x-required-scope": "CUSTOMER_PATCH",
-        "security": [
-          {
-            "AppID": [
-              "CUSTOMER_PATCH"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "correlationID",
-            "in": "path",
-            "description": "correlation ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "examples": {
-              "correlationID": {
-                "value": "fe7834b4060c488a9b0f89811be5f5cf"
-              }
-            }
-          }
-        ],
-        "description": "Endpoint to update a Customer",
-        "requestBody": {
-          "description": "Data to update a existent customer",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "$ref": "#/components/schemas/CustomerPatchPayload"
-              },
-              "example": {
-                "name": "Dan",
-                "email": "email0@example.com",
-                "phone": "5511999999999",
-                "address": {
-                  "zipcode": "30421322",
-                  "street": "Street",
-                  "number": "100",
-                  "neighborhood": "Neighborhood",
-                  "city": "Belo Horizonte",
-                  "state": "MG",
-                  "complement": "APTO",
-                  "country": "BR"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Customer ID",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
-                  },
-                  "example": {
-                    "customer": {
-                      "name": "Dan",
-                      "email": "email0@example.com",
-                      "phone": "5511999999999",
-                      "taxID": {
-                        "taxID": "31324227036",
-                        "type": "BR:CPF"
-                      },
-                      "address": {
-                        "zipcode": "30421322",
-                        "street": "Street",
-                        "number": "100",
-                        "neighborhood": "Neighborhood",
-                        "city": "Belo Horizonte",
-                        "state": "MG",
-                        "complement": "APTO",
-                        "country": "BR"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "An error message",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "x-codeSamples": [
-          {
-            "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'PATCH',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  name: 'string',\n  email: 'string',\n  phone: 'string',\n  taxID: 'string',\n  address: {\n    zipcode: 'string',\n    street: 'string',\n    number: 'string',\n    neighborhood: 'string',\n    city: 'string',\n    state: 'string',\n    complement: 'string',\n    country: 'string'\n  }\n}));\nreq.end();"
-          },
-          {
-            "lang": "Shell + Curl",
-            "source": "curl --request PATCH \\\n  --url https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"name\":\"string\",\"email\":\"string\",\"phone\":\"string\",\"taxID\":\"string\",\"address\":{\"zipcode\":\"string\",\"street\":\"string\",\"number\":\"string\",\"neighborhood\":\"string\",\"city\":\"string\",\"state\":\"string\",\"complement\":\"string\",\"country\":\"string\"}}'"
-          },
-          {
-            "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"PATCH\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'name' => 'string',\n    'email' => 'string',\n    'phone' => 'string',\n    'taxID' => 'string',\n    'address' => [\n        'zipcode' => 'string',\n        'street' => 'string',\n        'number' => 'string',\n        'neighborhood' => 'string',\n        'city' => 'string',\n        'state' => 'string',\n        'complement' => 'string',\n        'country' => 'string'\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
-          },
-          {
-            "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"PATCH\", \"/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
-          },
-          {
-            "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\")\n\n\treq, _ := http.NewRequest(\"PATCH\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-          },
-          {
-            "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\")\n  .patch(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
-          },
-          {
-            "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/customer/fe7834b4060c488a9b0f89811be5f5cf\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Patch.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"name\\\":\\\"string\\\",\\\"email\\\":\\\"string\\\",\\\"phone\\\":\\\"string\\\",\\\"taxID\\\":\\\"string\\\",\\\"address\\\":{\\\"zipcode\\\":\\\"string\\\",\\\"street\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"neighborhood\\\":\\\"string\\\",\\\"city\\\":\\\"string\\\",\\\"state\\\":\\\"string\\\",\\\"complement\\\":\\\"string\\\",\\\"country\\\":\\\"string\\\"}}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -16662,7 +16656,8 @@
                   "200": {
                     "description": "Notificação recebida com sucesso"
                   }
-                }
+                },
+                "summary": "Webhook: Pix received (charge paid)"
               }
             }
           },
@@ -16763,7 +16758,8 @@
                   "200": {
                     "description": "Notificação recebida com sucesso"
                   }
-                }
+                },
+                "summary": "Webhook: Pix received (detached / no charge)"
               }
             }
           },
@@ -16871,7 +16867,8 @@
                   "200": {
                     "description": "Notificação recebida com sucesso"
                   }
-                }
+                },
+                "summary": "Webhook: Pix received via static QR Code"
               }
             }
           }
