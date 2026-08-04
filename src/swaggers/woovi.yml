@@ -18078,10 +18078,9 @@ paths:
         - stablecoin
       summary: Pay out INTERNAL balance to BRL via Pix
       description: >
-        Converts a stablecoin balance held on the company's Avenia INTERNAL
-        float
+        Converts a stablecoin balance held on the company's INTERNAL float into
 
-        into BRL and sends it to the given Pix key. Supported input assets:
+        BRL and sends it to the given Pix key. Supported input assets:
 
         `USDT`, `USDC`, `BRLA`.
 
@@ -18365,8 +18364,7 @@ paths:
         Returns a quote for converting a stablecoin balance held on the
         company's
 
-        Avenia INTERNAL float into BRL delivered via Pix. Supported input
-        assets:
+        INTERNAL float into BRL delivered via Pix. Supported input assets:
 
         `USDT`, `USDC`, `BRLA`.
 
@@ -19515,14 +19513,14 @@ paths:
     get:
       tags:
         - stablecoin
-      summary: List Avenia custodian deposit wallets for the AppID bank account
+      summary: List custodian deposit wallets for the AppID bank account
       description: >
-        Returns the deposit addresses Avenia holds for the stable sub-account
+        Returns the deposit addresses for the stable sub-account linked to the
 
-        linked to the authenticated Application's `companyBankAccount` (live
-        from
+        authenticated Application's `companyBankAccount` (live from the provider
+        —
 
-        the provider — not stored in Mongo).
+        not stored in Mongo).
 
 
         A company can have more than one bank account / KYB sub-account. The
@@ -19551,7 +19549,7 @@ paths:
         - AppID: []
       responses:
         '200':
-          description: Custodian wallets from Avenia
+          description: Custodian deposit wallets
           content:
             application/json:
               schema:

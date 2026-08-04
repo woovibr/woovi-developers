@@ -13592,7 +13592,7 @@
           "stablecoin"
         ],
         "summary": "Pay out INTERNAL balance to BRL via Pix",
-        "description": "Converts a stablecoin balance held on the company's Avenia INTERNAL float\ninto BRL and sends it to the given Pix key. Supported input assets:\n`USDT`, `USDC`, `BRLA`.\n\n`value` is the amount to spend from the INTERNAL balance, in cents of the\ninput asset. The subaccount is resolved from the Application's\n`companyBankAccount`, same as the wallets endpoint.\n\nFlow: balance check → consume Woovi **OUT** limit → resolve Pix beneficiary\n→ provider quote/ticket. There is no deposit or approval step.\n\nFund the INTERNAL float first via\n`GET /api/v1/stablecoin/wallets` (send USDT/USDC/BRLA on-chain to a returned\naddress), then call this endpoint.\n\nIdempotency is supported via `correlationId`: reusing one returns the payout\nalready created for it.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+        "description": "Converts a stablecoin balance held on the company's INTERNAL float into\nBRL and sends it to the given Pix key. Supported input assets:\n`USDT`, `USDC`, `BRLA`.\n\n`value` is the amount to spend from the INTERNAL balance, in cents of the\ninput asset. The subaccount is resolved from the Application's\n`companyBankAccount`, same as the wallets endpoint.\n\nFlow: balance check → consume Woovi **OUT** limit → resolve Pix beneficiary\n→ provider quote/ticket. There is no deposit or approval step.\n\nFund the INTERNAL float first via\n`GET /api/v1/stablecoin/wallets` (send USDT/USDC/BRLA on-chain to a returned\naddress), then call this endpoint.\n\nIdempotency is supported via `correlationId`: reusing one returns the payout\nalready created for it.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
         "security": [
           {
             "AppID": []
@@ -13756,7 +13756,7 @@
           "stablecoin"
         ],
         "summary": "Quote an INTERNAL balance off-ramp to BRL via Pix",
-        "description": "Returns a quote for converting a stablecoin balance held on the company's\nAvenia INTERNAL float into BRL delivered via Pix. Supported input assets:\n`USDT`, `USDC`, `BRLA`.\n\n`value` is the amount to spend from the INTERNAL balance, in cents of the\ninput asset.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+        "description": "Returns a quote for converting a stablecoin balance held on the company's\nINTERNAL float into BRL delivered via Pix. Supported input assets:\n`USDT`, `USDC`, `BRLA`.\n\n`value` is the amount to spend from the INTERNAL balance, in cents of the\ninput asset.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
         "security": [
           {
             "AppID": []
@@ -14681,8 +14681,8 @@
         "tags": [
           "stablecoin"
         ],
-        "summary": "List Avenia custodian deposit wallets for the AppID bank account",
-        "description": "Returns the deposit addresses Avenia holds for the stable sub-account\nlinked to the authenticated Application's `companyBankAccount` (live from\nthe provider — not stored in Mongo).\n\nA company can have more than one bank account / KYB sub-account. The\nsub-account is resolved from `Application.companyBankAccount` (the\naccount bound to the AppID), not from the company alone.\n\nSending an asset on-chain to one of these addresses credits the INTERNAL\nfloat used by `POST /api/v1/stablecoin/payout` (USDT/USDC/BRLA → Pix).\n\nFor an explicit provider id use\n`GET /api/v1/stablecoin/subaccount/{subAccountId}/wallets`.\nTo read the float balance after funding use\n`GET /api/v1/stablecoin/subaccount/{subAccountId}/balances`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+        "summary": "List custodian deposit wallets for the AppID bank account",
+        "description": "Returns the deposit addresses for the stable sub-account linked to the\nauthenticated Application's `companyBankAccount` (live from the provider —\nnot stored in Mongo).\n\nA company can have more than one bank account / KYB sub-account. The\nsub-account is resolved from `Application.companyBankAccount` (the\naccount bound to the AppID), not from the company alone.\n\nSending an asset on-chain to one of these addresses credits the INTERNAL\nfloat used by `POST /api/v1/stablecoin/payout` (USDT/USDC/BRLA → Pix).\n\nFor an explicit provider id use\n`GET /api/v1/stablecoin/subaccount/{subAccountId}/wallets`.\nTo read the float balance after funding use\n`GET /api/v1/stablecoin/subaccount/{subAccountId}/balances`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
         "security": [
           {
             "AppID": []
@@ -14690,7 +14690,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Custodian wallets from Avenia",
+            "description": "Custodian deposit wallets",
             "content": {
               "application/json": {
                 "schema": {
