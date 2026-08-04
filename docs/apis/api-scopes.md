@@ -48,6 +48,7 @@ Os escopos abaixo estão organizados por recurso:
 
 - `APPLICATION_POST`
 - `APPLICATION_DELETE`
+- `APPLICATION_ROTATE_POST`
 
 ### AUTH
 
