@@ -13,6 +13,14 @@ com anúncio prévio e prazo de _sunset_.
 
 Tipos: **Adicionado** · **Alterado** · **Depreciado** · **Removido**.
 
+## 2026-08
+
+- **Adicionado** — `GET /api/v1/application/scopes`, que lista os grupos de escopos que uma
+  aplicação pode solicitar. Não exige escopo.
+- **Adicionado** — `POST /api/v1/application/rotate-secret`, que gera um novo `clientSecret`
+  para uma aplicação da mesma empresa. Exige o escopo `APPLICATION_ROTATE_POST` e uma
+  aplicação `MASTER`.
+
 ## 2026-04
 
 - **Removido** — endpoints de _account register_ (`POST`/`PATCH`), previamente depreciados,
