@@ -196,7 +196,7 @@ Lista os depósitos da empresa autenticada (paginado).
 
 GET `/api/v1/stablecoin/wallets`
 
-Retorna os endereços custodiados (Avenia) da subconta ligada ao `companyBankAccount` do AppID. Enviar USDT/USDC/BRLA on-chain para um desses endereços credita o float INTERNAL usado pelo payout.
+Retorna os endereços custodiados da subconta ligada ao `companyBankAccount` do AppID. Enviar USDT/USDC/BRLA on-chain para um desses endereços credita o float INTERNAL usado pelo payout.
 
 Exige o escopo `STABLECOIN_SUBACCOUNT_LIST`.
 
