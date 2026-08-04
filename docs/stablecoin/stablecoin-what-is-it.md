@@ -51,6 +51,7 @@ Para iniciar o processo de KYB, entre em contato com o suporte.
 
 - [Endpoints](./stablecoin-endpoints.md) — todas as rotas da API
 - [Fluxo passo a passo](./stablecoin-flow.md) — do depósito à entrega on-chain
+- [Fluxo de payout (off-ramp)](./stablecoin-payout-flow.md) — do float INTERNAL ao Pix
 - [Webhooks](./stablecoin-webhooks.md) — como ser notificado
 - [Taxas](./stablecoin-fees.md)
 - [Limites](./stablecoin-limits.md)

@@ -19,7 +19,7 @@ Todas as rotas ficam sob `/api/v1/stablecoin/` e exigem autenticação com o seu
 | `STABLECOIN_DEPOSIT_LIST` | `deposit/find`, `deposit` (listar) |
 | `STABLECOIN_SUBACCOUNT_CREATE` | `subaccount` (POST — solicitar KYB) |
 | `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar/detalhe), `wallets`, `subaccount/{id}/wallets`, `subaccount/{id}/balances` |
-| `STABLECOIN_PAYOUT_CREATE` | `payout/quote`, `payout` (criar/consultar) |
+| `STABLECOIN_PAYOUT_CREATE` | `payout/quote`, `payout` (criar/aprovar/consultar) |
 
 > A URL base de produção é `https://api.woovi.com`. Caso o App não tenha o escopo necessário, a resposta é `401` com `Application is missing required scope: ...`.
 
@@ -246,13 +246,13 @@ curl --request GET \
 
 GET `/api/v1/stablecoin/payout/quote`
 
-Cota a conversão do float INTERNAL para BRL via Pix. `value` é em **centavos do ativo** (ex.: `100` = 1,00 USDT).
+Cota um **Pix alvo em BRL**, debitando float INTERNAL. `value` é em **centavos de BRL** (ex.: `10000` = R$ 100,00). A resposta traz quanto de `currency` será debitado (`inputAmount`).
 
 Exige o escopo `STABLECOIN_PAYOUT_CREATE`.
 
 ```bash
 curl --request GET \
-  --url 'https://api.woovi.com/api/v1/stablecoin/payout/quote?value=100&currency=USDT' \
+  --url 'https://api.woovi.com/api/v1/stablecoin/payout/quote?value=10000&currency=USDT' \
   --header 'Authorization: <SEU_APP_ID>'
 ```
 
@@ -261,9 +261,9 @@ curl --request GET \
   "status": "ok",
   "quote": {
     "basePrice": 5.12,
-    "inputAmount": 1,
+    "inputAmount": 19.68,
     "inputCurrency": "USDT",
-    "outputAmount": 5.08,
+    "outputAmount": 100,
     "outputCurrency": "BRL",
     "pairName": "USDTBRL"
   }
@@ -274,14 +274,14 @@ curl --request GET \
 
 POST `/api/v1/stablecoin/payout`
 
-Gasta saldo INTERNAL (`USDT` | `USDC` | `BRLA`) e envia BRL para a `pixKey`. Consome o limite Woovi **OUT**. Não há passo de approve — o ticket do provedor é criado na hora.
+Cria o payout em `PENDING` (mesmo padrão do depósito): cota o **Pix alvo em BRL**, valida saldo INTERNAL, consome o limite **OUT** e resolve o beneficiário. O ticket do provedor **só é aberto no approve**.
 
 Exige o escopo `STABLECOIN_PAYOUT_CREATE`.
 
 | campo | tipo | obrigatório | descrição |
 | --- | --- | --- | --- |
-| `value` | number | sim | valor em **centavos** do ativo (ex.: `100000` = 1.000 USDC) |
-| `currency` | string | sim | `USDT` \| `USDC` \| `BRLA` |
+| `value` | number | sim | valor Pix alvo em **centavos de BRL** (ex.: `10000` = R$ 100,00) |
+| `currency` | string | sim | `USDT` \| `USDC` \| `BRLA` — ativo INTERNAL a debitar |
 | `pixKey` | string | sim | chave Pix de destino |
 | `correlationId` | string | não | idempotência |
 | `pixMessage` | string | não | mensagem Pix |
@@ -292,7 +292,7 @@ curl --request POST \
   --header 'Authorization: <SEU_APP_ID>' \
   --header 'content-type: application/json' \
   --data '{
-    "value": 100,
+    "value": 10000,
     "currency": "USDT",
     "pixKey": "thiago@entria.com.br",
     "correlationId": "payout-001"
@@ -301,7 +301,7 @@ curl --request POST \
 
 ```json
 {
-  "status": "PROCESSING",
+  "status": "PENDING",
   "payoutId": "6a721b1e3c785acfaebfa01c",
   "correlationId": "payout-001",
   "pixKey": "thiago@entria.com.br",
@@ -311,13 +311,35 @@ curl --request POST \
     "bankName": "SICOOB"
   },
   "quote": {
-    "inputAmount": 1,
+    "inputAmount": 19.68,
     "inputCurrency": "USDT",
-    "outputAmount": 5.08,
+    "outputAmount": 100,
     "outputCurrency": "BRL",
     "rate": 5.12,
     "fee": 0.04
   }
+}
+```
+
+### Aprovar um payout
+
+POST `/api/v1/stablecoin/payout/approve`
+
+Aprova um payout `PENDING` pelo `correlationId`, abre o ticket no provedor (debita INTERNAL e envia o Pix) e passa para `PROCESSING`.
+
+```bash
+curl --request POST \
+  --url https://api.woovi.com/api/v1/stablecoin/payout/approve \
+  --header 'Authorization: <SEU_APP_ID>' \
+  --header 'content-type: application/json' \
+  --data '{ "correlationId": "payout-001" }'
+```
+
+```json
+{
+  "status": "PROCESSING",
+  "correlationId": "payout-001",
+  "payoutId": "6a721b1e3c785acfaebfa01c"
 }
 ```
 
@@ -326,7 +348,7 @@ curl --request POST \
 - `GET /api/v1/stablecoin/payout/{payoutId}`
 - `GET /api/v1/stablecoin/payout?correlationId={correlationId}`
 
-Enquanto não estiver terminal, o status do ticket no provedor é relido (incluindo `PAID` → `COMPLETED`).
+Enquanto não estiver terminal e já existir ticket, o status no provedor é relido (incluindo `PAID` → `COMPLETED`).
 
 ### Solicitar uma subconta (KYB)
 

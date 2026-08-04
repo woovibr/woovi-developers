@@ -1,7 +1,7 @@
 ---
 id: stablecoin-flow
 sidebar_position: 3
-title: Fluxo passo a passo
+title: Fluxo de depósito (on-ramp)
 tags:
   - stablecoin
   - api
