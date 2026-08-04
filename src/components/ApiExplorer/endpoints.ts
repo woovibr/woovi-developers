@@ -434,92 +434,6 @@ const endpoints: ApiEndpoint[] = [
     ],
   },
   {
-    'id': 'get-api-v1-application-scopes',
-    'method': 'GET',
-    'path': '/api/v1/application/scopes',
-    'tag': 'application',
-    'category': 'Aplicação',
-    'summary': 'List the API scope groups an application can request',
-    'description': 'Returns every scope group with its name, description and the scopes it\ncontains. Use it to discover which scopes an application can be created\nwith. No scope is required — any valid `AppID` can call it.\n\nTexts are returned in the language configured for your company.\n\nAny query string parameter is treated as an exact-match filter over the\nscope group fields (e.g. `?code=CHARGE`). Empty values are ignored.\n',
-    'requestExamples': [],
-    'responseExamples': [
-      {
-        'name': 'ScopeGroups',
-        'value': {
-          'pageInfo': {
-            'count': 1,
-          },
-          'scopes': [
-            {
-              'code': 'CHARGE',
-              'text': 'Charge',
-              'description': 'Create, update, delete, and view charges and QR codes.',
-              'scopes': [
-                'CHARGE_POST',
-                'CHARGE_GET',
-                'CHARGE_DELETE',
-              ],
-            },
-          ],
-        },
-      },
-      {
-        'name': 'ScopeGroupsWithDescriptions',
-        'value': {
-          'pageInfo': {
-            'count': 1,
-          },
-          'scopes': [
-            {
-              'code': 'CHARGE',
-              'text': 'Charge',
-              'description': 'Create, update, delete, and view charges and QR codes.',
-              'scopes': [
-                {
-                  'name': 'CHARGE_POST',
-                  'description': 'Create a new Charge',
-                },
-                {
-                  'name': 'CHARGE_GET',
-                  'description': 'View a Charge',
-                },
-              ],
-            },
-          ],
-        },
-      },
-    ],
-  },
-  {
-    'id': 'post-api-v1-application-rotate-secret',
-    'method': 'POST',
-    'path': '/api/v1/application/rotate-secret',
-    'tag': 'application',
-    'category': 'Aplicação',
-    'summary': 'Rotate an application\'s clientSecret (MASTER)',
-    'description': 'Generates a new `clientSecret` for an application within the same company.\nOnly MASTER applications can rotate the secret of other appIDs.\nAn application cannot rotate its own clientSecret, and MASTER appIDs\ncannot be rotated through this endpoint.\nThe plaintext secret is returned only in this response.\n',
-    'requestExamples': [
-      {
-        'name': 'RotateSecret',
-        'value': {
-          'clientId': 'Client_Id_abc123',
-        },
-      },
-    ],
-    'responseExamples': [
-      {
-        'name': 'default',
-        'value': {
-          'data': {
-            'clientId': 'Client_Id_abc123',
-            'clientSecret': 'Client_Secret_xyz789',
-            'appID': 'Q2xpZW50X0lkX2FiYzEyMzpDbGllbnRfU2VjcmV0X3h5ejc4OQ==',
-          },
-        },
-      },
-    ],
-  },
-  {
     'id': 'get-api-v1-boleto-transaction',
     'method': 'GET',
     'path': '/api/v1/boleto-transaction',
@@ -2278,7 +2192,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'stablecoin',
     'category': 'stablecoin',
     'summary': 'Create a stablecoin deposit',
-    'description': 'Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON\n  - USDC: POLYGON, ETHEREUM, BASE, CELO\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n',
+    'description': 'Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON, BNB\n  - USDC: POLYGON, ETHEREUM, BASE, CELO, BNB\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n',
     'requestExamples': [
       {
         'name': 'MinimalRequest',

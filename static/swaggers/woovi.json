@@ -2393,469 +2393,6 @@
         ]
       }
     },
-    "/api/v1/application/scopes": {
-      "get": {
-        "tags": [
-          "application"
-        ],
-        "summary": "List the API scope groups an application can request",
-        "description": "Returns every scope group with its name, description and the scopes it\ncontains. Use it to discover which scopes an application can be created\nwith. No scope is required — any valid `AppID` can call it.\n\nTexts are returned in the language configured for your company.\n\nAny query string parameter is treated as an exact-match filter over the\nscope group fields (e.g. `?code=CHARGE`). Empty values are ignored.\n",
-        "security": [
-          {
-            "AppID": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "code",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Filter by scope group code",
-            "example": "CHARGE"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Scope groups listed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "pageInfo": {
-                      "type": "object",
-                      "properties": {
-                        "count": {
-                          "type": "integer",
-                          "description": "Number of scope groups returned"
-                        }
-                      }
-                    },
-                    "scopes": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "code": {
-                            "type": "string",
-                            "description": "Scope group code"
-                          },
-                          "text": {
-                            "type": "string",
-                            "description": "Localized scope group name"
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "Localized scope group description"
-                          },
-                          "scopes": {
-                            "type": "array",
-                            "description": "Scopes in the group. Each item is either the scope name or an object with `name` and `description`. Clients should accept both forms.\n",
-                            "items": {
-                              "oneOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "description": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "examples": {
-                  "ScopeGroups": {
-                    "value": {
-                      "pageInfo": {
-                        "count": 1
-                      },
-                      "scopes": [
-                        {
-                          "code": "CHARGE",
-                          "text": "Charge",
-                          "description": "Create, update, delete, and view charges and QR codes.",
-                          "scopes": [
-                            "CHARGE_POST",
-                            "CHARGE_GET",
-                            "CHARGE_DELETE"
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "ScopeGroupsWithDescriptions": {
-                    "value": {
-                      "pageInfo": {
-                        "count": 1
-                      },
-                      "scopes": [
-                        {
-                          "code": "CHARGE",
-                          "text": "Charge",
-                          "description": "Create, update, delete, and view charges and QR codes.",
-                          "scopes": [
-                            {
-                              "name": "CHARGE_POST",
-                              "description": "Create a new Charge"
-                            },
-                            {
-                              "name": "CHARGE_GET",
-                              "description": "View a Charge"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error while building the scope metadata",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Error: unexpected error"
-              }
-            }
-          },
-          "401": {
-            "description": "Missing or invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "nullable": true
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "message": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "data": null,
-                  "errors": [
-                    {
-                      "message": "Invalid appID"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "x-codeSamples": [
-          {
-            "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/application/scopes',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
-          },
-          {
-            "lang": "Shell + Curl",
-            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/application/scopes \\\n  --header 'Authorization: {APP_ID}'"
-          },
-          {
-            "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/application/scopes\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
-          },
-          {
-            "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/application/scopes\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
-          },
-          {
-            "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/application/scopes\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-          },
-          {
-            "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/application/scopes\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
-          },
-          {
-            "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/application/scopes\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
-          }
-        ]
-      }
-    },
-    "/api/v1/application/rotate-secret": {
-      "post": {
-        "tags": [
-          "application"
-        ],
-        "summary": "Rotate an application's clientSecret (MASTER)",
-        "description": "Generates a new `clientSecret` for an application within the same company.\nOnly MASTER applications can rotate the secret of other appIDs.\nAn application cannot rotate its own clientSecret, and MASTER appIDs\ncannot be rotated through this endpoint.\nThe plaintext secret is returned only in this response.\n",
-        "x-required-scope": "APPLICATION_ROTATE_POST",
-        "security": [
-          {
-            "AppID": [
-              "APPLICATION_ROTATE_POST"
-            ]
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "clientId"
-                ],
-                "properties": {
-                  "clientId": {
-                    "type": "string",
-                    "minLength": 1,
-                    "description": "clientId of the target application (same company as the caller)"
-                  }
-                }
-              },
-              "examples": {
-                "RotateSecret": {
-                  "value": {
-                    "clientId": "Client_Id_abc123"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Secret rotated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "clientId": {
-                          "type": "string"
-                        },
-                        "clientSecret": {
-                          "type": "string",
-                          "description": "New plaintext secret (shown only in this response)"
-                        },
-                        "appID": {
-                          "type": "string",
-                          "description": "base64 of \"clientId:clientSecret\""
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "data": {
-                    "clientId": "Client_Id_abc123",
-                    "clientSecret": "Client_Secret_xyz789",
-                    "appID": "Q2xpZW50X0lkX2FiYzEyMzpDbGllbnRfU2VjcmV0X3h5ejc4OQ=="
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Request body validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "nullable": true
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "message": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "data": null,
-                  "errors": [
-                    {
-                      "message": "Validation error"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing or invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "nullable": true
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "message": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "data": null,
-                  "errors": [
-                    {
-                      "message": "Unauthorized"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Caller is not a MASTER application, the caller targeted its own clientId, or the target is a MASTER application\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "nullable": true
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "message": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "data": null,
-                  "errors": [
-                    {
-                      "message": "Only MASTER applications can rotate other appIDs"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Target application not found in this company",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "nullable": true
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "message": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "data": null,
-                  "errors": [
-                    {
-                      "message": "Application not found"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "x-codeSamples": [
-          {
-            "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/application/rotate-secret',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\"clientId\": \"Client_Id_abc123\"}));\nreq.end();"
-          },
-          {
-            "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/application/rotate-secret \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"clientId\":\"Client_Id_abc123\"}'"
-          },
-          {
-            "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/application/rotate-secret\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'clientId' => 'Client_Id_abc123'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
-          },
-          {
-            "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"clientId\\\":\\\"Client_Id_abc123\\\"}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/application/rotate-secret\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
-          },
-          {
-            "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/application/rotate-secret\"\n\n\tpayload := strings.NewReader(\"{\\\"clientId\\\":\\\"Client_Id_abc123\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-          },
-          {
-            "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"clientId\\\":\\\"Client_Id_abc123\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/application/rotate-secret\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
-          },
-          {
-            "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/application/rotate-secret\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"clientId\\\":\\\"Client_Id_abc123\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
-          }
-        ]
-      }
-    },
     "/api/v1/boleto-transaction": {
       "get": {
         "tags": [
@@ -13785,7 +13322,7 @@
           "stablecoin"
         ],
         "summary": "Create a stablecoin deposit",
-        "description": "Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON\n  - USDC: POLYGON, ETHEREUM, BASE, CELO\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n",
+        "description": "Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON, BNB\n  - USDC: POLYGON, ETHEREUM, BASE, CELO, BNB\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n",
         "security": [
           {
             "AppID": []
@@ -13867,7 +13404,7 @@
                   },
                   "UnsupportedNetwork": {
                     "value": {
-                      "error": "USDT is not available on BASE. Supported networks: POLYGON, ETHEREUM, CELO, TRON"
+                      "error": "USDT is not available on BASE. Supported networks: POLYGON, ETHEREUM, CELO, TRON, BNB"
                     }
                   },
                   "NoActiveSubAccount": {
@@ -13941,6 +13478,400 @@
           {
             "lang": "Ruby + Native",
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/deposit\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"value\\\":10000,\\\"currency\\\":\\\"USDT\\\",\\\"network\\\":\\\"POLYGON\\\",\\\"subAccountId\\\":\\\"string\\\",\\\"correlationId\\\":\\\"string\\\",\\\"destinationWalletAddress\\\":\\\"string\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/stablecoin/payout/{payoutId}": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Get the current status of a payout",
+        "description": "Returns the current state of a payout created through\n`POST /api/v1/stablecoin/payout`.\n\nWhile the payout is still in flight the provider ticket is re-read and the\npayout is updated before responding. Terminal payouts are served from\nstorage.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "payoutId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The `payoutId` returned by the create call."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current payout state"
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope"
+          },
+          "404": {
+            "description": "No payout with this id for the authenticated company"
+          }
+        },
+        "x-codeSamples": []
+      }
+    },
+    "/api/v1/stablecoin/payout": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Get the current status of a payout by correlationId",
+        "description": "Same as `GET /api/v1/stablecoin/payout/{payoutId}`, looked up by the\n`correlationId` sent on create.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "correlationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The idempotency key sent on create."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current payout state"
+          },
+          "400": {
+            "description": "Missing correlationId"
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope"
+          },
+          "404": {
+            "description": "No payout with this correlationId for the authenticated company"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/payout?correlationId=SOME_STRING_VALUE',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/stablecoin/payout?correlationId=SOME_STRING_VALUE' \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/payout?correlationId=SOME_STRING_VALUE\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/stablecoin/payout?correlationId=SOME_STRING_VALUE\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/payout?correlationId=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/payout?correlationId=SOME_STRING_VALUE\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/payout?correlationId=SOME_STRING_VALUE\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Pay out INTERNAL balance to BRL via Pix",
+        "description": "Converts a stablecoin balance held on the company's Avenia INTERNAL float\ninto BRL and sends it to the given Pix key. Supported input assets:\n`USDT`, `USDC`, `BRLA`.\n\n`value` is the amount to spend from the INTERNAL balance, in cents of the\ninput asset. The subaccount is resolved from the Application's\n`companyBankAccount`, same as the wallets endpoint.\n\nFlow: balance check → consume Woovi **OUT** limit → resolve Pix beneficiary\n→ provider quote/ticket. There is no deposit or approval step.\n\nFund the INTERNAL float first via\n`GET /api/v1/stablecoin/wallets` (send USDT/USDC/BRLA on-chain to a returned\naddress), then call this endpoint.\n\nIdempotency is supported via `correlationId`: reusing one returns the payout\nalready created for it.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value",
+                  "currency",
+                  "pixKey"
+                ],
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Amount to pay out, in cents of the input asset.",
+                    "example": 100000
+                  },
+                  "currency": {
+                    "type": "string",
+                    "enum": [
+                      "USDT",
+                      "USDC",
+                      "BRLA"
+                    ],
+                    "description": "Stablecoin asset to spend from the INTERNAL balance.",
+                    "example": "USDC"
+                  },
+                  "pixKey": {
+                    "type": "string",
+                    "description": "Destination Pix key.",
+                    "example": "13d3109f-3a1e-4c56-b76d-d2db7213b9f2"
+                  },
+                  "correlationId": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Optional idempotency key echoed back on the response."
+                  },
+                  "pixMessage": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Optional Pix message sent with the transfer."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payout created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "PROCESSING"
+                    },
+                    "payoutId": {
+                      "type": "string"
+                    },
+                    "correlationId": {
+                      "type": "string"
+                    },
+                    "pixKey": {
+                      "type": "string"
+                    },
+                    "pixKeyOwner": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "taxId": {
+                          "type": "string"
+                        },
+                        "bankName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "quote": {
+                      "type": "object",
+                      "properties": {
+                        "inputAmount": {
+                          "type": "number"
+                        },
+                        "inputCurrency": {
+                          "type": "string"
+                        },
+                        "outputAmount": {
+                          "type": "number"
+                        },
+                        "outputCurrency": {
+                          "type": "string",
+                          "example": "BRL"
+                        },
+                        "rate": {
+                          "type": "number"
+                        },
+                        "fee": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, insufficient balance, or payout creation failed"
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/payout',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  value: 100000,\n  currency: 'USDC',\n  pixKey: '13d3109f-3a1e-4c56-b76d-d2db7213b9f2',\n  correlationId: 'string',\n  pixMessage: 'string'\n}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/stablecoin/payout \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"value\":100000,\"currency\":\"USDC\",\"pixKey\":\"13d3109f-3a1e-4c56-b76d-d2db7213b9f2\",\"correlationId\":\"string\",\"pixMessage\":\"string\"}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/payout\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'value' => 100000,\n    'currency' => 'USDC',\n    'pixKey' => '13d3109f-3a1e-4c56-b76d-d2db7213b9f2',\n    'correlationId' => 'string',\n    'pixMessage' => 'string'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"value\\\":100000,\\\"currency\\\":\\\"USDC\\\",\\\"pixKey\\\":\\\"13d3109f-3a1e-4c56-b76d-d2db7213b9f2\\\",\\\"correlationId\\\":\\\"string\\\",\\\"pixMessage\\\":\\\"string\\\"}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/stablecoin/payout\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/payout\"\n\n\tpayload := strings.NewReader(\"{\\\"value\\\":100000,\\\"currency\\\":\\\"USDC\\\",\\\"pixKey\\\":\\\"13d3109f-3a1e-4c56-b76d-d2db7213b9f2\\\",\\\"correlationId\\\":\\\"string\\\",\\\"pixMessage\\\":\\\"string\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"value\\\":100000,\\\"currency\\\":\\\"USDC\\\",\\\"pixKey\\\":\\\"13d3109f-3a1e-4c56-b76d-d2db7213b9f2\\\",\\\"correlationId\\\":\\\"string\\\",\\\"pixMessage\\\":\\\"string\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/payout\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/payout\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"value\\\":100000,\\\"currency\\\":\\\"USDC\\\",\\\"pixKey\\\":\\\"13d3109f-3a1e-4c56-b76d-d2db7213b9f2\\\",\\\"correlationId\\\":\\\"string\\\",\\\"pixMessage\\\":\\\"string\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/stablecoin/payout/quote": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Quote an INTERNAL balance off-ramp to BRL via Pix",
+        "description": "Returns a quote for converting a stablecoin balance held on the company's\nAvenia INTERNAL float into BRL delivered via Pix. Supported input assets:\n`USDT`, `USDC`, `BRLA`.\n\n`value` is the amount to spend from the INTERNAL balance, in cents of the\ninput asset.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "value",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "minimum": 1
+            },
+            "description": "Amount to quote, in cents of the input asset.",
+            "example": 100000
+          },
+          {
+            "in": "query",
+            "name": "currency",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "USDT",
+                "USDC",
+                "BRLA"
+              ]
+            },
+            "description": "Stablecoin asset to spend from the INTERNAL balance.",
+            "example": "USDC"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quote fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "quote": {
+                      "type": "object",
+                      "properties": {
+                        "basePrice": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "inputAmount": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "inputCurrency": {
+                          "type": "string"
+                        },
+                        "outputAmount": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "outputCurrency": {
+                          "type": "string",
+                          "example": "BRL"
+                        },
+                        "pairName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope"
+          },
+          "502": {
+            "description": "Provider quote unavailable"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/payout/quote?value=100000&currency=USDC',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url 'https://api.woovi.com/api/v1/stablecoin/payout/quote?value=100000&currency=USDC' \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/payout/quote?value=100000&currency=USDC\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/stablecoin/payout/quote?value=100000&currency=USDC\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/payout/quote?value=100000&currency=USDC\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/payout/quote?value=100000&currency=USDC\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/payout/quote?value=100000&currency=USDC\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -14164,6 +14095,127 @@
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/quote?value=10000&currency=USDT\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
+      }
+    },
+    "/api/v1/stablecoin/subaccount/{subAccountId}/balances": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "Read the INTERNAL balances of a subaccount's float",
+        "description": "Returns the provider's INTERNAL balance per asset for this subaccount —\nexactly the balance `POST /api/v1/stablecoin/payout` debits.\n\nPoll this after sending funds to one of the addresses from\n`GET /api/v1/stablecoin/wallets` (or the subaccount wallets route) and only\ncreate the payout once the credit has landed.\n\nOnly subaccounts belonging to the authenticated company resolve; any other\nid returns `404`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subAccountId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "INTERNAL balances of the subaccount",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "subAccountId": {
+                      "type": "string"
+                    },
+                    "balances": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "description": "Asset to amount, in the asset unit (not cents).",
+                      "example": {
+                        "BRLA": 1250.35,
+                        "USDC": 0.2,
+                        "USDT": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No subaccount with this id for the authenticated company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "SubAccount not found"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "example": "STABLE_SUBACCOUNT_NOT_FOUND"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The provider could not be reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "example": "STABLE_SUBACCOUNT_PROVIDER_ERROR"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
       }
     },
     "/api/v1/stablecoin/subaccount/{subAccountId}": {
@@ -14491,6 +14543,232 @@
           {
             "lang": "Ruby + Native",
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/subaccount\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"accountRegisterId\\\":\\\"6650abc1234def567890aaaa\\\",\\\"companyBankAccountId\\\":\\\"6650def1234abc567890bbbb\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/stablecoin/subaccount/{subAccountId}/wallets": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "List the deposit addresses of a subaccount's float",
+        "description": "Returns the wallets the provider holds for this subaccount. Sending an\nasset on-chain to one of these addresses credits the subaccount's INTERNAL\nbalance — the same balance `POST /api/v1/stablecoin/swap` spends and\n`POST /api/v1/stablecoin/withdraw` pays out from.\n\nUse this to resolve where to prefund instead of hardcoding an address:\nfunding a different account's wallet leaves the swap float empty and the\nswap fails for lack of balance.\n\nOnly subaccounts belonging to the authenticated company resolve; any other\nid returns `404`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subAccountId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deposit wallets of the subaccount",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "subAccountId": {
+                      "type": "string"
+                    },
+                    "wallets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string",
+                            "example": "0xbd374a94d88F19b80F6aD8A3AE418e3f1eb054AE"
+                          },
+                          "currency": {
+                            "type": "string",
+                            "example": "USDC"
+                          },
+                          "network": {
+                            "type": "string",
+                            "example": "POLYGON"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials or missing required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No subaccount with this id for the authenticated company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "SubAccount not found"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "example": "STABLE_SUBACCOUNT_NOT_FOUND"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The provider could not be reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "example": "STABLE_SUBACCOUNT_PROVIDER_ERROR"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": []
+      }
+    },
+    "/api/v1/stablecoin/wallets": {
+      "get": {
+        "tags": [
+          "stablecoin"
+        ],
+        "summary": "List Avenia custodian deposit wallets for the AppID bank account",
+        "description": "Returns the deposit addresses Avenia holds for the stable sub-account\nlinked to the authenticated Application's `companyBankAccount` (live from\nthe provider — not stored in Mongo).\n\nA company can have more than one bank account / KYB sub-account. The\nsub-account is resolved from `Application.companyBankAccount` (the\naccount bound to the AppID), not from the company alone.\n\nSending an asset on-chain to one of these addresses credits the INTERNAL\nfloat used by `POST /api/v1/stablecoin/payout` (USDT/USDC/BRLA → Pix).\n\nFor an explicit provider id use\n`GET /api/v1/stablecoin/subaccount/{subAccountId}/wallets`.\nTo read the float balance after funding use\n`GET /api/v1/stablecoin/subaccount/{subAccountId}/balances`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Custodian wallets from Avenia",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "companyBankAccountId": {
+                      "type": "string"
+                    },
+                    "subAccountId": {
+                      "type": "string"
+                    },
+                    "wallets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "currency": {
+                            "type": "string"
+                          },
+                          "network": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "AppID has no companyBankAccount, or KYB not confirmed"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "No subaccount for this company bank account"
+          },
+          "502": {
+            "description": "Provider error"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/stablecoin/wallets',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/stablecoin/wallets \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/stablecoin/wallets\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/stablecoin/wallets\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/stablecoin/wallets\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/stablecoin/wallets\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/stablecoin/wallets\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -20668,7 +20946,8 @@
               "ETHEREUM",
               "BASE",
               "CELO",
-              "TRON"
+              "TRON",
+              "BNB"
             ],
             "default": "POLYGON",
             "example": "POLYGON"
@@ -21699,7 +21978,6 @@
               "ACCOUNT_REGISTER_DELETE": "Delete an account registration",
               "APPLICATION_POST": "Create a new application",
               "APPLICATION_DELETE": "Delete an application",
-              "APPLICATION_ROTATE_POST": "Rotate an application credentials",
               "CASHBACK_FIDELITY_BALANCE_GET": "Get the exclusive cashback amount an user still has to receive by taxID",
               "CASHBACK_FIDELITY_POST": "Get or create cashback for a customer",
               "CHARGE_GET": "Get one charge",

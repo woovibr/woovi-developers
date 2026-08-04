@@ -18,7 +18,8 @@ Todas as rotas ficam sob `/api/v1/stablecoin/` e exigem autenticação com o seu
 | `STABLECOIN_DEPOSIT_CREATE` | `quote`, `deposit`, `deposit/approve` |
 | `STABLECOIN_DEPOSIT_LIST` | `deposit/find`, `deposit` (listar) |
 | `STABLECOIN_SUBACCOUNT_CREATE` | `subaccount` (POST — solicitar KYB) |
-| `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar), `subaccount/{subAccountId}` |
+| `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar/detalhe), `wallets`, `subaccount/{id}/wallets`, `subaccount/{id}/balances` |
+| `STABLECOIN_PAYOUT_CREATE` | `payout/quote`, `payout` (criar/consultar) |
 
 > A URL base de produção é `https://api.woovi.com`. Caso o App não tenha o escopo necessário, a resposta é `401` com `Application is missing required scope: ...`.
 
@@ -190,6 +191,142 @@ Lista os depósitos da empresa autenticada (paginado).
   "skip": 0
 }
 ```
+
+### Carteiras de depósito (INTERNAL float)
+
+GET `/api/v1/stablecoin/wallets`
+
+Retorna os endereços custodiados (Avenia) da subconta ligada ao `companyBankAccount` do AppID. Enviar USDT/USDC/BRLA on-chain para um desses endereços credita o float INTERNAL usado pelo payout.
+
+Exige o escopo `STABLECOIN_SUBACCOUNT_LIST`.
+
+```bash
+curl --request GET \
+  --url https://api.woovi.com/api/v1/stablecoin/wallets \
+  --header 'Authorization: <SEU_APP_ID>'
+```
+
+```json
+{
+  "status": "ok",
+  "companyBankAccountId": "682b62fe5afc2e15760223c5",
+  "subAccountId": "b3e144dd-7d10-457c-9b85-033085722ed1",
+  "wallets": [
+    { "address": "0xa5A558fedfCeFa9ac2751649Fa21CA0279F216Ce", "currency": "USDT", "network": "POLYGON" },
+    { "address": "TR54aGQPQghGDmHVuTQfSShP3ce8a6pCiT", "currency": "USDT", "network": "TRON" }
+  ]
+}
+```
+
+Para um `subAccountId` explícito: `GET /api/v1/stablecoin/subaccount/{subAccountId}/wallets`.
+
+### Saldos do float INTERNAL
+
+GET `/api/v1/stablecoin/subaccount/{subAccountId}/balances`
+
+Retorna o saldo INTERNAL por ativo (unidade da moeda, não centavos). Faça poll após enviar on-chain para as wallets e só então chame o payout.
+
+Exige o escopo `STABLECOIN_SUBACCOUNT_LIST`.
+
+```bash
+curl --request GET \
+  --url https://api.woovi.com/api/v1/stablecoin/subaccount/b3e144dd-7d10-457c-9b85-033085722ed1/balances \
+  --header 'Authorization: <SEU_APP_ID>'
+```
+
+```json
+{
+  "status": "ok",
+  "subAccountId": "b3e144dd-7d10-457c-9b85-033085722ed1",
+  "balances": { "USDT": 0.425458, "USDC": 0, "BRLA": 0 }
+}
+```
+
+### Cotação de payout (USDT/USDC/BRLA → Pix)
+
+GET `/api/v1/stablecoin/payout/quote`
+
+Cota a conversão do float INTERNAL para BRL via Pix. `value` é em **centavos do ativo** (ex.: `100` = 1,00 USDT).
+
+Exige o escopo `STABLECOIN_PAYOUT_CREATE`.
+
+```bash
+curl --request GET \
+  --url 'https://api.woovi.com/api/v1/stablecoin/payout/quote?value=100&currency=USDT' \
+  --header 'Authorization: <SEU_APP_ID>'
+```
+
+```json
+{
+  "status": "ok",
+  "quote": {
+    "basePrice": 5.12,
+    "inputAmount": 1,
+    "inputCurrency": "USDT",
+    "outputAmount": 5.08,
+    "outputCurrency": "BRL",
+    "pairName": "USDTBRL"
+  }
+}
+```
+
+### Criar um payout (off-ramp para Pix)
+
+POST `/api/v1/stablecoin/payout`
+
+Gasta saldo INTERNAL (`USDT` | `USDC` | `BRLA`) e envia BRL para a `pixKey`. Consome o limite Woovi **OUT**. Não há passo de approve — o ticket do provedor é criado na hora.
+
+Exige o escopo `STABLECOIN_PAYOUT_CREATE`.
+
+| campo | tipo | obrigatório | descrição |
+| --- | --- | --- | --- |
+| `value` | number | sim | valor em **centavos** do ativo (ex.: `100000` = 1.000 USDC) |
+| `currency` | string | sim | `USDT` \| `USDC` \| `BRLA` |
+| `pixKey` | string | sim | chave Pix de destino |
+| `correlationId` | string | não | idempotência |
+| `pixMessage` | string | não | mensagem Pix |
+
+```bash
+curl --request POST \
+  --url https://api.woovi.com/api/v1/stablecoin/payout \
+  --header 'Authorization: <SEU_APP_ID>' \
+  --header 'content-type: application/json' \
+  --data '{
+    "value": 100,
+    "currency": "USDT",
+    "pixKey": "thiago@entria.com.br",
+    "correlationId": "payout-001"
+  }'
+```
+
+```json
+{
+  "status": "PROCESSING",
+  "payoutId": "6a721b1e3c785acfaebfa01c",
+  "correlationId": "payout-001",
+  "pixKey": "thiago@entria.com.br",
+  "pixKeyOwner": {
+    "name": "Marshall Bilderback",
+    "taxId": "***.751.185-**",
+    "bankName": "SICOOB"
+  },
+  "quote": {
+    "inputAmount": 1,
+    "inputCurrency": "USDT",
+    "outputAmount": 5.08,
+    "outputCurrency": "BRL",
+    "rate": 5.12,
+    "fee": 0.04
+  }
+}
+```
+
+### Consultar um payout
+
+- `GET /api/v1/stablecoin/payout/{payoutId}`
+- `GET /api/v1/stablecoin/payout?correlationId={correlationId}`
+
+Enquanto não estiver terminal, o status do ticket no provedor é relido (incluindo `PAID` → `COMPLETED`).
 
 ### Solicitar uma subconta (KYB)
 
