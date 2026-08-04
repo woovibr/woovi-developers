@@ -9,9 +9,9 @@ tags:
 
 ## Webhooks do Stablecoin
 
-Os webhooks notificam sua aplicação sobre o resultado do depósito de stablecoin. Caso ainda não saiba como cadastrar webhooks na plataforma, veja o nosso [tutorial](../webhook/platform/webhook-platform-api.mdx).
+Os webhooks notificam sua aplicação sobre o resultado do depósito e do payout de stablecoin. Caso ainda não saiba como cadastrar webhooks na plataforma, veja o nosso [tutorial](../webhook/platform/webhook-platform-api.mdx).
 
-Existem dois eventos:
+### Depósito (on-ramp)
 
 | Evento | Quando ocorre |
 | --- | --- |
@@ -65,6 +65,63 @@ Disparado quando o depósito falha. Os campos `reason` e `errorCode` indicam o m
   },
   "reason": "Deposit failed",
   "errorCode": "DEPOSIT-FAILED"
+}
+```
+
+## Webhooks do Payout (off-ramp)
+
+Quando você cria um payout via `POST /api/v1/stablecoin/payout`, o resultado final chega por webhook:
+
+| Evento | Quando ocorre |
+| --- | --- |
+| `STABLECOIN_PAYOUT_COMPLETED` | O Pix foi pago / ticket do provedor em estado terminal de sucesso |
+| `STABLECOIN_PAYOUT_FAILED` | O payout falhou |
+
+O objeto enviado contém `stablePayout` e `company`. O campo `correlationID` corresponde ao `correlationId` enviado na criação.
+
+### STABLECOIN_PAYOUT_COMPLETED
+
+```json
+{
+  "event": "STABLECOIN_PAYOUT_COMPLETED",
+  "stablePayout": {
+    "id": "6a721b1e3c785acfaebfa01c",
+    "status": "COMPLETED",
+    "inputAmount": 100,
+    "inputCurrency": "USDT",
+    "outputAmount": 5.08,
+    "outputCurrency": "BRL",
+    "pixKey": "thiago@entria.com.br",
+    "endToEndId": "E123...",
+    "correlationID": "payout-001",
+    "completedAt": "2026-08-04T17:10:00.000Z"
+  },
+  "company": {
+    "name": "Acme Corp"
+  }
+}
+```
+
+### STABLECOIN_PAYOUT_FAILED
+
+```json
+{
+  "event": "STABLECOIN_PAYOUT_FAILED",
+  "stablePayout": {
+    "id": "6a721b1e3c785acfaebfa01c",
+    "status": "FAILED",
+    "inputAmount": 100,
+    "inputCurrency": "USDT",
+    "outputCurrency": "BRL",
+    "pixKey": "thiago@entria.com.br",
+    "correlationID": "payout-001",
+    "failedAt": "2026-08-04T17:10:00.000Z"
+  },
+  "company": {
+    "name": "Acme Corp"
+  },
+  "reason": "Payout failed",
+  "errorCode": "PAYOUT-FAILED"
 }
 ```
 

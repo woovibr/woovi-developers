@@ -20053,7 +20053,7 @@
                           "value": "application/json"
                         }
                       ],
-                      "body": "{\n  \"status\": \"<string>\",\n  \"transactions\": [\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_2\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"pageInfo\": {\n    \"errors\": [\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      },\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      }\n    ],\n    \"skip\": \"<number>\",\n    \"limit\": \"<number>\",\n    \"hasPreviousPage\": \"<boolean>\",\n    \"hasNextPage\": \"<boolean>\"\n  }\n}",
+                      "body": "{\n  \"status\": \"<string>\",\n  \"transactions\": [\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_2\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_2\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"pageInfo\": {\n    \"errors\": [\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      },\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      }\n    ],\n    \"skip\": \"<number>\",\n    \"limit\": \"<number>\",\n    \"hasPreviousPage\": \"<boolean>\",\n    \"hasNextPage\": \"<boolean>\"\n  }\n}",
                       "cookie": [],
                       "_postman_previewlanguage": "json"
                     },
@@ -20244,7 +20244,7 @@
                           "value": "application/json"
                         }
                       ],
-                      "body": "{\n  \"transaction\": {\n    \"charge\": {\n      \"value\": \"<number>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"globalID\": {},\n      \"transactionID\": {},\n      \"identifier\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"additionalInfo\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"pixKey\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"expiresIn\": \"<string>\",\n      \"expiresDate\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"subscription\": {\n        \"globalID\": \"<string>\",\n        \"value\": \"<number>\",\n        \"name\": \"<string>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"street\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"neighborhood\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"city\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"complement\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"country\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"dayGenerateCharge\": \"<number>\",\n        \"type\": \"<string>\",\n        \"frequency\": \"<string>\",\n        \"installmentsCount\": \"<number>\",\n        \"isActive\": \"<boolean>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkUrl\": \"<string>\",\n        \"addtionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixRecurringOptions\": {\n          \"emv\": \"<string>\",\n          \"status\": \"<string>\",\n          \"retryPolicy\": \"<string>\",\n          \"journey\": \"<string>\"\n        }\n      },\n      \"paymentMethods\": {\n        \"pix\": {\n          \"method\": \"<string>\",\n          \"transactionID\": \"<string>\",\n          \"identifier\": \"<string>\",\n          \"additionalInfo\": [\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            },\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"fee\": \"<number>\",\n          \"value\": \"<number>\",\n          \"status\": \"<string>\",\n          \"txId\": \"<string>\",\n          \"brCode\": \"<string>\",\n          \"qrCodeImage\": \"<string>\"\n        }\n      }\n    },\n    \"value\": \"<number>\",\n    \"time\": \"<string>\",\n    \"endToEndID\": \"<string>\",\n    \"transactionID\": \"<string>\",\n    \"infoPagador\": \"<string>\",\n    \"endToEndId\": \"<string>\",\n    \"customer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"withdraw\": {\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\"\n    },\n    \"payer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"globalID\": {},\n    \"pixQrCode\": {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"pixKey\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\"\n    },\n    \"webhookSent\": [\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        }\n      },\n      {\n        \"isRetry\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                      "body": "{\n  \"transaction\": {\n    \"charge\": {\n      \"value\": \"<number>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"globalID\": {},\n      \"transactionID\": {},\n      \"identifier\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"additionalInfo\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"pixKey\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"expiresIn\": \"<string>\",\n      \"expiresDate\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"subscription\": {\n        \"globalID\": \"<string>\",\n        \"value\": \"<number>\",\n        \"name\": \"<string>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"street\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"neighborhood\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"city\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"complement\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"country\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"dayGenerateCharge\": \"<number>\",\n        \"type\": \"<string>\",\n        \"frequency\": \"<string>\",\n        \"installmentsCount\": \"<number>\",\n        \"isActive\": \"<boolean>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkUrl\": \"<string>\",\n        \"addtionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixRecurringOptions\": {\n          \"emv\": \"<string>\",\n          \"status\": \"<string>\",\n          \"retryPolicy\": \"<string>\",\n          \"journey\": \"<string>\"\n        }\n      },\n      \"paymentMethods\": {\n        \"pix\": {\n          \"method\": \"<string>\",\n          \"transactionID\": \"<string>\",\n          \"identifier\": \"<string>\",\n          \"additionalInfo\": [\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            },\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"fee\": \"<number>\",\n          \"value\": \"<number>\",\n          \"status\": \"<string>\",\n          \"txId\": \"<string>\",\n          \"brCode\": \"<string>\",\n          \"qrCodeImage\": \"<string>\"\n        }\n      }\n    },\n    \"value\": \"<number>\",\n    \"time\": \"<string>\",\n    \"endToEndID\": \"<string>\",\n    \"transactionID\": \"<string>\",\n    \"infoPagador\": \"<string>\",\n    \"endToEndId\": \"<string>\",\n    \"customer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"withdraw\": {\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\"\n    },\n    \"payer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"globalID\": {},\n    \"pixQrCode\": {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"pixKey\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\"\n    },\n    \"webhookSent\": [\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_1\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        }\n      },\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_1\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_2\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
                       "cookie": [],
                       "_postman_previewlanguage": "json"
                     },
@@ -21369,7 +21369,7 @@
                       "request": {
                         "name": "Create a stablecoin deposit",
                         "description": {
-                          "content": "Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON\n  - USDC: POLYGON, ETHEREUM, BASE, CELO\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n",
+                          "content": "Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON, BNB\n  - USDC: POLYGON, ETHEREUM, BASE, CELO, BNB\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n",
                           "type": "text/plain"
                         },
                         "url": {
@@ -21837,7 +21837,984 @@
                   "event": []
                 },
                 {
-                  "id": "7fe33956-78fe-43b7-e775-2746b0b4f628",
+                  "id": "5a6cf3c4-fe3c-5068-d8c1-78b225fb89da",
+                  "name": "payout",
+                  "item": [
+                    {
+                      "id": "ac62ca80-4760-7af0-69f8-c617e328bec2",
+                      "name": "Get the current status of a payout by correlationId",
+                      "request": {
+                        "name": "Get the current status of a payout by correlationId",
+                        "description": {
+                          "content": "Same as `GET /api/v1/stablecoin/payout/{payoutId}`, looked up by the\n`correlationId` sent on create.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+                          "type": "text/plain"
+                        },
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "payout"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "disabled": false,
+                              "key": "correlationId",
+                              "value": "<string>",
+                              "description": "(Required) The idempotency key sent on create."
+                            }
+                          ],
+                          "variable": []
+                        },
+                        "method": "GET",
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "56cbc096-188d-b5bc-5485-43720cace516",
+                          "name": "Current payout state",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "correlationId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        },
+                        {
+                          "id": "a47217d1-392b-3463-5566-1d3f4cec12de",
+                          "name": "Missing correlationId",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "correlationId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        },
+                        {
+                          "id": "2057bb3a-7e26-708a-2d3b-1ec9615d199b",
+                          "name": "Invalid credentials or missing required scope",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "correlationId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        },
+                        {
+                          "id": "c3a61ebd-8248-2667-8944-6c4ce48b5366",
+                          "name": "No payout with this correlationId for the authenticated company",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "correlationId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        }
+                      ],
+                      "event": [],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      }
+                    },
+                    {
+                      "id": "358170d0-d91f-600c-ef67-77b8ba17a880",
+                      "name": "Pay out INTERNAL balance to BRL via Pix",
+                      "request": {
+                        "name": "Pay out INTERNAL balance to BRL via Pix",
+                        "description": {
+                          "content": "Converts a stablecoin balance held on the company's Avenia INTERNAL float\ninto BRL and sends it to the given Pix key. Supported input assets:\n`USDT`, `USDC`, `BRLA`.\n\n`value` is the amount to spend from the INTERNAL balance, in cents of the\ninput asset. The subaccount is resolved from the Application's\n`companyBankAccount`, same as the wallets endpoint.\n\nFlow: balance check → consume Woovi **OUT** limit → resolve Pix beneficiary\n→ provider quote/ticket. There is no deposit or approval step.\n\nFund the INTERNAL float first via\n`GET /api/v1/stablecoin/wallets` (send USDT/USDC/BRLA on-chain to a returned\naddress), then call this endpoint.\n\nIdempotency is supported via `correlationId`: reusing one returns the payout\nalready created for it.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+                          "type": "text/plain"
+                        },
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "payout"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "POST",
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"value\": \"<number>\",\n  \"currency\": \"<string>\",\n  \"pixKey\": \"<string>\",\n  \"correlationId\": \"<string>\",\n  \"pixMessage\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "226fa6b7-2be0-2e64-f5ce-7c6289d3dca7",
+                          "name": "Payout created successfully",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "POST",
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"value\": \"<number>\",\n  \"currency\": \"<string>\",\n  \"pixKey\": \"<string>\",\n  \"correlationId\": \"<string>\",\n  \"pixMessage\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "language": "json"
+                                }
+                              }
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"status\": \"<string>\",\n  \"payoutId\": \"<string>\",\n  \"correlationId\": \"<string>\",\n  \"pixKey\": \"<string>\",\n  \"pixKeyOwner\": {\n    \"name\": \"<string>\",\n    \"taxId\": \"<string>\",\n    \"bankName\": \"<string>\"\n  },\n  \"quote\": {\n    \"inputAmount\": \"<number>\",\n    \"inputCurrency\": \"<string>\",\n    \"outputAmount\": \"<number>\",\n    \"outputCurrency\": \"<string>\",\n    \"rate\": \"<number>\",\n    \"fee\": \"<number>\"\n  }\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "7fcb6fac-baea-f3b7-fa75-91a4284fc273",
+                          "name": "Invalid input, insufficient balance, or payout creation failed",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "POST",
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"value\": \"<number>\",\n  \"currency\": \"<string>\",\n  \"pixKey\": \"<string>\",\n  \"correlationId\": \"<string>\",\n  \"pixMessage\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "language": "json"
+                                }
+                              }
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        },
+                        {
+                          "id": "f646fd9e-a131-1dff-ca83-ce4e164eee74",
+                          "name": "Invalid credentials or missing required scope",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "POST",
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"value\": \"<number>\",\n  \"currency\": \"<string>\",\n  \"pixKey\": \"<string>\",\n  \"correlationId\": \"<string>\",\n  \"pixMessage\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "language": "json"
+                                }
+                              }
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        }
+                      ],
+                      "event": [],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      }
+                    },
+                    {
+                      "id": "9e376cbf-50ec-649b-9c63-327a1bce6e2d",
+                      "name": "Get the current status of a payout",
+                      "request": {
+                        "name": "Get the current status of a payout",
+                        "description": {
+                          "content": "Returns the current state of a payout created through\n`POST /api/v1/stablecoin/payout`.\n\nWhile the payout is still in flight the provider ticket is re-read and the\npayout is updated before responding. Terminal payouts are served from\nstorage.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+                          "type": "text/plain"
+                        },
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "payout",
+                            ":payoutId"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "payoutId",
+                              "description": "(Required) The `payoutId` returned by the create call."
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "b11c49f3-f875-d7b0-f326-de65fec31313",
+                          "name": "Current payout state",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout",
+                                ":payoutId"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "payoutId",
+                                  "description": "(Required) The `payoutId` returned by the create call."
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        },
+                        {
+                          "id": "a788e80a-820b-854a-1b8a-45e7ec4d736b",
+                          "name": "Invalid credentials or missing required scope",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout",
+                                ":payoutId"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "payoutId",
+                                  "description": "(Required) The `payoutId` returned by the create call."
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        },
+                        {
+                          "id": "3e7185b3-239e-139a-7ea1-117b8b557502",
+                          "name": "No payout with this id for the authenticated company",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout",
+                                ":payoutId"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "payoutId",
+                                  "description": "(Required) The `payoutId` returned by the create call."
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        }
+                      ],
+                      "event": [],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      }
+                    },
+                    {
+                      "id": "ae89debf-5cd1-11e1-e185-5a157a13e75d",
+                      "name": "Quote an INTERNAL balance off-ramp to BRL via Pix",
+                      "request": {
+                        "name": "Quote an INTERNAL balance off-ramp to BRL via Pix",
+                        "description": {
+                          "content": "Returns a quote for converting a stablecoin balance held on the company's\nAvenia INTERNAL float into BRL delivered via Pix. Supported input assets:\n`USDT`, `USDC`, `BRLA`.\n\n`value` is the amount to spend from the INTERNAL balance, in cents of the\ninput asset.\n\nRequires the `STABLECOIN_PAYOUT_CREATE` scope.\n",
+                          "type": "text/plain"
+                        },
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "payout",
+                            "quote"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "disabled": false,
+                              "key": "value",
+                              "value": "<number>",
+                              "description": "(Required) Amount to quote, in cents of the input asset."
+                            },
+                            {
+                              "disabled": false,
+                              "key": "currency",
+                              "value": "<string>",
+                              "description": "(Required) Stablecoin asset to spend from the INTERNAL balance."
+                            }
+                          ],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "bea56620-95ba-f7cd-4533-048c42d1f678",
+                          "name": "Quote fetched successfully",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout",
+                                "quote"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "value",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "key": "currency",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"status\": \"<string>\",\n  \"quote\": {\n    \"basePrice\": \"<number>\",\n    \"inputAmount\": \"<number>\",\n    \"inputCurrency\": \"<string>\",\n    \"outputAmount\": \"<number>\",\n    \"outputCurrency\": \"<string>\",\n    \"pairName\": \"<string>\"\n  }\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "03847a14-7ea9-d72c-4a92-8647a5cebab3",
+                          "name": "Invalid query parameters",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout",
+                                "quote"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "value",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "key": "currency",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        },
+                        {
+                          "id": "18b664c1-d1ff-834d-b392-d0a4012dd2fa",
+                          "name": "Invalid credentials or missing required scope",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout",
+                                "quote"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "value",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "key": "currency",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        },
+                        {
+                          "id": "d64f0389-4315-536e-94d8-d8d6538ba6d9",
+                          "name": "Provider quote unavailable",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "payout",
+                                "quote"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "value",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "key": "currency",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Bad Gateway",
+                          "code": 502,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "text/plain"
+                            }
+                          ],
+                          "body": "",
+                          "cookie": [],
+                          "_postman_previewlanguage": "text"
+                        }
+                      ],
+                      "event": [],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      }
+                    }
+                  ],
+                  "event": []
+                },
+                {
+                  "id": "b4aa90a8-8f08-8094-bf6a-a1a517a7779f",
                   "name": "Get a stablecoin quote without creating a deposit",
                   "request": {
                     "name": "Get a stablecoin quote without creating a deposit",
@@ -21902,7 +22879,7 @@
                   },
                   "response": [
                     {
-                      "id": "7334c837-aefd-8572-5b77-d78207935efe",
+                      "id": "2873d653-f716-0f16-18ca-d44449555ab4",
                       "name": "Quote computed",
                       "originalRequest": {
                         "url": {
@@ -21957,7 +22934,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "1b02ae30-129d-2efc-326f-6b6705e50521",
+                      "id": "b90ca270-d11b-21d3-0395-e5d6dd4e38ee",
                       "name": "Invalid query parameters",
                       "originalRequest": {
                         "url": {
@@ -22012,7 +22989,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "7a5e3bff-f870-7cb9-817f-2c8170582041",
+                      "id": "7f93015b-02c9-d57e-5e6b-fa1c7d6c3c2c",
                       "name": "Invalid credentials or missing required scope",
                       "originalRequest": {
                         "url": {
@@ -22067,7 +23044,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "ffc5f82c-3dec-7e5c-2c65-f2b6bb7150dd",
+                      "id": "c8811d24-1a76-08e8-301d-9ca1ef4a3d0b",
                       "name": "Provider failed to return a quote",
                       "originalRequest": {
                         "url": {
@@ -22128,11 +23105,11 @@
                   }
                 },
                 {
-                  "id": "f9c0efb4-f60e-9368-7c70-610439e465e5",
+                  "id": "b1348a82-fe2b-c9f0-44a1-02389a1231fc",
                   "name": "subaccount",
                   "item": [
                     {
-                      "id": "a66dc61e-4f5f-38fd-4de3-e30095b60040",
+                      "id": "ffced386-da7d-6282-a18f-3e9c17f3511f",
                       "name": "List a company's stablecoin subaccounts",
                       "request": {
                         "name": "List a company's stablecoin subaccounts",
@@ -22184,7 +23161,7 @@
                       },
                       "response": [
                         {
-                          "id": "42064cfe-da99-202f-91ec-938d02d44ae9",
+                          "id": "cde75d2b-38a4-be41-4159-e9cb05736d6c",
                           "name": "Subaccounts listed successfully",
                           "originalRequest": {
                             "url": {
@@ -22230,7 +23207,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "c806c366-6392-782b-2de0-a41129e6307f",
+                          "id": "9ac63210-062e-7869-b493-88f0ded26840",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -22282,7 +23259,7 @@
                       }
                     },
                     {
-                      "id": "ba8fb651-c15e-63b7-7b26-5085487e4c14",
+                      "id": "fa79f15f-4aa0-9c98-2504-74d9b599047d",
                       "name": "Request a new stablecoin subaccount (KYB)",
                       "request": {
                         "name": "Request a new stablecoin subaccount (KYB)",
@@ -22347,7 +23324,7 @@
                       },
                       "response": [
                         {
-                          "id": "235c7c61-96a2-46c2-850e-9c8916c57617",
+                          "id": "4f829309-3a23-5b97-a134-1f6c9a2f1bf2",
                           "name": "Subaccount already requested for this account register",
                           "originalRequest": {
                             "url": {
@@ -22401,7 +23378,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "559e714b-7867-ab63-e566-52d6064eb272",
+                          "id": "ea1446bf-c6a7-4497-3db9-5ec491955d55",
                           "name": "Subaccount activation requested",
                           "originalRequest": {
                             "url": {
@@ -22455,7 +23432,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "6675531d-82e1-3b15-13de-ab754147afa2",
+                          "id": "10d2eae4-f6dc-e3ab-36fa-892b9b19d759",
                           "name": "Invalid input or referenced account register",
                           "originalRequest": {
                             "url": {
@@ -22509,7 +23486,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "f8e8ef6c-095e-6f3e-8b63-84c7117c5b23",
+                          "id": "a344943e-820b-a032-40a3-20c01485fd41",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -22563,7 +23540,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "b730d774-38ce-d87a-8aca-077656c6174c",
+                          "id": "756f4ade-3234-5571-bd74-9c8f98d4c1b8",
                           "name": "Provider or persistence failure while creating the subaccount",
                           "originalRequest": {
                             "url": {
@@ -22623,239 +23600,1102 @@
                       }
                     },
                     {
-                      "id": "b5448360-8fc4-61da-b002-239dca9cde98",
-                      "name": "Get a stablecoin subaccount by id",
-                      "request": {
-                        "name": "Get a stablecoin subaccount by id",
-                        "description": {
-                          "content": "Fetches a single stablecoin subaccount for the authenticated company by its provider\n`subAccountId`.\n\nReturns `404` when no subaccount with that `subAccountId` exists for the company.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
-                          "type": "text/plain"
+                      "id": "812941f8-e221-1c00-a068-bf6c074469b6",
+                      "name": "{subAccountId}",
+                      "item": [
+                        {
+                          "id": "8bd77cc4-9e6a-0ada-b0f6-79159fa1d337",
+                          "name": "Get a stablecoin subaccount by id",
+                          "request": {
+                            "name": "Get a stablecoin subaccount by id",
+                            "description": {
+                              "content": "Fetches a single stablecoin subaccount for the authenticated company by its provider\n`subAccountId`.\n\nReturns `404` when no subaccount with that `subAccountId` exists for the company.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+                              "type": "text/plain"
+                            },
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "subaccount",
+                                ":subAccountId"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "subAccountId",
+                                  "description": "(Required) The provider subaccount id."
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code"
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "ed360f81-292f-506e-abe3-a48dc5e2c7f9",
+                              "name": "Subaccount found",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) The provider subaccount id."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"status\": \"<string>\",\n  \"subAccount\": {\n    \"id\": \"<string>\",\n    \"subAccountId\": \"<string>\",\n    \"account\": \"<string>\",\n    \"createdAt\": \"<string>\"\n  }\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "1684d8cf-8ef5-018a-3d3a-71dfe44b75e8",
+                              "name": "Invalid credentials or missing required scope",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) The provider subaccount id."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "afc3cc14-6fdd-a5cc-e739-df86182fc56c",
+                              "name": "No subaccount matches the subAccountId for this company",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) The provider subaccount id."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            }
+                          ],
+                          "event": [],
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          }
                         },
+                        {
+                          "id": "e0651f26-0c57-4c87-59d0-0116bf53f872",
+                          "name": "Read the INTERNAL balances of a subaccount's float",
+                          "request": {
+                            "name": "Read the INTERNAL balances of a subaccount's float",
+                            "description": {
+                              "content": "Returns the provider's INTERNAL balance per asset for this subaccount —\nexactly the balance `POST /api/v1/stablecoin/payout` debits.\n\nPoll this after sending funds to one of the addresses from\n`GET /api/v1/stablecoin/wallets` (or the subaccount wallets route) and only\ncreate the payout once the credit has landed.\n\nOnly subaccounts belonging to the authenticated company resolve; any other\nid returns `404`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+                              "type": "text/plain"
+                            },
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "subaccount",
+                                ":subAccountId",
+                                "balances"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "subAccountId",
+                                  "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code"
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "b1436d8a-f737-a765-bd06-7c31586ee5b2",
+                              "name": "INTERNAL balances of the subaccount",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId",
+                                    "balances"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"status\": \"<string>\",\n  \"subAccountId\": \"<string>\",\n  \"balances\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  }\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "047fe3b0-03b7-bd04-576b-08c0e62e0c3a",
+                              "name": "Invalid credentials or missing required scope",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId",
+                                    "balances"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "a8efcc39-a782-7c44-f7fb-3d7d4097e1fd",
+                              "name": "No subaccount with this id for the authenticated company",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId",
+                                    "balances"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\",\n  \"errorCode\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "44a5f8b3-65b0-82e5-8fd5-7aa1d6a7704c",
+                              "name": "The provider could not be reached",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId",
+                                    "balances"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "Bad Gateway",
+                              "code": 502,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\",\n  \"errorCode\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            }
+                          ],
+                          "event": [],
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          }
+                        },
+                        {
+                          "id": "e98183f0-8b99-46d5-a95a-47948ba302d8",
+                          "name": "List the deposit addresses of a subaccount's float",
+                          "request": {
+                            "name": "List the deposit addresses of a subaccount's float",
+                            "description": {
+                              "content": "Returns the wallets the provider holds for this subaccount. Sending an\nasset on-chain to one of these addresses credits the subaccount's INTERNAL\nbalance — the same balance `POST /api/v1/stablecoin/swap` spends and\n`POST /api/v1/stablecoin/withdraw` pays out from.\n\nUse this to resolve where to prefund instead of hardcoding an address:\nfunding a different account's wallet leaves the swap float empty and the\nswap fails for lack of balance.\n\nOnly subaccounts belonging to the authenticated company resolve; any other\nid returns `404`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+                              "type": "text/plain"
+                            },
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "subaccount",
+                                ":subAccountId",
+                                "wallets"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "subAccountId",
+                                  "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code"
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "d81d0c32-b4d1-baf5-cd7c-daa7fc0c5ef1",
+                              "name": "Deposit wallets of the subaccount",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId",
+                                    "wallets"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"status\": \"<string>\",\n  \"subAccountId\": \"<string>\",\n  \"wallets\": [\n    {\n      \"address\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"network\": \"<string>\"\n    },\n    {\n      \"address\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"network\": \"<string>\"\n    }\n  ]\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "1abe4d8d-bdec-879a-a9d5-5adeba394d0c",
+                              "name": "Invalid credentials or missing required scope",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId",
+                                    "wallets"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "0d7b6205-2afc-29c6-2353-847efcfa4923",
+                              "name": "No subaccount with this id for the authenticated company",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId",
+                                    "wallets"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\",\n  \"errorCode\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "ab93e51e-7b6d-f53b-1d42-f0718a135db6",
+                              "name": "The provider could not be reached",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "stablecoin",
+                                    "subaccount",
+                                    ":subAccountId",
+                                    "wallets"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": [
+                                    {
+                                      "disabled": false,
+                                      "type": "any",
+                                      "value": "<string>",
+                                      "key": "subAccountId",
+                                      "description": "(Required) Provider subaccount id (`subAccountId`, not the Woovi `id`)."
+                                    }
+                                  ]
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                              },
+                              "status": "Bad Gateway",
+                              "code": 502,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\",\n  \"errorCode\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            }
+                          ],
+                          "event": [],
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          }
+                        }
+                      ],
+                      "event": []
+                    }
+                  ],
+                  "event": []
+                },
+                {
+                  "id": "b4c86bcb-7a0b-0cc7-9f5a-6b35a6988c5a",
+                  "name": "List Avenia custodian deposit wallets for the AppID bank account",
+                  "request": {
+                    "name": "List Avenia custodian deposit wallets for the AppID bank account",
+                    "description": {
+                      "content": "Returns the deposit addresses Avenia holds for the stable sub-account\nlinked to the authenticated Application's `companyBankAccount` (live from\nthe provider — not stored in Mongo).\n\nA company can have more than one bank account / KYB sub-account. The\nsub-account is resolved from `Application.companyBankAccount` (the\naccount bound to the AppID), not from the company alone.\n\nSending an asset on-chain to one of these addresses credits the INTERNAL\nfloat used by `POST /api/v1/stablecoin/payout` (USDT/USDC/BRLA → Pix).\n\nFor an explicit provider id use\n`GET /api/v1/stablecoin/subaccount/{subAccountId}/wallets`.\nTo read the float balance after funding use\n`GET /api/v1/stablecoin/subaccount/{subAccountId}/balances`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n",
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "stablecoin",
+                        "wallets"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.woovi.com"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://api.woovi.com"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "1f0283fd-c327-b283-04f8-fb056f135107",
+                      "name": "Custodian wallets from Avenia",
+                      "originalRequest": {
                         "url": {
                           "path": [
                             "api",
                             "v1",
                             "stablecoin",
-                            "subaccount",
-                            ":subAccountId"
+                            "wallets"
                           ],
                           "host": [
                             "{{baseUrl}}"
                           ],
                           "query": [],
-                          "variable": [
-                            {
-                              "disabled": false,
-                              "type": "any",
-                              "value": "<string>",
-                              "key": "subAccountId",
-                              "description": "(Required) The provider subaccount id."
-                            }
-                          ]
+                          "variable": []
                         },
                         "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
                           {
                             "key": "Accept",
                             "value": "application/json"
                           }
                         ],
                         "method": "GET",
-                        "auth": {
-                          "type": "oauth2",
-                          "oauth2": [
-                            {
-                              "key": "scope",
-                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
-                            },
-                            {
-                              "key": "accessTokenUrl",
-                              "value": "https://api.woovi.com"
-                            },
-                            {
-                              "key": "authUrl",
-                              "value": "https://api.woovi.com"
-                            },
-                            {
-                              "key": "grant_type",
-                              "value": "authorization_code"
-                            }
-                          ]
-                        }
+                        "body": {}
                       },
-                      "response": [
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
                         {
-                          "id": "4095c10a-29f1-b749-9e77-43200e72e1c5",
-                          "name": "Subaccount found",
-                          "originalRequest": {
-                            "url": {
-                              "path": [
-                                "api",
-                                "v1",
-                                "stablecoin",
-                                "subaccount",
-                                ":subAccountId"
-                              ],
-                              "host": [
-                                "{{baseUrl}}"
-                              ],
-                              "query": [],
-                              "variable": [
-                                {
-                                  "disabled": false,
-                                  "type": "any",
-                                  "value": "<string>",
-                                  "key": "subAccountId",
-                                  "description": "(Required) The provider subaccount id."
-                                }
-                              ]
-                            },
-                            "header": [
-                              {
-                                "description": {
-                                  "content": "Added as a part of security scheme: oauth2",
-                                  "type": "text/plain"
-                                },
-                                "key": "Authorization",
-                                "value": "<token>"
-                              },
-                              {
-                                "key": "Accept",
-                                "value": "application/json"
-                              }
-                            ],
-                            "method": "GET",
-                            "body": {}
-                          },
-                          "status": "OK",
-                          "code": 200,
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": "{\n  \"status\": \"<string>\",\n  \"subAccount\": {\n    \"id\": \"<string>\",\n    \"subAccountId\": \"<string>\",\n    \"account\": \"<string>\",\n    \"createdAt\": \"<string>\"\n  }\n}",
-                          "cookie": [],
-                          "_postman_previewlanguage": "json"
-                        },
-                        {
-                          "id": "cea92be3-69f6-00b3-3f46-579aa2595582",
-                          "name": "Invalid credentials or missing required scope",
-                          "originalRequest": {
-                            "url": {
-                              "path": [
-                                "api",
-                                "v1",
-                                "stablecoin",
-                                "subaccount",
-                                ":subAccountId"
-                              ],
-                              "host": [
-                                "{{baseUrl}}"
-                              ],
-                              "query": [],
-                              "variable": [
-                                {
-                                  "disabled": false,
-                                  "type": "any",
-                                  "value": "<string>",
-                                  "key": "subAccountId",
-                                  "description": "(Required) The provider subaccount id."
-                                }
-                              ]
-                            },
-                            "header": [
-                              {
-                                "description": {
-                                  "content": "Added as a part of security scheme: oauth2",
-                                  "type": "text/plain"
-                                },
-                                "key": "Authorization",
-                                "value": "<token>"
-                              },
-                              {
-                                "key": "Accept",
-                                "value": "application/json"
-                              }
-                            ],
-                            "method": "GET",
-                            "body": {}
-                          },
-                          "status": "Unauthorized",
-                          "code": 401,
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": "{\n  \"error\": \"<string>\"\n}",
-                          "cookie": [],
-                          "_postman_previewlanguage": "json"
-                        },
-                        {
-                          "id": "112aa2cf-e1e9-56d6-820d-dbc10bc7d166",
-                          "name": "No subaccount matches the subAccountId for this company",
-                          "originalRequest": {
-                            "url": {
-                              "path": [
-                                "api",
-                                "v1",
-                                "stablecoin",
-                                "subaccount",
-                                ":subAccountId"
-                              ],
-                              "host": [
-                                "{{baseUrl}}"
-                              ],
-                              "query": [],
-                              "variable": [
-                                {
-                                  "disabled": false,
-                                  "type": "any",
-                                  "value": "<string>",
-                                  "key": "subAccountId",
-                                  "description": "(Required) The provider subaccount id."
-                                }
-                              ]
-                            },
-                            "header": [
-                              {
-                                "description": {
-                                  "content": "Added as a part of security scheme: oauth2",
-                                  "type": "text/plain"
-                                },
-                                "key": "Authorization",
-                                "value": "<token>"
-                              },
-                              {
-                                "key": "Accept",
-                                "value": "application/json"
-                              }
-                            ],
-                            "method": "GET",
-                            "body": {}
-                          },
-                          "status": "Not Found",
-                          "code": 404,
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\"\n}",
-                          "cookie": [],
-                          "_postman_previewlanguage": "json"
+                          "key": "Content-Type",
+                          "value": "application/json"
                         }
                       ],
-                      "event": [],
-                      "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                      }
+                      "body": "{\n  \"status\": \"<string>\",\n  \"companyBankAccountId\": \"<string>\",\n  \"subAccountId\": \"<string>\",\n  \"wallets\": [\n    {\n      \"address\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"network\": \"<string>\"\n    },\n    {\n      \"address\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"network\": \"<string>\"\n    }\n  ]\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "0ccff142-a37b-ef32-fde6-ede12ea92b59",
+                      "name": "AppID has no companyBankAccount, or KYB not confirmed",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "wallets"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "text/plain"
+                        }
+                      ],
+                      "body": "",
+                      "cookie": [],
+                      "_postman_previewlanguage": "text"
+                    },
+                    {
+                      "id": "88ac2e8a-0336-2e00-4e58-474f27c66c6a",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "wallets"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "text/plain"
+                        }
+                      ],
+                      "body": "",
+                      "cookie": [],
+                      "_postman_previewlanguage": "text"
+                    },
+                    {
+                      "id": "914e4dd2-ebf6-fcca-b46e-6c59958eb2e7",
+                      "name": "No subaccount for this company bank account",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "wallets"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "text/plain"
+                        }
+                      ],
+                      "body": "",
+                      "cookie": [],
+                      "_postman_previewlanguage": "text"
+                    },
+                    {
+                      "id": "a2b02419-e832-817d-4f08-bfd32721c98f",
+                      "name": "Provider error",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "wallets"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Bad Gateway",
+                      "code": 502,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "text/plain"
+                        }
+                      ],
+                      "body": "",
+                      "cookie": [],
+                      "_postman_previewlanguage": "text"
                     }
                   ],
-                  "event": []
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
                 }
               ],
               "event": []
