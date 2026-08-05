@@ -1,6 +1,6 @@
 ---
 id: stablecoin-fees
-sidebar_position: 5
+sidebar_position: 6
 title: Taxas
 tags:
   - stablecoin
