@@ -2806,7 +2806,16 @@ paths:
         due date is above the emitted amount in `charge.value` because of
         interest
 
-        and fine.
+        and fine. `finesValue` and `interestsValue` split that difference, as
+        charged
+
+        by the bank, so you can reconcile an overdue boleto without recomputing
+        it
+
+        from the charge settings. Each is absent when there was none, so a
+        boleto
+
+        paid on time carries neither.
 
 
         Two independent date ranges are offered because they answer different
@@ -2907,6 +2916,8 @@ paths:
                         fee: 299
                         createdAt: 2026-07-26T13:04:11.212Z
                         settledAt: 2026-07-27T10:00:00.000Z
+                        finesValue: 1902
+                        interestsValue: 200
                         charge:
                           value: 242898
                           status: COMPLETED
@@ -24626,7 +24637,7 @@ components:
             is above the emitted amount in `charge.value`, because of interest
             and
 
-            fine.
+            fine — `finesValue` and `interestsValue` split that difference.
           example: 245000
         fee:
           type: integer
@@ -24642,6 +24653,25 @@ components:
             When the amount was credited to your account. Only present on a
             settled `BOLETO_IN` — it is not the moment the payer paid, and a
             `BOLETO_OUT` never carries it.
+        finesValue:
+          type: integer
+          description: |
+            Late-payment fine the payer paid, in cents, as charged by the bank.
+            Only on `BOLETO_IN`, and absent when there was none — a boleto paid
+            on time carries neither this nor `interestsValue`.
+          example: 1902
+        interestsValue:
+          type: integer
+          description: |
+            Late-payment interest the payer paid, in cents, as charged by the
+            bank. Same presence rules as `finesValue`.
+          example: 200
+        discountValue:
+          type: integer
+          description: >
+            Discount the payer got, in cents. Same presence rules as
+            `finesValue`.
+          example: 500
         charge:
           type: object
           description: |
