@@ -14,10 +14,6 @@ Para distribuir essa cota entre as contas, a Woovi usa um **token bucket** (bald
 
 Esse limite vale para a [Verificação de Chave Pix](./check-pix-key.md) e para qualquer chamada que precise resolver uma chave no DICT, como a [criação de um pagamento por chave Pix](./payment-how-to-use-api-to-create.mdx).
 
-:::info
-O token bucket não é uma invenção da Woovi: é a política antiscan do próprio Banco Central para a API do DICT, repassada para cada conta. Para entender o algoritmo, as políticas e os números do Bacen, veja [Token Bucket e o antiscan do DICT](../concepts/token-bucket.md).
-:::
-
 ## Como funciona
 
 - O balde é **por conta (taxID)**, não por AppID. Todas as suas aplicações e chaves de API compartilham o mesmo saldo.
@@ -46,8 +42,6 @@ O que pesa não é o volume de consultas, e sim a **taxa de erro**: 500 consulta
 ### Pagar devolve tokens
 
 Quando você consulta uma chave e **efetivamente envia o pagamento** para ela, sua conta recebe **+2 tokens de volta** no momento da aprovação.
-
-É a mesma lógica do Bacen: consulta que vira pagamento é uso legítimo e é creditada de volta; consulta que nunca vira pagamento é o padrão de quem está varrendo o diretório ([entenda o porquê](../concepts/token-bucket.md)). Na prática, um fluxo saudável (consultar para pagar) gasta menos do que 1 token por operação.
 
 ## Quando você é bloqueado
 
