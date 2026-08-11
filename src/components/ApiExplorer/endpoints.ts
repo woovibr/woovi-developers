@@ -440,7 +440,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'boleto',
     'category': 'boleto',
     'summary': 'List boleto transactions',
-    'description': 'Lists the boleto transactions of your company, most recent first, so you can\nreconcile boleto receivables and payments against your own records.\n\nA transaction is either a `BOLETO_IN` — a boleto your payer paid — or a\n`BOLETO_OUT` — a boleto your company paid. All monetary values are in cents.\n\n`value` is the amount that actually moved, which for a boleto paid after the\ndue date is above the emitted amount in `charge.value` because of interest\nand fine.\n\nTwo independent date ranges are offered because they answer different\nquestions: `start`/`end` filter by when the transaction was created, and\n`settledStart`/`settledEnd` by when Woovi credited the amount to your\naccount. Both dates come back on every item.\n\nRequires the `BOLETO_TRANSACTION_GET_LIST` scope on the application.\n',
+    'description': 'Lists the boleto transactions of your company, most recent first, so you can\nreconcile boleto receivables and payments against your own records.\n\nA transaction is either a `BOLETO_IN` — a boleto your payer paid — or a\n`BOLETO_OUT` — a boleto your company paid. All monetary values are in cents.\n\n`value` is the amount that actually moved, which for a boleto paid after the\ndue date is above the emitted amount in `charge.value` because of interest\nand fine. `finesValue` and `interestsValue` split that difference, as charged\nby the bank, so you can reconcile an overdue boleto without recomputing it\nfrom the charge settings. Each is absent when there was none, so a boleto\npaid on time carries neither.\n\nTwo independent date ranges are offered because they answer different\nquestions: `start`/`end` filter by when the transaction was created, and\n`settledStart`/`settledEnd` by when Woovi credited the amount to your\naccount. Both dates come back on every item.\n\nRequires the `BOLETO_TRANSACTION_GET_LIST` scope on the application.\n',
     'requestExamples': [],
     'responseExamples': [
       {
@@ -462,6 +462,8 @@ const endpoints: ApiEndpoint[] = [
               'fee': 299,
               'createdAt': '2026-07-26T13:04:11.212Z',
               'settledAt': '2026-07-27T10:00:00.000Z',
+              'finesValue': 1902,
+              'interestsValue': 200,
               'charge': {
                 'value': 242898,
                 'status': 'COMPLETED',
