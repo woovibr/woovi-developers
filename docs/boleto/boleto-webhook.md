@@ -141,11 +141,33 @@ O corpo enviado para a sua URL tem o seguinte formato:
 | `boleto.boletoBarcode` | Código de barras do boleto. |
 | `boleto.boletoDigitable` | Linha digitável do boleto. |
 | `boleto.fee` | Taxa aplicada, em **centavos**. |
+| `boleto.finesValue` | Multa que o pagador pagou por atraso, em **centavos**. Ausente quando não houve. |
+| `boleto.interestsValue` | Juros que o pagador pagou por atraso, em **centavos**. Ausente quando não houve. |
 | `company` | Dados da sua empresa (`id`, `name`, `taxID`). |
 
 :::note
 Todos os valores monetários (`value`, `fee`, `valueWithDiscount`, ...) são
 expressos em **centavos** (`10000` = R$ 100,00).
+:::
+
+:::tip Boleto pago com atraso
+No exemplo acima o boleto foi pago em dia, então `charge.value` e `boleto.value`
+são iguais e não há multa nem juros. Quando o pagamento é feito depois do
+vencimento, `boleto.value` fica acima de `charge.value` e a diferença vem
+discriminada:
+
+```json
+"boleto": {
+  "value": 245000,
+  "finesValue": 1902,
+  "interestsValue": 200,
+  "...": "..."
+}
+```
+
+Aqui a cobrança foi emitida por `242898` e o pagador pagou `245000`: `1902` de
+multa e `200` de juros. Veja
+**[Boleto com Juros e Multa](/docs/boleto/boleto-juros-multa)**.
 :::
 
 ---

@@ -244,3 +244,63 @@ Na resposta da API, você encontrará o objeto `interestsSettings` que confirma 
 
 Este objeto confirma que os valores de juros e multa foram configurados corretamente. Os valores são retornados em basis points (100 = 1%).
 
+:::caution Isso é a regra, não o valor cobrado
+Os percentuais acima definem **como** os encargos são calculados. Quanto o pagador
+**efetivamente pagou** de multa e juros só existe depois do pagamento, e vem em
+outros campos — veja a seção abaixo.
+:::
+
+---
+
+## 4. Como saber quanto o pagador pagou de juros e multa
+
+Quando o boleto é pago depois do vencimento, o banco calcula os encargos e cobra
+um valor acima do emitido. A Woovi devolve essa diferença **discriminada**, em
+centavos:
+
+| Campo | Descrição |
+| --- | --- |
+| `finesValue` | Multa que o pagador pagou. |
+| `interestsValue` | Juros que o pagador pagou. |
+
+Cada campo é **omitido quando não houve**, então um boleto pago em dia não traz
+nenhum dos dois.
+
+### Como os valores se relacionam
+
+- `charge.value` — o valor **emitido** na cobrança
+- `boleto.value` — o que o pagador **efetivamente pagou**
+
+```
+boleto.value = charge.value + finesValue + interestsValue
+```
+
+Exemplo de um boleto emitido por R$ 2.428,98 e pago com atraso:
+
+```json
+{
+  "charge": { "value": 242898 },
+  "boleto": {
+    "value": 245000,
+    "finesValue": 1902,
+    "interestsValue": 200
+  }
+}
+```
+
+R$ 19,02 de multa e R$ 2,00 de juros, somando os R$ 21,02 pagos acima do emitido.
+
+### Onde esses campos aparecem
+
+| Onde | Quando usar |
+| --- | --- |
+| Webhook **`OPENPIX:CHARGE_COMPLETED`** | No momento do pagamento. Veja **[Webhook de Boleto pago](/docs/boleto/boleto-webhook)**. |
+| Webhook **`BOLETO_SETTLED`** | No momento em que o valor é creditado na sua conta. Veja **[Conciliação de liquidação](/docs/boleto/boleto-reconciliation)**. |
+| **`GET /api/v1/boleto-transaction`** | Para conciliar um período em lote, ou consultar uma transação pelo `boletoTransactionID`. |
+
+:::note
+Os valores são os **cobrados pelo banco**, não um recálculo a partir dos
+percentuais que você configurou. Use-os direto na conciliação, sem refazer a conta
+a partir da data de pagamento.
+:::
+

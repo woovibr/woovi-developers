@@ -188,7 +188,9 @@ acrescenta o **`boleto.settledAt`**:
     "boletoBarcode": "34191120100002428981103069645110772982609000",
     "boletoDigitable": "34191103036964511077129826090002112010000242898",
     "fee": 299,
-    "settledAt": "2026-07-27T10:00:00.000Z"
+    "settledAt": "2026-07-27T10:00:00.000Z",
+    "finesValue": 1902,
+    "interestsValue": 200
   }
 }
 ```
@@ -200,6 +202,14 @@ pagamento.
 `charge.value` é o valor **emitido**; `boleto.value` é o que o pagador
 **efetivamente pagou**, que fica acima do emitido quando o boleto é pago depois do
 vencimento (juros e multa). Concilie o crédito pelo `boleto.value`.
+
+A diferença entre os dois vem discriminada: **`finesValue`** é a multa e
+**`interestsValue`** o juros que o pagador pagou, em centavos, como cobrados pelo
+banco. No exemplo acima, `245000 - 242898 = 2102 = 1902 + 200`.
+
+Cada campo é **omitido quando não houve** — um boleto pago em dia não traz
+nenhum dos dois. Veja
+**[Boleto com Juros e Multa](/docs/boleto/boleto-juros-multa)**.
 :::
 
 Guarde o **`boletoTransactionID`**: é o id público da transação, e com ele você
@@ -239,6 +249,8 @@ curl --request GET \
       "fee": 299,
       "createdAt": "2026-07-26T13:04:11.212Z",
       "settledAt": "2026-07-27T10:00:00.000Z",
+      "finesValue": 1902,
+      "interestsValue": 200,
       "charge": {
         "value": 242898,
         "status": "COMPLETED",
