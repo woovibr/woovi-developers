@@ -13,4 +13,4 @@ Contudo, caso você já possua uma assinatura em andamento e deseja migrar para 
 
 Em um caso que a assinatura apenas entrará em vigor em um momento tardio, como na próxima semana/mês. Nós sugerimos a jornada 2 `(ONLY_RECURRENCY)`. Porque a cobrança somente será efetuada quando de fato começar a assinatura.
 
-Caso o consumidor demonstre uma ncessidade de efetuar as cobranças de maneira automática. A jornada 1 será o ideal nesse caso. Pois será enviado uma notificação para o consumidor no seu aplicativo de banco o convidando para autorizar a recorrência.
+Caso o consumidor demonstre uma necessidade de efetuar as cobranças de maneira automática. A jornada 1 será o ideal nesse caso. Pois será enviado uma notificação para o consumidor no seu aplicativo de banco o convidando para autorizar a recorrência.
