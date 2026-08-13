@@ -25,6 +25,15 @@ Existem dois métodos de validação de webhook disponíveis:
 
 ## Chave Pública da Woovi
 
+:::tip Obtenha a chave pública via API
+A chave também está disponível num endpoint aberto:
+[GET /api/v1/webhook/public-keys](https://developers.woovi.com/api#tag/webhook/paths/~1api~1v1~1webhook~1public-keys/get).
+
+Buscar a chave em vez de deixá-la fixa no código é o caminho recomendado: quando a chave
+for trocada, sua integração acompanha a troca sozinha. Veja
+[Buscando a chave pública da Woovi via API](./webhook-public-keys).
+:::
+
 ```
 -----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/+NtIkjzevvqD+I3MMv3bLXDt
