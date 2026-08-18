@@ -15,6 +15,11 @@ Tipos: **Adicionado** · **Alterado** · **Depreciado** · **Removido**.
 
 ## 2026-08
 
+- **Adicionado** — query string opcional `companyBankAccount` em
+  `GET /api/v1/statement` e `GET /api/v1/transaction/{id}`. Uma aplicação `MASTER` de
+  uma empresa com a feature `MASTER_APP_READ_ANY_ACCOUNT` lê o extrato e a transação de
+  outra conta da mesma empresa, sem criar um AppId por conta. Veja
+  [Controlando as contas no modo BAAS](../baas/baas-api-master.md).
 - **Adicionado** — `GET /api/v1/application/scopes`, que lista os grupos de escopos que uma
   aplicação pode solicitar. Não exige escopo.
 - **Adicionado** — `POST /api/v1/application/rotate-secret`, que gera um novo `clientSecret`
