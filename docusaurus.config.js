@@ -274,19 +274,19 @@ module.exports = {
         specs: [
           {
             route: '/pix/',
-            spec: './src/swaggers/bacen-pix.yaml',
+            spec: './static/swaggers/bacen-pix.yaml',
           },
           {
             route: '/dict/',
-            spec: './src/swaggers/bacen-dict.json',
+            spec: './static/swaggers/bacen-dict.json',
           },
           {
             route: '/api-redoc/',
-            spec: './src/swaggers/woovi.json',
+            spec: './static/swaggers/woovi.json',
           },
           {
             route: '/indirect/',
-            spec: './src/swaggers/pixIndirect.json',
+            spec: './static/swaggers/pixIndirect.json',
           },
         ],
       },

@@ -26,7 +26,7 @@ function ApiScalarInner() {
     <div style={{ height: 'calc(100vh - 60px)' }}>
       <ApiReference
         configuration={{
-          url: '/swaggers/bacen-pix.json',
+          url: '/swaggers/bacen-pix.yaml',
           theme: 'default',
         }}
       />
