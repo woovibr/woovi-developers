@@ -10915,10 +10915,10 @@
     "/api/v1/pix-keys/{pixKey}/check": {
       "get": {
         "tags": [
-          "pixKey"
+          "pixKey check (request access)"
         ],
         "summary": "Check data from a Pix key",
-        "description": "Get data from a Pix key if it exists",
+        "description": "Get data from a Pix key if it exists\n\n**This endpoint is not enabled by default.** It queries the DICT for the holder of a Pix key that is not yours, so it has to be requested from support and goes through an internal review before being turned on. Calls are billed per query.\n\nIf what you need is to confirm that an account belongs to who you expect, use bank data validation instead — it is available to every account with no approval:\n\n- [Validating bank data with a Pix key](https://developers.woovi.com/docs/flows/validate-bank-data)\n- [Validating bank data with branch and account number](https://developers.woovi.com/docs/flows/validate-bank-data-manual)\n",
         "parameters": [
           {
             "name": "pixKey",
@@ -11038,10 +11038,10 @@
     "/api/v1/pix-keys/check": {
       "post": {
         "tags": [
-          "pixKey"
+          "pixKey check (request access)"
         ],
         "summary": "Check data from a Pix key",
-        "description": "Get data from a Pix key if it exists",
+        "description": "Get data from a Pix key if it exists\n\n**This endpoint is not enabled by default.** It queries the DICT for the holder of a Pix key that is not yours, so it has to be requested from support and goes through an internal review before being turned on. Calls are billed per query.\n\nIf what you need is to confirm that an account belongs to who you expect, use bank data validation instead — it is available to every account with no approval:\n\n- [Validating bank data with a Pix key](https://developers.woovi.com/docs/flows/validate-bank-data)\n- [Validating bank data with branch and account number](https://developers.woovi.com/docs/flows/validate-bank-data-manual)\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -22134,6 +22134,10 @@
     {
       "name": "pixKey",
       "description": "Endpoint to manage Pix Keys\n"
+    },
+    {
+      "name": "pixKey check (request access)",
+      "description": "Endpoints to look up the holder of a Pix key through the DICT.\n\n**This endpoint is not enabled by default.** It queries the DICT for the holder of a Pix key that is not yours, so it has to be requested from support and goes through an internal review before being turned on. Calls are billed per query.\n\nIf what you need is to confirm that an account belongs to who you expect, use bank data validation instead — it is available to every account with no approval:\n\n- [Validating bank data with a Pix key](https://developers.woovi.com/docs/flows/validate-bank-data)\n- [Validating bank data with branch and account number](https://developers.woovi.com/docs/flows/validate-bank-data-manual)\n"
     },
     {
       "name": "pixQrCode",
