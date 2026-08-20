@@ -6,7 +6,8 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Webhook visão geral"
+    "title": "Webhook nos fluxos",
+    "slug": "/category/flows-webhook"
   },
   "customProps": {
     "description": "Webhook documentação"

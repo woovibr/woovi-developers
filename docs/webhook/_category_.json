@@ -6,7 +6,8 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Webhook visão geral"
+    "title": "Webhook visão geral",
+    "slug": "/category/webhook"
   },
   "customProps": {
     "description": "Webhook documentação"

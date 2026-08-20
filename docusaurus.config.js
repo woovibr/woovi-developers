@@ -111,6 +111,50 @@ module.exports = {
             from: '/docs/pix-automatic/pix-automatic-in-sandbox',
             to: '/docs/test-environment/pix-automatic-in-sandbox',
           },
+          {
+            from: '/docs/charge/refund/charge-refund-create-api',
+            to: '/docs/refund/charge-refund-create-api',
+          },
+          {
+            from: '/docs/charge/refund/charge-refund-get-all-api',
+            to: '/docs/refund/charge-refund-get-all-api',
+          },
+          {
+            from: '/docs/category/segurança',
+            to: '/docs/category/security',
+          },
+          {
+            from: '/docs/category/segurança-1',
+            to: '/docs/category/security',
+          },
+          {
+            from: '/docs/category/reembolso-de-cobrança',
+            to: '/docs/category/refund',
+          },
+          {
+            from: '/docs/category/reembolso-de-cobrança-1',
+            to: '/docs/category/refund',
+          },
+          {
+            from: '/docs/category/how-to',
+            to: '/docs/category/charge-how-to',
+          },
+          {
+            from: '/docs/category/how-to-1',
+            to: '/docs/category/plugin-how-to',
+          },
+          {
+            from: '/docs/category/webhooks',
+            to: '/docs/category/pix-automatic-webhooks',
+          },
+          {
+            from: '/docs/category/webhook-1',
+            to: '/docs/category/webhook',
+          },
+          {
+            from: '/docs/category/webhook-2',
+            to: '/docs/category/webhook',
+          },
         ],
       },
     ],

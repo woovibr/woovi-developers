@@ -1,11 +1,13 @@
 {
   "label": "Webhooks",
+  "key": "pix-automatic-webhooks",
   "collapsible": true,
   "collapsed": true,
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Webhooks"
+    "title": "Webhooks",
+    "slug": "/category/pix-automatic-webhooks"
   },
   "customProps": {
     "description": "Webhooks do Pix Automático"
