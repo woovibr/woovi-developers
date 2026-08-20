@@ -141,7 +141,7 @@ module.exports = {
           },
           {
             from: '/docs/category/how-to-1',
-            to: '/docs/category/plugin-how-to',
+            to: '/docs/plugin/how-to-render-plugin-without-modal',
           },
           {
             from: '/docs/category/webhooks',
@@ -154,6 +154,30 @@ module.exports = {
           {
             from: '/docs/category/webhook-2',
             to: '/docs/category/webhook',
+          },
+          {
+            from: '/docs/webhook/api/webhook-api',
+            to: '/docs/webhook/webhook-api',
+          },
+          {
+            from: '/docs/category/api',
+            to: '/docs/webhook/webhook-api',
+          },
+          {
+            from: '/docs/plugin/how-to/how-to-render-plugin-without-modal',
+            to: '/docs/plugin/how-to-render-plugin-without-modal',
+          },
+          {
+            from: '/docs/flows/webhook/flow-create-webhook',
+            to: '/docs/webhook/platform/webhook-platform-api',
+          },
+          {
+            from: '/docs/category/flows-webhook',
+            to: '/docs/webhook/platform/webhook-platform-api',
+          },
+          {
+            from: '/docs/category/plugin-how-to',
+            to: '/docs/plugin/how-to-render-plugin-without-modal',
           },
         ],
       },
