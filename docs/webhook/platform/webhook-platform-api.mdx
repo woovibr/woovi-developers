@@ -41,7 +41,17 @@ Campos:
 
 #### Ação
 
-Ao escolher um tipo de ação, de acordo com a escolhida será obrigatório informar os paramêtros necessários para tal. Vamos escolher a ação API.
+Ao escolher um tipo de ação, de acordo com a escolhida será obrigatório informar os paramêtros necessários para tal.
+
+<Tabs
+defaultValue="action-api"
+    values={[
+    { label: 'API', value: 'action-api', },
+    { label: 'Email', value: 'action-email', },
+    ]
+}>
+
+<TabItem value='action-api'>
 
 ![CreateWebhook](/img/webhook/create-new-webhook-api.png)
 
@@ -49,5 +59,19 @@ Campos:
 
 - url: obrigatório, necessário ser uma url válida e disponível para um teste de chamada no momento de salvar.
 - authorization: opcional
+
+</TabItem>
+
+<TabItem value='action-email'>
+
+![CreateWebhookEmail](/img/webhook/create-new-webhook-email.png)
+
+Campos:
+
+- email: obrigatório
+
+</TabItem>
+
+</Tabs>
 
 [Exemplos de payload do Webhook](/docs/category/exemplos)

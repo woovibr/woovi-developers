@@ -109,7 +109,7 @@ Para receber esse evento, crie um webhook selecionando o evento
 **[Tipos de eventos do Webhook](/docs/webhook/webhook-events-type#openpixmovement_confirmed)**.
 A criação em si pode ser feita
 **[via plataforma](/docs/webhook/platform/webhook-platform-api)** ou
-**[via API](/docs/webhook/api/webhook-api)**; para validar a assinatura, veja
+**[via API](/docs/webhook/webhook-api)**; para validar a assinatura, veja
 **[Validando o HMAC do webhook](/docs/webhook/seguranca/webhook-hmac)**.
 
 ---

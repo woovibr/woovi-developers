@@ -46,10 +46,12 @@ curl --location --request POST 'https://api.woovi.com/api/openpix/v1/webhook' \
 ```jsx
 const createWebhook = async () => {
   const payload = {
-    name: 'webhook via api',
-    url: 'https://minhaurl.test/webhook',
-    authorization: 'auth_key',
-    isActive: true,
+    webhook: {
+      name: 'webhook via api',
+      url: 'https://minhaurl.test/webhook',
+      authorization: 'auth_key',
+      isActive: true,
+    },
   };
 
   const response = await fetch(
