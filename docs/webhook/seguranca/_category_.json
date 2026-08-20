@@ -6,7 +6,8 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Segurança visão geral"
+    "title": "Segurança do webhook",
+    "slug": "/category/webhook-security"
   },
   "customProps": {
     "description": "Segurança documentação"

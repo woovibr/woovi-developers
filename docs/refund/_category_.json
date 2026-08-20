@@ -6,7 +6,8 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Reembolso de cobrança visão geral"
+    "title": "Reembolso de cobrança visão geral",
+    "slug": "/category/refund"
   },
   "customProps": {
     "description": "Reembolso de cobrança documentação"
