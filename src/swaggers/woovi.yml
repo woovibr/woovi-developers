@@ -14340,9 +14340,35 @@ paths:
   /api/v1/pix-keys/{pixKey}/check:
     get:
       tags:
-        - pixKey
+        - pixKey check (request access)
       summary: Check data from a Pix key
-      description: Get data from a Pix key if it exists
+      description: >
+        Get data from a Pix key if it exists.
+
+
+        **This endpoint is not enabled by default.** It queries the DICT for the
+
+        holder of a Pix key that is not yours, so it has to be requested from
+
+        support and goes through an internal review before being turned on.
+        Calls
+
+        are billed per query.
+
+
+        If what you need is to confirm that an account belongs to who you
+        expect,
+
+        use bank data validation instead — it is available to every account with
+
+        no approval:
+
+
+        - [Validating bank data with a Pix
+        key](https://developers.woovi.com/docs/flows/validate-bank-data)
+
+        - [Validating bank data with branch and account
+        number](https://developers.woovi.com/docs/flows/validate-bank-data-manual)
       parameters:
         - name: pixKey
           in: path
@@ -14416,9 +14442,35 @@ paths:
   /api/v1/pix-keys/check:
     post:
       tags:
-        - pixKey
+        - pixKey check (request access)
       summary: Check data from a Pix key
-      description: Get data from a Pix key if it exists
+      description: >
+        Get data from a Pix key if it exists.
+
+
+        **This endpoint is not enabled by default.** It queries the DICT for the
+
+        holder of a Pix key that is not yours, so it has to be requested from
+
+        support and goes through an internal review before being turned on.
+        Calls
+
+        are billed per query.
+
+
+        If what you need is to confirm that an account belongs to who you
+        expect,
+
+        use bank data validation instead — it is available to every account with
+
+        no approval:
+
+
+        - [Validating bank data with a Pix
+        key](https://developers.woovi.com/docs/flows/validate-bank-data)
+
+        - [Validating bank data with branch and account
+        number](https://developers.woovi.com/docs/flows/validate-bank-data-manual)
       requestBody:
         required: true
         content:
@@ -24084,6 +24136,171 @@ paths:
 
             response = http.request(request)
             puts response.read_body
+  /api/v1/webhook/public-keys:
+    get:
+      tags:
+        - webhook
+      summary: Get the public keys that verify the webhook signature
+      description: >-
+        Retorna a chave pública usada para verificar o header
+        `x-webhook-signature`, presente em todo webhook enviado pela Woovi.
+
+
+        A assinatura é `base64(RSA-SHA256)` sobre o corpo **bruto** da request —
+        verifique antes de fazer parse do JSON, porque reserializar muda os
+        bytes e invalida a assinatura.
+
+
+        Este endpoint **não exige autenticação**: a chave é pública por
+        definição, e quem recebe webhook normalmente valida a assinatura em um
+        contexto que não tem o AppID em mãos.
+
+
+        A resposta é uma lista, e não uma chave só, para permitir rotação:
+        durante uma troca de chave publicamos a antiga e a nova ao mesmo tempo,
+        com `is_current` indicando qual está assinando agora. Aceite qualquer
+        chave da lista ao verificar e você não quebra quando a rotação
+        acontecer.
+      security: []
+      responses:
+        '200':
+          description: A chave pública atual de assinatura de webhook
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  public_keys:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key_identifier:
+                          type: string
+                          description: >-
+                            SHA-256 da chave em DER. Identifica a chave de forma
+                            estável entre rotações.
+                        key:
+                          type: string
+                          description: A chave pública em PEM (SPKI).
+                        is_current:
+                          type: boolean
+                          description: >-
+                            `true` na chave que está assinando os webhooks
+                            agora. Durante uma rotação mais de uma chave é
+                            válida, mas apenas uma é a atual.
+                example:
+                  public_keys:
+                    - key_identifier: >-
+                        9dce618794f8986c603915a51b7029126c260e5cfdb2aa47e131d837fd62311c
+                      is_current: true
+                      key: >
+                        -----BEGIN PUBLIC KEY-----
+
+                        MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/+NtIkjzevvqD+I3MMv3bLXDt
+
+                        pvxBjY4BsRrSdca3rtAwMcRYYvxSnd7jagVLpctMiOxQO8ieUCKLSWHpsMAjO/zZ
+
+                        WMKbqoG8MNpi/u3fp6zz0mcHCOSqYsPUUG19buW8bis5ZZ2IZgBObWSpTvJ0cnj6
+
+                        HKBAA82Jln+lGwS1MwIDAQAB
+
+                        -----END PUBLIC KEY-----
+      x-codeSamples:
+        - lang: Node + Native
+          source: |-
+            const http = require('https');
+
+            const options = {
+              method: 'GET',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/webhook/public-keys',
+              headers: {}
+            };
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request GET \
+              --url https://api.woovi.com/api/v1/webhook/public-keys
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/webhook/public-keys",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: |-
+            import http.client
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+            conn.request("GET", "/api/v1/webhook/public-keys")
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/webhook/public-keys\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/webhook/public-keys")
+              .get()
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: |-
+            require 'uri'
+            require 'net/http'
+
+            url = URI("https://api.woovi.com/api/v1/webhook/public-keys")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+
+            request = Net::HTTP::Get.new(url)
+
+            response = http.request(request)
+            puts response.read_body
 components:
   schemas:
     PayloadAccount:
@@ -27595,6 +27812,32 @@ tags:
   - name: pixKey
     description: |
       Endpoint to manage Pix Keys
+  - name: pixKey check (request access)
+    description: >
+      Endpoints to look up the holder of a Pix key through the DICT.
+
+
+      **This endpoint is not enabled by default.** It queries the DICT for the
+
+      holder of a Pix key that is not yours, so it has to be requested from
+
+      support and goes through an internal review before being turned on. Calls
+
+      are billed per query.
+
+
+      If what you need is to confirm that an account belongs to who you expect,
+
+      use bank data validation instead — it is available to every account with
+
+      no approval:
+
+
+      - [Validating bank data with a Pix
+      key](https://developers.woovi.com/docs/flows/validate-bank-data)
+
+      - [Validating bank data with branch and account
+      number](https://developers.woovi.com/docs/flows/validate-bank-data-manual)
   - name: pixQrCode
     description: |
       Endpoint to manage static QRCodes
