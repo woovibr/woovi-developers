@@ -1,15 +1,11 @@
 .home-section {
-  padding: 2vh 5vw;
-}
-
-@media screen and (min-width: 720px) {
-  .home-section {
-    padding: 5vh 20vw;
-  }
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 5vw, 2.5rem);
 }
 
 .home-section > :not(:first-child) {
-  margin: 5vh 0;
+  margin-top: clamp(3rem, 7vw, 4.5rem);
 }
 
 /* reset margin */
@@ -24,9 +20,24 @@ html[data-theme='dark'] .dark-mode--override h3 {
   color: white;
 }
 
+.section-title {
+  margin-bottom: 0.35rem;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.section-lead {
+  max-width: 42rem;
+  margin-bottom: 1.5rem !important;
+  color: var(--ifm-color-emphasis-700) !important;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 .section-box {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
@@ -36,11 +47,37 @@ html[data-theme='dark'] .dark-mode--override h3 {
   gap: 18px;
 }
 
-/* just to reset hover state */
+.products--item {
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  background: var(--ifm-background-surface-color);
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
 .products--item:hover {
-  color: black;
+  transform: translateY(-2px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 16px 32px -22px rgba(0, 0, 0, 0.5);
+  text-decoration: none;
 }
 
 .products--item > h3 {
   font-size: 16px;
+}
+
+.products--item > p {
+  margin-top: 0.35rem !important;
+  color: var(--ifm-color-emphasis-700) !important;
+  font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .products--item:hover {
+    transform: none;
+  }
 }

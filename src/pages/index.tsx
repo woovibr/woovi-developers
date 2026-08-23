@@ -20,6 +20,7 @@ import { SiZapier } from 'react-icons/si';
 import Layout from '@theme/Layout';
 
 import styles from './index.module.css';
+import { Hero } from '../components/Hero/Hero';
 import { CardLink } from '../components/Card/CardLink';
 import BotConversaIcon from '../icons/BotConversaIcon';
 import SocPanelIcon from '../icons/SocPanelIcon';
@@ -130,7 +131,7 @@ const cards = [
   {
     title: 'API REST',
     content: 'API REST. Crie cobranças do seu back-end.',
-    icon: <FaReact color={'#353535'} size={30} />,
+    icon: <FaReact color={'var(--ifm-font-color-base)'} size={30} />,
     docsTo:
       '/docs/apis/api-getting-started#criando-uma-nova-chave-de-apiplugin',
     to: 'https://app.woovi.com/home/applications/api/add',
@@ -147,7 +148,7 @@ const cards = [
     title: 'Webhook',
     content:
       'Seja avisado em tempo real sempre que um pagamento via Pix for realizado.',
-    icon: <TbWebhook color={'#353535'} size={30} />,
+    icon: <TbWebhook color={'var(--ifm-font-color-base)'} size={30} />,
     docsTo: '/docs/webhook/platform/webhook-platform-api',
     to: 'https://app.woovi.com/home/applications/webhook/create',
   },
@@ -270,12 +271,21 @@ const cards = [
 
 const Home = () => {
   return (
-    <Layout>
+    <Layout
+      title='Woovi Developers'
+      description='Documentação, APIs e SDKs da Woovi para integrar Pix: cobranças, webhooks em tempo real, plugins de e-commerce e ambiente de teste.'
+    >
+      <Hero integrationsCount={cards.length} />
+
       <main
         className={clsx(styles['home-section'], styles['dark-mode--override'])}
       >
         <section>
-          <h2>Comece por aqui</h2>
+          <h2 className={clsx(styles['section-title'])}>Comece por aqui</h2>
+          <p className={clsx(styles['section-lead'])}>
+            O caminho mais curto entre a sua primeira chave de API e a primeira
+            cobrança Pix paga.
+          </p>
           <section className={clsx(styles['section-box'])}>
             {links.map((link, i) => (
               <CardLink
@@ -289,7 +299,11 @@ const Home = () => {
         </section>
 
         <section>
-          <h2>Nossas integrações</h2>
+          <h2 className={clsx(styles['section-title'])}>Nossas integrações</h2>
+          <p className={clsx(styles['section-lead'])}>
+            Plugins, SDKs e automações prontas para você não escrever código que
+            já existe.
+          </p>
           <section className={clsx(styles['section-box'])}>
             {cards.map(({ icon, docsTo, title, content }, key) => (
               <CardLink
@@ -304,7 +318,7 @@ const Home = () => {
         </section>
 
         <section>
-          <h2>Nossos produtos</h2>
+          <h2 className={clsx(styles['section-title'])}>Nossos produtos</h2>
           <section className={clsx(styles['products'])}>
             {products.map((product, i) => (
               <Link
@@ -320,7 +334,9 @@ const Home = () => {
         </section>
 
         <section>
-          <h2>Bibliotecas da Comunidade</h2>
+          <h2 className={clsx(styles['section-title'])}>
+            Bibliotecas da Comunidade
+          </h2>
           <section className={clsx(styles['products'])}>
             {communityLibraries.map((lib, i) => (
               <Link
