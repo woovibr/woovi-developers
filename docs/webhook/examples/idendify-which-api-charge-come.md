@@ -28,7 +28,7 @@ Por exemplo, você pode criar uma cobrança com o `correlationID` igual a `api-1
 
 ```json
 {
-  "event": "woovi:CHARGE_COMPLETED",
+  "event": "OPENPIX:CHARGE_COMPLETED",
   "charge": {
     "value": 1000,
     "correlationID": "api1-1",

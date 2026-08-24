@@ -47,7 +47,7 @@ class WebhookController extends Controller
 {
     const SIGNATURE_HEADER = "x-webhook-signature";
 
-    const woovi_CHARGE_COMPLETED_EVENT = "woovi:CHARGE_COMPLETED";
+    const woovi_CHARGE_COMPLETED_EVENT = "OPENPIX:CHARGE_COMPLETED";
 
     public function __construct(private Client $woovi)
     {
@@ -162,14 +162,14 @@ Durante o processamento dos webhooks, é possível validar seus tipos e encaminh
 
 Cada requisição irá trazer consigo um parâmetro `event` contendo o tipo do webhook. Veja algumas possibilidades de valores:
 
-- `woovi:CHARGE_CREATED` - Nova cobrança criada.
-- `woovi:CHARGE_COMPLETED` - Cobrança concluída é quando uma cobrança é totalmente paga.
-- `woovi:CHARGE_EXPIRED` - Cobrança expirada é quando uma cobrança não foi totalmente paga e expirou.
-- `woovi:TRANSACTION_RECEIVED` - Nova transação PIX recebida.
-- `woovi:TRANSACTION_REFUND_RECEIVED` - Novo reembolso de transação PIX recebido ou reembolsado.
-- `woovi:MOVEMENT_CONFIRMED` - Pagamento confirmado é quando a transação do pix referente ao pagamento é confirmada.
-- `woovi:MOVEMENT_FAILED` - Falha no pagamento é quando o pagamento é aprovado e ocorre um erro.
-- `woovi:MOVEMENT_REMOVED` - O pagamento foi removido por um usuário.
+- `OPENPIX:CHARGE_CREATED` - Nova cobrança criada.
+- `OPENPIX:CHARGE_COMPLETED` - Cobrança concluída é quando uma cobrança é totalmente paga.
+- `OPENPIX:CHARGE_EXPIRED` - Cobrança expirada é quando uma cobrança não foi totalmente paga e expirou.
+- `OPENPIX:TRANSACTION_RECEIVED` - Nova transação PIX recebida.
+- `OPENPIX:TRANSACTION_REFUND_RECEIVED` - Novo reembolso de transação PIX recebido ou reembolsado.
+- `OPENPIX:MOVEMENT_CONFIRMED` - Pagamento confirmado é quando a transação do pix referente ao pagamento é confirmada.
+- `OPENPIX:MOVEMENT_FAILED` - Falha no pagamento é quando o pagamento é aprovado e ocorre um erro.
+- `OPENPIX:MOVEMENT_REMOVED` - O pagamento foi removido por um usuário.
 
 Assumindo que você tenha um método `handleWebhook` que recebe todos os webhooks com a assinatura validada, veja o exemplo:
 
@@ -219,10 +219,10 @@ private function isChargePaidPayload(Request $request)
         // Indicam quais eventos são considerados como
         // uma cobrança sendo paga.
 
-        // "woovi:CHARGE_COMPLETED"
+        // "OPENPIX:CHARGE_COMPLETED"
         self::woovi_CHARGE_COMPLETED_EVENT,
         
-        // "woovi:TRANSACTION_RECEIVED"
+        // "OPENPIX:TRANSACTION_RECEIVED"
         self::woovi_TRANSACTION_RECEIVED_EVENT,
     ];
 
@@ -238,7 +238,7 @@ private function isChargePaidPayload(Request $request)
 Ao configurar uma nova integração via webhooks na plataforma, ela enviará um webhook de teste para verificar se tudo está correto com sua aplicação.
 
 Esse webhook de teste será enviado com o campo `event` contendo o valor especificado pelo evento selecionado na plataforma. 
-Por exemplo, se você selecionar o evento `Cobrança paga`, o campo `event` será `woovi:CHARGE_COMPLETED`.
+Por exemplo, se você selecionar o evento `Cobrança paga`, o campo `event` será `OPENPIX:CHARGE_COMPLETED`.
 
 Veja como é possível verificar se um webhook é de teste:
 

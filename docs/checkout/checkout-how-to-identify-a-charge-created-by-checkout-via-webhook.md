@@ -48,11 +48,11 @@ Com essas informações, você pode identificar o checkout que originou a cobran
 
 ## Exemplo de payload de webhook
 
-Segue abaixo o payload de exemplo de uma cobrança criada (`woovi:CHARGE_CREATED`) via Checkout:
+Segue abaixo o payload de exemplo de uma cobrança criada (`OPENPIX:CHARGE_CREATED`) via Checkout:
 
 ```json
 {
-  "event": "woovi:CHARGE_CREATED",
+  "event": "OPENPIX:CHARGE_CREATED",
   "charge": {
     "customer": null,
     "value": 1200,

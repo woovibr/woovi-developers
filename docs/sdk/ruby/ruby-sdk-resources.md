@@ -197,7 +197,7 @@ response = client.webhooks.fetch_previous_page!
 # Criar um Webhook
 webhook_params = {
   name: "nome do webhook",
-  event: "woovi:CHARGE_CREATED",
+  event: "OPENPIX:CHARGE_CREATED",
   url: "https://meu-endpoint/woovi/webhooks"
 }
 # inicializar o body

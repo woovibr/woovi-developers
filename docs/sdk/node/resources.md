@@ -600,7 +600,7 @@ Para criar um webhook, use o método `create` no recurso de webhook.
 const response = await woovi.webhook.create({
   webhook: {
     name: 'webhookName',
-    event: 'woovi:CHARGE_CREATED',
+    event: 'OPENPIX:CHARGE_CREATED',
     url: 'https://mycompany.com.br/webhook',
     authorization: 'woovi',
     isActive: true,

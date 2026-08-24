@@ -115,7 +115,7 @@ Quando um pagamento PIX falha, o webhook `MOVEMENT_FAILED` retorna informações
 
 ```json
 {
-  "event": "woovi:MOVEMENT_FAILED",
+  "event": "OPENPIX:MOVEMENT_FAILED",
   "payment": {
     "value": 1,
     "status": "FAILED",
