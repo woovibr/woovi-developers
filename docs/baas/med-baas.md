@@ -4,9 +4,10 @@ title: Baas e Med
 tags: 
   - baas 
   - api
+sidebar_position: 13
 ---
 
-Este documento irá ajuda-lo a entender os principais conçeitos de med e qual a sua relação com baas.
+Este documento irá ajudá-lo a entender os principais conceitos de MED e qual a sua relação com BaaS.
 
 ### Gestão de MEDs (Devoluções Pix) para clientes BAAS
 

@@ -84,6 +84,14 @@ module.exports = {
       {
         redirects: [
           {
+            from: '/docs/baas/documents-nescessary',
+            to: '/docs/baas/documentos-kyc',
+          },
+          {
+            from: '/docs/baas/baas-compliance',
+            to: '/docs/baas/documentos-kyc',
+          },
+          {
             from: '/docs/ecommerce/woocommerce-plugin',
             to: '/docs/ecommerce/woocommerce/woocommerce-plugin',
           },

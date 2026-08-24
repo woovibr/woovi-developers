@@ -5,6 +5,7 @@ tags:
   - api
   - baas
   - api master
+sidebar_position: 6
 ---
 
 Este documento irá ajudá-lo a entender como criar APIs para as contas abertas no modo BaaS e como um AppId **MASTER** lê o extrato e as transações de outra conta da mesma empresa.
