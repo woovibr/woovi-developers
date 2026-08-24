@@ -14,7 +14,7 @@ Abaixo, você pode ver uma lista de todos os eventos que a Woovi envia para sua 
 
 :::tip Obtenha a lista de eventos via API
 Você também pode obter a lista completa de eventos disponíveis programaticamente através da nossa API. 
-Consulte o endpoint [GET /api/v1/webhook/events](https://developers.woovi.com/api#tag/webhook/GET/api/v1/webhook/events) na referência da API.
+Consulte o endpoint [GET /api/v1/webhook/events](/api#tag/webhook/GET/api/v1/webhook/events) na referência da API.
 :::
 
 ## Eventos de cobrança

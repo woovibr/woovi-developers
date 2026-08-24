@@ -39,7 +39,7 @@ Quando o campo `network` é omitido, o padrão é `POLYGON`. Enviar uma combina�
 
 ## Pré-requisito: KYB
 
-Para criar depósitos, sua empresa precisa ter uma **subconta de stablecoin** com status `CONFIRMED`, ou seja, com o KYB (Know Your Business) aprovado — parte da infraestrutura de [BaaS](https://developers.woovi.com/docs/category/baas) da Woovi. Sem uma subconta ativa, a criação do depósito é rejeitada com `400` e a mensagem:
+Para criar depósitos, sua empresa precisa ter uma **subconta de stablecoin** com status `CONFIRMED`, ou seja, com o KYB (Know Your Business) aprovado — parte da infraestrutura de [BaaS](/docs/category/baas) da Woovi. Sem uma subconta ativa, a criação do depósito é rejeitada com `400` e a mensagem:
 
 ```json
 { "error": "Nenhuma subconta de stablecoin ativa. É necessário um KYB, entre em contato com o suporte." }

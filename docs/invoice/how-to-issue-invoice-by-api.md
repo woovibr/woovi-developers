@@ -22,7 +22,7 @@ A emissão exige que a integração de nota fiscal da conta já esteja configura
 POST /api/v1/invoice
 ```
 
-Autentique com o header `Authorization: SEU_APPID_AQUI`. Você encontra a documentação detalhada desse endpoint nas [documentações de api](https://developers.woovi.com/en/api#tag/invoice/paths/~1api~1v1~1invoice/post).
+Autentique com o header `Authorization: SEU_APPID_AQUI`. Você encontra a documentação detalhada desse endpoint nas [documentações de api](/api#tag/invoice/POST/api/v1/invoice).
 
 A API aceita dois formatos de payload, sempre exigindo dados de cobrança **ou** valor, e um cliente (via `customerId` ou objeto `customer`).
 

@@ -14,7 +14,7 @@ listar os pagamentos (Pix Out) da empresa, filtrando por período e paginando os
 resultados. É o endpoint indicado para reconciliação: a partir dele você
 recupera o `status` e o `correlationID` de cada pagamento.
 
-Você pode acessar [aqui](<https://developers.woovi.com/api#tag/payment-request-access/GET/api/v1/payment>)
+Você pode acessar [aqui](</api#tag/payment-request-access/GET/api/v1/payment>)
 a documentação de referência desse _endpoint_.
 
 Para usar esse endpoint, o seu AppID precisa ter o escopo `PAYMENT_GET_LIST`

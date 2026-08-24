@@ -9,7 +9,7 @@ tags:
 
 ## Pix Automátio Rotas da API
 
-Você pode ver em mais detalhes pelo [link](https://developers.woovi.com/api#tag/subscription
+Você pode ver em mais detalhes pelo [link](/api#tag/subscription
 
 ### Criar uma Assinatura
 

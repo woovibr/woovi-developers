@@ -11,7 +11,7 @@ tags:
 Nós disponibilizamos o _endpoint_ `/api/v1/transaction` para que você possa visualizar
 _transactions_ de sua empresa.
 
-Você pode acessar [aqui](https://developers.woovi.com.br/api#tag/transactions/paths/~1api~1v1~1transaction/get)
+Você pode acessar [aqui](/api#tag/transactions/GET/api/v1/transaction)
 a documentação referente a esse _endpoint_.
 
 O endpoint limita a 100 transações por request, porém é possível visualizar outras transações paginando a API.

@@ -23,9 +23,9 @@ Visualize o recebido
 
 ## Como receber esse recibo via API?
 
-Acesse a documentação da API [aqui](https://developers.woovi.com.br/api/#tag/receipt)
+Acesse a documentação da API [aqui](/api/#tag/receipt)
 
-Caso n saiba criar uma API, acesse a documentacao de primeiros passos [aqui](https://developers.woovi.com.br/docs/apis/getting-started-api)
+Caso n saiba criar uma API, acesse a documentacao de primeiros passos [aqui](/docs/apis/getting-started-api)
 
 O endpoint que você precisa usar é um GET (/api/v1/receipt/:EndToEndId)
 

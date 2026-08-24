@@ -25,9 +25,9 @@ Uma aplicação `MASTER` fica ligada a **uma** conta bancária, como qualquer Ap
 
 Primeiro vá na plataforma em API/PLUGINS e crie uma API **MASTER**.
 
-Em seguida, use o AppId da API mestre para criar o AppId da conta que você selecionou no endpoint [`POST /api/v1/application`](https://developers.woovi.com/api#tag/application).
+Em seguida, use o AppId da API mestre para criar o AppId da conta que você selecionou no endpoint [`POST /api/v1/application`](/api#tag/application).
 
-É necessário ter o `accountId` da conta para a qual você quer criar a API. Liste as contas com [`GET /api/v1/account`](https://developers.woovi.com/api#tag/account):
+É necessário ter o `accountId` da conta para a qual você quer criar a API. Liste as contas com [`GET /api/v1/account`](/api#tag/account):
 
 ```bash
 curl --request GET \
@@ -116,8 +116,8 @@ Endpoints que aceitam `companyBankAccount` hoje:
 
 | Método | Endpoint | Escopo |
 | --- | --- | --- |
-| `GET` | [`/api/v1/statement`](https://developers.woovi.com/api#tag/statement) | `STATEMENT_GET` |
-| `GET` | [`/api/v1/transaction/{id}`](https://developers.woovi.com/api#tag/transactions | `TRANSACTION_GET` |
+| `GET` | [`/api/v1/statement`](/api#tag/statement) | `STATEMENT_GET` |
+| `GET` | [`/api/v1/transaction/{id}`](/api#tag/transactions | `TRANSACTION_GET` |
 
 Sem a query string, o comportamento não muda: o statement continua da conta ligada ao AppId, e a transaction continua no escopo da empresa.
 

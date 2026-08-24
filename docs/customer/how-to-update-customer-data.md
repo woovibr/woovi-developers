@@ -110,4 +110,4 @@ Retornarmeros a seguinte resposta de exemplo:
 }
 ```
 
-Consulte a documentação da API para mais informações sobre os campos e a resposta da requisição aqui: [API](https://developers.woovi.com.br/api#tag/customer/paths/~1api~1v1~1customer~1%7BcorrelationID%7D/patch)
+Consulte a documentação da API para mais informações sobre os campos e a resposta da requisição aqui: [API](/api#tag/customer/PATCH/api/v1/customer/{correlationID})

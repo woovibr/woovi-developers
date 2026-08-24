@@ -70,7 +70,7 @@ Antes de começar, você precisará de:
 
 Para criar uma cobrança do tipo *Boleto* com juros e multa, você precisará acessar o endpoint de criação de cobrança:
 
-[Criar cobrança](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge/get)
+[Criar cobrança](/api#tag/charge/GET/api/v1/charge)
 
 O processo de criação de um boleto com juros e multa é similar ao boleto comum, porém com a adição dos seguintes parâmetros:
 

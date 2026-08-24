@@ -29,7 +29,7 @@ client = woovi::RubySdk::Client.new(app_id)
 ```
 
 ### Chamando a API
-O client da acesso aos endpoints da API da woovi, no qual sua documentação se encontra [aqui](https://developers.woovi.com.br/api).
+O client da acesso aos endpoints da API da woovi, no qual sua documentação se encontra [aqui](/api).
 
 Os endpoints disponiveis atraves do SDK sāo:
 - Charge (cobranças)
@@ -87,7 +87,7 @@ client.charges.init_body(params: charge_params, rest: { 'key' => 'value' })
 ```ruby
 # Recebe como params
 # extra_headers (um hash que oferece a possibilidade de adicionar headers extras na request)
-# return_existing (um boolean que faz com que seja retornado um recurso, caso ele ja exista, saiba mais aqui https://developers.woovi.com.br/docs/concepts/idempotence)
+# return_existing (um boolean que faz com que seja retornado um recurso, caso ele ja exista, saiba mais aqui /docs/concepts/idempotence)
 
 # apos inicializar o body
 response = client.charges.save
