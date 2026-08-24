@@ -1330,14 +1330,14 @@ paths:
                   feeMode: PERCENTAGE
                   monthlyFeePercentage: 7
                   daysUntilDue: 7
-                  dueDate: 2026-07-25T03:00:00.000Z
-                  approvedAt: 2026-07-18T12:00:00.000Z
+                  dueDate: '2026-07-25T03:00:00.000Z'
+                  approvedAt: '2026-07-18T12:00:00.000Z'
                   cancelledAt: null
                   cancelReason: null
                   endToEndId: null
                   failureCode: null
                   failureReason: null
-                  createdAt: 2026-07-18T11:59:00.000Z
+                  createdAt: '2026-07-18T11:59:00.000Z'
         '400':
           description: Invalid id
           content:
@@ -2084,14 +2084,14 @@ paths:
                     feeMode: PERCENTAGE
                     monthlyFeePercentage: 7
                     daysUntilDue: 7
-                    dueDate: 2026-07-25T03:00:00.000Z
+                    dueDate: '2026-07-25T03:00:00.000Z'
                     approvedAt: null
                     cancelledAt: null
                     cancelReason: null
                     endToEndId: null
                     failureCode: null
                     failureReason: null
-                    createdAt: 2026-07-18T11:59:00.000Z
+                    createdAt: '2026-07-18T11:59:00.000Z'
                 count: 1
         '400':
           description: Invalid status filter
@@ -2279,14 +2279,14 @@ paths:
                   feeMode: PERCENTAGE
                   monthlyFeePercentage: 7
                   daysUntilDue: 7
-                  dueDate: 2026-07-25T03:00:00.000Z
+                  dueDate: '2026-07-25T03:00:00.000Z'
                   approvedAt: null
-                  cancelledAt: 2026-07-18T12:05:00.000Z
+                  cancelledAt: '2026-07-18T12:05:00.000Z'
                   cancelReason: acima do limite
                   endToEndId: null
                   failureCode: null
                   failureReason: null
-                  createdAt: 2026-07-18T11:59:00.000Z
+                  createdAt: '2026-07-18T11:59:00.000Z'
         '400':
           description: Invalid id
           content:
@@ -2854,7 +2854,7 @@ paths:
             type: string
             format: date-time
           description: Only transactions created from this date on.
-          example: 2026-07-01T00:00:00.000Z
+          example: '2026-07-01T00:00:00.000Z'
         - in: query
           name: end
           schema:
@@ -2914,8 +2914,8 @@ paths:
                         status: CONFIRMED
                         value: 245000
                         fee: 299
-                        createdAt: 2026-07-26T13:04:11.212Z
-                        settledAt: 2026-07-27T10:00:00.000Z
+                        createdAt: '2026-07-26T13:04:11.212Z'
+                        settledAt: '2026-07-27T10:00:00.000Z'
                         finesValue: 1902
                         interestsValue: 200
                         charge:
@@ -2928,7 +2928,7 @@ paths:
                         status: CONFIRMED
                         value: 50000
                         fee: 150
-                        createdAt: 2026-07-25T09:12:44.001Z
+                        createdAt: '2026-07-25T09:12:44.001Z'
         '400':
           description: Invalid filter
           content:
@@ -2987,7 +2987,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE',
+              path: '/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE',
               headers: {
                 Authorization: '{APP_ID}'
               }
@@ -3010,7 +3010,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE' \
+              --url 'https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE' \
               --header 'Authorization: {APP_ID}'
         - lang: Php + Curl
           source: |-
@@ -3019,7 +3019,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -3053,7 +3053,7 @@ paths:
 
 
             conn.request("GET",
-            "/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE",
+            "/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE",
             headers=headers)
 
 
@@ -3064,13 +3064,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE")
+              .url("https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE")
               .get()
               .addHeader("Authorization", "{APP_ID}")
               .build();
@@ -3084,7 +3084,7 @@ paths:
 
 
             url =
-            URI("https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE")
+            URI("https://api.woovi.com/api/v1/boleto-transaction?type=SOME_STRING_VALUE&status=SOME_STRING_VALUE&start=2026-07-01T00%3A00%3A00.000Z&end=SOME_STRING_VALUE&settledStart=SOME_STRING_VALUE&settledEnd=SOME_STRING_VALUE&skip=SOME_INTEGER_VALUE&limit=SOME_INTEGER_VALUE")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -3319,7 +3319,7 @@ paths:
                   value:
                     boleto:
                       barcode: '34195148200000003001095517077320772982609000'
-                      expiresDate: 2026-06-27T02:59:59.999Z
+                      expiresDate: '2026-06-27T02:59:59.999Z'
                       totalValue: 300
                       issuingEntity:
                         code: '341'
@@ -4446,7 +4446,7 @@ paths:
               type: object
               $ref: '#/components/schemas/ChargePatchPayload'
             example:
-              expiresDate: 2021-04-01T17:28:51.882Z
+              expiresDate: '2021-04-01T17:28:51.882Z'
       responses:
         '200':
           description: The charge was updated to new expiration date
@@ -4481,9 +4481,9 @@ paths:
                     qrCodeImage: >-
                       https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     expiresIn: 2592000
-                    expiresDate: 2021-04-01T17:28:51.882Z
-                    createdAt: 2021-03-02T17:28:51.882Z
-                    updatedAt: 2021-03-02T17:28:51.882Z
+                    expiresDate: '2021-04-01T17:28:51.882Z'
+                    createdAt: '2021-03-02T17:28:51.882Z'
+                    updatedAt: '2021-03-02T17:28:51.882Z'
                     brCode: >-
                       000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
@@ -4723,10 +4723,10 @@ paths:
                       - key: Order
                         value: '302'
                     expiresIn: 2592000
-                    expiresDate: 2021-04-01T17:28:51.882Z
-                    dueDate: 2021-04-01T17:28:51.882Z
-                    createdAt: 2021-03-02T17:28:51.882Z
-                    updatedAt: 2021-03-02T17:28:51.882Z
+                    expiresDate: '2021-04-01T17:28:51.882Z'
+                    dueDate: '2021-04-01T17:28:51.882Z'
+                    createdAt: '2021-03-02T17:28:51.882Z'
+                    updatedAt: '2021-03-02T17:28:51.882Z'
                     paymentMethods:
                       pix:
                         method: PIX_COB
@@ -4889,7 +4889,7 @@ paths:
             format: date-time
             title: Start Date
             description: Start date used in the query. Complies with RFC 3339.
-            example: 2020-01-01T00:00:00.000Z
+            example: '2020-01-01T00:00:00Z'
         - in: query
           name: end
           schema: &ref_1
@@ -4897,7 +4897,7 @@ paths:
             format: date-time
             title: End Date
             description: End date used in the query. Complies with RFC 3339.
-            example: 2020-12-01T17:00:00.000Z
+            example: '2020-12-01T17:00:00Z'
         - name: status
           in: query
           schema:
@@ -4986,9 +4986,9 @@ paths:
                       - key: Order
                         value: '302'
                     expiresIn: 2592000
-                    expiresDate: 2021-04-01T17:28:51.882Z
-                    createdAt: 2021-03-02T17:28:51.882Z
-                    updatedAt: 2021-03-02T17:28:51.882Z
+                    expiresDate: '2021-04-01T17:28:51.882Z'
+                    createdAt: '2021-03-02T17:28:51.882Z'
+                    updatedAt: '2021-03-02T17:28:51.882Z'
                     paymentMethods:
                       pix:
                         method: PIX_COB
@@ -5022,7 +5022,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/charge?status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE',
+              path: '/api/v1/charge?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE',
               headers: {
                 Authorization: '{APP_ID}'
               }
@@ -5045,7 +5045,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/charge?status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE' \
+              --url 'https://api.woovi.com/api/v1/charge?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE' \
               --header 'Authorization: {APP_ID}'
         - lang: Php + Curl
           source: |-
@@ -5054,7 +5054,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/charge?status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/charge?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -5088,7 +5088,7 @@ paths:
 
 
             conn.request("GET",
-            "/api/v1/charge?status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE",
+            "/api/v1/charge?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE",
             headers=headers)
 
 
@@ -5099,13 +5099,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/charge?status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/charge?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/charge?status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE")
+              .url("https://api.woovi.com/api/v1/charge?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE")
               .get()
               .addHeader("Authorization", "{APP_ID}")
               .build();
@@ -5119,7 +5119,7 @@ paths:
 
 
             url =
-            URI("https://api.woovi.com/api/v1/charge?status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE")
+            URI("https://api.woovi.com/api/v1/charge?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&status=SOME_STRING_VALUE&customer=SOME_STRING_VALUE&subscription=SOME_STRING_VALUE")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -5155,7 +5155,27 @@ paths:
           examples:
             return_existing:
               value: true
-      description: Endpoint to create a new Charge for a customer
+      description: >
+        Endpoint to create a new Charge for a customer.
+
+
+        ## Split
+
+
+        You can split the value of a charge across other accounts by sending the
+
+        `splits` array in the request body. Each item accepts:
+
+          - `value`: amount in cents that will be split to the destination.
+          - `pixKey`: Pix key of the account that will receive this split.
+          - `splitType`: how the split is processed — one of `SPLIT_INTERNAL_TRANSFER`,
+            `SPLIT_SUB_ACCOUNT` or `SPLIT_PARTNER`.
+            [See how each split type is processed](https://developers.openpix.com.br/docs/splits/split-introduction).
+
+        See the *Charge with Split Internal Transfer* and *Charge with Split
+        Subaccounts*
+
+        request body examples below for the full payload shape.
       requestBody:
         description: Data to create a new charge
         required: true
@@ -5371,10 +5391,10 @@ paths:
                     qrCodeImage: >-
                       https://api.woovi.com/openpix/charge/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
                     expiresIn: 2592000
-                    expiresDate: 2021-09-01T17:28:51.882Z
-                    dueDate: 2021-04-01T17:28:51.882Z
-                    createdAt: 2021-03-02T17:28:51.882Z
-                    updatedAt: 2021-03-02T17:28:51.882Z
+                    expiresDate: '2021-09-01T17:28:51.882Z'
+                    dueDate: '2021-04-01T17:28:51.882Z'
+                    createdAt: '2021-03-02T17:28:51.882Z'
+                    updatedAt: '2021-03-02T17:28:51.882Z'
                     brCode: >-
                       000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
@@ -5704,12 +5724,12 @@ paths:
                       value: 10
                       correlationID: 9134e286-6f71-427a-bf00-241681624586
                       endToEndId: E23114447202304181826HJNwY577YDX
-                      time: 2021-03-02T17:28:51.882Z
+                      time: '2021-03-02T17:28:51.882Z'
                     - status: CONFIRMED
                       value: 40
                       correlationID: 589a378e-ab45-4f30-bd4d-4496c60f88cf
                       endToEndId: E23114447202304181057pOhPMsp2pJZ
-                      time: 2021-03-05T14:49:02.922Z
+                      time: '2021-03-05T14:49:02.922Z'
                       comment: Comentário do reembolso
         '400':
           description: An error message
@@ -5894,7 +5914,7 @@ paths:
                     value: 100
                     correlationID: a273e72c-9547-4c75-a213-3b0a2735b8d5
                     endToEndId: E23114447202304181826HJNwY577YDX
-                    time: 2023-03-02T17:28:51.882Z
+                    time: '2023-03-02T17:28:51.882Z'
                     comment: Comentário do reembolso
         '400':
           description: An error message
@@ -7287,10 +7307,10 @@ paths:
                       locationErrors: []
                       payload:
                         updates:
-                          - date: 2025-10-24T18:42:58.000Z
+                          - date: '2025-10-24T18:42:58Z'
                             status: CRIADA
                         calendar:
-                          startDate: 2025-10-24T00:00:00.000Z
+                          startDate: '2025-10-24'
                           periodicity: SEMANAL
                         idRec: RN5481141720251024BnwNHejs9h9
                         retryPolicy: NAO_PERMITE
@@ -7331,9 +7351,9 @@ paths:
                       locationErrors: []
                       payload:
                         calendar:
-                          presentation: 2025-02-25T13:27:54.168Z
+                          presentation: '2025-02-25T13:27:54.168Z'
                           expiration: 86400
-                          creation: 2025-02-12T16:59:22.939Z
+                          creation: '2025-02-12T16:59:22.939Z'
                         key: 4004901d-bd85-4769-8e52-cb4c42c506dc
                         debtor:
                           cpf: '62550186362'
@@ -7547,7 +7567,17 @@ paths:
                     properties:
                       url:
                         type: string
-                        description: Document url
+                        description: >-
+                          Public url to download the document from. Send either
+                          url or fileId, not both.
+                        minLength: 1
+                      fileId:
+                        type: string
+                        description: >-
+                          Id of a file previously uploaded to POST /api/v1/files
+                          with purpose DISPUTE_EVIDENCE. Send either url or
+                          fileId, not both. Requires the
+                          DISPUTE_EVIDENCE_FILE_ID feature.
                         minLength: 1
                       correlationID:
                         type: string
@@ -7573,6 +7603,12 @@ paths:
                           example: http://www.url.com
                           description: Document url
                           minLength: 1
+                        fileId:
+                          type: string
+                          example: 68c7d0a1f0b2c3d4e5f60718
+                          description: >-
+                            Id of the uploaded file, echoed back when the
+                            document was sent by fileId
                         correlationID:
                           type: string
                           example: id123456789
@@ -7591,11 +7627,26 @@ paths:
                     type: string
               example:
                 error: You cannot send a evidence for a accepted dispute
+        '403':
+          description: The company cannot send a evidence by fileId
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  errorCode:
+                    type: string
+              example:
+                error: >-
+                  Your account does not have the permission to send a evidence
+                  by fileId
+                errorCode: DISPUTE_EVIDENCE_FILE_ID_NOT_ALLOWED
       x-codeSamples:
         - lang: Node + Native
-          source: >-
+          source: |-
             const http = require('https');
-
 
             const options = {
               method: 'POST',
@@ -7607,7 +7658,6 @@ paths:
                 'content-type': 'application/json'
               }
             };
-
 
             const req = http.request(options, function (res) {
               const chunks = [];
@@ -7622,10 +7672,16 @@ paths:
               });
             });
 
-
-            req.write(JSON.stringify({documents: [{url: 'string', correlationID:
-            'string', description: 'string'}]}));
-
+            req.write(JSON.stringify({
+              documents: [
+                {
+                  url: 'string',
+                  fileId: 'string',
+                  correlationID: 'string',
+                  description: 'string'
+                }
+              ]
+            }));
             req.end();
         - lang: Shell + Curl
           source: |-
@@ -7633,7 +7689,7 @@ paths:
               --url https://api.woovi.com/api/v1/dispute/:id/evidence \
               --header 'Authorization: {APP_ID}' \
               --header 'content-type: application/json' \
-              --data '{"documents":[{"url":"string","correlationID":"string","description":"string"}]}'
+              --data '{"documents":[{"url":"string","fileId":"string","correlationID":"string","description":"string"}]}'
         - lang: Php + Curl
           source: |-
             <?php
@@ -7652,6 +7708,7 @@ paths:
                 'documents' => [
                     [
                             'url' => 'string',
+                            'fileId' => 'string',
                             'correlationID' => 'string',
                             'description' => 'string'
                     ]
@@ -7682,7 +7739,7 @@ paths:
 
 
             payload =
-            "{\"documents\":[{\"url\":\"string\",\"correlationID\":\"string\",\"description\":\"string\"}]}"
+            "{\"documents\":[{\"url\":\"string\",\"fileId\":\"string\",\"correlationID\":\"string\",\"description\":\"string\"}]}"
 
 
             headers = {
@@ -7702,7 +7759,7 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/dispute/:id/evidence\"\n\n\tpayload := strings.NewReader(\"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/dispute/:id/evidence\"\n\n\tpayload := strings.NewReader(\"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"fileId\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: >-
             OkHttpClient client = new OkHttpClient();
@@ -7711,7 +7768,7 @@ paths:
             MediaType mediaType = MediaType.parse("application/json");
 
             RequestBody body = RequestBody.create(mediaType,
-            "{\"documents\":[{\"url\":\"string\",\"correlationID\":\"string\",\"description\":\"string\"}]}");
+            "{\"documents\":[{\"url\":\"string\",\"fileId\":\"string\",\"correlationID\":\"string\",\"description\":\"string\"}]}");
 
             Request request = new Request.Builder()
               .url("https://api.woovi.com/api/v1/dispute/:id/evidence")
@@ -7743,7 +7800,7 @@ paths:
             request["content-type"] = 'application/json'
 
             request.body =
-            "{\"documents\":[{\"url\":\"string\",\"correlationID\":\"string\",\"description\":\"string\"}]}"
+            "{\"documents\":[{\"url\":\"string\",\"fileId\":\"string\",\"correlationID\":\"string\",\"description\":\"string\"}]}"
 
 
             response = http.request(request)
@@ -8044,8 +8101,8 @@ paths:
                       phoneNumber: '+551199999999'
                       status: IN_REVIEW
                       value: 100
-                      createdAt: 2021-03-02T17:28:51.882Z
-                      updatedAt: 2021-03-02T17:28:51.882Z
+                      createdAt: '2021-03-02T17:28:51.882Z'
+                      updatedAt: '2021-03-02T17:28:51.882Z'
         '400':
           description: An error message
           content:
@@ -8064,7 +8121,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/dispute',
+              path: '/api/v1/dispute?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z',
               headers: {
                 Authorization: '{APP_ID}'
               }
@@ -8087,7 +8144,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url https://api.woovi.com/api/v1/dispute \
+              --url 'https://api.woovi.com/api/v1/dispute?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z' \
               --header 'Authorization: {APP_ID}'
         - lang: Php + Curl
           source: |-
@@ -8096,7 +8153,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/dispute",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/dispute?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -8119,46 +8176,374 @@ paths:
               echo $response;
             }
         - lang: Python + Python3
-          source: |-
+          source: >-
             import http.client
+
 
             conn = http.client.HTTPSConnection("api.woovi.com")
 
+
             headers = { 'Authorization': "{APP_ID}" }
 
-            conn.request("GET", "/api/v1/dispute", headers=headers)
+
+            conn.request("GET",
+            "/api/v1/dispute?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z",
+            headers=headers)
+
 
             res = conn.getresponse()
+
             data = res.read()
+
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/dispute\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/dispute?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/dispute")
+              .url("https://api.woovi.com/api/v1/dispute?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z")
               .get()
               .addHeader("Authorization", "{APP_ID}")
               .build();
 
             Response response = client.newCall(request).execute();
         - lang: Ruby + Native
-          source: |-
+          source: >-
             require 'uri'
+
             require 'net/http'
 
-            url = URI("https://api.woovi.com/api/v1/dispute")
+
+            url =
+            URI("https://api.woovi.com/api/v1/dispute?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z")
+
 
             http = Net::HTTP.new(url.host, url.port)
+
             http.use_ssl = true
 
+
             request = Net::HTTP::Get.new(url)
+
             request["Authorization"] = '{APP_ID}'
 
+
             response = http.request(request)
+
+            puts response.read_body
+  /api/v1/files:
+    post:
+      tags:
+        - file
+      summary: Upload a file
+      description: >
+        Uploads a file and returns its metadata with a pre-signed download URL.
+
+        The file is sent as `multipart/form-data` on the `file` field, together
+
+        with the `purpose` that describes what the file is for.
+
+
+        Send exactly one file per request, of one of the supported content
+        types,
+
+        up to 10 MiB (`10485760` bytes).
+
+
+        When you send a `correlationID`, repeating the request with the same
+
+        `correlationID` and `purpose` returns the file already stored (`200`)
+
+        instead of uploading a second copy, so the request is safe to retry.
+
+        Without a `correlationID` one is generated for you and every call stores
+        a
+
+        new file.
+
+
+        The `url` in the response is temporary and expires at `urlExpiresAt`;
+        ask
+
+        for the file again to get a fresh one.
+      x-required-scope: FILE_POST
+      security:
+        - AppID:
+            - FILE_POST
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - purpose
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: >
+                    The file itself. Its content type must be one of
+
+                    `application/pdf`, `image/png`, `image/jpeg` or
+                    `image/webp`,
+
+                    and its leading bytes must match the declared content type.
+                purpose:
+                  $ref: '#/components/schemas/FilePurpose'
+                correlationID:
+                  type: string
+                  minLength: 1
+                  description: >
+                    Your own identifier for this upload. Reusing it for the same
+
+                    purpose returns the file stored on the first call. Defaults
+                    to
+
+                    a generated UUID.
+                  example: evidence-2026-08-1042
+      responses:
+        '200':
+          description: >
+            A file with this `correlationID` and `purpose` already existed; the
+            stored file is returned and nothing new was uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilePayload'
+        '201':
+          description: File stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilePayload'
+        '400':
+          description: >
+            Unknown `purpose`, empty `correlationID`, missing `file` field, or
+            more than one file sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileError'
+              example:
+                error: Invalid value for the field purpose
+        '401':
+          description: Missing or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileError'
+              example:
+                error: Unauthorized
+        '403':
+          description: The application does not have the `FILE_POST` scope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileError'
+              example:
+                error: Forbidden
+        '413':
+          description: File is larger than the maximum accepted size
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileError'
+              example:
+                error: File is larger than 10485760 bytes
+        '415':
+          description: >
+            Content type is not on the allowlist, or the file's leading bytes do
+            not match the declared content type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileError'
+              example:
+                error: Content type text/csv is not supported
+        '502':
+          description: The file could not be stored; the request can be retried
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileError'
+              example:
+                error: Failed to store file
+      x-codeSamples:
+        - lang: Node + Native
+          source: >-
+            const http = require('https');
+
+
+            const options = {
+              method: 'POST',
+              hostname: 'api.woovi.com',
+              port: null,
+              path: '/api/v1/files',
+              headers: {
+                Authorization: '{APP_ID}',
+                'content-type': 'multipart/form-data; boundary=---011000010111000001101001'
+              }
+            };
+
+
+            const req = http.request(options, function (res) {
+              const chunks = [];
+
+              res.on('data', function (chunk) {
+                chunks.push(chunk);
+              });
+
+              res.on('end', function () {
+                const body = Buffer.concat(chunks);
+                console.log(body.toString());
+              });
+            });
+
+
+            req.write('-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name="file"\r\n\r\nstring\r\n-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name="purpose"\r\n\r\nDISPUTE_EVIDENCE\r\n-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name="correlationID"\r\n\r\nevidence-2026-08-1042\r\n-----011000010111000001101001--\r\n');
+
+            req.end();
+        - lang: Shell + Curl
+          source: |-
+            curl --request POST \
+              --url https://api.woovi.com/api/v1/files \
+              --header 'Authorization: {APP_ID}' \
+              --header 'content-type: multipart/form-data' \
+              --form file=string \
+              --form purpose=DISPUTE_EVIDENCE \
+              --form correlationID=evidence-2026-08-1042
+        - lang: Php + Curl
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+              CURLOPT_URL => "https://api.woovi.com/api/v1/files",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"\r\n\r\nstring\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"purpose\"\r\n\r\nDISPUTE_EVIDENCE\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"correlationID\"\r\n\r\nevidence-2026-08-1042\r\n-----011000010111000001101001--\r\n",
+              CURLOPT_HTTPHEADER => [
+                "Authorization: {APP_ID}",
+                "content-type: multipart/form-data"
+              ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python + Python3
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("api.woovi.com")
+
+
+            payload = "-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name=\"file\"\r\n\r\nstring\r\n-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name=\"purpose\"\r\n\r\nDISPUTE_EVIDENCE\r\n-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name=\"correlationID\"\r\n\r\nevidence-2026-08-1042\r\n-----011000010111000001101001--\r\n"
+
+
+            headers = {
+                'Authorization': "{APP_ID}",
+                'content-type': "multipart/form-data"
+            }
+
+
+            conn.request("POST", "/api/v1/files", payload, headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Go + Native
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/files\"\n\n\tpayload := strings.NewReader(\"-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"file\\\"\\r\\n\\r\\nstring\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"purpose\\\"\\r\\n\\r\\nDISPUTE_EVIDENCE\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"correlationID\\\"\\r\\n\\r\\nevidence-2026-08-1042\\r\\n-----011000010111000001101001--\\r\\n\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"multipart/form-data\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java + Okhttp
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("multipart/form-data;
+            boundary=---011000010111000001101001");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "-----011000010111000001101001\r\nContent-Disposition: form-data;
+            name=\"file\"\r\n\r\nstring\r\n-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name=\"purpose\"\r\n\r\nDISPUTE_EVIDENCE\r\n-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name=\"correlationID\"\r\n\r\nevidence-2026-08-1042\r\n-----011000010111000001101001--\r\n");
+
+            Request request = new Request.Builder()
+              .url("https://api.woovi.com/api/v1/files")
+              .post(body)
+              .addHeader("Authorization", "{APP_ID}")
+              .addHeader("content-type", "multipart/form-data")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Ruby + Native
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url = URI("https://api.woovi.com/api/v1/files")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["Authorization"] = '{APP_ID}'
+
+            request["content-type"] = 'multipart/form-data'
+
+            request.body =
+            "-----011000010111000001101001\r\nContent-Disposition: form-data;
+            name=\"file\"\r\n\r\nstring\r\n-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name=\"purpose\"\r\n\r\nDISPUTE_EVIDENCE\r\n-----011000010111000001101001\r\nContent-Disposition:
+            form-data;
+            name=\"correlationID\"\r\n\r\nevidence-2026-08-1042\r\n-----011000010111000001101001--\r\n"
+
+
+            response = http.request(request)
+
             puts response.read_body
   /api/v1/funds-recovery/{id}/cancel:
     post:
@@ -8203,10 +8588,10 @@ paths:
                 status: CANCELLED
                 direction: SENT
                 reporterParticipant: '31680151'
-                creationTime: 2026-06-11T00:30:00.000Z
-                lastModified: 2026-06-11T01:10:00.000Z
-                createdAt: 2026-06-11T00:30:00.000Z
-                updatedAt: 2026-06-11T01:10:00.000Z
+                creationTime: '2026-06-11T00:30:00.000Z'
+                lastModified: '2026-06-11T01:10:00.000Z'
+                createdAt: '2026-06-11T00:30:00.000Z'
+                updatedAt: '2026-06-11T01:10:00.000Z'
         '400':
           description: The id is not a valid UUID
           content:
@@ -8431,14 +8816,14 @@ paths:
                 status: AWAITING_ANALYSIS
                 direction: SENT
                 reporterParticipant: '31680151'
-                creationTime: 2026-06-11T00:30:00.000Z
-                lastModified: 2026-06-11T00:35:00.000Z
+                creationTime: '2026-06-11T00:30:00.000Z'
+                lastModified: '2026-06-11T00:35:00.000Z'
                 events:
                   - id: f3a1c9d2-8b47-4e6a-9c21-5d7e0a4b8f13
                     event: AWAITING_ANALYSIS
-                    timestamp: 2026-06-11T00:35:00.000Z
-                createdAt: 2026-06-11T00:30:00.000Z
-                updatedAt: 2026-06-11T00:35:00.000Z
+                    timestamp: '2026-06-11T00:35:00.000Z'
+                createdAt: '2026-06-11T00:30:00.000Z'
+                updatedAt: '2026-06-11T00:35:00.000Z'
         '400':
           description: The id is not a valid UUID
           content:
@@ -8659,11 +9044,11 @@ paths:
                 status: CREATED
                 direction: SENT
                 reporterParticipant: '31680151'
-                creationTime: 2026-06-11T00:30:00.000Z
-                lastModified: 2026-06-11T00:30:00.000Z
+                creationTime: '2026-06-11T00:30:00.000Z'
+                lastModified: '2026-06-11T00:30:00.000Z'
                 events: []
-                createdAt: 2026-06-11T00:30:00.000Z
-                updatedAt: 2026-06-11T00:30:00.000Z
+                createdAt: '2026-06-11T00:30:00.000Z'
+                updatedAt: '2026-06-11T00:30:00.000Z'
         '400':
           description: Invalid body (missing field or invalid situationType)
           content:
@@ -9641,12 +10026,12 @@ paths:
           name: start
           schema:
             type: string
-          example: 2021-01-01T00:00:00.000Z
+          example: '2021-01-01'
         - in: query
           name: end
           schema:
             type: string
-          example: 2021-01-01T00:00:00.000Z
+          example: '2021-01-01'
         - in: query
           name: skip
           schema:
@@ -9668,8 +10053,8 @@ paths:
                     invoices:
                       - id: 67001bbf0b0621890af7dc28
                         value: 500
-                        date: 2024-10-04T16:45:51.058Z
-                        billingDate: 2024-10-04T16:45:51.058Z
+                        date: '2024-10-04T16:45:51.058Z'
+                        billingDate: '2024-10-04T16:45:51.058Z'
                         status: CONFIRMED
                         statusRaw: null
                         correlationID: INV-123
@@ -9680,8 +10065,8 @@ paths:
                           correlationID: 0c2df47d-4a90-4ef2-b04a-1f8673f1dbdd
                           value: 500
                           status: COMPLETED
-                          paidAt: 2024-10-04T16:44:18.000Z
-                          date: 2024-10-04T16:43:20.931Z
+                          paidAt: '2024-10-04T16:44:18.000Z'
+                          date: '2024-10-04T16:43:20.931Z'
         '400':
           description: Bad request
           content:
@@ -9713,7 +10098,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/invoice?skip=0&limit=100',
+              path: '/api/v1/invoice?start=2021-01-01&end=2021-01-01&skip=0&limit=100',
               headers: {
                 Authorization: '{APP_ID}'
               }
@@ -9736,7 +10121,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/invoice?skip=0&limit=100' \
+              --url 'https://api.woovi.com/api/v1/invoice?start=2021-01-01&end=2021-01-01&skip=0&limit=100' \
               --header 'Authorization: {APP_ID}'
         - lang: Php + Curl
           source: |-
@@ -9745,7 +10130,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/invoice?skip=0&limit=100",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/invoice?start=2021-01-01&end=2021-01-01&skip=0&limit=100",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -9778,7 +10163,8 @@ paths:
             headers = { 'Authorization': "{APP_ID}" }
 
 
-            conn.request("GET", "/api/v1/invoice?skip=0&limit=100",
+            conn.request("GET",
+            "/api/v1/invoice?start=2021-01-01&end=2021-01-01&skip=0&limit=100",
             headers=headers)
 
 
@@ -9789,32 +10175,41 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice?skip=0&limit=100\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/invoice?start=2021-01-01&end=2021-01-01&skip=0&limit=100\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/invoice?skip=0&limit=100")
+              .url("https://api.woovi.com/api/v1/invoice?start=2021-01-01&end=2021-01-01&skip=0&limit=100")
               .get()
               .addHeader("Authorization", "{APP_ID}")
               .build();
 
             Response response = client.newCall(request).execute();
         - lang: Ruby + Native
-          source: |-
+          source: >-
             require 'uri'
+
             require 'net/http'
 
-            url = URI("https://api.woovi.com/api/v1/invoice?skip=0&limit=100")
+
+            url =
+            URI("https://api.woovi.com/api/v1/invoice?start=2021-01-01&end=2021-01-01&skip=0&limit=100")
+
 
             http = Net::HTTP.new(url.host, url.port)
+
             http.use_ssl = true
 
+
             request = Net::HTTP::Get.new(url)
+
             request["Authorization"] = '{APP_ID}'
 
+
             response = http.request(request)
+
             puts response.read_body
     post:
       tags:
@@ -12238,7 +12633,7 @@ paths:
                       id: Q29tcGFueTo2MDE1MTQ0OWUzYzlhNDAwMTJhYjM0Y2Q=
                       name: Affiliate Company One LTDA
                       taxID: '65914571000187'
-                      createdAt: 2026-01-15T13:22:41.000Z
+                      createdAt: '2026-01-15T13:22:41.000Z'
                     account:
                       clientId: Client_Id_5f3a1c9e8b7d4a2f
                       name: Conta 1234
@@ -12249,7 +12644,7 @@ paths:
                       id: Q29tcGFueTo2MDE1MTQ0OWUzYzlhNDAwMTJjZDU2ZWY=
                       name: Affiliate Company Two LTDA
                       taxID: '14380200000121'
-                      createdAt: 2026-01-12T09:05:18.000Z
+                      createdAt: '2026-01-12T09:05:18.000Z'
                 pageInfo:
                   skip: 0
                   limit: 100
@@ -13329,7 +13724,7 @@ paths:
                   transaction:
                     value: 100
                     endToEndId: transaction-end-to-end-id
-                    time: 2023-03-20T13:14:17.000Z
+                    time: '2023-03-20T13:14:17.000Z'
                   destination:
                     name: Dan
                     taxID: '31324227036'
@@ -13554,7 +13949,7 @@ paths:
                         taxID:
                           taxID: '00123456000199'
                           type: BR:CNPJ
-                    time: 2023-03-20T13:14:17.000Z
+                    time: '2023-03-20T13:14:17.000Z'
                   destination:
                     name: Dan
                     taxID: '31324227036'
@@ -13768,7 +14163,7 @@ paths:
                   transaction:
                     value: 100
                     endToEndId: transaction-end-to-end-id
-                    time: 2023-03-20T13:14:17.000Z
+                    time: '2023-03-20T13:14:17.000Z'
                     debitParty:
                       account:
                         branch: '0001'
@@ -14133,7 +14528,7 @@ paths:
                       sourceAccountId: 6a0382bc2dd3cd1010cbc72d
                       boleto:
                         barcode: '34195148200000003001095517077320772982609000'
-                        expiresDate: 2026-06-27T02:59:59.999Z
+                        expiresDate: '2026-06-27T02:59:59.999Z'
                         totalValue: 300
                         issuingEntity:
                           code: '341'
@@ -14154,7 +14549,7 @@ paths:
                     transaction:
                       value: 100
                       endToEndId: transaction-end-to-end-id
-                      time: 2023-03-20T13:14:17.000Z
+                      time: '2023-03-20T13:14:17.000Z'
                     destination:
                       name: Dan
                       taxID: '31324227036'
@@ -15207,15 +15602,15 @@ paths:
                     tokensAfter: 99
                     endToEndId: E18236120202012032010s0133872GZA
                     pixKey: '31324227036'
-                    createdAt: 2024-01-15T10:30:00.000Z
-                    updatedAt: 2024-01-15T10:30:00.000Z
+                    createdAt: '2024-01-15T10:30:00.000Z'
+                    updatedAt: '2024-01-15T10:30:00.000Z'
                   - operation: ADD
                     reason: refill
                     tokens: 10
                     tokensBefore: 90
                     tokensAfter: 100
-                    createdAt: 2024-01-15T11:00:00.000Z
-                    updatedAt: 2024-01-15T11:00:00.000Z
+                    createdAt: '2024-01-15T11:00:00.000Z'
+                    updatedAt: '2024-01-15T11:00:00.000Z'
         '400':
           description: An error message
           content:
@@ -15558,8 +15953,8 @@ paths:
                     brCode: >-
                       000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-                    createdAt: 2021-03-02T17:28:51.882Z
-                    updatedAt: 2021-03-02T17:28:51.882Z
+                    createdAt: '2021-03-02T17:28:51.882Z'
+                    updatedAt: '2021-03-02T17:28:51.882Z'
         '400':
           description: An error message
           content:
@@ -15752,8 +16147,8 @@ paths:
                     brCode: >-
                       000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-                    createdAt: 2021-03-02T17:28:51.882Z
-                    updatedAt: 2021-03-02T17:28:51.882Z
+                    createdAt: '2021-03-02T17:28:51.882Z'
+                    updatedAt: '2021-03-02T17:28:51.882Z'
         '400':
           description: An error message
           content:
@@ -15912,8 +16307,8 @@ paths:
                     paymentLinkUrl: https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
                     qrCodeImage: >-
                       https://api.woovi.com/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-                    createdAt: 2021-03-02T17:28:51.882Z
-                    updatedAt: 2021-03-02T17:28:51.882Z
+                    createdAt: '2021-03-02T17:28:51.882Z'
+                    updatedAt: '2021-03-02T17:28:51.882Z'
                     brCode: >-
                       000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                       Paulo62360532867ba5173c734202ac659721306b38c963044BCA
@@ -16133,17 +16528,17 @@ paths:
                     status: ACTIVE
                     customer: 603f81fcc6bccc24326ffb43
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
-                    createdAt: 2021-03-03T12:33:00.546Z
-                    updatedAt: 2021-03-03T12:33:00.546Z
+                    createdAt: '2021-03-03T12:33:00.546Z'
+                    updatedAt: '2021-03-03T12:33:00.546Z'
                   withdraw:
                     value: 100
-                    time: 2021-03-03T12:33:00.536Z
+                    time: '2021-03-03T12:33:00.536Z'
                     infoPagador: payer info 1
                     endToEndId: E18236120202012032010s01345689XBY
-                    createdAt: 2021-03-03T12:33:00.546Z
+                    createdAt: '2021-03-03T12:33:00.546Z'
                   infoPagador: payer info 0
                   value: 100
-                  time: 2021-03-03T12:33:00.536Z
+                  time: '2021-03-03T12:33:00.536Z'
                   transactionID: transactionID
                   type: PAYMENT
                   endToEndId: E18236120202012032010s0133872GZA
@@ -16314,23 +16709,23 @@ paths:
                     status: ACTIVE
                     customer: 603f81fcc6bccc24326ffb43
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
-                    createdAt: 2021-03-03T12:33:00.546Z
-                    updatedAt: 2021-03-03T12:33:00.546Z
+                    createdAt: '2021-03-03T12:33:00.546Z'
+                    updatedAt: '2021-03-03T12:33:00.546Z'
                   withdraw:
                     value: 100
-                    time: 2021-03-03T12:33:00.536Z
+                    time: '2021-03-03T12:33:00.536Z'
                     infoPagador: payer info 1
                     endToEndId: E18236120202012032010s01345689XBY
                   type: PAYMENT
                   infoPagador: payer info 0
                   value: 100
-                  time: 2021-03-03T12:33:00.536Z
+                  time: '2021-03-03T12:33:00.536Z'
                   transactionID: transactionID
                   endToEndId: E18236120202012032010s0133872GZA
                   webhookSent:
                     - OPENPIX:TRANSACTION_RECEIVED:
                         status: 200
-                        time: 2021-03-03T12:33:00.546Z
+                        time: '2021-03-03T12:33:00.546Z'
                       isRetry: false
         '400':
           description: An error message
@@ -16350,7 +16745,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND',
+              path: '/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND',
               headers: {
                 Authorization: '{APP_ID}'
               }
@@ -16373,7 +16768,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND' \
+              --url 'https://api.woovi.com/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND' \
               --header 'Authorization: {APP_ID}'
         - lang: Php + Curl
           source: |-
@@ -16382,7 +16777,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -16416,7 +16811,7 @@ paths:
 
 
             conn.request("GET",
-            "/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND",
+            "/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND",
             headers=headers)
 
 
@@ -16427,13 +16822,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND")
+              .url("https://api.woovi.com/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND")
               .get()
               .addHeader("Authorization", "{APP_ID}")
               .build();
@@ -16447,7 +16842,7 @@ paths:
 
 
             url =
-            URI("https://api.woovi.com/api/v1/transaction?charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND")
+            URI("https://api.woovi.com/api/v1/transaction?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&charge=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&pixQrCode=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&withdrawal=Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA&hasWebhook=true&type=REFUND")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -16690,7 +17085,7 @@ paths:
                       value: 100
                       correlationID: 9134e286-6f71-427a-bf00-241681624586
                       refundId: 9134e2866f71427abf00241681624586
-                      time: 2021-03-02T17:28:51.882Z
+                      time: '2021-03-02T17:28:51.882Z'
                       comment: Comentário do reembolso
         '400':
           description: An error message
@@ -16844,7 +17239,7 @@ paths:
                     value: 100
                     correlationID: 9134e286-6f71-427a-bf00-241681624586
                     refundId: 9134e2866f71427abf00241681624586
-                    time: 2021-03-02T17:28:51.882Z
+                    time: '2021-03-02T17:28:51.882Z'
                     comment: Comentário do reembolso
         '400':
           description: An error message
@@ -19792,7 +20187,7 @@ paths:
                       type: string
                       format: date-time
                       description: Date and time of the transaction
-                      example: 2023-12-01T10:30:00.000Z
+                      example: '2023-12-01T10:30:00.000Z'
                     description:
                       type: string
                       description: Description of the transaction
@@ -19866,7 +20261,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/statement?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE',
+              path: '/api/v1/statement?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE',
               headers: {
                 Authorization: '{APP_ID}'
               }
@@ -19889,7 +20284,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/statement?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE' \
+              --url 'https://api.woovi.com/api/v1/statement?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE' \
               --header 'Authorization: {APP_ID}'
         - lang: Php + Curl
           source: |-
@@ -19898,7 +20293,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/statement?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/statement?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -19932,7 +20327,7 @@ paths:
 
 
             conn.request("GET",
-            "/api/v1/statement?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE",
+            "/api/v1/statement?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE",
             headers=headers)
 
 
@@ -19943,13 +20338,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/statement?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/statement?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/statement?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE")
+              .url("https://api.woovi.com/api/v1/statement?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE")
               .get()
               .addHeader("Authorization", "{APP_ID}")
               .build();
@@ -19963,7 +20358,7 @@ paths:
 
 
             url =
-            URI("https://api.woovi.com/api/v1/statement?skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE")
+            URI("https://api.woovi.com/api/v1/statement?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z&skip=SOME_NUMBER_VALUE&limit=SOME_NUMBER_VALUE")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -21615,7 +22010,7 @@ paths:
           schema:
             type: string
             format: date-time
-          example: 2023-01-01T00:00:00.000Z
+          example: '2023-01-01T00:00:00.000Z'
         - name: end
           in: query
           description: End date for filtering entries (ISO 8601 format)
@@ -21623,7 +22018,7 @@ paths:
           schema:
             type: string
             format: date-time
-          example: 2023-12-31T23:59:59.999Z
+          example: '2023-12-31T23:59:59.999Z'
       responses:
         '200':
           description: Sub Account statement retrieved successfully
@@ -21640,7 +22035,7 @@ paths:
                     time:
                       type: string
                       format: date-time
-                      example: 2023-12-01T10:30:00.000Z
+                      example: '2023-12-01T10:30:00.000Z'
                     description:
                       type: string
                       example: Payment received from customer
@@ -21742,7 +22137,7 @@ paths:
               method: 'GET',
               hostname: 'api.woovi.com',
               port: null,
-              path: '/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20',
+              path: '/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20&start=2023-01-01T00%3A00%3A00.000Z&end=2023-12-31T23%3A59%3A59.999Z',
               headers: {
                 Authorization: '{APP_ID}'
               }
@@ -21765,7 +22160,7 @@ paths:
         - lang: Shell + Curl
           source: |-
             curl --request GET \
-              --url 'https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20' \
+              --url 'https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20&start=2023-01-01T00%3A00%3A00.000Z&end=2023-12-31T23%3A59%3A59.999Z' \
               --header 'Authorization: {APP_ID}'
         - lang: Php + Curl
           source: |-
@@ -21774,7 +22169,7 @@ paths:
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              CURLOPT_URL => "https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20",
+              CURLOPT_URL => "https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20&start=2023-01-01T00%3A00%3A00.000Z&end=2023-12-31T23%3A59%3A59.999Z",
               CURLOPT_RETURNTRANSFER => true,
               CURLOPT_ENCODING => "",
               CURLOPT_MAXREDIRS => 10,
@@ -21808,7 +22203,7 @@ paths:
 
 
             conn.request("GET",
-            "/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20",
+            "/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20&start=2023-01-01T00%3A00%3A00.000Z&end=2023-12-31T23%3A59%3A59.999Z",
             headers=headers)
 
 
@@ -21819,13 +22214,13 @@ paths:
 
             print(data.decode("utf-8"))
         - lang: Go + Native
-          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20&start=2023-01-01T00%3A00%3A00.000Z&end=2023-12-31T23%3A59%3A59.999Z\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
         - lang: Java + Okhttp
           source: |-
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-              .url("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20")
+              .url("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20&start=2023-01-01T00%3A00%3A00.000Z&end=2023-12-31T23%3A59%3A59.999Z")
               .get()
               .addHeader("Authorization", "{APP_ID}")
               .build();
@@ -21839,7 +22234,7 @@ paths:
 
 
             url =
-            URI("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20")
+            URI("https://api.woovi.com/api/v1/subaccount/subaccount@test.com/statement?skip=0&limit=20&start=2023-01-01T00%3A00%3A00.000Z&end=2023-12-31T23%3A59%3A59.999Z")
 
 
             http = Net::HTTP.new(url.host, url.port)
@@ -23238,16 +23633,16 @@ paths:
                       authorization: openpix
                       event: OPENPIX:TRANSACTION_RECEIVED
                       isActive: true
-                      createdAt: 2021-03-02T22:29:10.720Z
-                      updatedAt: 2021-03-02T22:29:10.720Z
+                      createdAt: '2021-03-02T22:29:10.720Z'
+                      updatedAt: '2021-03-02T22:29:10.720Z'
                     - id: V2ViaG9vazo2MDNlYmUxZWRlYjkzNWU4NmQyMmNmOTk=
                       name: webhookName
                       url: https://mycompany.com.br/webhook
                       authorization: openpix
                       event: OPENPIX:CHARGE_CREATED
                       isActive: true
-                      createdAt: 2021-03-02T22:29:10.720Z
-                      updatedAt: 2021-03-02T22:29:10.720Z
+                      createdAt: '2021-03-02T22:29:10.720Z'
+                      updatedAt: '2021-03-02T22:29:10.720Z'
         '400':
           description: An error message
           content:
@@ -23425,8 +23820,8 @@ paths:
                     authorization: openpix
                     isActive: true
                     event: OPENPIX:TRANSACTION_RECEIVED
-                    createdAt: 2021-03-02T22:29:10.720Z
-                    updatedAt: 2021-03-02T22:29:10.720Z
+                    createdAt: '2021-03-02T22:29:10.720Z'
+                    updatedAt: '2021-03-02T22:29:10.720Z'
         '400':
           description: An error message
           content:
@@ -23506,8 +23901,8 @@ paths:
                           brCode: >-
                             000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                             Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-                          createdAt: 2021-03-03T20:49:23.605Z
-                          updatedAt: 2021-03-03T20:49:23.668Z
+                          createdAt: '2021-03-03T20:49:23.605Z'
+                          updatedAt: '2021-03-03T20:49:23.668Z'
                         pix:
                           pixQrCode: null
                           charge:
@@ -23517,8 +23912,8 @@ paths:
                             brCode: >-
                               000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                               Paulo62360532867ba5173c734202ac659721306b38c963044BCA
-                            createdAt: 2021-03-03T21:39:15.831Z
-                            updatedAt: 2021-03-03T21:39:15.896Z
+                            createdAt: '2021-03-03T21:39:15.831Z'
+                            updatedAt: '2021-03-03T21:39:15.896Z'
                           customer:
                             name: Julio
                             email: email0@example.com
@@ -23535,7 +23930,7 @@ paths:
                               taxID: '31928282008'
                               type: BR:CPF
                             correlationID: 9134e286-6f71-427a-bf00-241681624586
-                          time: 2020-09-09T20:15:00.358Z
+                          time: '2020-09-09T20:15:00.358Z'
                           value: 9999
                           transactionID: 9134e2866f71427abf00241681624586
                           infoPagador: conta
@@ -23543,7 +23938,7 @@ paths:
                             endToEndId: 9134e2866f71427abf00241681624586
                             txid: 9134e2866f71427abf00241681624586
                             valor: '99.99'
-                            horario: 2020-09-09T20:15:00.358Z
+                            horario: '2020-09-09T20:15:00.358Z'
                             infoPagador: conta
                         pixQrCode: null
               responses:
@@ -23607,7 +24002,7 @@ paths:
                           pixQrCode: null
                           charge: null
                           customer: null
-                          time: 2020-09-09T20:15:00.358Z
+                          time: '2020-09-09T20:15:00.358Z'
                           value: 9999
                           transactionID: 9134e2866f71427abf00241681624586
                           infoPagador: conta
@@ -23615,7 +24010,7 @@ paths:
                             endToEndId: 9134e2866f71427abf00241681624586
                             txid: 9134e2866f71427abf00241681624586
                             valor: '99.99'
-                            horario: 2020-09-09T20:15:00.358Z
+                            horario: '2020-09-09T20:15:00.358Z'
                             infoPagador: conta
               responses:
                 '200':
@@ -23683,13 +24078,13 @@ paths:
                               https://woovi.com/pay/9134e286-6f71-427a-bf00-241681624586
                             qrCodeImage: >-
                               https://api.woovi.com/openpix/pixQrCode/brcode/image/9134e286-6f71-427a-bf00-241681624586.png
-                            createdAt: 2021-03-02T17:28:51.882Z
-                            updatedAt: 2021-03-02T17:28:51.882Z
+                            createdAt: '2021-03-02T17:28:51.882Z'
+                            updatedAt: '2021-03-02T17:28:51.882Z'
                             brCode: >-
                               000201010212261060014br.gov.bcb.pix2584https://api.woovi.com/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao
                               Paulo62360532867ba5173c734202ac659721306b38c963044BCA
                           customer: null
-                          time: 2020-09-09T20:15:00.358Z
+                          time: '2020-09-09T20:15:00.358Z'
                           value: 9999
                           transactionID: 9134e2866f71427abf00241681624586
                           infoPagador: conta
@@ -23697,7 +24092,7 @@ paths:
                             endToEndId: 9134e2866f71427abf00241681624586
                             txid: 9134e2866f71427abf00241681624586
                             valor: '99.99'
-                            horario: 2020-09-09T20:15:00.358Z
+                            horario: '2020-09-09T20:15:00.358Z'
                             infoPagador: conta
               responses:
                 '200':
@@ -24773,7 +25168,7 @@ components:
         expiresDate:
           type: string
           description: Due date (ISO 8601), when available.
-          example: 2026-06-27T02:59:59.999Z
+          example: '2026-06-27T02:59:59.999Z'
         totalValue:
           type: number
           description: Total amount to pay, in cents.
@@ -25595,6 +25990,73 @@ components:
         - disputeReason
         - endToEndId
     End: *ref_1
+    FilePurpose:
+      type: string
+      description: What the file will be used for
+      enum:
+        - DISPUTE_EVIDENCE
+      example: DISPUTE_EVIDENCE
+    FileContentType:
+      type: string
+      description: Content type of the file
+      enum:
+        - application/pdf
+        - image/png
+        - image/jpeg
+        - image/webp
+      example: image/png
+    File:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Woovi identifier of the file
+          example: 6712c2ac7c2f1e0012a4b8d1
+        correlationID:
+          type: string
+          description: Your identifier for this upload, generated when not sent
+          example: evidence-2026-08-1042
+        purpose:
+          $ref: '#/components/schemas/FilePurpose'
+        fileName:
+          type: string
+          description: Name of the file as you sent it
+          example: evidence.png
+        contentType:
+          $ref: '#/components/schemas/FileContentType'
+        size:
+          type: integer
+          description: Size in bytes
+          example: 20480
+        url:
+          type: string
+          format: uri
+          description: Temporary pre-signed download URL
+          example: >-
+            https://woovi-files.s3.amazonaws.com/company/6712c1f07c2f1e0012a4b8c9/dispute_evidence/6712c2ac7c2f1e0012a4b8d1?X-Amz-Signature=...
+        urlExpiresAt:
+          type: string
+          format: date-time
+          description: When `url` stops working
+          example: '2026-08-22T15:30:00.000Z'
+        createdAt:
+          type: string
+          format: date-time
+          description: When the file was stored
+          example: '2026-08-22T14:30:00.000Z'
+    FilePayload:
+      type: object
+      properties:
+        file:
+          $ref: '#/components/schemas/File'
+    FileError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: >
+            Message in the language of the company making the request (pt-BR, en
+            or es)
     FundsRecovery:
       type: object
       properties:
@@ -26442,7 +26904,7 @@ components:
         watermark:
           type: string
           format: date-time
-          example: 2025-08-04T17:18:21.716Z
+          example: '2025-08-04T17:18:21.716Z'
         applicationFrauds:
           $ref: '#/components/schemas/NumericWindow'
         muleAccounts:
@@ -26463,7 +26925,7 @@ components:
         watermark:
           type: string
           format: date-time
-          example: 2025-08-04T17:18:21.756Z
+          example: '2025-08-04T17:18:21.756Z'
         openReports:
           type: string
           example: '2'
@@ -26642,11 +27104,11 @@ components:
           example:
             - OPENPIX:TRANSACTION_RECEIVED:
                 status: 200
-                time: 2025-01-01T00:00:00.000Z
+                time: '2025-01-01T00:00:00.000Z'
               isRetry: false
             - OPENPIX:TRANSACTION_RECEIVED:
                 status: 404
-                time: 2025-01-02T00:00:00.000Z
+                time: '2025-01-02T00:00:00.000Z'
               isRetry: true
     PixWithdrawTransaction:
       type: object
@@ -26811,7 +27273,7 @@ components:
           example: my-unique-id
         expiration:
           type: string
-          example: 2026-06-05T12:00:00.000Z
+          example: '2026-06-05T12:00:00.000Z'
         quote:
           $ref: '#/components/schemas/StablecoinDepositQuote'
     StablecoinDepositError:
@@ -26859,7 +27321,7 @@ components:
           example: 50
         createdAt:
           type: string
-          example: 2026-06-05T12:00:00.000Z
+          example: '2026-06-05T12:00:00.000Z'
     StablecoinDepositGetResponse:
       type: object
       properties:
@@ -26905,7 +27367,7 @@ components:
           example: 6650def1234abc567890bbbb
         createdAt:
           type: string
-          example: 2026-06-05T12:00:00.000Z
+          example: '2026-06-05T12:00:00.000Z'
     StablecoinSubAccountGetResponse:
       type: object
       properties:
@@ -27653,6 +28115,7 @@ components:
             DISPUTE_POST: Upload new evidence
             DISPUTE_GET: Get one dispute
             DISPUTE_GET_LIST: Get a list of disputes
+            FILE_POST: Upload a file
             PARTNER_COMPANY_POST: Create a pre registration with a partner reference
             PARTNER_COMPANY_GET: Get an specific preregistration via taxID param
             PARTNER_COMPANY_GET_LIST: Get every preregistration that is managed by you
@@ -27748,6 +28211,10 @@ tags:
   - name: dispute
     description: |
       Endpoint to manage Dispute
+  - name: file
+    description: |
+      Endpoint to upload files that other Woovi APIs consume, such as the
+      evidence of a dispute.
   - name: funds recovery
     description: >
       Endpoints to manage funds recoveries (MED — Mecanismo Especial de

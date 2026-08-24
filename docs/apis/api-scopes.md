@@ -95,6 +95,10 @@ Os escopos abaixo estão organizados por recurso:
 - `DISPUTE_GET`
 - `DISPUTE_GET_LIST`
 
+### FILE
+
+- `FILE_POST`
+
 ### GIFTBACK
 
 - `GIFTBACK_BALANCE_GET`

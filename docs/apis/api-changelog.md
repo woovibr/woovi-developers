@@ -15,6 +15,15 @@ Tipos: **Adicionado** · **Alterado** · **Depreciado** · **Removido**.
 
 ## 2026-08
 
+- **Adicionado** — campo opcional `fileId` nos itens de `documents` em
+  `POST /api/v1/dispute/{id}/evidence`, apontando para um arquivo já enviado em
+  `POST /api/v1/files` com `purpose` `DISPUTE_EVIDENCE`. Envie `url` ou `fileId`, não os
+  dois. Exige a feature `DISPUTE_EVIDENCE_FILE_ID`; sem ela a resposta é `403` com
+  `errorCode` `DISPUTE_EVIDENCE_FILE_ID_NOT_ALLOWED`. Veja
+  [Como adicionar uma nova evidência em uma disputa?](../disputa/how-add-new-evidence-in-evidence.md).
+- **Adicionado** — `POST /api/v1/files`, que armazena um arquivo e devolve seus metadados
+  com uma URL de download temporária, para uso em outras APIs da Woovi. Exige o escopo
+  `FILE_POST`. Veja [Como fazer upload de um arquivo?](../arquivos/upload-de-arquivo.md).
 - **Adicionado** — query string opcional `companyBankAccount` em
   `GET /api/v1/statement` e `GET /api/v1/transaction/{id}`. Uma aplicação `MASTER` de
   uma empresa com a feature `MASTER_APP_READ_ANY_ACCOUNT` lê o extrato e a transação de
