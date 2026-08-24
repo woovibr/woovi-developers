@@ -306,7 +306,7 @@ module.exports = {
           },
           {
             route: '/api-redoc/',
-            spec: './src/swaggers/woovi.json',
+            spec: 'https://api.woovi.com/api/openapi.json',
           },
           {
             route: '/indirect/',

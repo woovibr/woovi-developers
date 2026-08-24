@@ -26,7 +26,7 @@ function ApiScalarInner() {
     <div style={{ height: 'calc(100vh - 60px)' }}>
       <ApiReference
         configuration={{
-          url: '/swaggers/woovi.json',
+          url: 'https://api.woovi.com/api/openapi.json',
           theme: 'default',
         }}
       />
