@@ -74,7 +74,23 @@ curl --location 'https://api.woovi.com/api/v1/payment' \
 
 ### Opção 2: aprovação em dois passos
 
-Sem o `autoApprove`, o pagamento é criado com status `CREATED` e você precisa aprová-lo em uma segunda chamada, seguindo o endpoint [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>). Essa chamada exige o escopo `PAYMENT_APPROVE_POST` no AppID.
+Sem o `autoApprove`, o mesmo `POST /api/v1/payment` cria o pagamento com status `CREATED`, sem enviar o Pix:
+
+```json
+{
+  "payment": {
+    "value": 1,
+    "status": "CREATED",
+    "destinationAlias": "07*******61",
+    "destinationAliasType": "CPF",
+    "comment": "request user information",
+    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
+    "sourceAccountId": "6823414a524ed520d3518dd6"
+  }
+}
+```
+
+Aprove em uma segunda chamada, seguindo o endpoint [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>). Essa chamada exige o escopo `PAYMENT_APPROVE_POST` no AppID e envia apenas o `correlationID`.
 
 ```bash
 curl --location 'https://api.woovi.com/api/v1/payment/approve' \
@@ -83,6 +99,19 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
   --data '{
     "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001"
   }'
+```
+
+```json
+{
+  "payment": {
+    "status": "APPROVED",
+    "value": 1,
+    "destinationAlias": "07*******61",
+    "comment": "request user information",
+    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
+    "sourceAccountId": "6823414a524ed520d3518dd6"
+  }
+}
 ```
 
 > A criação **não** valida a chave: um pagamento para uma chave inexistente é criado normalmente e só falha depois de aprovado. E nenhuma das duas chamadas retorna os dados do titular — o Pix é liquidado de forma assíncrona, então esse dado só existe depois da confirmação. Para obtê-lo, consulte o pagamento (próximo passo).
