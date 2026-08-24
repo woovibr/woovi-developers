@@ -9297,6 +9297,412 @@
         ]
       }
     },
+    "/api/v1/kyc-validation/{correlationID}": {
+      "get": {
+        "tags": [
+          "kyc"
+        ],
+        "summary": "Get a KYC validation by correlationID",
+        "description": "Reads back a validation created with `POST /api/v1/kyc-validation/taxid`, scoped to\nyour own company. Free — reading a validation is never billed.\n\nPoll this until `status` leaves `PROCESSING`, or subscribe to the\n`KYC_VALIDATION_COMPLETED` / `KYC_VALIDATION_FAILED` webhook events and skip the\npolling entirely.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_GET`\nscope on the application.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "correlationID",
+            "in": "path",
+            "required": true,
+            "description": "The `correlationID` you sent when creating the validation.",
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "example": "my-unique-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The validation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KycValidation"
+                },
+                "examples": {
+                  "rejected": {
+                    "summary": "Screened, with signals",
+                    "value": {
+                      "correlationID": "my-unique-id",
+                      "taxId": "02916265000160",
+                      "status": "COMPLETED",
+                      "result": "REJECTED",
+                      "riskLevel": "HIGH",
+                      "reasons": [
+                        "FRAUD_HISTORY",
+                        "DISPUTE_HISTORY"
+                      ],
+                      "createdAt": "2026-08-24T14:00:06.386Z",
+                      "completedAt": "2026-08-24T14:00:06.462Z"
+                    }
+                  },
+                  "approved": {
+                    "summary": "Screened, nothing found",
+                    "value": {
+                      "correlationID": "my-other-id",
+                      "taxId": "00000000191",
+                      "status": "COMPLETED",
+                      "result": "APPROVED",
+                      "riskLevel": "LOW",
+                      "reasons": [],
+                      "createdAt": "2026-08-24T14:00:41.447Z",
+                      "completedAt": "2026-08-24T14:00:41.489Z"
+                    }
+                  },
+                  "processing": {
+                    "summary": "Still screening",
+                    "value": {
+                      "correlationID": "my-unique-id",
+                      "taxId": "02916265000160",
+                      "status": "PROCESSING",
+                      "result": null,
+                      "riskLevel": null,
+                      "reasons": [],
+                      "createdAt": "2026-08-24T14:00:06.386Z",
+                      "completedAt": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid `Authorization` header (appID).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": null,
+                  "errors": [
+                    {
+                      "message": "Invalid appID"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The company does not have the `KYC_VALIDATION` feature enabled.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KycValidationError"
+                },
+                "example": {
+                  "errorCode": "KYC_VALIDATION_FEATURE_NOT_ENABLED",
+                  "errorMessage": "this company does not have the KYC_VALIDATION feature enabled"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No validation with this `correlationID` for your company.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KycValidationError"
+                },
+                "example": {
+                  "errorCode": "KYC_VALIDATION_NOT_FOUND",
+                  "errorMessage": "validation not found"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'GET',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/kyc-validation/my-unique-id',\n  headers: {\n    Authorization: '{APP_ID}'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request GET \\\n  --url https://api.woovi.com/api/v1/kyc-validation/my-unique-id \\\n  --header 'Authorization: {APP_ID}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/kyc-validation/my-unique-id\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"GET\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\nheaders = { 'Authorization': \"{APP_ID}\" }\n\nconn.request(\"GET\", \"/api/v1/kyc-validation/my-unique-id\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/kyc-validation/my-unique-id\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/kyc-validation/my-unique-id\")\n  .get()\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/kyc-validation/my-unique-id\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/kyc-validation/taxid": {
+      "post": {
+        "tags": [
+          "kyc"
+        ],
+        "summary": "Create a KYC validation for a Tax ID",
+        "description": "Screens a CPF or CNPJ against fraud, dispute, sanctions, PEP and lawsuit signals and\nreturns a verdict.\n\nThe screening runs asynchronously: this call answers `201` with `status: PROCESSING`,\nand the verdict is read back with `GET /api/v1/kyc-validation/{correlationID}`\n(usually ready in well under a second) or received through the\n`KYC_VALIDATION_COMPLETED` / `KYC_VALIDATION_FAILED` webhook events.\n\n**Idempotent by `correlationID`.** Sending the same `correlationID` again returns the\noriginal validation with `200` and is not billed a second time. A new `correlationID`\nis a new billable validation — including a retry after a `FAILED` one.\n\nEach validation is charged as `KYC_VALIDATION_FEE`, priced from the account's\n`kycValidationFeeSettings`, and the charge happens **before** the screening is queued:\na validation that answers `201` has already been billed.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_POST`\nscope on the application.\n",
+        "security": [
+          {
+            "AppID": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KycValidationRequest"
+              },
+              "examples": {
+                "cnpj": {
+                  "summary": "CNPJ, masked",
+                  "value": {
+                    "taxId": "02.916.265/0001-60",
+                    "correlationID": "my-unique-id"
+                  }
+                },
+                "cpf": {
+                  "summary": "CPF, digits only",
+                  "value": {
+                    "taxId": "00000000191",
+                    "correlationID": "my-other-id"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A validation with this `correlationID` already exists for your company — the\noriginal is returned as-is, and nothing is billed.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KycValidation"
+                },
+                "examples": {
+                  "idempotent": {
+                    "value": {
+                      "correlationID": "my-unique-id",
+                      "taxId": "02916265000160",
+                      "status": "COMPLETED",
+                      "result": "REJECTED",
+                      "riskLevel": "HIGH",
+                      "reasons": [
+                        "FRAUD_HISTORY",
+                        "DISPUTE_HISTORY"
+                      ],
+                      "createdAt": "2026-08-24T14:00:06.386Z",
+                      "completedAt": "2026-08-24T14:00:06.462Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Validation created, screening queued — and already billed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KycValidation"
+                },
+                "examples": {
+                  "processing": {
+                    "value": {
+                      "correlationID": "my-unique-id",
+                      "taxId": "02916265000160",
+                      "status": "PROCESSING",
+                      "result": null,
+                      "riskLevel": null,
+                      "reasons": [],
+                      "createdAt": "2026-08-24T14:00:06.386Z",
+                      "completedAt": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body, or the charge was refused.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KycValidationError"
+                },
+                "examples": {
+                  "invalidTaxId": {
+                    "summary": "Tax ID is not a CPF or a CNPJ",
+                    "value": {
+                      "errorCode": "KYC_VALIDATION_INVALID_BODY",
+                      "errorMessage": "taxId must have 11 (CPF) or 14 (CNPJ) digits"
+                    }
+                  },
+                  "missingFields": {
+                    "summary": "Required field absent",
+                    "value": {
+                      "errorCode": "KYC_VALIDATION_INVALID_BODY",
+                      "errorMessage": "Invalid input: expected string, received undefined"
+                    }
+                  },
+                  "billingFailed": {
+                    "summary": "The fee could not be charged — no fee configured on the account, or not\nenough balance. Nothing was screened and nothing was billed.\n",
+                    "value": {
+                      "errorCode": "KYC_VALIDATION_BILLING_FAILED",
+                      "errorMessage": "FEE_NOT_CONFIGURED"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid `Authorization` header (appID).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": null,
+                  "errors": [
+                    {
+                      "message": "Invalid appID"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The company or the application is not allowed to use this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KycValidationError"
+                },
+                "examples": {
+                  "featureNotEnabled": {
+                    "value": {
+                      "errorCode": "KYC_VALIDATION_FEATURE_NOT_ENABLED",
+                      "errorMessage": "this company does not have the KYC_VALIDATION feature enabled"
+                    }
+                  },
+                  "accountNotAvailable": {
+                    "summary": "The application points at a closed or unlinked bank account",
+                    "value": {
+                      "errorCode": "KYC_VALIDATION_ACCOUNT_NOT_AVAILABLE",
+                      "errorMessage": "this application is not linked to an open account, so this validation cannot be billed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The billing service could not be reached. Nothing was billed and nothing was\nscreened — retry with the same `correlationID`.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KycValidationError"
+                },
+                "example": {
+                  "errorCode": "KYC_VALIDATION_BILLING_UNAVAILABLE",
+                  "errorMessage": "could not charge this validation, try again"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/kyc-validation/taxid',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({taxId: '02.916.265/0001-60', correlationID: 'my-unique-id'}));\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/kyc-validation/taxid \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"taxId\":\"02.916.265/0001-60\",\"correlationID\":\"my-unique-id\"}'"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/kyc-validation/taxid\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'taxId' => '02.916.265/0001-60',\n    'correlationID' => 'my-unique-id'\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"taxId\\\":\\\"02.916.265/0001-60\\\",\\\"correlationID\\\":\\\"my-unique-id\\\"}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/kyc-validation/taxid\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/kyc-validation/taxid\"\n\n\tpayload := strings.NewReader(\"{\\\"taxId\\\":\\\"02.916.265/0001-60\\\",\\\"correlationID\\\":\\\"my-unique-id\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"taxId\\\":\\\"02.916.265/0001-60\\\",\\\"correlationID\\\":\\\"my-unique-id\\\"}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/kyc-validation/taxid\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/kyc-validation/taxid\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"taxId\\\":\\\"02.916.265/0001-60\\\",\\\"correlationID\\\":\\\"my-unique-id\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
     "/api/v1/limits/{accountId}": {
       "get": {
         "tags": [
@@ -20074,6 +20480,119 @@
                 }
               }
             }
+          }
+        }
+      },
+      "KycValidationRequest": {
+        "type": "object",
+        "properties": {
+          "taxId": {
+            "type": "string",
+            "description": "CPF (11 digits) or CNPJ (14 digits) to be screened. A mask is accepted —\neverything that is not a digit is stripped before validation.\n",
+            "example": "02.916.265/0001-60"
+          },
+          "correlationID": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Your own identifier for this validation. It is the idempotency key: sending\nthe same `correlationID` again returns the original validation with `200`\nand is **not** billed a second time. It is also how you read the result back.\n",
+            "example": "my-unique-id"
+          }
+        },
+        "required": [
+          "taxId",
+          "correlationID"
+        ]
+      },
+      "KycValidation": {
+        "type": "object",
+        "properties": {
+          "correlationID": {
+            "type": "string",
+            "example": "my-unique-id"
+          },
+          "taxId": {
+            "type": "string",
+            "description": "Digits only, as screened.",
+            "example": "02916265000160"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROCESSING",
+              "COMPLETED",
+              "FAILED"
+            ],
+            "description": "`PROCESSING` — accepted and queued; `COMPLETED` — screened, `result` is filled;\n`FAILED` — every upstream source was unavailable, so no verdict was reached\n(the validation is still billed, and a retry needs a new `correlationID`).\n",
+            "example": "COMPLETED"
+          },
+          "result": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "APPROVED",
+              "REJECTED",
+              null
+            ],
+            "description": "Null while `PROCESSING` and when `FAILED`.",
+            "example": "REJECTED"
+          },
+          "riskLevel": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "NONE",
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              null
+            ],
+            "description": "Aggregated risk. Null while `PROCESSING` and when `FAILED`.",
+            "example": "HIGH"
+          },
+          "reasons": {
+            "type": "array",
+            "description": "Source-agnostic signals behind the verdict — they say what was observed, never\nwhich bureau observed it. Empty while `PROCESSING`, and empty on an `APPROVED`\nvalidation with no signal.\n",
+            "items": {
+              "type": "string",
+              "enum": [
+                "FRAUD_HISTORY",
+                "DISPUTE_HISTORY",
+                "SANCTIONS",
+                "PEP",
+                "CRIMINAL_LAWSUITS",
+                "EXCESSIVE_LAWSUITS"
+              ]
+            },
+            "example": [
+              "FRAUD_HISTORY",
+              "DISPUTE_HISTORY"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-08-24T14:00:06.386Z"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Null while `PROCESSING`.",
+            "example": "2026-08-24T14:00:06.462Z"
+          }
+        }
+      },
+      "KycValidationError": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "example": "KYC_VALIDATION_NOT_FOUND"
+          },
+          "errorMessage": {
+            "type": "string",
+            "example": "validation not found"
           }
         }
       },

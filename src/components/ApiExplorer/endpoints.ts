@@ -1382,6 +1382,108 @@ const endpoints: ApiEndpoint[] = [
     'responseExamples': [],
   },
   {
+    'id': 'get-api-v1-kyc-validation-correlationid',
+    'method': 'GET',
+    'path': '/api/v1/kyc-validation/{correlationID}',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Get a KYC validation by correlationID',
+    'description': 'Reads back a validation created with `POST /api/v1/kyc-validation/taxid`, scoped to\nyour own company. Free — reading a validation is never billed.\n\nPoll this until `status` leaves `PROCESSING`, or subscribe to the\n`KYC_VALIDATION_COMPLETED` / `KYC_VALIDATION_FAILED` webhook events and skip the\npolling entirely.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_GET`\nscope on the application.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'rejected',
+        'value': {
+          'correlationID': 'my-unique-id',
+          'taxId': '02916265000160',
+          'status': 'COMPLETED',
+          'result': 'REJECTED',
+          'riskLevel': 'HIGH',
+          'reasons': [
+            'FRAUD_HISTORY',
+            'DISPUTE_HISTORY',
+          ],
+          'createdAt': '2026-08-24T14:00:06.386Z',
+          'completedAt': '2026-08-24T14:00:06.462Z',
+        },
+        'summary': 'Screened, with signals',
+      },
+      {
+        'name': 'approved',
+        'value': {
+          'correlationID': 'my-other-id',
+          'taxId': '00000000191',
+          'status': 'COMPLETED',
+          'result': 'APPROVED',
+          'riskLevel': 'LOW',
+          'reasons': [],
+          'createdAt': '2026-08-24T14:00:41.447Z',
+          'completedAt': '2026-08-24T14:00:41.489Z',
+        },
+        'summary': 'Screened, nothing found',
+      },
+      {
+        'name': 'processing',
+        'value': {
+          'correlationID': 'my-unique-id',
+          'taxId': '02916265000160',
+          'status': 'PROCESSING',
+          'result': null,
+          'riskLevel': null,
+          'reasons': [],
+          'createdAt': '2026-08-24T14:00:06.386Z',
+          'completedAt': null,
+        },
+        'summary': 'Still screening',
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-kyc-validation-taxid',
+    'method': 'POST',
+    'path': '/api/v1/kyc-validation/taxid',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Create a KYC validation for a Tax ID',
+    'description': "Screens a CPF or CNPJ against fraud, dispute, sanctions, PEP and lawsuit signals and\nreturns a verdict.\n\nThe screening runs asynchronously: this call answers `201` with `status: PROCESSING`,\nand the verdict is read back with `GET /api/v1/kyc-validation/{correlationID}`\n(usually ready in well under a second) or received through the\n`KYC_VALIDATION_COMPLETED` / `KYC_VALIDATION_FAILED` webhook events.\n\n**Idempotent by `correlationID`.** Sending the same `correlationID` again returns the\noriginal validation with `200` and is not billed a second time. A new `correlationID`\nis a new billable validation — including a retry after a `FAILED` one.\n\nEach validation is charged as `KYC_VALIDATION_FEE`, priced from the account's\n`kycValidationFeeSettings`, and the charge happens **before** the screening is queued:\na validation that answers `201` has already been billed.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_POST`\nscope on the application.\n",
+    'requestExamples': [
+      {
+        'name': 'cnpj',
+        'value': {
+          'taxId': '02.916.265/0001-60',
+          'correlationID': 'my-unique-id',
+        },
+        'summary': 'CNPJ, masked',
+      },
+      {
+        'name': 'cpf',
+        'value': {
+          'taxId': '00000000191',
+          'correlationID': 'my-other-id',
+        },
+        'summary': 'CPF, digits only',
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'idempotent',
+        'value': {
+          'correlationID': 'my-unique-id',
+          'taxId': '02916265000160',
+          'status': 'COMPLETED',
+          'result': 'REJECTED',
+          'riskLevel': 'HIGH',
+          'reasons': [
+            'FRAUD_HISTORY',
+            'DISPUTE_HISTORY',
+          ],
+          'createdAt': '2026-08-24T14:00:06.386Z',
+          'completedAt': '2026-08-24T14:00:06.462Z',
+        },
+      },
+    ],
+  },
+  {
     'id': 'get-api-v1-partner-affiliate',
     'method': 'GET',
     'path': '/api/v1/partner/affiliate',
