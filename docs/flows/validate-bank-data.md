@@ -9,11 +9,13 @@ Este documento irá ajudá-lo a validar os dados bancários de um beneficiário 
 
 A validação é feita enviando um pagamento de 1 centavo para a chave informada. O banco do recebedor resolve a chave e confirma a quem ela pertence — esses dados voltam na consulta do próprio pagamento, depois que ele é confirmado.
 
-> **Pré-requisitos**
->
-> - Um **AppID** com os escopos `PAYMENT_POST` (criar pagamento) e `PAYMENT_GET` (consultar pagamento). Você cria o AppID no app, em **Integrações → API**.
-> - **Pix Out habilitado** na sua empresa **e** na conta que vai pagar. A liberação da conta é feita por você mesmo, seguindo o artigo [Como ativar o Pix Out (pagamento externo)](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-o-pix-out-pagamento-externo).
-> - Saldo na conta de origem — o Pix de 1 centavo é real e a tarifa de pagamento é cobrada normalmente.
+:::info Pré-requisitos
+
+- Um **AppID** com os escopos `PAYMENT_POST` (criar pagamento) e `PAYMENT_GET` (consultar pagamento). Você cria o AppID no app, em **Integrações → API**.
+- **Pix Out habilitado** na sua empresa **e** na conta que vai pagar. A liberação da conta é feita por você mesmo, seguindo o artigo [Como ativar o Pix Out (pagamento externo)](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-o-pix-out-pagamento-externo).
+- Saldo na conta de origem — o Pix de 1 centavo é real e a tarifa de pagamento é cobrada normalmente.
+
+:::
 
 ## 1. Crie e aprove o pagamento
 
@@ -52,7 +54,7 @@ curl --location 'https://api.woovi.com/api/v1/payment' \
     "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
     "comment": "request user information",
     "autoApprove": true,
-    "destinationAlias": "07*******61",
+    "destinationAlias": "12345678909",
     "destinationAliasType": "CPF"
   }'
 ```
@@ -62,7 +64,7 @@ curl --location 'https://api.woovi.com/api/v1/payment' \
   "payment": {
     "status": "APPROVED",
     "value": 1,
-    "destinationAlias": "07*******61",
+    "destinationAlias": "12345678909",
     "comment": "request user information",
     "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
     "sourceAccountId": "6823414a524ed520d3518dd6"
@@ -70,7 +72,11 @@ curl --location 'https://api.woovi.com/api/v1/payment' \
 }
 ```
 
-> **Atenção:** o `autoApprove` requer permissão específica na sua conta. Se a resposta vier `403` com `Your company does not have access to autoApprove payments via API`, use a Opção 2. Veja mais em [Como criar e aprovar um pagamento em uma única chamada?](../payment/payment-how-to-auto-approve.md).
+:::caution Atenção
+
+O `autoApprove` requer permissão específica na sua conta. Se a resposta vier `403` com `Your company does not have access to autoApprove payments via API`, use a Opção 2. Veja mais em [Como criar e aprovar um pagamento em uma única chamada?](../payment/payment-how-to-auto-approve.md).
+
+:::
 
 ### Opção 2: aprovação em dois passos
 
@@ -81,7 +87,7 @@ Sem o `autoApprove`, o mesmo `POST /api/v1/payment` cria o pagamento com status 
   "payment": {
     "value": 1,
     "status": "CREATED",
-    "destinationAlias": "07*******61",
+    "destinationAlias": "12345678909",
     "destinationAliasType": "CPF",
     "comment": "request user information",
     "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
@@ -106,7 +112,7 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
   "payment": {
     "status": "APPROVED",
     "value": 1,
-    "destinationAlias": "07*******61",
+    "destinationAlias": "12345678909",
     "comment": "request user information",
     "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
     "sourceAccountId": "6823414a524ed520d3518dd6"
@@ -114,7 +120,11 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
 }
 ```
 
-> A criação **não** valida a chave: um pagamento para uma chave inexistente é criado normalmente e só falha depois de aprovado. E nenhuma das duas chamadas retorna os dados do titular — o Pix é liquidado de forma assíncrona, então esse dado só existe depois da confirmação. Para obtê-lo, consulte o pagamento (próximo passo).
+:::note
+
+A criação **não** valida a chave: um pagamento para uma chave inexistente é criado normalmente e só falha depois de aprovado. E nenhuma das duas chamadas retorna os dados do titular — o Pix é liquidado de forma assíncrona, então esse dado só existe depois da confirmação. Para obtê-lo, consulte o pagamento (próximo passo).
+
+:::
 
 ## 2. Consulte o pagamento para obter os dados do titular
 
@@ -125,77 +135,77 @@ curl --location 'https://api.woovi.com/api/v1/payment/c0938e0c-a613-48a9-982a-67
   --header 'Authorization: {APP_ID}'
 ```
 
-Exemplo real de resposta (dados sensíveis mascarados abaixo apenas para fins desta documentação — a API não mascara nada, veja a nota logo em seguida):
-
 ```json
 {
   "payment": {
     "status": "CONFIRMED",
     "value": 1,
-    "destinationAlias": "07*******61",
+    "destinationAlias": "12345678909",
     "comment": "request user information",
     "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
     "sourceAccountId": "6823414a524ed520d3518dd6"
   },
   "transaction": {
     "value": 1,
-    "time": "2026-08-24T20:11:01.783Z",
-    "endToEndId": "E54811417202608242011RymkUzu7ANw",
+    "time": "2026-01-01T12:00:00.000Z",
+    "endToEndId": "E54811417202601011200abcdefghijk",
     "creditParty": {
       "pixKey": {
-        "pixKey": "07*******61",
+        "pixKey": "12345678909",
         "type": "CPF"
       },
       "account": {
-        "branch": "1",
-        "account": "709*****1",
+        "branch": "0001",
+        "account": "1234567890",
         "accountType": "TRAN"
       },
       "psp": {
-        "id": "37880206",
-        "name": "CORA SCFI"
+        "id": "12345678",
+        "name": "BANCO EXEMPLO S.A."
       },
       "holder": {
-        "name": "LUC** ****** ****",
-        "nameFriendly": "LUC** ****** ****",
+        "name": "Fulano de Tal",
+        "nameFriendly": "Fulano de Tal",
         "taxID": {
-          "taxID": "07*******61",
+          "taxID": "12345678909",
           "type": "BR:CPF"
         }
       }
     }
   },
   "destination": {
-    "name": "LUC** ****** ****",
-    "taxID": "07*******61",
-    "pixKey": "07*******61",
-    "bank": "CORA SCFI",
-    "branch": "1",
-    "account": "709*****1"
+    "name": "Fulano de Tal",
+    "taxID": "12345678909",
+    "pixKey": "12345678909",
+    "bank": "BANCO EXEMPLO S.A.",
+    "branch": "0001",
+    "account": "1234567890"
   }
 }
 ```
 
-> O mascaramento acima (`****`) foi aplicado só nesta documentação — a resposta real da API **não** vem mascarada, traz o `name`/`taxID`/`account` completos, exatamente como resolvidos pelo banco.
-
-- `destination.name` / `destination.taxID` — nome e documento do titular da chave, resolvidos pelo banco do recebedor no momento da liquidação. Diferente de uma validação em que você mesmo informa o nome, aqui o nome vem **do banco**, não do que você enviou.
+- `destination.name` / `destination.taxID` — nome e documento do titular da chave, resolvidos pelo banco do recebedor no momento da liquidação. Diferente de uma validação em que você mesmo informa o nome, aqui o nome vem **do banco**, não do que você enviou. Não vêm mascarados.
 - `destination.pixKey` — a chave Pix usada (`destinationAlias`).
 - `destination.bank` / `branch` / `account` — instituição financeira, agência e conta vinculadas à chave.
 - `transaction.endToEndId` — identificador do Pix no Banco Central, útil para conciliação.
 
-> O bloco `destination` só aparece com o pagamento `CONFIRMED`. Enquanto o status for `CREATED` ou `APPROVED`, a resposta traz apenas o `payment` — a confirmação costuma levar poucos segundos.
+:::note
 
-## 3. Quando a chave não existe ou o pagamento é rejeitado
+O bloco `destination` só aparece com o pagamento `CONFIRMED`. Enquanto o status for `CREATED` ou `APPROVED`, a resposta traz apenas o `payment` — a confirmação costuma levar poucos segundos.
 
-Se a chave não estiver cadastrada em nenhum banco (ou o PSP do recebedor rejeitar o Pix), o pagamento vai para `FAILED`, **sem** `transaction` e **sem** `destination`, e o motivo vem no bloco `error`:
+:::
+
+## 3. Erros possíveis
+
+Se a chave não estiver cadastrada em nenhum banco, ou o PSP do recebedor rejeitar o Pix, o pagamento vai para `FAILED`, **sem** `transaction` e **sem** `destination`, e o motivo vem no bloco `error`. Nesse caso o dinheiro não sai da conta.
 
 ```json
 {
   "payment": {
     "status": "FAILED",
     "value": 1,
-    "destinationAlias": "chave-inexistente@exemplo.com",
-    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0002",
+    "destinationAlias": "12345678909",
+    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001",
     "sourceAccountId": "6823414a524ed520d3518dd6"
   },
   "error": {
@@ -205,9 +215,15 @@ Se a chave não estiver cadastrada em nenhum banco (ou o PSP do recebedor rejeit
 }
 ```
 
-Nesse caso o dinheiro não sai da conta. Quando a rejeição vem do banco do recebedor, o código também aparece em `transaction.providerRejectedReason` — veja a lista em [Error codes - Payment](./error-codes-payment.md).
+- `PIX_KEY_INFO_NOT_FOUND` — chave válida mas não cadastrada no DICT
+- `403 External payments not enabled for your company` — Pix Out não habilitado na empresa
+- `400 External payments not enabled for this account` — Pix Out não habilitado na conta de origem
+- `403 Your company does not have access to autoApprove payments via API` — use a aprovação em dois passos
+- `400 destinationAliasType must be one of the following values` — tipo de chave fora do enum
 
-## 4. Webhooks (opcional)
+Quando a rejeição vem do banco do recebedor, o código também aparece em `transaction.providerRejectedReason` — veja a lista em [Error codes - Payment](./error-codes-payment.md).
+
+## 4. Webhooks
 
 Para não ficar consultando o pagamento em intervalos, configure um webhook e reaja ao evento de confirmação ou de falha. Nenhum dos dois traz os dados do titular — use o `correlationID` deles para consultar o pagamento (passo 2).
 
@@ -224,8 +240,8 @@ Para não ficar consultando o pagamento em intervalos, configure um webhook e re
   },
   "transaction": {
     "value": 1,
-    "time": "2026-08-24T20:11:01.783Z",
-    "endToEndId": "E54811417202608242011RymkUzu7ANw"
+    "time": "2026-01-01T12:00:00.000Z",
+    "endToEndId": "E54811417202601011200abcdefghijk"
   }
 }
 ```
@@ -238,12 +254,12 @@ Para não ficar consultando o pagamento em intervalos, configure um webhook e re
   "payment": {
     "value": 1,
     "status": "FAILED",
-    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0002"
+    "correlationID": "c0938e0c-a613-48a9-982a-672c062d0001"
   },
   "transaction": {
     "value": 1,
-    "endToEndId": "E54811417202608242011RymkUzu7ANw",
-    "time": "2026-08-24T20:11:31.687Z",
+    "endToEndId": "E54811417202601011200abcdefghijk",
+    "time": "2026-01-01T12:00:00.000Z",
     "providerRejectedReason": "AC03 - Pagamento rejeitado pelo PSP do recebedor"
   }
 }
