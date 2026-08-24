@@ -63,7 +63,7 @@ Este é o webhook que você receberá ao usar a conta `1010107` no exemplo acima
 
 ```json
 {
-  "event": "woovi:MOVEMENT_FAILED",
+  "event": "OPENPIX:MOVEMENT_FAILED",
   "payment": {
     "value": 1,
     "status": "FAILED",

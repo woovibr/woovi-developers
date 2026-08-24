@@ -9,7 +9,7 @@ tags:
 ## Webhook de cobrança criada
 
 Segue abaixo o exemplo dos dados que são enviados numa requisição do webhook de cobrança
-paga (`woovi:CHARGE_CREATED`). Esse webhook é disparado no momento em que um usuário cria
+paga (`OPENPIX:CHARGE_CREATED`). Esse webhook é disparado no momento em que um usuário cria
 uma nova cobrança, seja pela API ou pela plataforma.
 
 - `company`: Empresa do qual a cobrança pertence;
@@ -20,7 +20,7 @@ uma nova cobrança, seja pela API ou pela plataforma.
 
 ```json
 {
-  "event": "woovi:CHARGE_CREATED",
+  "event": "OPENPIX:CHARGE_CREATED",
   "charge": {
     "customer": {
       "name": "John Doe",

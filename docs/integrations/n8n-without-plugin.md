@@ -110,18 +110,18 @@ O primeiro passo é adicionar um nó "Webhook" ao seu workflow. Este nó será r
 3. Vá para a seção "API/Plugins" e clique em "Novo Webhook"
 4. Garanta que a opção "Ativo" esteja habilitada, dê um nome para o webhook, configure o tipo de evento a ser escutado e cole a URL do webhook do N8N no campo "URL"
 5. Selecione os eventos que você deseja receber notificações. Os eventos disponíveis são:
-   - woovi:CHARGE_CREATED - Nova Cobrança Criada
-   - woovi:CHARGE_COMPLETED - Cobrança Paga
-   - woovi:CHARGE_EXPIRED - Cobrança Expirada
-   - woovi:CHARGE_COMPLETED_NOT_SAME_CUSTOMER_PAYER - Cobrança Paga por Outra Pessoa
-   - woovi:TRANSACTION_RECEIVED - Transação Pix Recebida
-   - woovi:TRANSACTION_REFUND_RECEIVED - Reembolso Concluído
-   - woovi:MOVEMENT_CONFIRMED - Pagamento Externo Confirmado (Pix Out)
-   - woovi:MOVEMENT_FAILED - Pagamento Externo com Falha (Pix Out)
-   - woovi:MOVEMENT_REMOVED - Pagamento Externo Removido (Pix Out)
-   - woovi:DISPUTE_CREATED - Disputa Criada
-   - woovi:DISPUTE_ACCEPTED - Disputa Aceita
-   - woovi:DISPUTE_REJECTED - Disputa Rejeitada
+   - OPENPIX:CHARGE_CREATED - Nova Cobrança Criada
+   - OPENPIX:CHARGE_COMPLETED - Cobrança Paga
+   - OPENPIX:CHARGE_EXPIRED - Cobrança Expirada
+   - OPENPIX:CHARGE_COMPLETED_NOT_SAME_CUSTOMER_PAYER - Cobrança Paga por Outra Pessoa
+   - OPENPIX:TRANSACTION_RECEIVED - Transação Pix Recebida
+   - OPENPIX:TRANSACTION_REFUND_RECEIVED - Reembolso Concluído
+   - OPENPIX:MOVEMENT_CONFIRMED - Pagamento Externo Confirmado (Pix Out)
+   - OPENPIX:MOVEMENT_FAILED - Pagamento Externo com Falha (Pix Out)
+   - OPENPIX:MOVEMENT_REMOVED - Pagamento Externo Removido (Pix Out)
+   - OPENPIX:DISPUTE_CREATED - Disputa Criada
+   - OPENPIX:DISPUTE_ACCEPTED - Disputa Aceita
+   - OPENPIX:DISPUTE_REJECTED - Disputa Rejeitada
 6. Clique em "Salvar"
 
 ![](./__assets__/n8n-without-plugin/webhooks/woovi-create-webhook.png)

@@ -713,12 +713,12 @@ const events: WebhookEvent[] = [
   },
   {
     id: 'dispute-created',
-    event: 'woovi:DISPUTE_CREATED',
+    event: 'OPENPIX:DISPUTE_CREATED',
     category: 'Disputa',
     description: 'Disputa criada.',
     docsPath: '/docs/webhook/examples/webhook-created-payload',
     payload: {
-      event: 'woovi:DISPUTE_CREATED',
+      event: 'OPENPIX:DISPUTE_CREATED',
       dispute: {
         status: 'OPENED',
         endToEndId: 'E3524a995bbd54034b6d07c1c36014557',
@@ -732,12 +732,12 @@ const events: WebhookEvent[] = [
   },
   {
     id: 'dispute-accepted',
-    event: 'woovi:DISPUTE_ACCEPTED',
+    event: 'OPENPIX:DISPUTE_ACCEPTED',
     category: 'Disputa',
     description: 'Disputa aceita.',
     docsPath: '/docs/webhook/examples/webhook-accepted-payload',
     payload: {
-      event: 'woovi:DISPUTE_ACCEPTED',
+      event: 'OPENPIX:DISPUTE_ACCEPTED',
       dispute: {
         status: 'ACCEPTED',
         endToEndId: 'E3524a995bbd54034b6d07c1c36014557',
@@ -751,12 +751,12 @@ const events: WebhookEvent[] = [
   },
   {
     id: 'dispute-rejected',
-    event: 'woovi:DISPUTE_REJECTED',
+    event: 'OPENPIX:DISPUTE_REJECTED',
     category: 'Disputa',
     description: 'Disputa rejeitada.',
     docsPath: '/docs/webhook/examples/webhook-rejected-payload',
     payload: {
-      event: 'woovi:DISPUTE_REJECTED',
+      event: 'OPENPIX:DISPUTE_REJECTED',
       dispute: {
         status: 'REJECTED',
         endToEndId: 'E3524a995bbd54034b6d07c1c36014557',
@@ -770,12 +770,12 @@ const events: WebhookEvent[] = [
   },
   {
     id: 'dispute-canceled',
-    event: 'woovi:DISPUTE_CANCELED',
+    event: 'OPENPIX:DISPUTE_CANCELED',
     category: 'Disputa',
     description: 'Disputa cancelada.',
     docsPath: '/docs/webhook/examples/webhook-canceled-payload',
     payload: {
-      event: 'woovi:DISPUTE_CANCELED',
+      event: 'OPENPIX:DISPUTE_CANCELED',
       dispute: {
         status: 'CANCELED',
         endToEndId: 'E3524a995bbd54034b6d07c1c36014557',

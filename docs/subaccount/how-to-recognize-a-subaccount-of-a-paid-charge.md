@@ -16,7 +16,7 @@ A forma mais recomendada para reconhecer uma subconta de uma cobrança após o p
 
 ```json
 {
-  "event": "woovi:CHARGE_COMPLETED",
+  "event": "OPENPIX:CHARGE_COMPLETED",
   "charge": {
     "customer": {
       "name": "CONTA DE PAGAMENTO DE PIX",
@@ -144,7 +144,7 @@ A forma mais recomendada para reconhecer uma subconta de uma cobrança após o p
 
 Vamos imaginar um caso que queremos identificar a subconta pertencente a uma cobrança paga, para realizar uma transferência entre subcontas.
 
-Para isso, vamos precisar está criando um Webhook com o evento `Cobrança paga - woovi:CHARGE_COMPLETED`. Para criar esse Webhook, bastar você entrar na nossa plataforma, e acessar a aba `API/Plugins` via sidebar menu.
+Para isso, vamos precisar está criando um Webhook com o evento `Cobrança paga - OPENPIX:CHARGE_COMPLETED`. Para criar esse Webhook, bastar você entrar na nossa plataforma, e acessar a aba `API/Plugins` via sidebar menu.
 
 ![1](./__assets__/how-to-recognize-a-subaccount-of-a-paid-charge-1.png)
 
@@ -157,7 +157,7 @@ Nesse caso, eu vou está criando o Webhook com as seguintes configurações:
 ![3](./__assets__/how-to-recognize-a-subaccount-of-a-paid-charge-3.png)
 
 - Nome: `Webhook de Cobrança Paga` (Você pode está escolhendo o nome que quiser)
-- Evento: `Cobrança paga - woovi:CHARGE_COMPLETED` (Esse evento é disparado quando uma cobrança é paga)
+- Evento: `Cobrança paga - OPENPIX:CHARGE_COMPLETED` (Esse evento é disparado quando uma cobrança é paga)
 - URL: `https://wooviteste.com/webhook` (Essa é a URL do meu serviço que estará recebendo as chamadas do Webhook)
 
 Aqui está um exemplo de um servidor HTTP em Node.js utilizando Express, na qual possui apenas a rota que irá receber as chamadas do Webhook.

@@ -703,16 +703,16 @@ $webhook = [
     "webhook" => [
         "name" => "webhookName (php-sdk)",
 
-        // Eventos disponíveis para registrar um webhook para ouvir. Se ninguém selecionar ninguém, o evento padrão será woovi:TRANSACTION_RECEIVED.
-        // woovi:CHARGE_CREATED - Nova cobrança criada.
-        // woovi:CHARGE_COMPLETED - Cobrança concluída é quando uma cobrança é totalmente paga.
-        // woovi:CHARGE_EXPIRED - Cobrança expirada é quando uma cobrança não foi totalmente paga e expirou.
-        // woovi:TRANSACTION_RECEIVED - Nova transação PIX recebida.
-        // woovi:TRANSACTION_REFUND_RECEIVED - Novo reembolso de transação PIX recebido ou reembolsado.
-        // woovi:MOVEMENT_CONFIRMED - Pagamento confirmado é quando a transação do pix referente ao pagamento é confirmada.
-        // woovi:MOVEMENT_FAILED - Falha no pagamento é quando o pagamento é aprovado e ocorre um erro.
-        // woovi:MOVEMENT_REMOVED - O pagamento foi removido por um usuário.
-        "event" => "woovi:CHARGE_CREATED",
+        // Eventos disponíveis para registrar um webhook para ouvir. Se ninguém selecionar ninguém, o evento padrão será OPENPIX:TRANSACTION_RECEIVED.
+        // OPENPIX:CHARGE_CREATED - Nova cobrança criada.
+        // OPENPIX:CHARGE_COMPLETED - Cobrança concluída é quando uma cobrança é totalmente paga.
+        // OPENPIX:CHARGE_EXPIRED - Cobrança expirada é quando uma cobrança não foi totalmente paga e expirou.
+        // OPENPIX:TRANSACTION_RECEIVED - Nova transação PIX recebida.
+        // OPENPIX:TRANSACTION_REFUND_RECEIVED - Novo reembolso de transação PIX recebido ou reembolsado.
+        // OPENPIX:MOVEMENT_CONFIRMED - Pagamento confirmado é quando a transação do pix referente ao pagamento é confirmada.
+        // OPENPIX:MOVEMENT_FAILED - Falha no pagamento é quando o pagamento é aprovado e ocorre um erro.
+        // OPENPIX:MOVEMENT_REMOVED - O pagamento foi removido por um usuário.
+        "event" => "OPENPIX:CHARGE_CREATED",
 
         "url" => "https://example.com",
         "authorization" => "woovi-php-sdk",
@@ -732,7 +732,7 @@ $result = $client->webhooks()->create($webhook);
  *         "url" => "https://mycompany.com.br/webhook",
  *         "authorization" => "woovi",
  *         "isActive" => true,
- *         "event" => "woovi:TRANSACTION_RECEIVED",
+ *         "event" => "OPENPIX:TRANSACTION_RECEIVED",
  *         "createdAt" => "2021-03-02T22:29:10.720Z",
  *         "updatedAt" => "2021-03-02T22:29:10.720Z",
  *     ],
@@ -769,7 +769,7 @@ namespace YourIntegration\Http;
  */
 class WebhookHandler
 {
-    const woovi_CHARGE_COMPLETED = "woovi:CHARGE_COMPLETED";
+    const woovi_CHARGE_COMPLETED = "OPENPIX:CHARGE_COMPLETED";
 
     /**
      * Handle an webhook request sent by API.
