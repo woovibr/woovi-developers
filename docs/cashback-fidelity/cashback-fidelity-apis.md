@@ -11,7 +11,7 @@ tags:
 
 Para dar cashback para um cliente via API, você utiliza o _endpoint_ `/api/v1/cashback-fidelity` da API.
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/cashback-fidelity/paths/~1api~1v1~1cashback-fidelity/post)
+Você pode acessar [aqui](https://developers.woovi.com/api#tag/cashback-fidelity/POST/api/v1/cashback-fidelity)
 a documentação referente a esse _endpoint_.
 
 Os campos obrigatórios para dar um cashback são os sequintes:
@@ -29,10 +29,10 @@ Obs.: O cliente precisa já ter sido criado na plataforma.
 
 Para verificar o saldo de cashback para um cliente via API, você utiliza o _endpoint_ `/api/v1/cashback-fidelity/balance/:cpf-cnpj` da API.
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/cashback-fidelity/paths/~1api~1v1~1cashback-fidelity~1balance~1%7BtaxID%7D/get)
+Você pode acessar [aqui](https://developers.woovi.com/api#tag/cashback-fidelity/GET/api/v1/cashback-fidelity/balance/{taxID})
 a documentação referente a esse _endpoint_.
 
-https://developers.woovi.com/api#tag/cashback-fidelity/paths/~1api~1v1~1cashback-fidelity~1balance~1%7BtaxID%7D/get
+https://developers.woovi.com/api#tag/cashback-fidelity/GET/api/v1/cashback-fidelity/balance/{taxID}
 
 ```bash
 curl 'https://api.woovi.com/api/v1/cashback-fidelity/balance/${cpf-cnpj}/balance' -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "user-agent: node-fetch" --data-binary '{"taxID":"cpf-cnpj","value":1500}

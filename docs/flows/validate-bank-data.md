@@ -19,7 +19,7 @@ A validação é feita enviando um pagamento de 1 centavo para a chave informada
 
 ## 1. Crie e aprove o pagamento
 
-Crie o pagamento informando a chave Pix do beneficiário, seguindo os parâmetros do endpoint [Create Payment request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post>).
+Crie o pagamento informando a chave Pix do beneficiário, seguindo os parâmetros do endpoint [Create Payment request](<https://developers.woovi.com/api#tag/payment-request-access/POST/api/v1/payment>).
 
 ### Campos do pagamento por chave Pix
 
@@ -96,7 +96,7 @@ Sem o `autoApprove`, o mesmo `POST /api/v1/payment` cria o pagamento com status 
 }
 ```
 
-Aprove em uma segunda chamada, seguindo o endpoint [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>). Essa chamada exige o escopo `PAYMENT_APPROVE_POST` no AppID e envia apenas o `correlationID`.
+Aprove em uma segunda chamada, seguindo o endpoint [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-request-access/POST/api/v1/payment/approve>). Essa chamada exige o escopo `PAYMENT_APPROVE_POST` no AppID e envia apenas o `correlationID`.
 
 ```bash
 curl --location 'https://api.woovi.com/api/v1/payment/approve' \
@@ -128,7 +128,7 @@ A criação **não** valida a chave: um pagamento para uma chave inexistente é 
 
 ## 2. Consulte o pagamento para obter os dados do titular
 
-Consulte [`GET /api/v1/payment/{id}`](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1%7Bid%7D/get>) usando o `correlationID` que você enviou. Depois que o pagamento fica `CONFIRMED`, a resposta traz os dados do titular da chave no bloco **`destination`** (e os mesmos dados, completos, em `transaction.creditParty`).
+Consulte [`GET /api/v1/payment/{id}`](<https://developers.woovi.com/api#tag/payment-request-access/GET/api/v1/payment/{id}>) usando o `correlationID` que você enviou. Depois que o pagamento fica `CONFIRMED`, a resposta traz os dados do titular da chave no bloco **`destination`** (e os mesmos dados, completos, em `transaction.creditParty`).
 
 ```bash
 curl --location 'https://api.woovi.com/api/v1/payment/c0938e0c-a613-48a9-982a-672c062d0001' \

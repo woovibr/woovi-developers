@@ -17,7 +17,7 @@ A validação é feita iniciando um pagamento de 1 centavo para a conta informad
 
 ## 1. Crie o pagamento
 
-Crie o pagamento informando os dados bancários do beneficiário, seguindo os parâmetros do endpoint [Create Payment request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post>).
+Crie o pagamento informando os dados bancários do beneficiário, seguindo os parâmetros do endpoint [Create Payment request](<https://developers.woovi.com/api#tag/payment-request-access/POST/api/v1/payment>).
 
 ### Campos do pagamento manual
 
@@ -59,7 +59,7 @@ Representa a instituição financeira que processará o pagamento.
 | id    | Identificador único do PSP (código ISPB)        |
 | name  | Nome da instituição financeira (ex: "WOOVI IP") |
 
-Para descobrir o `id` do PSP, consulte o endpoint [PSPs](<https://developers.woovi.com/api#tag/psp/paths/~1api~1v1~1psp/get>) e use o ISPB no campo `psp.id`.
+Para descobrir o `id` do PSP, consulte o endpoint [PSPs](<https://developers.woovi.com/api#tag/psp/GET/api/v1/psp>) e use o ISPB no campo `psp.id`.
 
 ```bash
 curl --location 'https://api.woovi.com/api/v1/payment' \
@@ -128,7 +128,7 @@ curl --location 'https://api.woovi.com/api/v1/payment' \
 
 ### Opção 2: Aprovação em dois passos (`/payment/approve`)
 
-Sem o `autoApprove`, o pagamento é criado com status `CREATED` e você precisa aprová-lo em uma segunda chamada, seguindo o endpoint [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1approve/post>).
+Sem o `autoApprove`, o pagamento é criado com status `CREATED` e você precisa aprová-lo em uma segunda chamada, seguindo o endpoint [Approve a Payment Request](<https://developers.woovi.com/api#tag/payment-request-access/POST/api/v1/payment/approve>).
 
 ```bash
 curl --location 'https://api.woovi.com/api/v1/payment/approve' \
@@ -145,7 +145,7 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
 
 Os dados do titular da conta vêm no campo `destination`. Como o Pix é enviado de forma assíncrona, esse campo **não** está na resposta imediata do `autoApprove` nem nos webhooks — o webhook [`OPENPIX:MOVEMENT_CONFIRMED`](#3-webhooks) avisa apenas que o pagamento foi confirmado, sem trazer os dados do titular.
 
-Para obter o `destination`, consulte o endpoint [`GET /api/v1/transaction`](<https://developers.woovi.com/api#tag/transactions/paths/~1api~1v1~1transaction/get>) após a confirmação do pagamento, filtrando pela transação correspondente (por exemplo, pelo `endToEndId` recebido no webhook).
+Para obter o `destination`, consulte o endpoint [`GET /api/v1/transaction`](<https://developers.woovi.com/api#tag/transactions/GET/api/v1/transaction>) após a confirmação do pagamento, filtrando pela transação correspondente (por exemplo, pelo `endToEndId` recebido no webhook).
 
 ```json
 {
@@ -210,7 +210,7 @@ Após a criação e confirmação do pagamento, você receberá webhooks com o s
 }
 ```
 
-> Este webhook **não** traz os dados do titular da conta (`destination`). Para obtê-los, consulte o endpoint [`GET /api/v1/transaction`](<https://developers.woovi.com/api#tag/transactions/paths/~1api~1v1~1transaction/get>) — veja [O que é retornado](#o-que-é-retornado-).
+> Este webhook **não** traz os dados do titular da conta (`destination`). Para obtê-los, consulte o endpoint [`GET /api/v1/transaction`](<https://developers.woovi.com/api#tag/transactions/GET/api/v1/transaction>) — veja [O que é retornado](#o-que-é-retornado-).
 
 Se não souber como configurar o webhook, acesse: [Criando um webhook para interceptar um Pix e chamar uma API](https://developers.woovi.com/docs/webhook/platform/webhook-platform-api).
 
