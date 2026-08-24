@@ -11,10 +11,6 @@ A validação é feita iniciando um pagamento de 1 centavo para a chave informad
 
 > **Pré-requisitos:** ter uma [API MASTER](../apis/api-master.md) e o **PIX OUT habilitado** na conta. Caso não tenha o Pix Out, solicite seguindo o artigo [Como ativar o Pix Out (pagamento externo)](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-o-pix-out-pagamento-externo).
 
-## Sequência da integração
-
-![sequencial](./__assets__/sequencial-validade-bank-data.png)
-
 ## 1. Crie o pagamento
 
 Crie o pagamento informando a chave Pix do beneficiário, seguindo os parâmetros do endpoint [Create Payment request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post>).
@@ -48,8 +44,6 @@ curl --location 'https://api.woovi.com/api/v1/payment' \
     "destinationAliasType": "CPF"
   }'
 ```
-
-![creat](./__assets__/create-payment.png)
 
 ## 2. Aprove o pagamento
 
@@ -88,8 +82,6 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
   }'
 ```
 
-![confirm](./__assets__/confirm-payment.png)
-
 > **Atenção:** nem o `POST /api/v1/payment` nem o `POST /api/v1/payment/approve` retornam os dados do titular da chave — a resposta de ambos traz só o `payment` (status, valor, correlationID etc). O Pix é liquidado de forma assíncrona, então o dado do titular só existe depois da confirmação. Para obtê-lo, consulte a transação — veja o próximo passo.
 
 ## 3. Consulte a transação para obter os dados do titular
@@ -97,43 +89,47 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
 Depois que o pagamento é confirmado (veja o webhook no passo 4, que traz o `endToEndId`), consulte [`GET /api/v1/transaction/{id}`](<https://developers.woovi.com/api#tag/transactions/paths/~1api~1v1~1transaction~1{id}/get>) usando o `endToEndId` (ou o `transactionID`) recebido. Os dados do titular da chave vêm no campo **`creditParty`**:
 
 ```bash
-curl --location 'https://api.woovi.com/api/v1/transaction/E54811417202507081527dYr4Cp2gfAp' \
+curl --location 'https://api.woovi.com/api/v1/transaction/E00416968202608010010NRGg4kHJ3D0' \
   --header 'Authorization: {APP_ID}'
 ```
+
+Exemplo real de resposta (dados sensíveis mascarados abaixo apenas para fins desta documentação — a API não mascara nada, veja a nota logo em seguida):
 
 ```json
 {
   "transaction": {
     "value": 1,
-    "endToEndId": "E54811417202507081527dYr4Cp2gfAp",
+    "endToEndId": "E00416968202608010010NRGg4kHJ3D0",
     "type": "PAYMENT",
     "status": "CONFIRMED",
     "creditParty": {
       "holder": {
-        "name": "MARLY FERREIRA",
-        "nameFriendly": "MARLY FERREIRA",
+        "name": "VAKI****** N******* V******* LTDA",
+        "nameFriendly": "VAKI****** N******* V******* LTDA",
         "taxID": {
-          "taxID": "60242987000182",
+          "taxID": "228*******26",
           "type": "BR:CNPJ"
         }
       },
       "pixKey": {
-        "pixKey": "07*******61",
-        "type": "CPF"
+        "pixKey": "624****0@*******.com.br",
+        "type": "EMAIL"
       },
       "account": {
         "branch": "0001",
-        "account": "6495810856",
-        "accountType": "CACC"
+        "account": "0000000000000****501",
+        "accountType": "TRAN"
       },
       "psp": {
-        "id": "00000001",
-        "name": "Nu Pagamentos S.A (Nubank)"
+        "id": "54811417",
+        "name": "WOOVI IP LTDA."
       }
     }
   }
 }
 ```
+
+> O mascaramento acima (`****`) foi aplicado só nesta documentação — a resposta real da API **não** vem mascarada, traz o `name`/`taxID`/`account` completos, exatamente como resolvidos pelo banco.
 
 - `creditParty.holder.name` / `taxID` — nome e documento do titular da chave, resolvidos pelo banco do recebedor via DICT no momento da liquidação. Diferente do fluxo por [agência e conta](./validate-bank-data-manual.md) (onde você mesmo informa o nome e ele nunca é validado), aqui o nome vem **do banco**, não do que você enviou.
 - `creditParty.pixKey` — a chave Pix usada (`destinationAlias`) e seu tipo.
