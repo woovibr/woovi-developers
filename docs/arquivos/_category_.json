@@ -1,0 +1,13 @@
+{
+  "label": "Arquivos",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Arquivos visão geral"
+  },
+  "customProps": {
+    "description": "Arquivos documentação"
+  }
+}

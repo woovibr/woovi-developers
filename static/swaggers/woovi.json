@@ -4063,7 +4063,7 @@
             }
           }
         ],
-        "description": "Endpoint to create a new Charge for a customer",
+        "description": "Endpoint to create a new Charge for a customer.\n\n## Split\n\nYou can split the value of a charge across other accounts by sending the\n`splits` array in the request body. Each item accepts:\n\n  - `value`: amount in cents that will be split to the destination.\n  - `pixKey`: Pix key of the account that will receive this split.\n  - `splitType`: how the split is processed — one of `SPLIT_INTERNAL_TRANSFER`,\n    `SPLIT_SUB_ACCOUNT` or `SPLIT_PARTNER`.\n    [See how each split type is processed](https://developers.openpix.com.br/docs/splits/split-introduction).\n\nSee the *Charge with Split Internal Transfer* and *Charge with Split Subaccounts*\nrequest body examples below for the full payload shape.\n",
         "requestBody": {
           "description": "Data to create a new charge",
           "required": true,
@@ -5829,7 +5829,12 @@
                       "properties": {
                         "url": {
                           "type": "string",
-                          "description": "Document url",
+                          "description": "Public url to download the document from. Send either url or fileId, not both.",
+                          "minLength": 1
+                        },
+                        "fileId": {
+                          "type": "string",
+                          "description": "Id of a file previously uploaded to POST /api/v1/files with purpose DISPUTE_EVIDENCE. Send either url or fileId, not both. Requires the DISPUTE_EVIDENCE_FILE_ID feature.",
                           "minLength": 1
                         },
                         "correlationID": {
@@ -5867,6 +5872,11 @@
                             "description": "Document url",
                             "minLength": 1
                           },
+                          "fileId": {
+                            "type": "string",
+                            "example": "68c7d0a1f0b2c3d4e5f60718",
+                            "description": "Id of the uploaded file, echoed back when the document was sent by fileId"
+                          },
                           "correlationID": {
                             "type": "string",
                             "example": "id123456789",
@@ -5901,36 +5911,58 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "The company cannot send a evidence by fileId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "errorCode": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Your account does not have the permission to send a evidence by fileId",
+                  "errorCode": "DISPUTE_EVIDENCE_FILE_ID_NOT_ALLOWED"
+                }
+              }
+            }
           }
         },
         "x-codeSamples": [
           {
             "lang": "Node + Native",
-            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/dispute/:id/evidence',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({documents: [{url: 'string', correlationID: 'string', description: 'string'}]}));\nreq.end();"
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/dispute/:id/evidence',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'application/json'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  documents: [\n    {\n      url: 'string',\n      fileId: 'string',\n      correlationID: 'string',\n      description: 'string'\n    }\n  ]\n}));\nreq.end();"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/dispute/:id/evidence \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"documents\":[{\"url\":\"string\",\"correlationID\":\"string\",\"description\":\"string\"}]}'"
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/dispute/:id/evidence \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: application/json' \\\n  --data '{\"documents\":[{\"url\":\"string\",\"fileId\":\"string\",\"correlationID\":\"string\",\"description\":\"string\"}]}'"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/dispute/:id/evidence\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'documents' => [\n        [\n                'url' => 'string',\n                'correlationID' => 'string',\n                'description' => 'string'\n        ]\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/dispute/:id/evidence\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => json_encode([\n    'documents' => [\n        [\n                'url' => 'string',\n                'fileId' => 'string',\n                'correlationID' => 'string',\n                'description' => 'string'\n        ]\n    ]\n  ]),\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/dispute/:id/evidence\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"fileId\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"application/json\"\n}\n\nconn.request(\"POST\", \"/api/v1/dispute/:id/evidence\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/dispute/:id/evidence\"\n\n\tpayload := strings.NewReader(\"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/dispute/:id/evidence\"\n\n\tpayload := strings.NewReader(\"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"fileId\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"application/json\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Java + Okhttp",
-            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/dispute/:id/evidence\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"fileId\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/dispute/:id/evidence\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"application/json\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/dispute/:id/evidence\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\"\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/dispute/:id/evidence\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{\\\"documents\\\":[{\\\"url\\\":\\\"string\\\",\\\"fileId\\\":\\\"string\\\",\\\"correlationID\\\":\\\"string\\\",\\\"description\\\":\\\"string\\\"}]}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -6279,6 +6311,183 @@
           {
             "lang": "Ruby + Native",
             "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/dispute?start=2020-01-01T00%3A00%3A00Z&end=2020-12-01T17%3A00%3A00Z\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/api/v1/files": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Upload a file",
+        "description": "Uploads a file and returns its metadata with a pre-signed download URL.\nThe file is sent as `multipart/form-data` on the `file` field, together\nwith the `purpose` that describes what the file is for.\n\nSend exactly one file per request, of one of the supported content types,\nup to 10 MiB (`10485760` bytes).\n\nWhen you send a `correlationID`, repeating the request with the same\n`correlationID` and `purpose` returns the file already stored (`200`)\ninstead of uploading a second copy, so the request is safe to retry.\nWithout a `correlationID` one is generated for you and every call stores a\nnew file.\n\nThe `url` in the response is temporary and expires at `urlExpiresAt`; ask\nfor the file again to get a fresh one.\n",
+        "x-required-scope": "FILE_POST",
+        "security": [
+          {
+            "AppID": [
+              "FILE_POST"
+            ]
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file",
+                  "purpose"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file itself. Its content type must be one of\n`application/pdf`, `image/png`, `image/jpeg` or `image/webp`,\nand its leading bytes must match the declared content type.\n"
+                  },
+                  "purpose": {
+                    "$ref": "#/components/schemas/FilePurpose"
+                  },
+                  "correlationID": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Your own identifier for this upload. Reusing it for the same\npurpose returns the file stored on the first call. Defaults to\na generated UUID.\n",
+                    "example": "evidence-2026-08-1042"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A file with this `correlationID` and `purpose` already existed; the stored file is returned and nothing new was uploaded\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilePayload"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "File stored",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilePayload"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unknown `purpose`, empty `correlationID`, missing `file` field, or more than one file sent\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileError"
+                },
+                "example": {
+                  "error": "Invalid value for the field purpose"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileError"
+                },
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The application does not have the `FILE_POST` scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileError"
+                },
+                "example": {
+                  "error": "Forbidden"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File is larger than the maximum accepted size",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileError"
+                },
+                "example": {
+                  "error": "File is larger than 10485760 bytes"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Content type is not on the allowlist, or the file's leading bytes do not match the declared content type\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileError"
+                },
+                "example": {
+                  "error": "Content type text/csv is not supported"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The file could not be stored; the request can be retried",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileError"
+                },
+                "example": {
+                  "error": "Failed to store file"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node + Native",
+            "source": "const http = require('https');\n\nconst options = {\n  method: 'POST',\n  hostname: 'api.woovi.com',\n  port: null,\n  path: '/api/v1/files',\n  headers: {\n    Authorization: '{APP_ID}',\n    'content-type': 'multipart/form-data; boundary=---011000010111000001101001'\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on('data', function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on('end', function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write('-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\"file\"\\r\\n\\r\\nstring\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\"purpose\"\\r\\n\\r\\nDISPUTE_EVIDENCE\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\"correlationID\"\\r\\n\\r\\nevidence-2026-08-1042\\r\\n-----011000010111000001101001--\\r\\n');\nreq.end();"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://api.woovi.com/api/v1/files \\\n  --header 'Authorization: {APP_ID}' \\\n  --header 'content-type: multipart/form-data' \\\n  --form file=string \\\n  --form purpose=DISPUTE_EVIDENCE \\\n  --form correlationID=evidence-2026-08-1042"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://api.woovi.com/api/v1/files\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => \"-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"file\\\"\\r\\n\\r\\nstring\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"purpose\\\"\\r\\n\\r\\nDISPUTE_EVIDENCE\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"correlationID\\\"\\r\\n\\r\\nevidence-2026-08-1042\\r\\n-----011000010111000001101001--\\r\\n\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: {APP_ID}\",\n    \"content-type: multipart/form-data\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.woovi.com\")\n\npayload = \"-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"file\\\"\\r\\n\\r\\nstring\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"purpose\\\"\\r\\n\\r\\nDISPUTE_EVIDENCE\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"correlationID\\\"\\r\\n\\r\\nevidence-2026-08-1042\\r\\n-----011000010111000001101001--\\r\\n\"\n\nheaders = {\n    'Authorization': \"{APP_ID}\",\n    'content-type': \"multipart/form-data\"\n}\n\nconn.request(\"POST\", \"/api/v1/files\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Go + Native",
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io\"\n)\n\nfunc main() {\n\n\turl := \"https://api.woovi.com/api/v1/files\"\n\n\tpayload := strings.NewReader(\"-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"file\\\"\\r\\n\\r\\nstring\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"purpose\\\"\\r\\n\\r\\nDISPUTE_EVIDENCE\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"correlationID\\\"\\r\\n\\r\\nevidence-2026-08-1042\\r\\n-----011000010111000001101001--\\r\\n\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"Authorization\", \"{APP_ID}\")\n\treq.Header.Add(\"content-type\", \"multipart/form-data\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+          },
+          {
+            "lang": "Java + Okhttp",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"multipart/form-data; boundary=---011000010111000001101001\");\nRequestBody body = RequestBody.create(mediaType, \"-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"file\\\"\\r\\n\\r\\nstring\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"purpose\\\"\\r\\n\\r\\nDISPUTE_EVIDENCE\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"correlationID\\\"\\r\\n\\r\\nevidence-2026-08-1042\\r\\n-----011000010111000001101001--\\r\\n\");\nRequest request = new Request.Builder()\n  .url(\"https://api.woovi.com/api/v1/files\")\n  .post(body)\n  .addHeader(\"Authorization\", \"{APP_ID}\")\n  .addHeader(\"content-type\", \"multipart/form-data\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Ruby + Native",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://api.woovi.com/api/v1/files\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"Authorization\"] = '{APP_ID}'\nrequest[\"content-type\"] = 'multipart/form-data'\nrequest.body = \"-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"file\\\"\\r\\n\\r\\nstring\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"purpose\\\"\\r\\n\\r\\nDISPUTE_EVIDENCE\\r\\n-----011000010111000001101001\\r\\nContent-Disposition: form-data; name=\\\"correlationID\\\"\\r\\n\\r\\nevidence-2026-08-1042\\r\\n-----011000010111000001101001--\\r\\n\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -19559,6 +19768,91 @@
         "description": "End date used in the query. Complies with RFC 3339.",
         "example": "2020-12-01T17:00:00Z"
       },
+      "FilePurpose": {
+        "type": "string",
+        "description": "What the file will be used for",
+        "enum": [
+          "DISPUTE_EVIDENCE"
+        ],
+        "example": "DISPUTE_EVIDENCE"
+      },
+      "FileContentType": {
+        "type": "string",
+        "description": "Content type of the file",
+        "enum": [
+          "application/pdf",
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "example": "image/png"
+      },
+      "File": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Woovi identifier of the file",
+            "example": "6712c2ac7c2f1e0012a4b8d1"
+          },
+          "correlationID": {
+            "type": "string",
+            "description": "Your identifier for this upload, generated when not sent",
+            "example": "evidence-2026-08-1042"
+          },
+          "purpose": {
+            "$ref": "#/components/schemas/FilePurpose"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Name of the file as you sent it",
+            "example": "evidence.png"
+          },
+          "contentType": {
+            "$ref": "#/components/schemas/FileContentType"
+          },
+          "size": {
+            "type": "integer",
+            "description": "Size in bytes",
+            "example": 20480
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Temporary pre-signed download URL",
+            "example": "https://woovi-files.s3.amazonaws.com/company/6712c1f07c2f1e0012a4b8c9/dispute_evidence/6712c2ac7c2f1e0012a4b8d1?X-Amz-Signature=..."
+          },
+          "urlExpiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When `url` stops working",
+            "example": "2026-08-22T15:30:00.000Z"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the file was stored",
+            "example": "2026-08-22T14:30:00.000Z"
+          }
+        }
+      },
+      "FilePayload": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "$ref": "#/components/schemas/File"
+          }
+        }
+      },
+      "FileError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Message in the language of the company making the request (pt-BR, en or es)\n"
+          }
+        }
+      },
       "FundsRecovery": {
         "type": "object",
         "properties": {
@@ -22098,6 +22392,7 @@
               "DISPUTE_POST": "Upload new evidence",
               "DISPUTE_GET": "Get one dispute",
               "DISPUTE_GET_LIST": "Get a list of disputes",
+              "FILE_POST": "Upload a file",
               "PARTNER_COMPANY_POST": "Create a pre registration with a partner reference",
               "PARTNER_COMPANY_GET": "Get an specific preregistration via taxID param",
               "PARTNER_COMPANY_GET_LIST": "Get every preregistration that is managed by you",
@@ -22193,6 +22488,10 @@
     {
       "name": "dispute",
       "description": "Endpoint to manage Dispute\n"
+    },
+    {
+      "name": "file",
+      "description": "Endpoint to upload files that other Woovi APIs consume, such as the\nevidence of a dispute.\n"
     },
     {
       "name": "funds recovery",

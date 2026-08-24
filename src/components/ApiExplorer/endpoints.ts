@@ -568,7 +568,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'charge',
     'category': 'Cobrança',
     'summary': 'Create a new Charge',
-    'description': 'Endpoint to create a new Charge for a customer',
+    'description': 'Endpoint to create a new Charge for a customer.\n\n## Split\n\nYou can split the value of a charge across other accounts by sending the\n`splits` array in the request body. Each item accepts:\n\n  - `value`: amount in cents that will be split to the destination.\n  - `pixKey`: Pix key of the account that will receive this split.\n  - `splitType`: how the split is processed — one of `SPLIT_INTERNAL_TRANSFER`,\n    `SPLIT_SUB_ACCOUNT` or `SPLIT_PARTNER`.\n    [See how each split type is processed](https://developers.openpix.com.br/docs/splits/split-introduction).\n\nSee the *Charge with Split Internal Transfer* and *Charge with Split Subaccounts*\nrequest body examples below for the full payload shape.\n',
     'requestExamples': [
       {
         'name': 'Charge',
