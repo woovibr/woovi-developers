@@ -25,7 +25,7 @@ curl -X GET "https://api.woovi.com/api/v1/pix-keys/{pix-key}/check" \
   -H "Authorization: {APP_ID}"
 ```
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/pixKey/paths/~1api~1v1~1pix-keys~1%7BpixKey%7D~1check/get) a documentação referente a esse _endpoint_.
+Você pode acessar [aqui](https://developers.woovi.com/api#tag/pixkey-check-request-access/GET/api/v1/pix-keys/{pixKey}/check) a documentação referente a esse _endpoint_.
 
 - Usando POST com a chave no corpo (útil quando a chave contém caracteres que ficam ruins no path, como e-mails):
 ```bash
@@ -37,7 +37,7 @@ curl -X POST "https://api.woovi.com/api/v1/pix-keys/check" \
   }'
 ```
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/pixKey/paths/~1api~1v1~1pix-keys~1check/post) a documentação referente a esse _endpoint_.
+Você pode acessar [aqui](https://developers.woovi.com/api#tag/pixkey-check-request-access/POST/api/v1/pix-keys/check) a documentação referente a esse _endpoint_.
 
 ## Limitação de Taxa
 

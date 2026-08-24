@@ -45,4 +45,4 @@ Neste método você será redirecionado para um formulário de registro, onde vo
 
 Método **API:**
 
-Também temos a possibilidade de associar empresas afiliadas via API, para isso basta acessar a documentação em [parcerias](https://developers.woovi.com/en/docs/category/parcerias) e [partner/api](https://developers.woovi.com/api#tag/partner-(request-access)) .
+Também temos a possibilidade de associar empresas afiliadas via API, para isso basta acessar a documentação em [parcerias](https://developers.woovi.com/en/docs/category/parcerias) e [partner/api](https://developers.woovi.com/api#tag/partner-request-access .

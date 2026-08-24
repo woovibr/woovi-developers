@@ -26,7 +26,7 @@ curl -X POST "https://api.woovi.com/api/v1/decode/emv" \
   }'
 ```
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/decode/paths/~1api~1v1~1decode~1emv/post) a documentação referente a esse _endpoint_.
+Você pode acessar [aqui](https://developers.woovi.com/api#tag/decode/POST/api/v1/decode/emv) a documentação referente a esse _endpoint_.
 
 ### O que é retornado ?
 

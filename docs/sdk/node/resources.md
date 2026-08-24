@@ -61,7 +61,7 @@ Chame o método `cashbackFidelity` seu cliente da API para obter o recurso de na
 
 Chame o método `get` no recurso de na próxima compra de cashback passando um taxID:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/cashback-fidelity/paths/~1api~1v1~1cashback-fidelity~1balance~1%7BtaxID%7D/get).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/cashback-fidelity/GET/api/v1/cashback-fidelity/balance/{taxID}).
 
 ```js
 const response = await woovi.cashbackFidelity.get({ taxID: 'algum-tax-id' });
@@ -71,7 +71,7 @@ const response = await woovi.cashbackFidelity.get({ taxID: 'algum-tax-id' });
 
 Crie o recurso chamando o método `create`no recurso de na próxima compra de cashback.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/cashback-fidelity/paths/~1api~1v1~1cashback-fidelity/post).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/cashback-fidelity/POST/api/v1/cashback-fidelity).
 
 ```js
 const response = await woovi.cashbackFidelity.create({
@@ -201,7 +201,7 @@ Chame o método `customer` seu cliente da API para obter o recurso de cliente.
 
 Chame o método `get` no recurso de clientes passando um id:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/customer/paths/~1api~1v1~1customer~1%7Bid%7D/get).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/customer/GET/api/v1/customer/{id}).
 
 ```js
 const response = await woovi.customer.get({ id: 'algum-id' });
@@ -211,7 +211,7 @@ const response = await woovi.customer.get({ id: 'algum-id' });
 
 Obtenha os clientes usando o método `list` no recurso de clientes:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/customer/paths/~1api~1v1~1customer/get).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/customer/GET/api/v1/customer).
 
 ```js
 const response = await woovi.customer.list({ limit: 10, skip: 0 }); //o objeto de paginação é opcional
@@ -221,7 +221,7 @@ const response = await woovi.customer.list({ limit: 10, skip: 0 }); //o objeto d
 
 Crie uma cliente usando o método `create` no recurso de clientes:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/customer/paths/~1api~1v1~1customer/post).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/customer/POST/api/v1/customer).
 
 ```js
 const response = await woovi.customer.create({
@@ -272,13 +272,13 @@ const response = await woovi.customer.update({
 
 Chame o método `partner` seu cliente da API para obter o recurso de parceiros.
 
-[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/partner-(request-access)>).
+[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/partner-request-access>).
 
 ### Pegar um pré-registro de parceiro
 
 Chame o método `getPreRegistration` no recurso de parceiros passando um taxID:
 
-[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/partner-(request-access)/paths/~1api~1v1~1partner~1company~1%7BtaxID%7D/get>).
+[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/partner-request-access/GET/api/v1/partner/company/{taxID}>).
 
 ```js
 const response = await woovi.partner.getPreRegistration({
@@ -344,7 +344,7 @@ const response = await woovi.partner.createApplication({
 
 Chame o método `payment` seu cliente da API para obter o recurso de pagamentos.
 
-[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/partner-(request-access)/>).
+[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/partner-request-access)/>).
 
 ### Aprove um pagamento
 
@@ -522,7 +522,7 @@ Chame o método `transactions` seu cliente da API para obter o recurso de transa
 
 Obtenha uma transação usando o método `get` no recurso de transações.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/transactions/paths/~1api~1v1~1transaction~1%7Bid%7D/get).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/transactions/GET/api/v1/transaction/{id}).
 
 ```js
 const response = await woovi.transactions.get({ id: 'algum-id' });
@@ -532,7 +532,7 @@ const response = await woovi.transactions.get({ id: 'algum-id' });
 
 Obtenha uma lista de transações usando o método `list` no recurso de transação.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/transactions/paths/~1api~1v1~1transaction/get).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/transactions/GET/api/v1/transaction).
 
 ```js
 const response = await woovi.transactions.list({
@@ -551,7 +551,7 @@ Chame o método `transfer` seu cliente da API para obter o recurso de transferen
 
 Para criar uma transferencia, use o método `create` no recurso de transferencias.
 
-[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/transfer-(request-access)/paths/~1api~1v1~1transfer/post>).
+[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/transfer-request-access/POST/api/v1/transfer>).
 
 ```js
 const response = await woovi.transfer.create({
@@ -571,7 +571,7 @@ Chame o método `webhook` seu cliente da API para obter o recurso de webhook.
 
 Delete um webhook usando o método `delete` no recurso de webhooks.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/webhook/paths/~1api~1v1~1webhook~1%7Bid%7D/delete).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/webhook/DELETE/api/v1/webhook/{id}).
 
 ```js
 const response = await woovi.webhook.delete({ id: 'algum-id' });
@@ -581,7 +581,7 @@ const response = await woovi.webhook.delete({ id: 'algum-id' });
 
 Obtenha uma lista de webhooks usando o método `list` no recurso de webhook.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/webhook/paths/~1api~1v1~1webhook/get).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/webhook/GET/api/v1/webhook).
 
 ```js
 const response = await woovi.webhook.list({
@@ -594,7 +594,7 @@ const response = await woovi.webhook.list({
 
 Para criar um webhook, use o método `create` no recurso de webhook.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/webhook/paths/~1api~1v1~1webhook/post).
+[Documentação do endpoint para mais detalhes](https://developers.woovi.com/api#tag/webhook/POST/api/v1/webhook).
 
 ```js
 const response = await woovi.webhook.create({
@@ -639,7 +639,7 @@ Chame o método `subAccount` seu cliente da API para obter o recurso de subconta
 
 Para pegar detalhes de uma subconta, use o metodo `get`no recurso de subcontas.
 
-[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/sub-account-(request-access)/paths/~1api~1v1~1subaccount~1%7Bid%7D/get>).
+[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/subaccount/GET/api/v1/subaccount/{id}>).
 
 ```js
 const response = await woovi.subAccount.get({ id: 'algum-id' });
@@ -649,7 +649,7 @@ const response = await woovi.subAccount.get({ id: 'algum-id' });
 
 Obtenha uma lista de subcontas usando o método `list` no recurso de subcontas.
 
-[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/sub-account-(request-access)/paths/~1api~1v1~1subaccount/get>).
+[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/subaccount/GET/api/v1/subaccount>).
 
 ```js
 const response = await woovi.subAccount.list({ limit: 10, skip: 0 }); //o objeto de paginação é opcional
@@ -659,7 +659,7 @@ const response = await woovi.subAccount.list({ limit: 10, skip: 0 }); //o objeto
 
 Para criar um subconta, use o método `create` no recurso de subconta.
 
-[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/sub-account-(request-access)/paths/~1api~1v1~1subaccount/post>).
+[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/subaccount/POST/api/v1/subaccount>).
 
 ```js
 const response = await woovi.subAccount.create({
@@ -672,7 +672,7 @@ const response = await woovi.subAccount.create({
 
 Faça withdraw em uma subconta usando do método `withdraw` no recurso de subcontas.
 
-[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/sub-account-(request-access)/paths/~1api~1v1~1subaccount~1%7Bid%7D~1withdraw/post>).
+[Documentação do endpoint para mais detalhes](<https://developers.woovi.com/api#tag/subaccount/POST/api/v1/subaccount/{id}/withdraw>).
 
 ```js
 const response = await woovi.subAccount.withdraw({ id: 'pix-key' });

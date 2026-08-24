@@ -117,7 +117,7 @@ Endpoints que aceitam `companyBankAccount` hoje:
 | Método | Endpoint | Escopo |
 | --- | --- | --- |
 | `GET` | [`/api/v1/statement`](https://developers.woovi.com/api#tag/statement) | `STATEMENT_GET` |
-| `GET` | [`/api/v1/transaction/{id}`](https://developers.woovi.com/api#tag/transactions) | `TRANSACTION_GET` |
+| `GET` | [`/api/v1/transaction/{id}`](https://developers.woovi.com/api#tag/transactions | `TRANSACTION_GET` |
 
 Sem a query string, o comportamento não muda: o statement continua da conta ligada ao AppId, e a transaction continua no escopo da empresa.
 

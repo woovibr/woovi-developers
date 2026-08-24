@@ -119,7 +119,7 @@ A criação em si pode ser feita
 Se preferir consultar em vez de receber o webhook, use o endpoint de pagamento
 passando o `correlationID` (ou o `id`) do pagamento:
 
-[Get one Payment request](<https://developers.woovi.com/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1%7Bid%7D/get>)
+[Get one Payment request](<https://developers.woovi.com/api#tag/payment-request-access/GET/api/v1/payment/{id}>)
 
 ```bash
 curl --request GET \
