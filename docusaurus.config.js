@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { themes } from 'prism-react-renderer';
 import mdxMermaid from 'mdx-mermaid';
 
@@ -15,9 +17,39 @@ const localeConfigs = {
   },
 };
 
+const docsTrees = [
+  'docs',
+  ...locales.map((locale) => `i18n/${locale}/docusaurus-plugin-content-docs/current`),
+];
+
+// A relative .md link does not cross the translation boundary: the resolver only
+// looks in the tree of the locale being built. facebook/docusaurus#10907
+const resolveAcrossLocales = ({ sourceFilePath, url }) => {
+  const [target, anchor] = url.split('#');
+  if (!/\.mdx?$/.test(target)) return console.warn(`[links] unresolved ${url} in ${sourceFilePath}`);
+
+  const filePath = path.posix.normalize(path.posix.join(path.posix.dirname(sourceFilePath), target));
+  const tree = docsTrees.find((dir) => filePath.startsWith(`${dir}/`));
+  if (!tree) return console.warn(`[links] unresolved ${url} in ${sourceFilePath}`);
+
+  const docPath = filePath.slice(tree.length + 1);
+  const found = docsTrees.map((dir) => path.join(dir, docPath)).find((file) => fs.existsSync(file));
+  if (!found) return console.warn(`[links] ${url} in ${sourceFilePath} has no file in any locale`);
+
+  // the route comes from the frontmatter id when it is set, not from the file name
+  const [, frontmatter = ''] = fs.readFileSync(found, 'utf-8').split(/^---$/m);
+  const id = frontmatter.match(/^id:\s*(\S+)/m);
+  const route = id ? path.posix.join(path.posix.dirname(docPath), id[1]) : docPath.replace(/\.mdx?$/, '');
+
+  return `/docs/${route}${anchor ? `#${anchor}` : ''}`;
+};
+
 module.exports = {
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: resolveAcrossLocales,
+    },
   },
   themes: ['@docusaurus/theme-mermaid'],
   future: {
@@ -49,7 +81,6 @@ module.exports = {
   scripts: [],
   favicon: 'img/icons/woovi.svg',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
   trailingSlash: false,
   plugins: [
     [
