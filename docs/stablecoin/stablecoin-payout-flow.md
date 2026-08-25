@@ -65,6 +65,8 @@ flowchart LR
 5. Configure os [webhooks](./stablecoin-webhooks.md):
    - `STABLECOIN_PAYOUT_COMPLETED`
    - `STABLECOIN_PAYOUT_FAILED`
+   - `STABLECOIN_PAYOUT_REFUND_CONFIRMED`
+   - `STABLECOIN_PAYOUT_REFUND_FAILED`
 
 ## Passo a passo
 
@@ -200,6 +202,8 @@ curl --request POST \
 ### 6. Acompanhar a conclusão
 
 Quando o Pix é pago, você recebe `STABLECOIN_PAYOUT_COMPLETED` (pode incluir `endToEndId`). Em falha, `STABLECOIN_PAYOUT_FAILED`. Detalhes em [Webhooks](./stablecoin-webhooks.md).
+
+Um payout já liquidado ainda pode ser **devolvido** depois — o `status` continua `COMPLETED` e a devolução chega em `STABLECOIN_PAYOUT_REFUND_CONFIRMED` (valor disponível de novo) ou `STABLECOIN_PAYOUT_REFUND_FAILED` (valor indisponível, precisa de conciliação). Veja [Devolução de um payout já liquidado](./stablecoin-webhooks.md#devolução-de-um-payout-já-liquidado).
 
 Você também pode consultar a qualquer momento:
 
