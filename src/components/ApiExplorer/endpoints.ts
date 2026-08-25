@@ -1445,7 +1445,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'kyc',
     'category': 'KYC',
     'summary': 'Create a KYC validation for a Tax ID',
-    'description': "Screens a CPF or CNPJ against fraud, dispute, sanctions, PEP and lawsuit signals and\nreturns a verdict.\n\nThe screening runs asynchronously: this call answers `201` with `status: PROCESSING`,\nand the verdict is read back with `GET /api/v1/kyc-validation/{correlationID}`\n(usually ready in well under a second) or received through the\n`KYC_VALIDATION_COMPLETED` / `KYC_VALIDATION_FAILED` webhook events.\n\n**Idempotent by `correlationID`.** Sending the same `correlationID` again returns the\noriginal validation with `200` and is not billed a second time. A new `correlationID`\nis a new billable validation — including a retry after a `FAILED` one.\n\nEach validation is charged as `KYC_VALIDATION_FEE`, priced from the account's\n`kycValidationFeeSettings`, and the charge happens **before** the screening is queued:\na validation that answers `201` has already been billed.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_POST`\nscope on the application.\n",
+    'description': 'Screens a CPF or CNPJ against fraud, dispute, sanctions, PEP and lawsuit signals and\nreturns a verdict.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_POST`\nscope on the application.\n',
     'requestExamples': [
       {
         'name': 'cnpj',
