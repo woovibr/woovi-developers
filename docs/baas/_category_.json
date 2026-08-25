@@ -5,9 +5,9 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "BAAS visão geral"
+    "title": "BaaS — visão geral"
   },
   "customProps": {
-    "description": "Apis documentação"
+    "description": "Crie e opere contas digitais para seus clientes"
   }
 }

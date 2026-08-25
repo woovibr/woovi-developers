@@ -6,6 +6,7 @@ tags:
   - api
   - invoice
   - integration
+sidebar_position: 12
 ---
 
 Este documento irá ajudá-lo a configurar, via API, a emissão de nota fiscal eletrônica de serviço (NFS-e) de uma conta, do cadastro da integração até a emissão da nota de teste que valida tudo.
