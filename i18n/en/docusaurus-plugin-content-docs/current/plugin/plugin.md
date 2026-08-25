@@ -31,7 +31,7 @@ See the example below:
 
 ## Initializing the plugin
 The plugin is consumed using the native Window Object from Javascript API. For initialize, create an $openpix array on window to communicate with the plugin.
-Push your [appID](./app-id) key like below:
+Push your [appID](./app-id.md) key like below:
 
 ```jsx
 window.$openpix = [];

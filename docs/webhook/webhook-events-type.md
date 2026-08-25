@@ -141,7 +141,7 @@ O corpo repete os blocos `charge` e `boleto` do evento de cobrança paga e acres
 ### ACCOUNT_REGISTER_APPROVED
 Esse evento é enviado quando um registro de subconta é aprovado no compliance.
 
-[Ver exemplo de payload →](/docs/webhook/examples/webhook-account-register-approved-payload)
+[Ver exemplo de payload →](./examples/account-register-approved-payload.mdx)
 
 ### ACCOUNT_REGISTER_REJECTED
 Esse evento é enviado quando um registro de subconta é reprovado no compliance.

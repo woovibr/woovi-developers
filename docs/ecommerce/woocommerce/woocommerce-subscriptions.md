@@ -19,7 +19,7 @@ Após configurar o plugin Woovi, será possível cobrar clientes recorrentemente
 
 ## 1. Instale e configure o Plugin Woovi
 
-Siga nossa documentação para instalar e configurar o Plugin Woovi: [Integrando a Woovi com WooCommerce](./woocommerce-plugin.md)
+Siga nossa documentação para instalar e configurar o Plugin Woovi: [Integrando a Woovi com WooCommerce](./woocommerce-plugin.mdx)
 
 ## 2. Ative o plugin WooCommerce Subscriptions
 
