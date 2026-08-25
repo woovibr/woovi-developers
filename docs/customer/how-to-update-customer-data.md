@@ -32,7 +32,7 @@ Ao editar o campo não esqueça de clicar em salvar em cada campo.
 
 ## Via API
 
-Para alterar os dados de um cliente via API, você utiliza o _endpoint_ `/api/v1/customer/{correlationID}` da API utilizando o método `PATCH`.
+Para alterar os dados de um cliente via API, você utiliza o _endpoint_ `/api/v1/customer/{id}` da API utilizando o método `PATCH`.
 
 Para editar o cliente você precisa chamar a API informando o correlationID do cliente em que deseja alterar na URL, e no corpo da requisição você pode informar os campos `name`, `email`, `phone`, `address` and `taxID`.
 
@@ -110,4 +110,4 @@ Retornarmeros a seguinte resposta de exemplo:
 }
 ```
 
-Consulte a documentação da API para mais informações sobre os campos e a resposta da requisição aqui: [API](/api#tag/customer/PATCH/api/v1/customer/{correlationID})
+Consulte a documentação da API para mais informações sobre os campos e a resposta da requisição aqui: [API](/api#tag/customer/PATCH/api/v1/customer/{id})

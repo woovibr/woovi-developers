@@ -81,7 +81,7 @@ O corpo do erro traz a mensagem no idioma da empresa que fez a requisição (pt-
 
 ## Usando o arquivo em outra API
 
-Pegue o `file.id` do retorno e envie no campo correspondente da API que vai consumir o documento. Para disputas, ele vai no `fileId` de cada item de `documents` em `POST /api/v1/dispute/:id/evidence` — veja [Como adicionar uma nova evidência em uma disputa?](../disputa/how-add-new-evidence-in-evidence.md).
+Pegue o `file.id` do retorno e envie no campo correspondente da API que vai consumir o documento. Para disputas, ele vai no `fileId` de cada item de `documents` em `POST /api/v1/dispute/{id}/evidence` — veja [Como adicionar uma nova evidência em uma disputa?](../disputa/how-add-new-evidence-in-evidence.md).
 
 ## Casos de Uso
 

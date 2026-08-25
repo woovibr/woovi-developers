@@ -32,7 +32,7 @@ const response = await woovi.account.get({ accountId: 'algum-id' });
 
 Obtenha as contas usando o método `list` no recurso de contas:
 
-[Documentação do endpoint para mais detalhes](/api#tag/account/GET/api/v1/account/).
+[Documentação do endpoint para mais detalhes](/api#tag/account/GET/api/v1/account).
 
 ```js
 const response = await woovi.account.list({ limit: 10, skip: 0 }); //o objeto de paginação é opcional
