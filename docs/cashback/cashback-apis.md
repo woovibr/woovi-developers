@@ -11,7 +11,7 @@ tags:
 
 Para dar cashback para um cliente via API, você utiliza o _endpoint_ `/api/v1/cashback-fidelity` da API.
 
-Você pode acessar [aqui](/api#tag/cashback-fidelity/POST/api/v1/cashback-fidelity)
+Você pode acessar <ApiLink method="POST" path="/api/v1/cashback-fidelity">aqui</ApiLink>
 a documentação referente a esse _endpoint_.
 
 Os campos obrigatórios para dar um cashback são os sequintes:
@@ -29,7 +29,7 @@ Obs.: O cliente precisa já ter sido criado na plataforma.
 
 Para verificar o saldo de cashback para um cliente via API, você utiliza o _endpoint_ `/api/v1/cashback-fidelity/balance/:cpf-cnpj` da API.
 
-Você pode acessar [aqui](/api#tag/cashback-fidelity/GET/api/v1/cashback-fidelity/balance/{taxID})
+Você pode acessar <ApiLink method="GET" path="/api/v1/cashback-fidelity/balance/{taxID}">aqui</ApiLink>
 a documentação referente a esse _endpoint_.
 
 [`/api/v1/cashback-fidelity/balance/{taxID}`](/api#tag/cashback-fidelity/GET/api/v1/cashback-fidelity/balance/{taxID})
