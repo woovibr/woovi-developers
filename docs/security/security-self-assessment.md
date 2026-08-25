@@ -93,7 +93,7 @@ tags:
 ## Vendor security 
 | Question | Comments | 
 | -  | - | 
-| Do you have a process to validade your vendors? | Yes. <br/> [Vendor Policy](https://developers.woovi.com/docs/security/security-policy#pol%C3%ADtica-de-seguran%C3%A7a-de-fornecedores)|
+| Do you have a process to validade your vendors? | Yes. <br/> [Vendor Policy](/docs/security/security-policy#pol%C3%ADtica-de-seguran%C3%A7a-de-fornecedores)|
 
 ## Pentest
 | Question | Comments | 

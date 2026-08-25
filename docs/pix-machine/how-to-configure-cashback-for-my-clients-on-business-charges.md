@@ -14,5 +14,5 @@ tags:
   - imprimir
 ---
 
-[Neste artigo](https://developers.woovi.com/docs/cashback/cashback-how-to-config) você encontrará o passo a passo de como configurar o cashback para seus clientes nas cobranças
+[Neste artigo](/docs/cashback/cashback-how-to-config) você encontrará o passo a passo de como configurar o cashback para seus clientes nas cobranças
 impressas.

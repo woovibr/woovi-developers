@@ -13,7 +13,7 @@ tags:
 Nós disponibilizamos o _endpoint_ `/api/woovi/v1/partner/application` para que
 você possa criar uma novo _pré-registro_ para a uma empresa afiliada.
 
-Você pode acessar [aqui](https://developers.woovi.com.br/api#tag/partner-(request-access)/paths/~1api~1v1~1partner~1company/post)
+Você pode acessar [aqui](/api#tag/partner-request-access)/paths/~1api~1v1~1partner~1company/post)
 a documentação referente a esse _endpoint_.
 
 Como parte do `body` da requisição, esperamos o envio dos seguintes dois objetos: `preRegistration` e `user`,

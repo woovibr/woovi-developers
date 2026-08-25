@@ -99,7 +99,7 @@ A liquidação ocorre em até 3 dias úteis após o pagamento. Para saber quando
 valor foi creditado, **consulte a cobrança** pelo `correlationID` (ou pelo `id`)
 e verifique o método de pagamento `boleto`:
 
-[Consultar cobrança](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge~1%7Bid%7D/get)
+[Consultar cobrança](/api#tag/charge/GET/api/v1/charge/{id})
 
 ```bash
 curl --request GET \

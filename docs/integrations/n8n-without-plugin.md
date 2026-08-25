@@ -9,7 +9,7 @@ tags:
 
 :::info
 Antes de começar, certifique-se de ter configurado seu acesso à API da woovi. 
-Você pode encontrar o guia completo de como obter suas credenciais em nossa [documentação de API Getting Started](https://developers.woovi.com.br/docs/apis/api-getting-started).
+Você pode encontrar o guia completo de como obter suas credenciais em nossa [documentação de API Getting Started](/docs/apis/api-getting-started).
 :::
 
 ## Como integrar o N8N com a woovi sem usar o plugin?
@@ -138,4 +138,4 @@ Ao receber um webhook da woovi, você verá uma saída similar a esta:
 
 ## Documentação Técnica
 
-Para mais detalhes sobre os endpoints, payloads e respostas da API, consulte nossa [documentação técnica completa](https://developers.woovi.com.br/api).
+Para mais detalhes sobre os endpoints, payloads e respostas da API, consulte nossa [documentação técnica completa](/api).

@@ -50,7 +50,7 @@ está em
 **[Como criar uma Assinatura cobrada com Boleto usando a API?](../subscription-recurrence/subscription-with-boleto-create-api.mdx)**.
 
 Consulte também a referência do endpoint na
-[API Reference](https://developers.woovi.com/api#tag/subscription/POST/api/v1/subscriptions).
+[API Reference](/api#tag/subscription/POST/api/v1/subscriptions).
 
 ---
 

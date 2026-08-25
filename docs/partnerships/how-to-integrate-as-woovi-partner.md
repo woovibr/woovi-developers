@@ -97,7 +97,7 @@ Você pode criar chaves de APIs para suas empresas afiliadas, seguindo a documen
 ## Como listar todos afiliados via API
 
 Você pode fazer um chamada para o nosso endpoint `/api/v1/partner/company` informando o seu `appID` utilizando os header de `Authorization`
-Para saber mais sobre as especificações do nosso endpoint você pode acessar [nossa documentação tecnica](https://developers.woovi.com.br/api#tag/partner-(request-access)/paths/~1api~1v1~1partner~1company/get)
+Para saber mais sobre as especificações do nosso endpoint você pode acessar [nossa documentação tecnica](/api#tag/partner-request-access)/paths/~1api~1v1~1partner~1company/get)
 
 ![](./__assets__/how-to-integrate-as-woovi-partner/postman-get-affilliates.png)
 
@@ -109,7 +109,7 @@ Caso ainda não tenha um `appID`, recomenda-mos fortemente você consultar nossa
 ## Como listar um afiliado específico?
 
 Você pode fazer um chamada para o nosso endpoint `/api/v1/partner/company/{taxID}` informando o seu `appID` no header de `Authorization` da sua requisição, e também substituindo o parâmetro `taxID` pelo CNPJ do seu afiliado pré-registrado
-Para saber mais sobre as especificações do nosso endpoint você pode acessar [nossa documentação tecnica](https://developers.woovi.com.br/api#tag/partner-(request-access)/paths/~1api~1v1~1partner~1company~1%7BtaxID%7D/get)
+Para saber mais sobre as especificações do nosso endpoint você pode acessar [nossa documentação tecnica](/api#tag/partner-request-access)/paths/~1api~1v1~1partner~1company~1%7BtaxID%7D/get)
 
 ![](./__assets__/how-to-integrate-as-woovi-partner/postman-get-affiliate-by-taxID.png)
 

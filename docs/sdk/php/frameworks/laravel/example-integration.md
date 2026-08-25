@@ -15,7 +15,7 @@ Mostra o fluxo do SDK de PHP em ação, incluindo a criação de cobranças, a a
 
 ### Pré-requisitos
 
-- Tenha um [App ID](https://developers.woovi.com.br/docs/plugin/app-id) em sua conta woovi.
+- Tenha um [App ID](/docs/plugin/app-id) em sua conta woovi.
 - Ter Docker ou Composer e MySQL instalados.
 
 ### Laravel Sail / Docker (maneira recomendada)

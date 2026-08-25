@@ -9,7 +9,7 @@ tags:
 
 ## Rotas da API de Stablecoin
 
-Você pode ver os detalhes completos na [referência da API](https://developers.woovi.com/api#tag/stablecoin).
+Você pode ver os detalhes completos na [referência da API](/api#tag/stablecoin).
 
 Todas as rotas ficam sob `/api/v1/stablecoin/` e exigem autenticação com o seu App (header `Authorization`). Cada rota exige um escopo (`scope`) específico no seu App:
 

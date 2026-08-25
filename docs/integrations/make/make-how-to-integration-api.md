@@ -35,7 +35,7 @@ Após selecionar esta opção, você verá as seguintes opções conforme a imag
 
 - `URL`: será inserido a URL referente a nossa API contendo o endpoint que deseja acessar.
   Para o nosso exemplo, estaremos usando o endpoint para criar uma cobrança (`https://api.woovi.com/api/v1/charge`),
-  você poderá acessar todos os endpoints disponíveis pela nossa API a partir da [nossa documentação](https://developers.woovi.com.br/api).
+  você poderá acessar todos os endpoints disponíveis pela nossa API a partir da [nossa documentação](/api).
 - `Método`: o método HTTP que deseja utilizar, para criar uma nova cobrança, é necessário o método `POST`.
 - `Headers`: os headers que irão na requisição, será necessário inserir um header `Authorization` com o valor disponibilizado pelo AppID.
 

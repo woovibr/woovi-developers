@@ -28,7 +28,7 @@ webhook para a empresa correta.
 ---
 
 Após termos o `appID`, você pode consumir o endpoint `/api/openpix/v1/webhook` com o método `POST` caso
-queira criar um novo webhook para a empresa afiliada. Você pode acessar [aqui](http://localhost:3000/api#tag/webhook/paths/~1api~1openpix~1v1~1webhook/post)
+queira criar um novo webhook para a empresa afiliada. Você pode acessar [aqui](/api#tag/webhook/POST/api/v1/webhook)
 a documentação referente a esse endpoint, caso desejar.
 
 No `body` da requisição, nós esperamos os seguintes valores:

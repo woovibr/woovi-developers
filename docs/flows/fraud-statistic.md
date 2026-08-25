@@ -32,7 +32,7 @@ Validação de estatística de fraude por CPF/CNPJ
 GET /api/v1/fraud-validation/taxId/{taxId}
 ```
 
-**📖 [Ver documentação completa da API](https://developers.woovi.com/en/api#tag/fraudValidation)**
+**📖 [Ver documentação completa da API](/api#tag/fraudValidation)**
 
 
 ## Parâmetros da Requisição

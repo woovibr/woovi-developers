@@ -21,7 +21,7 @@ tags:
 ![](./__assets__/choose-environment.png)
 
 6. Gera um appID em nossa plataforma  
-Você pode seguir [essa documentação](https://developers.woovi.com.br/docs/ecommerce/woocommerce/woocommerce-plugin) para criar um appID e usar os links abaixo para acessar nossos ambientes  
+Você pode seguir [essa documentação](/docs/ecommerce/woocommerce/woocommerce-plugin) para criar um appID e usar os links abaixo para acessar nossos ambientes  
 Produção: https://app.woovi.com  
 Sanbox: https://app.woovi-sandbox.com  
 
