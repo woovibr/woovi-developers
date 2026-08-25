@@ -32,7 +32,7 @@ Para verificar o saldo de cashback para um cliente via API, você utiliza o _end
 Você pode acessar [aqui](/api#tag/cashback-fidelity/GET/api/v1/cashback-fidelity/balance/{taxID})
 a documentação referente a esse _endpoint_.
 
-/api#tag/cashback-fidelity/GET/api/v1/cashback-fidelity/balance/{taxID}
+[`/api/v1/cashback-fidelity/balance/{taxID}`](/api#tag/cashback-fidelity/GET/api/v1/cashback-fidelity/balance/{taxID})
 
 ```bash
 curl 'https://api.woovi.com/api/v1/cashback-fidelity/balance/${cpf-cnpj}/balance' -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "user-agent: node-fetch" --data-binary '{"taxID":"cpf-cnpj","value":1500}

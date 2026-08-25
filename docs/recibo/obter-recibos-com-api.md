@@ -8,7 +8,7 @@ tags:
 - [Começando com a integração via API](../apis/start-api-integration.md)
 
 Documentação técnica da estrutura do endpoint de recibo:
-/api#tag/receipt/GET/api/v1/receipt/{ReceiptType}/{EndToEndId}
+[`/api/v1/receipt/{ReceiptType}/{EndToEndId}`](/api#tag/receipt/GET/api/v1/receipt/{ReceiptType}/{EndToEndId})
 
 Modelo de requisição:  
 https://api.woovi.com/api/v1/receipt/:receiptType/:endToEndId
