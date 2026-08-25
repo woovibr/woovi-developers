@@ -305,6 +305,9 @@ module.exports = {
             spec: './static/swaggers/bacen-dict.json',
           },
           {
+            // `id` names the plugin instance whose global data <ApiLink> reads;
+            // without it the id is positional (`plugin-redoc-<index>`).
+            id: 'woovi',
             route: '/api-redoc/',
             spec: 'https://api.woovi.com/api/openapi.json',
           },
