@@ -48,7 +48,7 @@ module.exports = {
   projectName: 'developer-portal',
   scripts: [],
   favicon: 'img/icons/woovi.svg',
-  onBrokenLinks: 'log',
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   trailingSlash: false,
   plugins: [

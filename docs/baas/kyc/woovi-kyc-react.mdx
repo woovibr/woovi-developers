@@ -22,7 +22,7 @@ Biblioteca React open-source que implementa um wizard completo de KYC Onboarding
 **Links:** [GitHub](https://github.com/jgcmarins/woovi-kyc) · [npm](https://www.npmjs.com/package/woovi-kyc) · [Demo](https://woovi-kyc-demo.vercel.app/) · [Documentação completa](https://woovi-kyc-docs.vercel.app/)
 
 :::info Biblioteca da Comunidade
-Esta biblioteca foi criada pela comunidade e **não é mantida oficialmente pela Woovi**. Para a API oficial de KYC Onboarding, consulte os [Primeiros Passos](/docs/kyc/kyc-api-getting-started) e [Como criar um onboarding via API](/docs/kyc/kyc-api-onboarding-create).
+Esta biblioteca foi criada pela comunidade e **não é mantida oficialmente pela Woovi**. Para a API oficial de KYC Onboarding, consulte os [Primeiros Passos](./api-getting-started.mdx) e [Como criar um onboarding via API](./api-onboarding-create.mdx).
 :::
 
 ## Instalação
@@ -99,7 +99,7 @@ function App() {
 
 ## Integração com a API Woovi
 
-O wizard coleta todos os dados necessários para o endpoint [`POST /api/v1/kyc/onboarding`](/docs/kyc/kyc-api-onboarding-create). No callback `onSubmit`, envie os dados para seu backend que então encaminha para a API Woovi:
+O wizard coleta todos os dados necessários para o endpoint [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx). No callback `onSubmit`, envie os dados para seu backend que então encaminha para a API Woovi:
 
 ```tsx
 <KYCWizard

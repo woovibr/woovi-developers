@@ -134,7 +134,7 @@ Events for platforms using customer onboarding (OpenPix for Platforms).
 ### ACCOUNT_REGISTER_APPROVED
 This event is sent when a subaccount registration is approved in compliance.
 
-[See payload example →](/docs/webhook/examples/webhook-account-register-approved-payload)
+[See payload example →](./examples/account-register-approved-payload.mdx)
 
 ### ACCOUNT_REGISTER_REJECTED
 This event is sent when a subaccount registration is rejected in compliance.
