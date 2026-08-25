@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { themes } from 'prism-react-renderer';
 import mdxMermaid from 'mdx-mermaid';
+import remarkApiRefLinks from './plugins/remarkApiRefLinks.mjs';
 
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
@@ -310,7 +311,13 @@ module.exports = {
             return `https://github.com/Open-Pix/woovi-developers/edit/main/${versionDocsDirPath}/${docPath}`;
           },
           editCurrentVersion: true,
-          remarkPlugins: [mdxMermaid],
+          remarkPlugins: [
+            mdxMermaid,
+            [
+              remarkApiRefLinks,
+              { specUrl: 'https://api.woovi.com/api/openapi.json' },
+            ],
+          ],
         },
         // "blog": {
         //   "path": "blog"
