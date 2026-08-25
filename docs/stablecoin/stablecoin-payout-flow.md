@@ -37,6 +37,10 @@ sequenceDiagram
     alt Sucesso
         W->>P: Pix pago
         W->>E: webhook STABLECOIN_PAYOUT_COMPLETED
+        opt Devolução (depois, se o Pix voltar)
+            P->>W: Pix devolvido
+            W->>E: webhook STABLECOIN_PAYOUT_REFUND_CONFIRMED / _FAILED
+        end
     else Falha
         W->>E: webhook STABLECOIN_PAYOUT_FAILED
     end
@@ -203,7 +207,7 @@ curl --request POST \
 
 Quando o Pix é pago, você recebe `STABLECOIN_PAYOUT_COMPLETED` (pode incluir `endToEndId`). Em falha, `STABLECOIN_PAYOUT_FAILED`. Detalhes em [Webhooks](./stablecoin-webhooks.md).
 
-Um payout já liquidado ainda pode ser **devolvido** depois — o `status` continua `COMPLETED` e a devolução chega em `STABLECOIN_PAYOUT_REFUND_CONFIRMED` (valor disponível de novo) ou `STABLECOIN_PAYOUT_REFUND_FAILED` (valor indisponível, precisa de conciliação). Veja [Devolução de um payout já liquidado](./stablecoin-webhooks.md#devolução-de-um-payout-já-liquidado).
+Um payout já liquidado ainda pode ser **devolvido** depois — o `status` continua `COMPLETED` e a devolução chega em `STABLECOIN_PAYOUT_REFUND_CONFIRMED` ou `STABLECOIN_PAYOUT_REFUND_FAILED`. Veja [Webhooks do payout](#webhooks-do-payout) abaixo.
 
 Você também pode consultar a qualquer momento:
 
@@ -211,6 +215,63 @@ Você também pode consultar a qualquer momento:
 - GET `/api/v1/stablecoin/payout?correlationId=payout-001`
 
 Enquanto o payout não estiver terminal, a consulta relê o ticket no provedor e atualiza o status (incluindo `PAID` → `COMPLETED`).
+
+## Webhooks do payout
+
+O payout é **assíncrono**: o `POST /payout/approve` devolve `PROCESSING` e o resultado chega por webhook. Cadastre os quatro eventos — os dois primeiros fecham o payout, os dois últimos existem porque um Pix já pago ainda pode voltar dias depois.
+
+| Evento | O que aconteceu | O que fazer |
+| --- | --- | --- |
+| `STABLECOIN_PAYOUT_COMPLETED` | O Pix saiu e foi pago | Dar baixa no pedido. `endToEndId` é o comprovante |
+| `STABLECOIN_PAYOUT_FAILED` | O Pix **não** saiu | O float INTERNAL não foi gasto; leia `reason` / `errorCode` e reenvie se fizer sentido |
+| `STABLECOIN_PAYOUT_REFUND_CONFIRMED` | O Pix saiu, voltou, e o valor está **disponível de novo** no seu saldo de stablecoin | Seguro reembolsar o seu cliente final |
+| `STABLECOIN_PAYOUT_REFUND_FAILED` | O Pix saiu, voltou, mas o valor **não** está disponível para você | **Não** credite o cliente final; abra conciliação |
+
+`FAILED` e `REFUND_*` são mutuamente exclusivos no mesmo payout: `FAILED` é o Pix que nunca saiu; `REFUND_*` é o Pix que saiu e voltou.
+
+### Concilie pelo correlationID
+
+Todos os eventos trazem `stablePayout.correlationID` — o mesmo `correlationId` que você enviou no `POST /payout`. É por ele que você acha o pedido do seu lado; o `stablePayout.id` é o id interno da Woovi.
+
+A entrega é **at least once**: um mesmo evento pode chegar mais de uma vez. Trate cada handler como idempotente — nos eventos de devolução, o campo de deduplicação é `refund.providerTicketId` (o ticket da devolução, não o do payout).
+
+### A devolução não muda o status do payout
+
+Quando um payout liquidado volta, o `stablePayout.status` **continua `COMPLETED`** — o Pix realmente saiu, e voltar o status atrás quebraria a máquina de estados que você construiu em cima do `STABLECOIN_PAYOUT_COMPLETED`. O que voltou vem em um bloco `refund` à parte:
+
+```json
+{
+  "event": "STABLECOIN_PAYOUT_REFUND_CONFIRMED",
+  "stablePayout": {
+    "id": "6a721b1e3c785acfaebfa01c",
+    "status": "COMPLETED",
+    "inputAmount": 3379,
+    "inputCurrency": "BRLA",
+    "outputAmount": 33.73,
+    "outputCurrency": "BRL",
+    "pixKey": "thiago@entria.com.br",
+    "endToEndId": "E123...",
+    "correlationID": "payout-001"
+  },
+  "company": { "name": "Acme Corp" },
+  "refund": {
+    "status": "CONFIRMED",
+    "amount": 3379,
+    "currency": "BRLA",
+    "destination": "SUBACCOUNT_BALANCE",
+    "providerTicketId": "9a1c4f7e-2b83-4d55-9c0e-1f6a2d3b4c5d",
+    "refundEndToEndId": "E54811417202608251402",
+    "refundedAt": "2026-08-25T14:02:41.318Z"
+  }
+}
+```
+
+Dois campos costumam ser lidos errado:
+
+- **`refund.amount` está em centavos de `refund.currency`** — o ativo de entrada, a mesma unidade do `stablePayout.inputAmount`. Não é o `outputAmount` em BRL.
+- **`refund.destination`** diz se o dinheiro é seu de novo: só `SUBACCOUNT_BALANCE` é sacável por você. `MAIN_BALANCE` significa que o crédito caiu fora da sua subconta e precisa de intervenção manual; `NONE`, que nada foi creditado.
+
+Payloads completos de todos os eventos, incluindo o de falha: [Webhooks de Stablecoin](./stablecoin-webhooks.md).
 
 ## Estados do payout
 
@@ -220,6 +281,8 @@ Enquanto o payout não estiver terminal, a consulta relê o ticket no provedor e
 | `PROCESSING` | Aprovado; ticket / Pix em andamento |
 | `COMPLETED` | Pix pago com sucesso |
 | `FAILED` | Falhou em alguma etapa |
+
+A devolução de um payout liquidado **não** é um status: o payout segue `COMPLETED` e o retorno aparece no bloco `refund`. Veja [Webhooks do payout](#webhooks-do-payout).
 
 ```mermaid
 flowchart LR
