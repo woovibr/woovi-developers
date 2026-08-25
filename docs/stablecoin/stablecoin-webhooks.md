@@ -75,7 +75,9 @@ Quando você cria um payout via `POST /api/v1/stablecoin/payout`, o resultado fi
 | Evento | Quando ocorre |
 | --- | --- |
 | `STABLECOIN_PAYOUT_COMPLETED` | O Pix foi pago / ticket do provedor em estado terminal de sucesso |
-| `STABLECOIN_PAYOUT_FAILED` | O payout falhou |
+| `STABLECOIN_PAYOUT_FAILED` | O payout falhou — o Pix **não** saiu |
+| `STABLECOIN_PAYOUT_REFUND_CONFIRMED` | O Pix saiu, voltou, e o valor está **disponível de novo** no seu saldo de stablecoin |
+| `STABLECOIN_PAYOUT_REFUND_FAILED` | O Pix saiu, voltou, mas o valor **não** está disponível para você |
 
 O objeto enviado contém `stablePayout` e `company`. O campo `correlationID` corresponde ao `correlationId` enviado na criação.
 
@@ -122,6 +124,96 @@ O objeto enviado contém `stablePayout` e `company`. O campo `correlationID` cor
   },
   "reason": "Payout failed",
   "errorCode": "PAYOUT-FAILED"
+}
+```
+
+### Devolução de um payout já liquidado
+
+Um payout liquidado pode voltar — o recebedor devolve o Pix, ou o banco dele rejeita o crédito. Nesse caso o `status` do payout **continua `COMPLETED`**: o Pix realmente saiu, e reverter o status quebraria a máquina de estados que você já construiu em cima do `STABLECOIN_PAYOUT_COMPLETED`. A devolução chega como um evento novo, com um bloco `refund`.
+
+`FAILED` e `REFUND_*` são mutuamente exclusivos no mesmo payout: `FAILED` significa que o Pix nunca saiu; `REFUND_*` significa que saiu e voltou.
+
+Campos do bloco `refund`:
+
+| Campo | Descrição |
+| --- | --- |
+| `status` | `CONFIRMED` ou `FAILED` — se o valor devolvido está disponível para você |
+| `amount` | Em centavos de `currency`, a mesma unidade do `stablePayout.inputAmount` — **nunca** o `outputAmount` em BRL |
+| `currency` | O ativo de entrada do payout, ex.: `BRLA`, `USDT` |
+| `destination` | `SUBACCOUNT_BALANCE` (sacável por você), `MAIN_BALANCE` (creditado fora da sua subconta, precisa de intervenção manual) ou `NONE` (nada foi creditado) |
+| `providerTicketId` | O ticket **da devolução**, não o do payout original. Use como chave de idempotência: uma reentrega repete o mesmo valor |
+| `originalProviderTicketId` | O ticket do payout original, quando o provedor informa |
+| `reason` | Motivo informado pelo provedor |
+| `refundEndToEndId` | O `endToEndId` da devolução Pix, quando existe |
+| `failureReason` | Só em `REFUND_FAILED`: por que o valor não está disponível |
+| `refundedAt` | Quando a devolução foi registrada |
+
+### STABLECOIN_PAYOUT_REFUND_CONFIRMED
+
+O valor voltou e está disponível de novo no seu saldo de stablecoin — é seguro reembolsar o seu cliente final.
+
+```json
+{
+  "event": "STABLECOIN_PAYOUT_REFUND_CONFIRMED",
+  "stablePayout": {
+    "id": "6a721b1e3c785acfaebfa01c",
+    "status": "COMPLETED",
+    "inputAmount": 3379,
+    "inputCurrency": "BRLA",
+    "outputAmount": 33.73,
+    "outputCurrency": "BRL",
+    "pixKey": "thiago@entria.com.br",
+    "endToEndId": "E123...",
+    "correlationID": "payout-001"
+  },
+  "company": {
+    "name": "Acme Corp"
+  },
+  "refund": {
+    "status": "CONFIRMED",
+    "amount": 3379,
+    "currency": "BRLA",
+    "destination": "SUBACCOUNT_BALANCE",
+    "providerTicketId": "9a1c4f7e-2b83-4d55-9c0e-1f6a2d3b4c5d",
+    "originalProviderTicketId": "018f2b2c-9a4d-4a6f-b0d5-7c9f1e2a3b44",
+    "reason": "payout reversed - original ticket id: 018f2b2c-9a4d-4a6f-b0d5-7c9f1e2a3b44",
+    "refundEndToEndId": "E54811417202608251402",
+    "refundedAt": "2026-08-25T14:02:41.318Z"
+  }
+}
+```
+
+### STABLECOIN_PAYOUT_REFUND_FAILED
+
+O valor voltou, mas **não** está disponível para você: ou a própria devolução não se concretizou, ou o crédito caiu fora da sua subconta. **Não credite o seu cliente final** — o caso precisa de conciliação.
+
+```json
+{
+  "event": "STABLECOIN_PAYOUT_REFUND_FAILED",
+  "stablePayout": {
+    "id": "6a721b1e3c785acfaebfa01c",
+    "status": "COMPLETED",
+    "inputAmount": 3379,
+    "inputCurrency": "BRLA",
+    "outputAmount": 33.73,
+    "outputCurrency": "BRL",
+    "pixKey": "thiago@entria.com.br",
+    "endToEndId": "E123...",
+    "correlationID": "payout-001"
+  },
+  "company": {
+    "name": "Acme Corp"
+  },
+  "refund": {
+    "status": "FAILED",
+    "amount": 3379,
+    "currency": "BRLA",
+    "destination": "NONE",
+    "providerTicketId": "9a1c4f7e-2b83-4d55-9c0e-1f6a2d3b4c5d",
+    "originalProviderTicketId": "018f2b2c-9a4d-4a6f-b0d5-7c9f1e2a3b44",
+    "failureReason": "returned funds not available in the sub-account balance",
+    "refundedAt": "2026-08-25T14:02:41.318Z"
+  }
 }
 ```
 
