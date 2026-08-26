@@ -1,7 +1,6 @@
 import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
 import react from "eslint-plugin-react";
 import _import from "eslint-plugin-import";
-import cypress from "eslint-plugin-cypress";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import reactHooks from "eslint-plugin-react-hooks";
 import noOnlyTests from "eslint-plugin-no-only-tests";
@@ -39,12 +38,10 @@ export default [{
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:storybook/recommended",
 )), {
     plugins: {
         react: fixupPluginRules(react),
         import: fixupPluginRules(_import),
-        cypress,
         "@typescript-eslint": fixupPluginRules(typescriptEslint),
         "react-hooks": fixupPluginRules(reactHooks),
         "no-only-tests": noOnlyTests,
@@ -55,7 +52,6 @@ export default [{
             ...globals.browser,
             ...globals.node,
             ...globals.jest,
-            ...cypress.environments.globals.globals,
             ...globals.serviceworker,
         },
 
