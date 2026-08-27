@@ -103,4 +103,4 @@ Ao tentar aprovar com saldo insuficiente, a requisição retornará erro `400`:
 
 ## Referência da API
 
-Acesse a documentação completa do endpoint em [API Reference](/api#tag/payment-request-access)/paths/~1api~1v1~1payment/post).
+Acesse a documentação completa do endpoint em [API Reference](/api#tag/payment-request-access/POST/api/v1/payment).

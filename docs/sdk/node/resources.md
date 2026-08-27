@@ -290,7 +290,7 @@ const response = await woovi.partner.getPreRegistration({
 
 Obtenha os pré-registros de parceiros usando o método `list` no recurso de parceiros:
 
-[Documentação do endpoint para mais detalhes](</api#tag/partner-request-access)/paths/~1api~1v1~1partner~1company/get>).
+[Documentação do endpoint para mais detalhes](</api#tag/partner-request-access/GET/api/v1/partner/company>).
 
 ```js
 const response = await woovi.partner.list({ limit: 10, skip: 0 }); //o objeto de paginação é opcional
@@ -300,7 +300,7 @@ const response = await woovi.partner.list({ limit: 10, skip: 0 }); //o objeto de
 
 Crie uma parceiro usando o método `create` no recurso de parceiros:
 
-[Documentação do endpoint para mais detalhes](</api#tag/partner-request-access)/paths/~1api~1v1~1partner~1company/post>).
+[Documentação do endpoint para mais detalhes](</api#tag/partner-request-access/POST/api/v1/partner/company>).
 
 ```js
 const response = await woovi.partner.create({
@@ -325,7 +325,7 @@ const response = await woovi.partner.create({
 
 Para criar uma aplicação, use o método `createApplication` no recurso de parceiros.
 
-[Documentação do endpoint para mais detalhes](</api#tag/partner-request-access)/paths/~1api~1v1~1partner~1application/post>).
+[Documentação do endpoint para mais detalhes](</api#tag/partner-request-access/POST/api/v1/partner/application>).
 
 ```js
 const response = await woovi.partner.createApplication({
@@ -350,7 +350,7 @@ Chame o método `payment` seu cliente da API para obter o recurso de pagamentos.
 
 Chame o método `approve` no recurso de pagamentos passando um correlationID:
 
-[Documentação do endpoint para mais detalhes](</api#tag/payment-request-access)/paths/~1api~1v1~1payment~1approve/post>).
+[Documentação do endpoint para mais detalhes](</api#tag/payment-request-access/POST/api/v1/payment/approve>).
 
 ```js
 const response = await woovi.payment.approve({
@@ -362,7 +362,7 @@ const response = await woovi.payment.approve({
 
 Obtenha um pagamento usando o método `get` no recurso de pagamentos:
 
-[Documentação do endpoint para mais detalhes](</api#tag/payment-request-access)/paths/~1api~1v1~1payment~1%7Bid%7D/get>).
+[Documentação do endpoint para mais detalhes](</api#tag/payment-request-access/GET/api/v1/payment/{id}>).
 
 ```js
 const response = await woovi.payment.get({ id: 'algum-id' });
@@ -372,7 +372,7 @@ const response = await woovi.payment.get({ id: 'algum-id' });
 
 Obtenha uma lista de pagamentos usando o método `list` no recurso de pagamentos.
 
-[Documentação do endpoint para mais detalhes](</api#tag/payment-request-access)/paths/~1api~1v1~1payment/get>).
+[Documentação do endpoint para mais detalhes](</api#tag/payment-request-access/GET/api/v1/payment>).
 
 ```js
 const response = await woovi.payment.list({ limit: 10, skip: 0 }); //o objeto de paginação é opcional
@@ -382,7 +382,7 @@ const response = await woovi.payment.list({ limit: 10, skip: 0 }); //o objeto de
 
 Para criar uma requisição de pagamento, use o método `create` no recurso de payment.
 
-[Documentação do endpoint para mais detalhes](</api#tag/payment-request-access)/paths/~1api~1v1~1payment/post>).
+[Documentação do endpoint para mais detalhes](</api#tag/payment-request-access/POST/api/v1/payment>).
 
 ```js
 const response = await woovi.payment.create({
