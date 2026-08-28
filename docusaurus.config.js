@@ -252,6 +252,11 @@ module.exports = {
           position: 'left',
         },
         {
+          to: '/stable',
+          label: 'Stable',
+          position: 'left',
+        },
+        {
           to: 'docs/apis/api-explorer',
           label: 'API Explorer',
           position: 'left',
