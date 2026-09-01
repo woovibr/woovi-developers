@@ -15930,7 +15930,691 @@
               }
             },
             {
-              "id": "e30cf0c6-62ab-ecec-8cc7-edb4261ea4d4",
+              "id": "6d3ba5e4-03ce-9a98-a9f1-71f70b9e54cc",
+              "name": "kyc-validation",
+              "item": [
+                {
+                  "id": "818de9fe-4008-d779-1f4c-56685a1e9928",
+                  "name": "Get a KYC validation by correlationID",
+                  "request": {
+                    "name": "Get a KYC validation by correlationID",
+                    "description": {
+                      "content": "Reads back a validation created with `POST /api/v1/kyc-validation/taxid`, scoped to\nyour own company. Free — reading a validation is never billed.\n\nPoll this until `status` leaves `PROCESSING`, or subscribe to the\n`KYC_VALIDATION_COMPLETED` / `KYC_VALIDATION_FAILED` webhook events and skip the\npolling entirely.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_GET`\nscope on the application.\n",
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "kyc-validation",
+                        ":correlationID"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "type": "any",
+                          "value": "<string>",
+                          "key": "correlationID",
+                          "description": "(Required) The `correlationID` you sent when creating the validation."
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.woovi.com"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://api.woovi.com"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "cb41eb76-77dc-127b-542e-815ab8b1806b",
+                      "name": "The validation.",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            ":correlationID"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "correlationID",
+                              "description": "(Required) The `correlationID` you sent when creating the validation."
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"correlationID\": \"<string>\",\n  \"taxId\": \"<string>\",\n  \"status\": \"<string>\",\n  \"result\": \"<string>\",\n  \"riskLevel\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"createdAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "1dd41f7e-be80-2f2a-0a29-580e2b8b2c7c",
+                      "name": "Missing or invalid `Authorization` header (appID).",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            ":correlationID"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "correlationID",
+                              "description": "(Required) The `correlationID` you sent when creating the validation."
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"data\": \"<object>\",\n  \"errors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "90828c66-0057-87f5-60e5-b43e2c497e24",
+                      "name": "The company does not have the `KYC_VALIDATION` feature enabled.",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            ":correlationID"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "correlationID",
+                              "description": "(Required) The `correlationID` you sent when creating the validation."
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"errorCode\": \"<string>\",\n  \"errorMessage\": \"<string>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "2be5301a-2588-c847-a8ca-90edd34bd919",
+                      "name": "No validation with this `correlationID` for your company.",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            ":correlationID"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "correlationID",
+                              "description": "(Required) The `correlationID` you sent when creating the validation."
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"errorCode\": \"<string>\",\n  \"errorMessage\": \"<string>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                },
+                {
+                  "id": "32e9692b-2e3f-0680-a5f3-48dbd65d51d5",
+                  "name": "Create a KYC validation for a Tax ID",
+                  "request": {
+                    "name": "Create a KYC validation for a Tax ID",
+                    "description": {
+                      "content": "Screens a CPF or CNPJ against fraud, dispute, sanctions, PEP and lawsuit signals and\nreturns a verdict.\n\nThe screening runs asynchronously: this call answers `201` with `status: PROCESSING`,\nand the verdict is read back with `GET /api/v1/kyc-validation/{correlationID}`\n(usually ready in well under a second) or received through the\n`KYC_VALIDATION_COMPLETED` / `KYC_VALIDATION_FAILED` webhook events.\n\n**Idempotent by `correlationID`.** Sending the same `correlationID` again returns the\noriginal validation with `200` and is not billed a second time. A new `correlationID`\nis a new billable validation — including a retry after a `FAILED` one.\n\nEach validation is charged as `KYC_VALIDATION_FEE`, priced from the account's\n`kycValidationFeeSettings`, and the charge happens **before** the screening is queued:\na validation that answers `201` has already been billed.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_POST`\nscope on the application.\n",
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "kyc-validation",
+                        "taxid"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "POST",
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE APPLICATION_POST APPLICATION_DELETE CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.woovi.com"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://api.woovi.com"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code"
+                        }
+                      ]
+                    },
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"taxId\": \"<string>\",\n  \"correlationID\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "d4912991-e6de-0304-5b29-bc8fe87ab871",
+                      "name": "A validation with this `correlationID` already exists for your company — the\noriginal is returned as-is, and nothing is billed.\n",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            "taxid"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "POST",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"taxId\": \"<string>\",\n  \"correlationID\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"correlationID\": \"<string>\",\n  \"taxId\": \"<string>\",\n  \"status\": \"<string>\",\n  \"result\": \"<string>\",\n  \"riskLevel\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"createdAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "5299b5f8-a18e-679e-7243-c92bfd862e4c",
+                      "name": "Validation created, screening queued — and already billed.",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            "taxid"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "POST",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"taxId\": \"<string>\",\n  \"correlationID\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"correlationID\": \"<string>\",\n  \"taxId\": \"<string>\",\n  \"status\": \"<string>\",\n  \"result\": \"<string>\",\n  \"riskLevel\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"createdAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "8516f187-abc6-1c1d-8ab5-56941f96132b",
+                      "name": "Invalid body, or the charge was refused.",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            "taxid"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "POST",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"taxId\": \"<string>\",\n  \"correlationID\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"errorCode\": \"<string>\",\n  \"errorMessage\": \"<string>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "f8cb294f-9ae6-0beb-3bd0-389d89ded5c4",
+                      "name": "Missing or invalid `Authorization` header (appID).",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            "taxid"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "POST",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"taxId\": \"<string>\",\n  \"correlationID\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"data\": \"<object>\",\n  \"errors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "f7e96a56-d437-0653-723d-1b26b71e523f",
+                      "name": "The company or the application is not allowed to use this endpoint.",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            "taxid"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "POST",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"taxId\": \"<string>\",\n  \"correlationID\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"errorCode\": \"<string>\",\n  \"errorMessage\": \"<string>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "7fbc7a31-7545-6572-d9d0-3656fe61de6c",
+                      "name": "The billing service could not be reached. Nothing was billed and nothing was\nscreened — retry with the same `correlationID`.\n",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "kyc-validation",
+                            "taxid"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "POST",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"taxId\": \"<string>\",\n  \"correlationID\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "status": "Bad Gateway",
+                      "code": 502,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"errorCode\": \"<string>\",\n  \"errorMessage\": \"<string>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                }
+              ],
+              "event": []
+            },
+            {
+              "id": "91069d64-6c9a-b93e-0871-689fd22358c0",
               "name": "Get account limits",
               "request": {
                 "name": "Get account limits",
@@ -15990,7 +16674,7 @@
               },
               "response": [
                 {
-                  "id": "7e93dedd-69e6-986f-1e76-7b4150d6fd81",
+                  "id": "c6288eb6-939d-d8e7-ef25-ad5dfd81a889",
                   "name": "Account limits returned successfully",
                   "originalRequest": {
                     "url": {
@@ -16044,7 +16728,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "92db8be2-7fc4-cf43-be59-991ad4c36de6",
+                  "id": "c075901f-2503-2544-270e-ebac988dc01f",
                   "name": "Invalid account identifier",
                   "originalRequest": {
                     "url": {
@@ -16098,7 +16782,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "1318bf00-8fc9-9e99-91c2-b549cc647c78",
+                  "id": "2f677dc5-84e5-72af-a8a1-0dfd7459585e",
                   "name": "Missing or invalid credentials",
                   "originalRequest": {
                     "url": {
@@ -16152,7 +16836,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "d9b5b34f-760b-0358-c978-b4e46af060cf",
+                  "id": "4d18dc61-f681-ddaa-f911-52fe1bc67585",
                   "name": "Application is missing the required scope or the company does not have the public limits API enabled",
                   "originalRequest": {
                     "url": {
@@ -16206,7 +16890,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "d97b82e0-28f7-02db-1727-701a4d41a162",
+                  "id": "cb1a0829-54e8-f3f2-7b2c-fa68c80fb81d",
                   "name": "Account does not belong to the requesting company or has no limit configured",
                   "originalRequest": {
                     "url": {
@@ -16266,11 +16950,11 @@
               }
             },
             {
-              "id": "d7cbeb5a-8ec8-c7ee-f611-685325b65090",
+              "id": "7d13fe2a-d2a9-1cea-9014-5f4a2e3443df",
               "name": "partner",
               "item": [
                 {
-                  "id": "dfbab619-bf00-8435-7b50-f39b9a6ddb9f",
+                  "id": "4f315798-8be5-1cab-11eb-a14cba01f065",
                   "name": "Get every affiliate company that is managed by you.",
                   "request": {
                     "name": "Get every affiliate company that is managed by you.",
@@ -16319,7 +17003,7 @@
                   },
                   "response": [
                     {
-                      "id": "fd273cca-eb16-f118-b005-f2e4707bf168",
+                      "id": "a1ca103c-4da6-1d07-038c-15357acb504f",
                       "name": "A list with affiliate companies.",
                       "originalRequest": {
                         "url": {
@@ -16365,7 +17049,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "63f7e4f3-88e0-ae33-53d8-5b2329ee1b5a",
+                      "id": "a93525ff-f19f-0935-810c-f8d119e4134b",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -16417,7 +17101,7 @@
                   }
                 },
                 {
-                  "id": "e1e5572b-d123-e853-a7b1-dcdfc12cd008",
+                  "id": "0ed6ced9-5b7d-7f6b-f020-97901ff084d7",
                   "name": "Create a new application to some of your preregistration's company.",
                   "request": {
                     "name": "Create a new application to some of your preregistration's company.",
@@ -16482,7 +17166,7 @@
                   },
                   "response": [
                     {
-                      "id": "f9d56a25-69c3-a160-52fe-3be2f1dfbb82",
+                      "id": "1eed4d3b-a09f-e28b-901f-a5e4266cc35e",
                       "name": "Our \"idempotence output\", if you get this HTTP code, it's an application\nthat already has been registered.\nThe response includes the scopes field when scopes are assigned to the application.\n",
                       "originalRequest": {
                         "url": {
@@ -16536,7 +17220,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "f4e889e6-85d9-ddca-43bd-d86b5658222f",
+                      "id": "e65cfe52-9862-e1b4-4a8c-0aeafe5fec8f",
                       "name": "A new application has been registered. It'll be identified by the name that you give to it\nand by the company that has been referenced.\nThe response includes the scopes field when scopes are assigned to the application.\n",
                       "originalRequest": {
                         "url": {
@@ -16590,7 +17274,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "f0a1d3dc-1a45-7bde-b883-73adab1727fb",
+                      "id": "dc324b1f-efc8-15ba-9e7f-eb0f10e674be",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -16644,7 +17328,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "ca034be5-3e2a-7a84-b8be-e43546ea5454",
+                      "id": "601a13a2-4e21-85c2-3b8f-0aff1df01201",
                       "name": "You are unauthorized to use this endpoint.",
                       "originalRequest": {
                         "url": {
@@ -16704,11 +17388,11 @@
                   }
                 },
                 {
-                  "id": "cd8b8967-b23d-df5b-d69d-75ccab9d2ff6",
+                  "id": "7cbf32d6-a102-25a8-5f02-c3146858a6b1",
                   "name": "company",
                   "item": [
                     {
-                      "id": "b9c0c6d6-3b05-fe4d-6294-0213a7819f0e",
+                      "id": "71444d65-6969-82cf-8754-858503e28ada",
                       "name": "Get every preregistration that is managed by you.",
                       "request": {
                         "name": "Get every preregistration that is managed by you.",
@@ -16757,7 +17441,7 @@
                       },
                       "response": [
                         {
-                          "id": "011075c4-0ef8-c23c-239e-f4f4e1376fe9",
+                          "id": "b3b7b3db-1c3c-f6e0-ae78-9f9a42e2226d",
                           "name": "A list with preregistrations.",
                           "originalRequest": {
                             "url": {
@@ -16803,7 +17487,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "4853d0b5-5d41-f7ab-cb02-75d01dd3d5ae",
+                          "id": "f3266778-4ea2-e60d-e90a-44c26f2bd775",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -16855,7 +17539,7 @@
                       }
                     },
                     {
-                      "id": "96dfcdb3-238b-e7d6-f49d-cee84d96da05",
+                      "id": "5d04843e-6b52-e0d5-34fe-369d947487d0",
                       "name": "Create a pre registration with a partner reference (your company)",
                       "request": {
                         "name": "Create a pre registration with a partner reference (your company)",
@@ -16920,7 +17604,7 @@
                       },
                       "response": [
                         {
-                          "id": "16176b5d-77e6-cef2-5d63-2f594b585c74",
+                          "id": "fa9ea839-f6b6-3fc5-383d-7d977a9f2562",
                           "name": "Payload with a pre registration data.\nBeing the taxID our idempotence key, if you do the request with the same taxID multiple times,\nevery time you'll receive the same data from our endpoint.\n",
                           "originalRequest": {
                             "url": {
@@ -16974,7 +17658,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "c8de1165-83ee-3e72-dc68-3398bed4a773",
+                          "id": "a031c550-a504-bb01-fdca-35187a038218",
                           "name": "A new preregistration that is related to you has been created.",
                           "originalRequest": {
                             "url": {
@@ -17028,7 +17712,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "adfa83bd-414c-cb74-e208-f75985fed5cc",
+                          "id": "22513644-3892-3760-cf30-d3a96be1edc1",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -17082,7 +17766,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "4f301dcb-ac57-297c-7dc0-c3ad3e35c9ab",
+                          "id": "796aea16-a0db-a56f-5b91-2b103f9b4979",
                           "name": "You are unauthorized to use this endpoint.",
                           "originalRequest": {
                             "url": {
@@ -17142,7 +17826,7 @@
                       }
                     },
                     {
-                      "id": "03284478-8356-a15e-9d82-b6d3c3581327",
+                      "id": "2c11c09e-7d5a-e0c4-dfea-8643e34aebf5",
                       "name": "Get an specific preregistration via taxID param.",
                       "request": {
                         "name": "Get an specific preregistration via taxID param.",
@@ -17200,7 +17884,7 @@
                       },
                       "response": [
                         {
-                          "id": "b86521d1-543b-7053-172a-fa209bd43a9f",
+                          "id": "bf3eb2c9-1ae6-e410-688c-e9811310d9c8",
                           "name": "The preregistration retrieved by the tax ID.",
                           "originalRequest": {
                             "url": {
@@ -17255,7 +17939,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "8c5faa99-d6f1-e798-0b63-f7b963248b23",
+                          "id": "8195b895-8246-f9b4-0df8-e00806a3b341",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -17322,11 +18006,11 @@
               "event": []
             },
             {
-              "id": "3158fbad-7c48-fb8a-e1a6-4a68c5bb51af",
+              "id": "cfdc1f56-0e9f-5ac8-95c9-8703c3c31765",
               "name": "payment",
               "item": [
                 {
-                  "id": "0abff30e-a4b4-4e4f-6a7b-de3bdb9f2f3a",
+                  "id": "d515ea52-10c9-d940-85ee-644651238bae",
                   "name": "Get a list of payments",
                   "request": {
                     "name": "Get a list of payments",
@@ -17374,7 +18058,7 @@
                   },
                   "response": [
                     {
-                      "id": "e83c093f-2a21-3b34-5400-9d0960ac9ead",
+                      "id": "37302595-fa39-3aca-4144-98d0c07e0e19",
                       "name": "A list of payments",
                       "originalRequest": {
                         "url": {
@@ -17419,7 +18103,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "3f962f0c-c1a8-6d1c-ad1a-cebbdd8163b6",
+                      "id": "54f4c950-48c2-bb99-8a0b-2d7dc2b71f20",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -17470,7 +18154,7 @@
                   }
                 },
                 {
-                  "id": "00b32788-8fa2-d538-fbbd-bfbd04375250",
+                  "id": "d2b400d8-e859-f69c-ef3a-80283a99ca56",
                   "name": "Create a Payment Request",
                   "request": {
                     "name": "Create a Payment Request",
@@ -17534,7 +18218,7 @@
                   },
                   "response": [
                     {
-                      "id": "85d38474-e4b1-3e71-e7da-f65e17b25467",
+                      "id": "50254273-ce3d-9b8b-0395-3d8b5d3647e3",
                       "name": "Payment created. When autoApprove is true, the payment is immediately approved and the response includes transaction and destination data.",
                       "originalRequest": {
                         "url": {
@@ -17587,7 +18271,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "f0a2837c-fc55-40e1-54f6-bb0052e432c7",
+                      "id": "60a97573-632e-0363-4d62-d8c8561c7a37",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -17646,7 +18330,7 @@
                   }
                 },
                 {
-                  "id": "23434e2f-690c-76a8-2b7c-31402ac08475",
+                  "id": "567816ca-1f43-5686-dbd4-523ea4666cdc",
                   "name": "Approve a Payment Request",
                   "request": {
                     "name": "Approve a Payment Request",
@@ -17711,7 +18395,7 @@
                   },
                   "response": [
                     {
-                      "id": "45bdfc2a-ba40-fe4d-31d9-b350cb540b04",
+                      "id": "9b414acd-b1fa-e03f-8a11-fbf901e5b025",
                       "name": "The approved payment",
                       "originalRequest": {
                         "url": {
@@ -17765,7 +18449,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "c7d10ec9-0838-e968-15e4-a21af5b60f31",
+                      "id": "5bc4e41f-5de1-ba20-8887-6c5af656b069",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -17825,7 +18509,7 @@
                   }
                 },
                 {
-                  "id": "d5dc926f-687c-ce6f-4e55-f267ebb90c4e",
+                  "id": "9b015eb1-09a4-ed7f-6bfa-8ce07df42e34",
                   "name": "Get one Payment",
                   "request": {
                     "name": "Get one Payment",
@@ -17882,7 +18566,7 @@
                   },
                   "response": [
                     {
-                      "id": "627ec262-7972-374f-524f-d037de1d6aab",
+                      "id": "635add56-001c-b791-186e-abcbcaab328f",
                       "name": "The payment retrieved using the given ID",
                       "originalRequest": {
                         "url": {
@@ -17936,7 +18620,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "ccf6dd7c-b5c2-9b4c-fe93-2f773b63cd38",
+                      "id": "22ad25e2-1fe3-e2ef-2044-90934b07f657",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -17999,11 +18683,11 @@
               "event": []
             },
             {
-              "id": "5498e2b8-7761-7382-7a1b-b471c0e76eaa",
+              "id": "334663b8-6a26-77a9-36b0-2203edef7ecf",
               "name": "pix-keys",
               "item": [
                 {
-                  "id": "7146d5cf-d04e-0b91-b997-e989321506df",
+                  "id": "77756435-8990-5e72-b08f-7524e0f805d7",
                   "name": "Get all Pix keys",
                   "request": {
                     "name": "Get all Pix keys",
@@ -18045,7 +18729,7 @@
                   },
                   "response": [
                     {
-                      "id": "3f0fd6c4-6e9a-c848-06e1-1b8e0d030fcb",
+                      "id": "02633ac6-a520-a014-f39a-cece7b64f724",
                       "name": "Successful response",
                       "originalRequest": {
                         "url": {
@@ -18099,7 +18783,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "6e5ec222-ac34-4848-3da5-ff36dd46f9e0",
+                      "id": "e8815918-4af5-efad-4c30-4b8d7574e8fd",
                       "name": "You need to link a Bank Account to this API",
                       "originalRequest": {
                         "url": {
@@ -18149,7 +18833,7 @@
                       "_postman_previewlanguage": "text"
                     },
                     {
-                      "id": "8d3e807c-5204-e447-3b3b-c7122dca95d5",
+                      "id": "6af28789-3425-ecf3-1f49-29392fb9af93",
                       "name": "Your IP is not in the allowed list",
                       "originalRequest": {
                         "url": {
@@ -18199,7 +18883,7 @@
                       "_postman_previewlanguage": "text"
                     },
                     {
-                      "id": "4595725c-4320-70fd-7f13-46424c105230",
+                      "id": "782a28f9-8baa-8a9f-9b54-9d244330d9f5",
                       "name": "Your Authorization APP_ID must be configured to be MASTER or API",
                       "originalRequest": {
                         "url": {
@@ -18255,7 +18939,7 @@
                   }
                 },
                 {
-                  "id": "392f0dd2-7cec-c84e-0bcd-9c357854f5d0",
+                  "id": "eecb7778-321a-d386-f749-d7e7fed655ad",
                   "name": "Create a new Pix key",
                   "request": {
                     "name": "Create a new Pix key",
@@ -18299,7 +18983,7 @@
                   },
                   "response": [
                     {
-                      "id": "c5a59a77-e6a7-f6d9-bbd4-9c72b1e9c589",
+                      "id": "ae517215-15d7-e56b-6cf1-5b3bc010c115",
                       "name": "Pix key created successfully",
                       "originalRequest": {
                         "url": {
@@ -18352,7 +19036,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "7e83db19-8f94-7039-4cc5-a40d93923391",
+                      "id": "3c2cb4c9-9ffd-9c9c-0abc-0569a2b7e327",
                       "name": "You need to link a Bank Account to this API",
                       "originalRequest": {
                         "url": {
@@ -18401,7 +19085,7 @@
                       "_postman_previewlanguage": "text"
                     },
                     {
-                      "id": "08c479ff-2976-e270-c32c-8891b84e6d4a",
+                      "id": "7035cfea-361f-a764-2fef-20469c7697bf",
                       "name": "Your IP is not in the allowed list",
                       "originalRequest": {
                         "url": {
@@ -18450,7 +19134,7 @@
                       "_postman_previewlanguage": "text"
                     },
                     {
-                      "id": "32b918c1-a10e-76ee-6d48-474a01f4008a",
+                      "id": "80a1f9a1-5702-58be-d306-be5dea4d199d",
                       "name": "Your Authorization APP_ID must be configured to be MASTER or API",
                       "originalRequest": {
                         "url": {
@@ -18505,11 +19189,11 @@
                   }
                 },
                 {
-                  "id": "12e8d0f3-4e49-6165-5c5a-9fa251100008",
+                  "id": "272493b3-f077-f9df-566a-6e3c1ef9b04b",
                   "name": "{pixKey}",
                   "item": [
                     {
-                      "id": "2dd586a6-5999-4b69-8710-3e9001ff4a32",
+                      "id": "114f81a2-c0ae-5e7b-b5e9-5732b0170d31",
                       "name": "Delete a Pix key",
                       "request": {
                         "name": "Delete a Pix key",
@@ -18543,7 +19227,7 @@
                       },
                       "response": [
                         {
-                          "id": "59bd0a2a-e9b9-bcbe-7c94-ae4aade352fe",
+                          "id": "4d386065-7ef3-3de1-10b7-abeac7156d88",
                           "name": "Pix key deleted successfully",
                           "originalRequest": {
                             "url": {
@@ -18593,7 +19277,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "bc80db8c-c979-5b6d-9f24-5afb1a48cf7d",
+                          "id": "81302a6b-80b5-e924-4bfb-662ea16f011b",
                           "name": "You need to link a Bank Account to this API",
                           "originalRequest": {
                             "url": {
@@ -18643,7 +19327,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "87c5b40c-6d72-d1d6-ae16-20c14097db48",
+                          "id": "94b2f58e-3e5c-6f86-2baa-fddea196dbb0",
                           "name": "Your IP is not in the allowed list",
                           "originalRequest": {
                             "url": {
@@ -18693,7 +19377,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "03249f6b-b366-0d87-fa7e-47afeb26f41e",
+                          "id": "f80ff58b-7048-014e-3854-9ad5eba34298",
                           "name": "Your Authorization APP_ID must be configured to be MASTER or API",
                           "originalRequest": {
                             "url": {
@@ -18743,7 +19427,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "b597c8ed-1bae-084d-fcd9-e191751ae49f",
+                          "id": "48f9060b-452d-b59e-80ed-74c7e387abbe",
                           "name": "Pix key not found",
                           "originalRequest": {
                             "url": {
@@ -18799,7 +19483,7 @@
                       }
                     },
                     {
-                      "id": "eab86c54-f72d-870a-7a38-52671df0e5ad",
+                      "id": "02efe128-25e8-0a24-6b55-1fd6760c370d",
                       "name": "Check data from a Pix key",
                       "request": {
                         "name": "Check data from a Pix key",
@@ -18840,7 +19524,7 @@
                       },
                       "response": [
                         {
-                          "id": "a18321fd-4c89-8e4e-177a-a5f2ef116af1",
+                          "id": "a32e1850-bf17-850d-97c6-1dabec608cf8",
                           "name": "Successful response",
                           "originalRequest": {
                             "url": {
@@ -18895,7 +19579,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "1a5d3ba6-05bf-3cd6-9cfa-66aef4835a9f",
+                          "id": "e830c92c-3368-420a-e3eb-0a9b4a4df7ca",
                           "name": "You need to link a Bank Account to this API",
                           "originalRequest": {
                             "url": {
@@ -18950,7 +19634,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "ab51020e-7338-ce15-57d5-06f0b8aa8d85",
+                          "id": "a7cdf8c4-50a9-7018-e294-2a9af7889bb8",
                           "name": "Your IP is not in the allowed list",
                           "originalRequest": {
                             "url": {
@@ -19005,7 +19689,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "267b5890-8ee7-3886-eaff-1f3bcdbe71c7",
+                          "id": "05a069c4-2619-edc9-2f9c-e6d28d1dfe43",
                           "name": "Your account does not have the permission to use this endpoint",
                           "originalRequest": {
                             "url": {
@@ -19060,7 +19744,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "c3b403b2-9c02-83f1-5bb8-1d3201820a00",
+                          "id": "690753d0-bb5f-6fbd-20b0-64e90c6ab379",
                           "name": "Pix key does not exist",
                           "originalRequest": {
                             "url": {
@@ -19115,7 +19799,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "d5e3aead-8c85-1abb-e54b-5834c228b3e8",
+                          "id": "7fda3d8c-dfb1-ce33-54fa-e630e8bc5df0",
                           "name": "Too many requests, you had too many 404",
                           "originalRequest": {
                             "url": {
@@ -19176,7 +19860,7 @@
                       }
                     },
                     {
-                      "id": "41c49c3d-72b3-62c5-16b2-ed4d578150d6",
+                      "id": "39e66554-24f7-c050-1464-71c70937b20e",
                       "name": "Set a pix key as default",
                       "request": {
                         "name": "Set a pix key as default",
@@ -19217,7 +19901,7 @@
                       },
                       "response": [
                         {
-                          "id": "8b8074c7-1667-673f-50bf-2f10ca2b3c92",
+                          "id": "b8b3375c-e78c-6240-a9a2-feb2e313adcb",
                           "name": "Pix key set as default successfully",
                           "originalRequest": {
                             "url": {
@@ -19281,7 +19965,7 @@
                   "event": []
                 },
                 {
-                  "id": "4660c245-cf36-350a-5956-3929bd1440cf",
+                  "id": "42ec0c03-3e6b-d670-7f33-d43fedcf65b1",
                   "name": "Check data from a Pix key",
                   "request": {
                     "name": "Check data from a Pix key",
@@ -19326,7 +20010,7 @@
                   },
                   "response": [
                     {
-                      "id": "72e54805-78ab-0f7e-c563-e5ce5696ef1a",
+                      "id": "76857a12-0d98-4755-a8f2-6622d584daf9",
                       "name": "Successful response",
                       "originalRequest": {
                         "url": {
@@ -19380,7 +20064,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "5a2d3abe-25c7-0ab9-b4e4-eb944f156b90",
+                      "id": "59ee109d-70d4-d2bc-ff01-9a32297575de",
                       "name": "You need to link a Bank Account to this API",
                       "originalRequest": {
                         "url": {
@@ -19434,7 +20118,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "4ed70376-a877-dc66-65f0-d80b992ec7f0",
+                      "id": "2180f2b7-d8eb-b150-0daa-0720275ce5fa",
                       "name": "Your IP is not in the allowed list",
                       "originalRequest": {
                         "url": {
@@ -19488,7 +20172,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "b03a6ed4-9879-32a2-b517-c363d3b22256",
+                      "id": "897914c5-4c4e-6198-19c2-3e015b8acc80",
                       "name": "Your account does not have the permission to use this endpoint",
                       "originalRequest": {
                         "url": {
@@ -19542,7 +20226,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "4055b8f1-5135-7bf2-a4fa-cf43fbc7fea2",
+                      "id": "a0438371-f581-0f90-d48b-b2d9aac54bc8",
                       "name": "Pix key does not exist",
                       "originalRequest": {
                         "url": {
@@ -19596,7 +20280,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "0acee327-48da-b774-40a8-42dbc1b1cbb2",
+                      "id": "6cf52ec0-194b-de2c-a39e-dac5067ce5d1",
                       "name": "Too many requests, you had too many 404",
                       "originalRequest": {
                         "url": {
@@ -19656,11 +20340,11 @@
                   }
                 },
                 {
-                  "id": "95061a9a-5b54-f200-2d6e-e2f14885c03d",
+                  "id": "db2d7328-fb1f-98fc-b92d-b5c4b85e1763",
                   "name": "tokens",
                   "item": [
                     {
-                      "id": "4f6168ff-0fe6-9681-a90d-9654ec827ece",
+                      "id": "cec6296f-6494-cf97-4b08-5ea777be2410",
                       "name": "Get tokens data",
                       "request": {
                         "name": "Get tokens data",
@@ -19692,7 +20376,7 @@
                       },
                       "response": [
                         {
-                          "id": "911e4e5d-264b-0374-9ad9-ec324b6c7c57",
+                          "id": "9deb7345-19ad-6000-ac40-bd6790b34ece",
                           "name": "Successful response",
                           "originalRequest": {
                             "url": {
@@ -19744,7 +20428,7 @@
                       }
                     },
                     {
-                      "id": "8bff6208-391b-2e99-0de5-0cc366ea4510",
+                      "id": "11b1feae-0b63-65bd-e2ae-e6e53eab2107",
                       "name": "Get token bucket logs",
                       "request": {
                         "name": "Get token bucket logs",
@@ -19794,7 +20478,7 @@
                       },
                       "response": [
                         {
-                          "id": "8794cf30-9dcb-d496-a753-1dec1e55d5b9",
+                          "id": "439dffda-ccbe-bb9d-58c1-f1e0aaa7aeab",
                           "name": "A list of token bucket logs",
                           "originalRequest": {
                             "url": {
@@ -19854,7 +20538,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "c7e25b66-c747-9aed-64a4-4ca98ea0016f",
+                          "id": "9cfe562e-6e43-8d8e-87f4-0e91a6f5c9ee",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -19914,7 +20598,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "53ed7463-d2c5-4a57-a65a-daf7856ad7a4",
+                          "id": "40d1568b-a7e1-8158-67f0-9568f1ea15b7",
                           "name": "Unauthorized",
                           "originalRequest": {
                             "url": {
@@ -19970,7 +20654,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "ea6ca486-00a1-8cce-5e15-98ec47c0ed46",
+                          "id": "38654a17-e2f5-4cbe-7176-9a51cbbb7c9d",
                           "name": "Your account does not have the permission to use this endpoint",
                           "originalRequest": {
                             "url": {
@@ -20038,11 +20722,11 @@
               "event": []
             },
             {
-              "id": "ef1fac9b-ab14-61d1-ec15-5c3f96bdccd0",
+              "id": "1cb4bd2d-eb93-c94f-464d-fc7450f4edab",
               "name": "qrcode-static",
               "item": [
                 {
-                  "id": "5f961bb5-188e-2899-d2f5-1c069bb90130",
+                  "id": "bdcc9fa2-7fd5-c4c3-3ea6-d72018f61e7b",
                   "name": "Get a list of Pix QrCodes",
                   "request": {
                     "name": "Get a list of Pix QrCodes",
@@ -20070,7 +20754,7 @@
                   },
                   "response": [
                     {
-                      "id": "74267c41-6403-0a70-0e32-b029f260e9dc",
+                      "id": "68d02297-edc7-562b-ae69-7ca886d0f833",
                       "name": "A list of pixQrCodes",
                       "originalRequest": {
                         "url": {
@@ -20115,7 +20799,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "7bbb4c63-0ad5-027e-ef76-fd9c180fa2eb",
+                      "id": "8b0c7b93-0b38-79d6-b55d-da622e8072f3",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -20166,7 +20850,7 @@
                   }
                 },
                 {
-                  "id": "91d63901-704d-1df9-2b69-3411157c4733",
+                  "id": "add3e38c-a0d5-ccb9-360a-87780650c637",
                   "name": "Create a new Pix QrCode Static",
                   "request": {
                     "name": "Create a new Pix QrCode Static",
@@ -20210,7 +20894,7 @@
                   },
                   "response": [
                     {
-                      "id": "16007950-2d61-45f3-5975-2a07834bc670",
+                      "id": "f7909d02-9606-d020-c625-37f37f9dd955",
                       "name": "PixQrCode ID and also the generated Dynamic BR Code to be rendered as a QRCode",
                       "originalRequest": {
                         "url": {
@@ -20263,7 +20947,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "ec9085c0-247f-b804-dc7c-c122c9a83e0e",
+                      "id": "bcb1014c-73c8-a560-6ac5-9e8ef39118d8",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -20322,11 +21006,11 @@
                   }
                 },
                 {
-                  "id": "05246d5e-56e7-a65f-686a-68512ff2cae2",
+                  "id": "40bebb63-1b01-6fee-b73a-5258a808c252",
                   "name": "{id}",
                   "item": [
                     {
-                      "id": "d6e4e22c-5137-f3bb-0ba6-3f16f37b1d32",
+                      "id": "ae847276-bbc1-396e-708a-b74e41482393",
                       "name": "Delete a Pix QrCode Static",
                       "request": {
                         "name": "Delete a Pix QrCode Static",
@@ -20366,7 +21050,7 @@
                       },
                       "response": [
                         {
-                          "id": "c3ef1f12-23ea-69db-019c-369e8500f1f3",
+                          "id": "1dce1a6a-c0f4-59cb-ca93-12d4c904a44b",
                           "name": "QrCode deleted successfully",
                           "originalRequest": {
                             "url": {
@@ -20420,7 +21104,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "03c317ad-70d7-11e2-cedc-7b58ea17de0e",
+                          "id": "e96c3185-281f-11c6-aa12-f3147220bd6b",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -20480,7 +21164,7 @@
                       }
                     },
                     {
-                      "id": "530bf4e5-cdda-d9cf-5d95-7841680964d3",
+                      "id": "40b31898-05de-e201-7a96-002997d49f11",
                       "name": "Get one Pix QrCode",
                       "request": {
                         "name": "Get one Pix QrCode",
@@ -20517,7 +21201,7 @@
                       },
                       "response": [
                         {
-                          "id": "307fa20f-d549-8d03-3635-7d5b5190ccdc",
+                          "id": "40c87f19-5204-3272-2fd5-5d2138868703",
                           "name": "The pixQrCode retrieve using the given ID",
                           "originalRequest": {
                             "url": {
@@ -20571,7 +21255,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "55a0297a-0521-4d96-4766-992ef2bbd54d",
+                          "id": "346e4d48-2938-dae7-238f-6dbbe6a221f9",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -20637,11 +21321,11 @@
               "event": []
             },
             {
-              "id": "290f527e-39da-6b53-1045-80415368cdcd",
+              "id": "917ec685-edc7-aec3-b708-b5a13ecc86d5",
               "name": "transaction",
               "item": [
                 {
-                  "id": "51f246d9-86f7-1a47-b3ff-42204caa33e0",
+                  "id": "d796e984-74e2-5da6-f23b-a8286f6a9905",
                   "name": "Get a list of transactions",
                   "request": {
                     "name": "Get a list of transactions",
@@ -20730,7 +21414,7 @@
                   },
                   "response": [
                     {
-                      "id": "6e5df99a-1c41-4b6f-f788-732fa2d1a536",
+                      "id": "313fa676-47f3-5e35-7380-88863dcd2425",
                       "name": "A list of transactions",
                       "originalRequest": {
                         "url": {
@@ -20799,12 +21483,12 @@
                           "value": "application/json"
                         }
                       ],
-                      "body": "{\n  \"status\": \"<string>\",\n  \"transactions\": [\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\"\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_2\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"pageInfo\": {\n    \"errors\": [\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      },\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      }\n    ],\n    \"skip\": \"<number>\",\n    \"limit\": \"<number>\",\n    \"hasPreviousPage\": \"<boolean>\",\n    \"hasNextPage\": \"<boolean>\"\n  }\n}",
+                      "body": "{\n  \"status\": \"<string>\",\n  \"transactions\": [\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_2\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"pageInfo\": {\n    \"errors\": [\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      },\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      }\n    ],\n    \"skip\": \"<number>\",\n    \"limit\": \"<number>\",\n    \"hasPreviousPage\": \"<boolean>\",\n    \"hasNextPage\": \"<boolean>\"\n  }\n}",
                       "cookie": [],
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "6e274fa5-f85e-b87f-7a0f-418c7c65a972",
+                      "id": "f7e5ac6d-c934-cbe9-8626-e52e0f432249",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -20884,7 +21568,7 @@
                   }
                 },
                 {
-                  "id": "6e0f3916-b3f6-b31e-30b9-b2f10db536e8",
+                  "id": "83953fbc-4f9e-d541-fe9e-7518aa64fc15",
                   "name": "Get a Transaction",
                   "request": {
                     "name": "Get a Transaction",
@@ -20941,7 +21625,7 @@
                   },
                   "response": [
                     {
-                      "id": "bf44f93b-ec0b-2eaf-5824-f9596abf91e7",
+                      "id": "212de746-2a7a-dfbd-e321-806dd4962039",
                       "name": "The transaction retrieve using the given ID",
                       "originalRequest": {
                         "url": {
@@ -20990,12 +21674,12 @@
                           "value": "application/json"
                         }
                       ],
-                      "body": "{\n  \"transaction\": {\n    \"charge\": {\n      \"value\": \"<number>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"globalID\": {},\n      \"transactionID\": {},\n      \"identifier\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"additionalInfo\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"pixKey\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"expiresIn\": \"<string>\",\n      \"expiresDate\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"subscription\": {\n        \"globalID\": \"<string>\",\n        \"value\": \"<number>\",\n        \"name\": \"<string>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"street\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"neighborhood\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"city\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"complement\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"country\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"dayGenerateCharge\": \"<number>\",\n        \"type\": \"<string>\",\n        \"frequency\": \"<string>\",\n        \"installmentsCount\": \"<number>\",\n        \"isActive\": \"<boolean>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkUrl\": \"<string>\",\n        \"addtionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixRecurringOptions\": {\n          \"emv\": \"<string>\",\n          \"status\": \"<string>\",\n          \"retryPolicy\": \"<string>\",\n          \"journey\": \"<string>\"\n        }\n      },\n      \"paymentMethods\": {\n        \"pix\": {\n          \"method\": \"<string>\",\n          \"transactionID\": \"<string>\",\n          \"identifier\": \"<string>\",\n          \"additionalInfo\": [\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            },\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"fee\": \"<number>\",\n          \"value\": \"<number>\",\n          \"status\": \"<string>\",\n          \"txId\": \"<string>\",\n          \"brCode\": \"<string>\",\n          \"qrCodeImage\": \"<string>\"\n        }\n      }\n    },\n    \"value\": \"<number>\",\n    \"time\": \"<string>\",\n    \"endToEndID\": \"<string>\",\n    \"transactionID\": \"<string>\",\n    \"infoPagador\": \"<string>\",\n    \"endToEndId\": \"<string>\",\n    \"customer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"withdraw\": {\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\"\n    },\n    \"payer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"globalID\": {},\n    \"pixQrCode\": {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"pixKey\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\"\n    },\n    \"webhookSent\": [\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        }\n      },\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_1\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+                      "body": "{\n  \"transaction\": {\n    \"charge\": {\n      \"value\": \"<number>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"globalID\": {},\n      \"transactionID\": {},\n      \"identifier\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"additionalInfo\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"pixKey\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"expiresIn\": \"<string>\",\n      \"expiresDate\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"subscription\": {\n        \"globalID\": \"<string>\",\n        \"value\": \"<number>\",\n        \"name\": \"<string>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"street\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"neighborhood\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"city\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"complement\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"country\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"dayGenerateCharge\": \"<number>\",\n        \"type\": \"<string>\",\n        \"frequency\": \"<string>\",\n        \"installmentsCount\": \"<number>\",\n        \"isActive\": \"<boolean>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkUrl\": \"<string>\",\n        \"addtionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixRecurringOptions\": {\n          \"emv\": \"<string>\",\n          \"status\": \"<string>\",\n          \"retryPolicy\": \"<string>\",\n          \"journey\": \"<string>\"\n        }\n      },\n      \"paymentMethods\": {\n        \"pix\": {\n          \"method\": \"<string>\",\n          \"transactionID\": \"<string>\",\n          \"identifier\": \"<string>\",\n          \"additionalInfo\": [\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            },\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"fee\": \"<number>\",\n          \"value\": \"<number>\",\n          \"status\": \"<string>\",\n          \"txId\": \"<string>\",\n          \"brCode\": \"<string>\",\n          \"qrCodeImage\": \"<string>\"\n        }\n      }\n    },\n    \"value\": \"<number>\",\n    \"time\": \"<string>\",\n    \"endToEndID\": \"<string>\",\n    \"transactionID\": \"<string>\",\n    \"infoPagador\": \"<string>\",\n    \"endToEndId\": \"<string>\",\n    \"customer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"withdraw\": {\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\"\n    },\n    \"payer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"globalID\": {},\n    \"pixQrCode\": {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"pixKey\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\"\n    },\n    \"webhookSent\": [\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_1\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_2\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_3\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        }\n      },\n      {\n        \"isRetry\": \"<boolean>\"\n      }\n    ]\n  }\n}",
                       "cookie": [],
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "34f2707b-5b57-60df-7765-3f68d0315c31",
+                      "id": "2e97d3cd-2406-60b3-b59b-88b005b02d4a",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -21058,11 +21742,11 @@
               "event": []
             },
             {
-              "id": "f2c0e75f-4866-bca8-3290-505e4e342b90",
+              "id": "4cd2deeb-9af6-4ea6-3811-a35217192f46",
               "name": "refund",
               "item": [
                 {
-                  "id": "a3cfebeb-0b51-645c-6735-de404ed63d30",
+                  "id": "35d1da52-34f3-9ab3-7380-2b332a21e35b",
                   "name": "Get a list of refunds",
                   "request": {
                     "name": "Get a list of refunds",
@@ -21110,7 +21794,7 @@
                   },
                   "response": [
                     {
-                      "id": "0ba1aefe-e8b7-14c1-605f-d4bbee3d7cb0",
+                      "id": "27060ade-ff04-1119-4863-0363a3ef6f5c",
                       "name": "A list of refunds",
                       "originalRequest": {
                         "url": {
@@ -21155,7 +21839,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "de9b4aa8-0029-db6a-13a5-93d775cd412a",
+                      "id": "3d8a9746-00ac-0b9e-5cdc-bb1767a56274",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -21206,7 +21890,7 @@
                   }
                 },
                 {
-                  "id": "c4a56335-87df-c6c9-f2bd-9e9040cfa41c",
+                  "id": "139e465a-166a-213d-897c-982143c22992",
                   "name": "Create a new refund",
                   "request": {
                     "name": "Create a new refund",
@@ -21270,7 +21954,7 @@
                   },
                   "response": [
                     {
-                      "id": "d744b900-8d64-02f1-1a43-ee938f6897f3",
+                      "id": "e484aa61-956b-f2bc-edb0-acd76f92fb85",
                       "name": "The created Refund",
                       "originalRequest": {
                         "url": {
@@ -21323,7 +22007,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "ce17fc77-6026-8da1-7f70-e256e89f1c36",
+                      "id": "55c16333-ed07-ad3c-74ab-5a40229261a3",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -21382,7 +22066,7 @@
                   }
                 },
                 {
-                  "id": "00ba4c7a-aaf8-0a68-756f-24ed81c54950",
+                  "id": "8844cea4-1d1b-7795-c990-be65979a687e",
                   "name": "Get one refund",
                   "request": {
                     "name": "Get one refund",
@@ -21439,7 +22123,7 @@
                   },
                   "response": [
                     {
-                      "id": "e782047d-899c-92fc-94f3-6508707cc299",
+                      "id": "d7ec3d33-74e6-cc9f-7fd1-2d158ed13b36",
                       "name": "The refund retrieve using the given ID",
                       "originalRequest": {
                         "url": {
@@ -21493,7 +22177,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "a05cad84-a91b-a44d-9cf3-4accdb0b9924",
+                      "id": "26c67252-d818-958b-41fb-2940f2ef2b02",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -21556,7 +22240,7 @@
               "event": []
             },
             {
-              "id": "459eff96-4939-c1e1-18d3-f9182bac2f36",
+              "id": "3f2e61ff-1eff-2fee-742e-08e21f3d4fd4",
               "name": "Get a list of PSPs (Payment Service Providers)",
               "request": {
                 "name": "Get a list of PSPs (Payment Service Providers)",
@@ -21623,7 +22307,7 @@
               },
               "response": [
                 {
-                  "id": "f7c96b4e-a087-6e77-bdc6-0d25bd6916d9",
+                  "id": "26ede14d-5498-6250-8761-712cd448d992",
                   "name": "A list of PSPs",
                   "originalRequest": {
                     "url": {
@@ -21681,7 +22365,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "432c5f33-f810-a7b7-18d0-22310e8bb76d",
+                  "id": "8fa7e07c-978f-a8a0-2911-0db7a8421c34",
                   "name": "Bad request",
                   "originalRequest": {
                     "url": {
@@ -21739,7 +22423,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "31550947-2388-0931-8289-c7a96e627354",
+                  "id": "199b637c-5b3a-81e4-eb3a-533db3650d3d",
                   "name": "Internal server error",
                   "originalRequest": {
                     "url": {
@@ -21803,7 +22487,7 @@
               }
             },
             {
-              "id": "54d5301d-b367-27d4-2c58-0a7fd7d01608",
+              "id": "dc7a28a7-62db-1e04-70cc-05ef5334d2dd",
               "name": "Get a PDF document related to a payment transaction formatted as a receipt by type (pix-in, pix-out or pix-refund).",
               "request": {
                 "name": "Get a PDF document related to a payment transaction formatted as a receipt by type (pix-in, pix-out or pix-refund).",
@@ -21848,7 +22532,7 @@
               },
               "response": [
                 {
-                  "id": "3d3d9427-83bd-7de7-4405-89a544dd4535",
+                  "id": "a0bcca1e-9cb1-1c2b-95e8-846b66440ec3",
                   "name": "Exported transaction as a receipt in PDF format.",
                   "originalRequest": {
                     "url": {
@@ -21910,7 +22594,7 @@
                   "_postman_previewlanguage": "text"
                 },
                 {
-                  "id": "b9465186-35b9-90a1-a212-3b59cea1582c",
+                  "id": "d90be434-bc6d-08e6-8f2a-f202d58ee0d5",
                   "name": "An error occurred due to a bad request.",
                   "originalRequest": {
                     "url": {
@@ -21972,7 +22656,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "659b1aeb-cff7-c180-c781-f130790a6365",
+                  "id": "274fb126-43eb-acaf-fa49-dbc2b0d89e1e",
                   "name": "Unauthorized access.",
                   "originalRequest": {
                     "url": {
@@ -22034,7 +22718,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "41dfa244-ba39-6ab6-969e-f1234ccad3bf",
+                  "id": "628905a5-9297-81a7-c744-050025ee63ce",
                   "name": "The specified EndToEndId was not found.",
                   "originalRequest": {
                     "url": {
@@ -22102,15 +22786,15 @@
               }
             },
             {
-              "id": "d57e8419-f621-dacd-eefe-f3c5988a933c",
+              "id": "3cf6a00c-f52c-b2a2-4f61-cff979c021e3",
               "name": "stablecoin",
               "item": [
                 {
-                  "id": "d7727176-71bf-f981-13ff-08d6ba68637b",
+                  "id": "e2a7e6aa-db60-5942-9dd0-5346343371f8",
                   "name": "deposit",
                   "item": [
                     {
-                      "id": "49bf7de1-583b-8ad4-7136-196132674b05",
+                      "id": "bcf35043-053d-6361-e028-3d8f1fc0cfad",
                       "name": "Create a stablecoin deposit",
                       "request": {
                         "name": "Create a stablecoin deposit",
@@ -22175,7 +22859,7 @@
                       },
                       "response": [
                         {
-                          "id": "fca2ab53-acb0-a920-fee6-fe0a03c556f5",
+                          "id": "7b023512-faf9-0ae8-d41e-aec639e043c3",
                           "name": "Deposit created successfully",
                           "originalRequest": {
                             "url": {
@@ -22229,7 +22913,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "13e0f616-6b4a-9477-bbf0-fdc778150b31",
+                          "id": "68ff9d5c-de64-9aed-c979-c1c21b46389b",
                           "name": "Invalid input, no active subaccount, or deposit creation failed",
                           "originalRequest": {
                             "url": {
@@ -22283,7 +22967,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "546f8b35-cc7e-2604-ded4-6ff93e04d40f",
+                          "id": "42cdde68-216b-8799-78a4-a89fafbe50d7",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -22343,7 +23027,7 @@
                       }
                     },
                     {
-                      "id": "e058dbcb-57fb-59d6-d6e6-7da839a0e1d3",
+                      "id": "0fbae27d-69e7-0cec-b47e-0655946e8ce6",
                       "name": "Approve (settle) a stablecoin deposit",
                       "request": {
                         "name": "Approve (settle) a stablecoin deposit",
@@ -22409,7 +23093,7 @@
                       },
                       "response": [
                         {
-                          "id": "d2e29e34-9220-26ee-94b9-fa02844aeff2",
+                          "id": "e67b9c9d-a629-469c-9e99-cb71e817ac0c",
                           "name": "Deposit approved and settlement started",
                           "originalRequest": {
                             "url": {
@@ -22464,7 +23148,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "20b70d01-09d3-1331-e87b-48843e93ac46",
+                          "id": "3e3e978b-34e1-6bce-9ede-fb2ea8017065",
                           "name": "Missing correlationId or the deposit cannot be approved",
                           "originalRequest": {
                             "url": {
@@ -22519,7 +23203,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "5c77141d-95c8-1920-a6ef-3047764415e1",
+                          "id": "4e175e32-e640-fdac-44be-c4d27d22fb03",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -22583,11 +23267,11 @@
                   "event": []
                 },
                 {
-                  "id": "cf43880d-64d5-5540-7985-8883bea405ea",
+                  "id": "5a5613fa-1318-5643-97b5-d8d35ec15e6f",
                   "name": "payout",
                   "item": [
                     {
-                      "id": "13c37ed9-0197-f938-1a18-7e0093b22120",
+                      "id": "a075b072-1c0a-38aa-551e-72cc233db026",
                       "name": "Get the current status of a payout by correlationId",
                       "request": {
                         "name": "Get the current status of a payout by correlationId",
@@ -22640,7 +23324,7 @@
                       },
                       "response": [
                         {
-                          "id": "5ab01a6a-b7f5-0fd9-4b7a-81e670921611",
+                          "id": "f56af835-717f-efe0-8433-552db742f840",
                           "name": "Current payout state",
                           "originalRequest": {
                             "url": {
@@ -22687,7 +23371,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "631f768c-0e1b-9c81-afa3-a8ee267b16e6",
+                          "id": "62093e98-11f1-35d3-e3c0-61c92b02266c",
                           "name": "Missing correlationId",
                           "originalRequest": {
                             "url": {
@@ -22734,7 +23418,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "957f65ae-f8bc-1e32-fd5e-85a965b35b59",
+                          "id": "7ca167ee-9276-613e-e109-af132617925b",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -22781,7 +23465,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "b187d87a-2562-e2ad-fcae-6bde3d75ecda",
+                          "id": "81a7a268-9450-734a-cfd4-a5fa2b3e20b8",
                           "name": "No payout with this correlationId for the authenticated company",
                           "originalRequest": {
                             "url": {
@@ -22834,7 +23518,7 @@
                       }
                     },
                     {
-                      "id": "5cd9b7d5-6c32-9a66-b9fe-157ba3021df6",
+                      "id": "47ac6c92-d27c-0d3d-2ec5-e37357f82aa2",
                       "name": "Pay out INTERNAL balance to BRL via Pix",
                       "request": {
                         "name": "Pay out INTERNAL balance to BRL via Pix",
@@ -22899,7 +23583,7 @@
                       },
                       "response": [
                         {
-                          "id": "cf63bc3c-542c-3aa2-01f6-753d3f2f68fc",
+                          "id": "6d889ccb-cb54-537c-8e43-6b82cce209c7",
                           "name": "Payout created successfully",
                           "originalRequest": {
                             "url": {
@@ -22953,7 +23637,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "1b6e5239-0b4e-574a-119f-c841b4edf981",
+                          "id": "496a053a-5020-3069-b3a4-b4acb5718e01",
                           "name": "Invalid input, insufficient balance, or payout creation failed",
                           "originalRequest": {
                             "url": {
@@ -23003,7 +23687,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "1c2a2860-cfed-b805-f3c3-640deb034f95",
+                          "id": "a1ae000d-100f-3784-a48f-236b7c1cec5d",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -23059,7 +23743,7 @@
                       }
                     },
                     {
-                      "id": "fa7b4e6f-421b-4d5a-3eb5-346f40d852cb",
+                      "id": "b8e797d7-6b62-1427-dfd6-c326710c5132",
                       "name": "Get the current status of a payout",
                       "request": {
                         "name": "Get the current status of a payout",
@@ -23114,7 +23798,7 @@
                       },
                       "response": [
                         {
-                          "id": "0c2c7bcc-a07f-c83e-eeb5-2e437b66914e",
+                          "id": "3e56808a-3c98-eaba-6012-4b1387ea9cef",
                           "name": "Current payout state",
                           "originalRequest": {
                             "url": {
@@ -23165,7 +23849,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "1f2a273a-2a3a-5950-ebd2-dbbee9353dd5",
+                          "id": "25a6de5b-4a20-f21f-3fdf-2526beaa4f47",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -23216,7 +23900,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "afbbedeb-264b-7c47-871b-a994579f3318",
+                          "id": "ba07c3da-adf8-f259-d704-3455d67c65c1",
                           "name": "No payout with this id for the authenticated company",
                           "originalRequest": {
                             "url": {
@@ -23273,7 +23957,7 @@
                       }
                     },
                     {
-                      "id": "5c28505a-3d56-2262-2c80-2f9fe74731eb",
+                      "id": "9d48a943-6390-a64c-f675-90296bb35159",
                       "name": "Quote an INTERNAL balance off-ramp to BRL via Pix",
                       "request": {
                         "name": "Quote an INTERNAL balance off-ramp to BRL via Pix",
@@ -23339,7 +24023,7 @@
                       },
                       "response": [
                         {
-                          "id": "4ba3326e-5bcc-372c-a7db-98816ae7090e",
+                          "id": "b1471d71-4020-6434-3b7a-28b0814a368c",
                           "name": "Quote fetched successfully",
                           "originalRequest": {
                             "url": {
@@ -23395,7 +24079,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "a13eeb67-90a1-a7e5-e07b-8534b1c91bf9",
+                          "id": "2fc80699-a31c-aa67-8212-190e068fe79e",
                           "name": "Invalid query parameters",
                           "originalRequest": {
                             "url": {
@@ -23447,7 +24131,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "8deb7d4c-cfd3-1322-fdb6-e452976e4aa3",
+                          "id": "fa5ddae7-f973-88d5-0999-ebc96973febf",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -23499,7 +24183,7 @@
                           "_postman_previewlanguage": "text"
                         },
                         {
-                          "id": "c94a657d-6c89-18b0-91b0-4085a168d717",
+                          "id": "ba55740b-d820-8fe8-3693-3adcf234492b",
                           "name": "Provider quote unavailable",
                           "originalRequest": {
                             "url": {
@@ -23560,7 +24244,7 @@
                   "event": []
                 },
                 {
-                  "id": "88f97a6e-1940-9ddc-9296-bdbb19a610d2",
+                  "id": "d8aade72-1af9-9a70-1e37-a33d5c83ad15",
                   "name": "Get a stablecoin quote without creating a deposit",
                   "request": {
                     "name": "Get a stablecoin quote without creating a deposit",
@@ -23625,7 +24309,7 @@
                   },
                   "response": [
                     {
-                      "id": "699571fc-b8aa-5688-9612-1bf545375ff4",
+                      "id": "6151881f-5596-b958-216e-324042de9ad7",
                       "name": "Quote computed",
                       "originalRequest": {
                         "url": {
@@ -23680,7 +24364,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "afd01a7d-0acd-cd30-86f7-770c936f1109",
+                      "id": "1a9c4fce-96a0-7555-92b0-588ac6af6183",
                       "name": "Invalid query parameters",
                       "originalRequest": {
                         "url": {
@@ -23735,7 +24419,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "0a65c5ba-f8e3-5a37-9c2e-ca478dd5a47d",
+                      "id": "61b0dbf8-fd04-61f6-c8f7-aa761c4a9f60",
                       "name": "Invalid credentials or missing required scope",
                       "originalRequest": {
                         "url": {
@@ -23790,7 +24474,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "d0a404f4-541d-71df-edc9-e0006ef1a452",
+                      "id": "e47426db-d1c1-cc3d-a7c8-7c1867761cda",
                       "name": "Provider failed to return a quote",
                       "originalRequest": {
                         "url": {
@@ -23851,11 +24535,11 @@
                   }
                 },
                 {
-                  "id": "32257d73-98d9-d6ae-1160-c47110e22f8d",
+                  "id": "c2b9c88a-705b-7c3c-8e40-ac84e4ae5c6a",
                   "name": "subaccount",
                   "item": [
                     {
-                      "id": "a15a7a6f-92f0-52e7-1960-3b7c53dee363",
+                      "id": "45b2102d-59cb-8646-6aa2-a75a01aa777f",
                       "name": "List a company's stablecoin subaccounts",
                       "request": {
                         "name": "List a company's stablecoin subaccounts",
@@ -23907,7 +24591,7 @@
                       },
                       "response": [
                         {
-                          "id": "d81f2098-178c-3f91-5eda-42f8a52ce15a",
+                          "id": "4173396b-5cd0-459d-d35f-959800cd5382",
                           "name": "Subaccounts listed successfully",
                           "originalRequest": {
                             "url": {
@@ -23953,7 +24637,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "b75b7a73-0bc9-009a-f692-a14b3a70803c",
+                          "id": "f22bb9f6-db7d-0bed-343e-f4d5f3ef0f45",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -24005,7 +24689,7 @@
                       }
                     },
                     {
-                      "id": "7ca2392d-ae5d-8c94-7a99-4db542984782",
+                      "id": "07a0a238-ff6d-e565-852c-d881b1332732",
                       "name": "Request a new stablecoin subaccount (KYB)",
                       "request": {
                         "name": "Request a new stablecoin subaccount (KYB)",
@@ -24070,7 +24754,7 @@
                       },
                       "response": [
                         {
-                          "id": "f24925eb-9594-c5da-b9b4-070c8b584c12",
+                          "id": "99bf9bb7-7d05-5d64-1998-5032587c4841",
                           "name": "Subaccount already requested for this account register",
                           "originalRequest": {
                             "url": {
@@ -24124,7 +24808,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "5fa1a21d-b9a3-053a-da1c-4859042a29c8",
+                          "id": "44f0d9d7-97d2-ce2d-0355-f8a69bcef809",
                           "name": "Subaccount activation requested",
                           "originalRequest": {
                             "url": {
@@ -24178,7 +24862,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "5d63da6d-2ab5-5a52-89a1-42b3c44c3ef4",
+                          "id": "1c7b8e04-c0bc-0223-598d-e823192a3d92",
                           "name": "Invalid input or referenced account register",
                           "originalRequest": {
                             "url": {
@@ -24232,7 +24916,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "9b9a6192-1ffa-182c-331e-d60f229e0bec",
+                          "id": "304accae-e73d-d781-42db-327a28452344",
                           "name": "Invalid credentials or missing required scope",
                           "originalRequest": {
                             "url": {
@@ -24286,7 +24970,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "fd2f7a11-709a-7121-896a-f71db0e2288f",
+                          "id": "8b616dbe-033f-d92c-bbd7-bcfe21815e0c",
                           "name": "Provider or persistence failure while creating the subaccount",
                           "originalRequest": {
                             "url": {
@@ -24346,11 +25030,11 @@
                       }
                     },
                     {
-                      "id": "077329b0-a343-35d7-9c8e-258cb9cc367c",
+                      "id": "d03d803f-e6c2-1179-ad6e-2c3df7fd2000",
                       "name": "{subAccountId}",
                       "item": [
                         {
-                          "id": "9c37dd89-cfd2-6ce6-49a2-e8752547f69b",
+                          "id": "7801aa9f-4a33-812e-c4ff-2d7081b65aee",
                           "name": "Get a stablecoin subaccount by id",
                           "request": {
                             "name": "Get a stablecoin subaccount by id",
@@ -24411,7 +25095,7 @@
                           },
                           "response": [
                             {
-                              "id": "05533588-4815-4774-bf7e-501651711e4a",
+                              "id": "4faca3f3-b701-b0bc-abf1-e090e6413ce7",
                               "name": "Subaccount found",
                               "originalRequest": {
                                 "url": {
@@ -24466,7 +25150,7 @@
                               "_postman_previewlanguage": "json"
                             },
                             {
-                              "id": "5d34e848-1f3c-992c-e4ff-9a83ba26262c",
+                              "id": "9b9729ae-82cf-4c59-0681-441000127982",
                               "name": "Invalid credentials or missing required scope",
                               "originalRequest": {
                                 "url": {
@@ -24521,7 +25205,7 @@
                               "_postman_previewlanguage": "json"
                             },
                             {
-                              "id": "f72576e9-cf62-4d29-5d37-c7e4de2abeeb",
+                              "id": "cc01a0cd-beff-a097-5d2a-abde93e5f8fe",
                               "name": "No subaccount matches the subAccountId for this company",
                               "originalRequest": {
                                 "url": {
@@ -24582,7 +25266,7 @@
                           }
                         },
                         {
-                          "id": "c0177abc-a3c2-4592-07d7-590a0cb4777a",
+                          "id": "c5f9dcf0-ca53-364b-2ee3-f270beecfd84",
                           "name": "Read the INTERNAL balances of a subaccount's float",
                           "request": {
                             "name": "Read the INTERNAL balances of a subaccount's float",
@@ -24644,7 +25328,7 @@
                           },
                           "response": [
                             {
-                              "id": "c0026083-2d0f-0552-5614-1cdb52f9a051",
+                              "id": "4db63539-91d6-06d6-8b52-35d906b2f59d",
                               "name": "INTERNAL balances of the subaccount",
                               "originalRequest": {
                                 "url": {
@@ -24695,12 +25379,12 @@
                                   "value": "application/json"
                                 }
                               ],
-                              "body": "{\n  \"status\": \"<string>\",\n  \"subAccountId\": \"<string>\",\n  \"balances\": {\n    \"key_0\": \"<number>\"\n  }\n}",
+                              "body": "{\n  \"status\": \"<string>\",\n  \"subAccountId\": \"<string>\",\n  \"balances\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  }\n}",
                               "cookie": [],
                               "_postman_previewlanguage": "json"
                             },
                             {
-                              "id": "f7e576bc-dff1-52b0-4917-53e609aabf76",
+                              "id": "c422f533-e6d2-b4c9-2e68-435a2e1e7a6b",
                               "name": "Invalid credentials or missing required scope",
                               "originalRequest": {
                                 "url": {
@@ -24756,7 +25440,7 @@
                               "_postman_previewlanguage": "json"
                             },
                             {
-                              "id": "d94f7fd0-97bf-98cf-1215-f2bccf222e1e",
+                              "id": "9034a889-13fd-2e0c-1f81-c5ac328f1269",
                               "name": "No subaccount with this id for the authenticated company",
                               "originalRequest": {
                                 "url": {
@@ -24812,7 +25496,7 @@
                               "_postman_previewlanguage": "json"
                             },
                             {
-                              "id": "8ec560a1-8d88-a054-5936-94f278dcb76c",
+                              "id": "94da59b5-1bea-5058-9b4b-471b634f5f31",
                               "name": "The provider could not be reached",
                               "originalRequest": {
                                 "url": {
@@ -24874,7 +25558,7 @@
                           }
                         },
                         {
-                          "id": "3cc43e9d-89ba-5be0-5365-a98d95202fe1",
+                          "id": "ea678056-822a-01e9-657d-7dc9c301de6e",
                           "name": "List the deposit addresses of a subaccount's float",
                           "request": {
                             "name": "List the deposit addresses of a subaccount's float",
@@ -24936,7 +25620,7 @@
                           },
                           "response": [
                             {
-                              "id": "04e9980b-bb8d-9178-b3e7-f614a1150156",
+                              "id": "9b604784-71af-3de1-4bf5-f4b9b07a855d",
                               "name": "Deposit wallets of the subaccount",
                               "originalRequest": {
                                 "url": {
@@ -24992,7 +25676,7 @@
                               "_postman_previewlanguage": "json"
                             },
                             {
-                              "id": "1457fa14-668e-bd48-263a-f71f184ca7c0",
+                              "id": "6a25a8da-7951-2909-db2f-f82e6571510c",
                               "name": "Invalid credentials or missing required scope",
                               "originalRequest": {
                                 "url": {
@@ -25048,7 +25732,7 @@
                               "_postman_previewlanguage": "json"
                             },
                             {
-                              "id": "ec1e2b82-cf56-3710-b8cd-9a7457549a3b",
+                              "id": "f64e1c35-1413-ca9b-c528-fb5b5c4b2014",
                               "name": "No subaccount with this id for the authenticated company",
                               "originalRequest": {
                                 "url": {
@@ -25104,7 +25788,7 @@
                               "_postman_previewlanguage": "json"
                             },
                             {
-                              "id": "fa4c96b3-dc63-e052-0e2a-ecf65d29abfd",
+                              "id": "9b34140a-052d-8f2a-ba00-8a13defca318",
                               "name": "The provider could not be reached",
                               "originalRequest": {
                                 "url": {
@@ -25172,7 +25856,7 @@
                   "event": []
                 },
                 {
-                  "id": "cd2c8cf8-4ab3-ef26-05b0-5488d578e556",
+                  "id": "b3a7a930-0e94-a998-8442-2a20bf67de39",
                   "name": "List custodian deposit wallets for the AppID bank account",
                   "request": {
                     "name": "List custodian deposit wallets for the AppID bank account",
@@ -25224,7 +25908,7 @@
                   },
                   "response": [
                     {
-                      "id": "d70dbb0e-699f-ab97-258a-28f54144a6ac",
+                      "id": "bb55a62f-f15c-7eac-27e2-c3fad6e446ca",
                       "name": "Custodian deposit wallets",
                       "originalRequest": {
                         "url": {
@@ -25270,7 +25954,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "a7627af6-84a2-76ec-a1ee-4bac5ef97de8",
+                      "id": "b6a80329-c1f4-3a65-5ff3-773d29ac6d76",
                       "name": "AppID has no companyBankAccount, or KYB not confirmed",
                       "originalRequest": {
                         "url": {
@@ -25312,7 +25996,7 @@
                       "_postman_previewlanguage": "text"
                     },
                     {
-                      "id": "b12beaba-2063-e721-2af7-2da654bcdc98",
+                      "id": "396a713f-bb3c-8bd1-0181-ca2e8a0b612c",
                       "name": "Unauthorized",
                       "originalRequest": {
                         "url": {
@@ -25354,7 +26038,7 @@
                       "_postman_previewlanguage": "text"
                     },
                     {
-                      "id": "e1b398be-7468-f90a-658b-e6ebc6ed7bcc",
+                      "id": "e3f93346-1452-bc01-929b-057f418fef69",
                       "name": "No subaccount for this company bank account",
                       "originalRequest": {
                         "url": {
@@ -25396,7 +26080,7 @@
                       "_postman_previewlanguage": "text"
                     },
                     {
-                      "id": "1b452d8b-f7fb-aa32-6456-1bff7363177c",
+                      "id": "fc88c838-282e-b2a0-0592-5bae1af8dd16",
                       "name": "Provider error",
                       "originalRequest": {
                         "url": {
@@ -25447,7 +26131,7 @@
               "event": []
             },
             {
-              "id": "827a802d-902b-0a82-2fca-34866abec083",
+              "id": "a1bdb92b-fc8c-0c70-fe5b-0168b3b5f8ab",
               "name": "Get statement by company",
               "request": {
                 "name": "Get statement by company",
@@ -25519,7 +26203,7 @@
               },
               "response": [
                 {
-                  "id": "1801653b-4e75-4af3-5abf-e58d8f06cdd4",
+                  "id": "028e031e-01cc-bd9c-ef93-7dbc1a49bd08",
                   "name": "Statement retrieved successfully",
                   "originalRequest": {
                     "url": {
@@ -25581,7 +26265,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "d587426f-3c83-9702-0524-091ff8c7bd6f",
+                  "id": "7f751ddd-2aad-d21e-d650-b9545ef3154f",
                   "name": "Bad request - validation error or missing authorization",
                   "originalRequest": {
                     "url": {
@@ -25643,7 +26327,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "5a62aa98-fa30-0743-9772-642de31d32cb",
+                  "id": "fafdfc8c-edbf-915a-6a7d-1ae065677918",
                   "name": "Unauthorized - invalid or missing authorization token",
                   "originalRequest": {
                     "url": {
@@ -25705,7 +26389,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "ce4db250-bc0e-af35-81bc-52268231f906",
+                  "id": "51c09b99-eebc-11ec-54f7-770d7a043798",
                   "name": "Internal server error",
                   "originalRequest": {
                     "url": {
@@ -25773,11 +26457,11 @@
               }
             },
             {
-              "id": "711c0bf1-9733-3cd1-a61e-1d4f8d212e7b",
+              "id": "ffd55398-8d28-7c6c-a6c6-3c0de7d66df8",
               "name": "subaccount",
               "item": [
                 {
-                  "id": "3d05d63b-dc17-4502-2414-37dc314c3554",
+                  "id": "76555da3-f9e0-fd22-ebd7-63ad30c0b27f",
                   "name": "Get a list of subaccounts",
                   "request": {
                     "name": "Get a list of subaccounts",
@@ -25805,7 +26489,7 @@
                   },
                   "response": [
                     {
-                      "id": "f1623909-0c91-d8b5-ba27-9c11c8b4e822",
+                      "id": "d55880fc-309c-5365-9a6f-6ad52da80787",
                       "name": "A list of subaccounts",
                       "originalRequest": {
                         "url": {
@@ -25850,7 +26534,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "26446527-b577-30f2-2172-9703b1ff4deb",
+                      "id": "353bb85d-49dc-94e2-c967-3d7537fea962",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -25901,7 +26585,7 @@
                   }
                 },
                 {
-                  "id": "1978f4cc-9408-5266-d1a8-0f90399144e0",
+                  "id": "b3d46c5f-8069-324b-f5a0-93872d40ea1b",
                   "name": "Create a subaccount",
                   "request": {
                     "name": "Create a subaccount",
@@ -25942,7 +26626,7 @@
                   },
                   "response": [
                     {
-                      "id": "e8c29113-ac9a-e3a6-d18f-777e6ca5056f",
+                      "id": "1773a836-4f92-5820-66b8-afd29090d8df",
                       "name": "The Subccount created or retrieved if exists using the given pix key",
                       "originalRequest": {
                         "url": {
@@ -25995,7 +26679,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "12d1bb6f-2b03-dd6b-f02c-a51cd5bc957f",
+                      "id": "d3b8b933-8dac-9db4-8ad2-1ed42987d389",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -26054,11 +26738,11 @@
                   }
                 },
                 {
-                  "id": "7313a165-2a20-1206-908c-a8a268827f13",
+                  "id": "190990ad-031f-b2f3-311b-8df2b60ea1f5",
                   "name": "{id}",
                   "item": [
                     {
-                      "id": "f1a2cd06-1abd-c2fc-2779-05e21428b7f9",
+                      "id": "cc2c4503-3201-263a-56d7-ee2b73cc8d75",
                       "name": "Delete a Sub Account",
                       "request": {
                         "name": "Delete a Sub Account",
@@ -26118,7 +26802,7 @@
                       },
                       "response": [
                         {
-                          "id": "d0274d7d-826a-2060-3b40-1bbfb5ebe3ac",
+                          "id": "9b1ac5d9-02bd-a09d-e699-7f72efa8c8c3",
                           "name": "Sub Account successfully deleted",
                           "originalRequest": {
                             "url": {
@@ -26172,7 +26856,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "de983a99-e00c-e9d7-9307-250a14de76ca",
+                          "id": "2741e275-2b12-5cbd-88a1-0af818894bda",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -26226,7 +26910,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "e55c4f53-3a78-82b1-3405-680e3ddb1f4e",
+                          "id": "bc724a9f-074e-94ae-723b-36758b2ee99f",
                           "name": "Forbidden action",
                           "originalRequest": {
                             "url": {
@@ -26286,7 +26970,7 @@
                       }
                     },
                     {
-                      "id": "c2b59598-d0f9-2627-d379-bb81c7cbd861",
+                      "id": "074409be-af67-6057-66d7-702c23fdee09",
                       "name": "Get subaccount details",
                       "request": {
                         "name": "Get subaccount details",
@@ -26343,7 +27027,7 @@
                       },
                       "response": [
                         {
-                          "id": "2640a3de-fbce-861b-544f-060192601f68",
+                          "id": "7e3e353b-a44f-9c49-1675-0dfd6e3e489b",
                           "name": "The Subccount retrieve using the given pix key",
                           "originalRequest": {
                             "url": {
@@ -26397,7 +27081,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "1e373bdc-c9ac-a299-4dc4-68a9523890f1",
+                          "id": "c545be96-7026-43e3-049a-65b5e7c8c535",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -26457,7 +27141,7 @@
                       }
                     },
                     {
-                      "id": "4cafe523-8a99-5734-52af-18c73a3921e2",
+                      "id": "9e152f14-1c5f-9e64-a8a6-aa2dc7e80b6a",
                       "name": "Withdraw from a Sub Account",
                       "request": {
                         "name": "Withdraw from a Sub Account",
@@ -26531,7 +27215,7 @@
                       },
                       "response": [
                         {
-                          "id": "bdb072fd-ca89-8b48-295c-47611c715566",
+                          "id": "85ee5404-261c-8d52-38a8-0a008ec5c673",
                           "name": "Withdrawal Transaction information",
                           "originalRequest": {
                             "url": {
@@ -26594,7 +27278,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "efc56122-3634-a183-4994-5d56e4ea3846",
+                          "id": "39896710-7776-3834-aaa6-a30b61af4a06",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -26663,7 +27347,7 @@
                       }
                     },
                     {
-                      "id": "38c2329d-81bf-0487-8ec9-b0abdd75e019",
+                      "id": "12f28e6a-7057-438b-395c-d8652026b95a",
                       "name": "Credit subaccount",
                       "request": {
                         "name": "Credit subaccount",
@@ -26737,7 +27421,7 @@
                       },
                       "response": [
                         {
-                          "id": "7bca9dea-65be-0ce9-ca01-16bee4e0d2d5",
+                          "id": "d0adaafc-7c29-6fbf-e2b9-19730efa7980",
                           "name": "Sub Account successfully credited",
                           "originalRequest": {
                             "url": {
@@ -26800,7 +27484,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "48e5d388-61db-80c8-d04c-310e1e4b82d1",
+                          "id": "81090d10-e2f4-d2b1-ba5b-e3c052790be4",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -26863,7 +27547,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "caabaa87-d05e-7af3-d381-a601cf8072ac",
+                          "id": "8e3a4b93-fb0c-3cba-da92-2d9a7cf25e05",
                           "name": "Forbidden action",
                           "originalRequest": {
                             "url": {
@@ -26932,7 +27616,7 @@
                       }
                     },
                     {
-                      "id": "d80503ab-76f8-ebc4-2e8c-3e9bc5f0501c",
+                      "id": "ef900991-1b25-e546-8dde-f11317100751",
                       "name": "Debit subaccount",
                       "request": {
                         "name": "Debit subaccount",
@@ -27006,7 +27690,7 @@
                       },
                       "response": [
                         {
-                          "id": "90d6b320-7301-e19d-66af-551137ac1e1c",
+                          "id": "ee63129f-76c0-77e2-42c5-3183235a5a35",
                           "name": "Sub Account successfully debited",
                           "originalRequest": {
                             "url": {
@@ -27069,7 +27753,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "ffcf0df9-eeb1-a75a-8da6-29be59d2ade3",
+                          "id": "35dfe225-3fc0-c7af-dc0e-3850db903b72",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -27132,7 +27816,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "cecd36eb-7f17-141e-ea19-d56a7dae392a",
+                          "id": "5bac5816-b37c-0dfb-b9ae-fa707c729eb2",
                           "name": "Forbidden action",
                           "originalRequest": {
                             "url": {
@@ -27201,7 +27885,7 @@
                       }
                     },
                     {
-                      "id": "fe37bf21-4f1e-d999-fc4e-2c947dd62f49",
+                      "id": "68569365-8f96-0388-eed8-d6cec387399c",
                       "name": "Get Sub Account statement",
                       "request": {
                         "name": "Get Sub Account statement",
@@ -27267,7 +27951,7 @@
                       },
                       "response": [
                         {
-                          "id": "3afe2f05-8354-f4ee-d006-12411becaf43",
+                          "id": "5022d48f-9a10-a46d-f166-2598393ab9e3",
                           "name": "Sub Account statement retrieved successfully",
                           "originalRequest": {
                             "url": {
@@ -27339,7 +28023,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "3c7dcc09-d1e5-2634-3647-41bcd586423e",
+                          "id": "634247b3-f818-f167-153b-ad65a05aa6c3",
                           "name": "An error message",
                           "originalRequest": {
                             "url": {
@@ -27411,7 +28095,7 @@
                           "_postman_previewlanguage": "json"
                         },
                         {
-                          "id": "d3de0228-01b9-e694-33c9-ee93665917de",
+                          "id": "99a35f68-4ada-231f-a961-d5bea003072e",
                           "name": "Forbidden action",
                           "originalRequest": {
                             "url": {
@@ -27492,7 +28176,7 @@
                   "event": []
                 },
                 {
-                  "id": "5f03625a-0be4-29df-89ee-f13f2b4d6017",
+                  "id": "62341581-10a1-c4a4-645b-509e0ff92249",
                   "name": "Transfer between subaccounts",
                   "request": {
                     "name": "Transfer between subaccounts",
@@ -27557,7 +28241,7 @@
                   },
                   "response": [
                     {
-                      "id": "4c344276-b307-affb-50fd-08a024ad2abc",
+                      "id": "78f63846-4540-4299-b7b8-4d0292fc80f1",
                       "name": "Transfer response success",
                       "originalRequest": {
                         "url": {
@@ -27611,7 +28295,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "62a39ee1-ddc5-1a8f-e37d-a5e227656042",
+                      "id": "53f8640c-1968-3a93-cbac-636a695d0c92",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -27674,7 +28358,7 @@
               "event": []
             },
             {
-              "id": "414efbac-1e76-d30a-3d59-fdfdb252f764",
+              "id": "3feb3329-e511-ed3e-5bb0-71316a7f0708",
               "name": "Create a Transfer",
               "request": {
                 "name": "Create a Transfer",
@@ -27718,7 +28402,7 @@
               },
               "response": [
                 {
-                  "id": "c00e0d4e-4d77-fdda-c0aa-83e37a18ce3c",
+                  "id": "0c921e01-f846-dd81-582d-d78220222530",
                   "name": "Transfer transaction information",
                   "originalRequest": {
                     "url": {
@@ -27771,7 +28455,7 @@
                   "_postman_previewlanguage": "json"
                 },
                 {
-                  "id": "36fd94c6-597f-5277-9434-f32d72c99dd0",
+                  "id": "4e16047e-855d-1abe-beb9-8f6552c847f8",
                   "name": "An error message",
                   "originalRequest": {
                     "url": {
@@ -27830,11 +28514,11 @@
               }
             },
             {
-              "id": "1273af41-91b2-fb1e-5bd6-3eb188c1f1a2",
+              "id": "cafaad95-1ea9-7431-1743-44eb95240521",
               "name": "webhook",
               "item": [
                 {
-                  "id": "6c669390-001a-ccbc-4030-163e4e0c1627",
+                  "id": "8977e0fe-b8ba-c0ae-8a7f-5f5ba3f0f62f",
                   "name": "Get a list of webhooks",
                   "request": {
                     "name": "Get a list of webhooks",
@@ -27889,7 +28573,7 @@
                   },
                   "response": [
                     {
-                      "id": "6f94c80b-3691-2a73-9ce2-1744bf71dfa6",
+                      "id": "59a494e7-b88e-7844-9b4a-efcb83cc6313",
                       "name": "A list of webhooks",
                       "originalRequest": {
                         "url": {
@@ -27939,7 +28623,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "f5fa9d85-6875-52f3-16fc-c495a0b78793",
+                      "id": "a74da6ad-8922-975f-db3c-a3fa9d8c1c87",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -27995,7 +28679,7 @@
                   }
                 },
                 {
-                  "id": "d3940c95-9a32-f45b-64a5-8fe9332138fe",
+                  "id": "62a14c91-81a9-6214-2587-09d0bfb72217",
                   "name": "Create a new Webhook",
                   "request": {
                     "name": "Create a new Webhook",
@@ -28059,7 +28743,7 @@
                   },
                   "response": [
                     {
-                      "id": "cb9d2570-dcdc-a14d-f2eb-45dc9ec451f7",
+                      "id": "ab4c21ab-a9bd-f2e9-3e90-76ffc7d5f83c",
                       "name": "Webhook created specific event when receives a new pix transaction",
                       "originalRequest": {
                         "url": {
@@ -28112,7 +28796,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "e9a8dd0d-a44a-aa22-a5bd-ee48b31dbb13",
+                      "id": "45c9d97b-f55a-289a-a847-0e8d99870122",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -28171,7 +28855,7 @@
                   }
                 },
                 {
-                  "id": "9326d1ff-a840-bee3-213a-debd8207f2ae",
+                  "id": "5160b036-ad85-8358-9320-339001490fb5",
                   "name": "Delete a Webhook",
                   "request": {
                     "name": "Delete a Webhook",
@@ -28231,7 +28915,7 @@
                   },
                   "response": [
                     {
-                      "id": "bc0c51c7-eb33-be74-be6a-43de9fcfe00c",
+                      "id": "3b54169b-f369-6270-08bd-52bd2cbebc25",
                       "name": "Webhook ID and also the status code",
                       "originalRequest": {
                         "url": {
@@ -28285,7 +28969,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "ffd477fa-9900-2409-d10b-dd2980317a71",
+                      "id": "9035c693-645e-0cab-0404-793ec6b26de4",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -28345,7 +29029,7 @@
                   }
                 },
                 {
-                  "id": "94bed86e-2327-50ec-6bfe-18ab738c7c2e",
+                  "id": "b778ac52-0b87-5d0f-9523-df9d11a7d498",
                   "name": "Get a list of webhook events",
                   "request": {
                     "name": "Get a list of webhook events",
@@ -28394,7 +29078,7 @@
                   },
                   "response": [
                     {
-                      "id": "b7b8a34f-1a07-dfd9-da80-81ccbb8a7673",
+                      "id": "b54f6339-0b86-a2d1-d544-d47d9756f030",
                       "name": "A list of webhook events",
                       "originalRequest": {
                         "url": {
@@ -28440,7 +29124,7 @@
                       "_postman_previewlanguage": "json"
                     },
                     {
-                      "id": "04d3f25f-4206-7da3-2a06-7b2bb77a6ce0",
+                      "id": "5521a386-2ed5-47b2-9427-1cc810c3582c",
                       "name": "An error message",
                       "originalRequest": {
                         "url": {
@@ -28492,7 +29176,7 @@
                   }
                 },
                 {
-                  "id": "2f8e19db-613a-a22c-d7f5-2d3b6ea750e3",
+                  "id": "7fc86839-fa6d-51fb-6dba-3a3410bb20ca",
                   "name": "Get a list of webhook IPs",
                   "request": {
                     "name": "Get a list of webhook IPs",
@@ -28541,7 +29225,7 @@
                   },
                   "response": [
                     {
-                      "id": "01d3f7c7-5016-44ad-1adc-f5f20a3dd363",
+                      "id": "7cd5b2c1-e4f2-c403-4545-07775f1a9fb9",
                       "name": "A list of webhook IPs",
                       "originalRequest": {
                         "url": {
@@ -28593,7 +29277,7 @@
                   }
                 },
                 {
-                  "id": "c8778104-c33b-33aa-5b89-d11e392f45fc",
+                  "id": "7719723b-9213-9d5e-8949-361cf1c38bc8",
                   "name": "Get the public keys that verify the webhook signature",
                   "request": {
                     "name": "Get the public keys that verify the webhook signature",
@@ -28625,7 +29309,7 @@
                   },
                   "response": [
                     {
-                      "id": "55fda10e-0b93-d2da-8ff8-f64241fef6a2",
+                      "id": "fd273de8-f40a-b2a6-00e8-76ea74298b9d",
                       "name": "A chave pública atual de assinatura de webhook",
                       "originalRequest": {
                         "url": {

@@ -77,7 +77,7 @@ const endpoints: ApiEndpoint[] = [
   {
     'id': 'get-api-v1-account',
     'method': 'GET',
-    'path': '/api/v1/account/',
+    'path': '/api/v1/account',
     'tag': 'account',
     'category': 'Conta',
     'summary': 'Get a list of Accounts',
@@ -871,22 +871,20 @@ const endpoints: ApiEndpoint[] = [
     ],
   },
   {
-    'id': 'post-api-v1-customer',
-    'method': 'POST',
-    'path': '/api/v1/customer',
+    'id': 'patch-api-v1-customer-id',
+    'method': 'PATCH',
+    'path': '/api/v1/customer/{id}',
     'tag': 'customer',
     'category': 'Cliente',
-    'summary': 'Create a new Customer',
-    'description': 'Endpoint to create a new Customer',
+    'summary': 'Update a Customer',
+    'description': 'Endpoint to update a Customer',
     'requestExamples': [
       {
         'name': 'default',
         'value': {
           'name': 'Dan',
-          'taxID': '31324227036',
           'email': 'email0@example.com',
           'phone': '5511999999999',
-          'correlationID': '9134e286-6f71-427a-bf00-241681624586',
           'address': {
             'zipcode': '30421322',
             'street': 'Street',
@@ -903,20 +901,22 @@ const endpoints: ApiEndpoint[] = [
     'responseExamples': [],
   },
   {
-    'id': 'patch-api-v1-customer-correlationid',
-    'method': 'PATCH',
-    'path': '/api/v1/customer/{correlationID}',
+    'id': 'post-api-v1-customer',
+    'method': 'POST',
+    'path': '/api/v1/customer',
     'tag': 'customer',
     'category': 'Cliente',
-    'summary': 'Update a Customer',
-    'description': 'Endpoint to update a Customer',
+    'summary': 'Create a new Customer',
+    'description': 'Endpoint to create a new Customer',
     'requestExamples': [
       {
         'name': 'default',
         'value': {
           'name': 'Dan',
+          'taxID': '31324227036',
           'email': 'email0@example.com',
           'phone': '5511999999999',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624586',
           'address': {
             'zipcode': '30421322',
             'street': 'Street',
@@ -1380,6 +1380,108 @@ const endpoints: ApiEndpoint[] = [
       },
     ],
     'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-kyc-validation-correlationid',
+    'method': 'GET',
+    'path': '/api/v1/kyc-validation/{correlationID}',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Get a KYC validation by correlationID',
+    'description': 'Reads back a validation created with `POST /api/v1/kyc-validation/taxid`, scoped to\nyour own company. Free — reading a validation is never billed.\n\nPoll this until `status` leaves `PROCESSING`, or subscribe to the\n`KYC_VALIDATION_COMPLETED` / `KYC_VALIDATION_FAILED` webhook events and skip the\npolling entirely.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_GET`\nscope on the application.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'rejected',
+        'value': {
+          'correlationID': 'my-unique-id',
+          'taxId': '02916265000160',
+          'status': 'COMPLETED',
+          'result': 'REJECTED',
+          'riskLevel': 'HIGH',
+          'reasons': [
+            'FRAUD_HISTORY',
+            'DISPUTE_HISTORY',
+          ],
+          'createdAt': '2026-08-24T14:00:06.386Z',
+          'completedAt': '2026-08-24T14:00:06.462Z',
+        },
+        'summary': 'Screened, with signals',
+      },
+      {
+        'name': 'approved',
+        'value': {
+          'correlationID': 'my-other-id',
+          'taxId': '00000000191',
+          'status': 'COMPLETED',
+          'result': 'APPROVED',
+          'riskLevel': 'LOW',
+          'reasons': [],
+          'createdAt': '2026-08-24T14:00:41.447Z',
+          'completedAt': '2026-08-24T14:00:41.489Z',
+        },
+        'summary': 'Screened, nothing found',
+      },
+      {
+        'name': 'processing',
+        'value': {
+          'correlationID': 'my-unique-id',
+          'taxId': '02916265000160',
+          'status': 'PROCESSING',
+          'result': null,
+          'riskLevel': null,
+          'reasons': [],
+          'createdAt': '2026-08-24T14:00:06.386Z',
+          'completedAt': null,
+        },
+        'summary': 'Still screening',
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-kyc-validation-taxid',
+    'method': 'POST',
+    'path': '/api/v1/kyc-validation/taxid',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Create a KYC validation for a Tax ID',
+    'description': 'Screens a CPF or CNPJ against fraud, dispute, sanctions, PEP and lawsuit signals and\nreturns a verdict.\n\nRequires the `KYC_VALIDATION` feature on the company and the `KYC_VALIDATION_POST`\nscope on the application.\n',
+    'requestExamples': [
+      {
+        'name': 'cnpj',
+        'value': {
+          'taxId': '02.916.265/0001-60',
+          'correlationID': 'my-unique-id',
+        },
+        'summary': 'CNPJ, masked',
+      },
+      {
+        'name': 'cpf',
+        'value': {
+          'taxId': '00000000191',
+          'correlationID': 'my-other-id',
+        },
+        'summary': 'CPF, digits only',
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'idempotent',
+        'value': {
+          'correlationID': 'my-unique-id',
+          'taxId': '02916265000160',
+          'status': 'COMPLETED',
+          'result': 'REJECTED',
+          'riskLevel': 'HIGH',
+          'reasons': [
+            'FRAUD_HISTORY',
+            'DISPUTE_HISTORY',
+          ],
+          'createdAt': '2026-08-24T14:00:06.386Z',
+          'completedAt': '2026-08-24T14:00:06.462Z',
+        },
+      },
+    ],
   },
   {
     'id': 'get-api-v1-partner-affiliate',
@@ -2194,15 +2296,23 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'stablecoin',
     'category': 'stablecoin',
     'summary': 'Create a stablecoin deposit',
-    'description': 'Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed KYB).\nOtherwise the request is rejected with a `400`.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON, BNB\n  - USDC: POLYGON, ETHEREUM, BASE, CELO, BNB\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n',
+    'description': "Creates a stablecoin deposit (PIX-in to stable-out) for a company. The deposit\nconverts a BRL amount (in cents) into the requested stablecoin on the chosen network\nand returns a quote with the applied fees.\n\nThere are two fee models, and the amount field you send picks one:\n  - `grossAmount` (recommended): all-in. The Woovi fee comes OUT of it, so the account\n    is debited exactly `grossAmount` and the provider is paid the remainder.\n  - `value` (legacy): the amount paid to the provider, with the Woovi fee charged ON\n    TOP — the account is debited `value` + `wooviFee`.\n\nEither way the response breaks the total down into `wooviFee` and `providerFee`, and\n`GET /api/v1/stablecoin/quote` reports the same numbers for the same input.\n\nThe deposit is always credited to the stable subaccount of the CompanyBankAccount\nlinked to the authenticated AppID. The AppID must have a `companyBankAccount`\nconfigured (otherwise `400 APPLICATION_COMPANY_BANK_ACCOUNT_MISSING`), and that bank\naccount must have a stable subaccount in `CONFIRMED` status (a completed KYB) —\nanother bank account's subaccount on the same company is never used. Otherwise the\nrequest is rejected with a `400`.\n\n`subAccountId`, when sent, must belong to that same CompanyBankAccount.\n\nNot every asset is available on every network. The supported matrix is:\n  - USDT: POLYGON, ETHEREUM, CELO, TRON, BNB\n  - USDC: POLYGON, ETHEREUM, BASE, CELO, BNB\n  - BRLA: POLYGON, ETHEREUM, BASE, CELO\n\nIf `network` is omitted it defaults to `POLYGON`. Sending an asset/network combination\noutside the matrix above returns a `400`.\n\nIdempotency is supported via `correlationId`.\n",
     'requestExamples': [
+      {
+        'name': 'AllInRequest',
+        'value': {
+          'grossAmount': 10000,
+          'currency': 'USDT',
+        },
+        'summary': 'All-in request — the account is debited exactly grossAmount',
+      },
       {
         'name': 'MinimalRequest',
         'value': {
           'value': 10000,
           'currency': 'USDT',
         },
-        'summary': 'Minimal request (defaults network to POLYGON)',
+        'summary': 'Legacy request, Woovi fee charged on top (defaults network to POLYGON)',
       },
       {
         'name': 'WithNetwork',
@@ -2237,20 +2347,121 @@ const endpoints: ApiEndpoint[] = [
     'responseExamples': [],
   },
   {
+    'id': 'post-api-v1-stablecoin-limit-document',
+    'method': 'POST',
+    'path': '/api/v1/stablecoin/limit/document',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Get a pre-signed URL to upload a limit-increase document',
+    'description': 'Step 1 of the monthly limit-increase flow: returns a pre-signed URL to\nupload one supporting document (comprovante) — proof of financial\ncapacity, company address proof or UBO (partner) address proof.\n\nThe file goes straight from the client to storage; it never transits the\nAPI. The URL is scoped to a key that belongs to the authenticated company,\nis single use and expires in `expiresIn` seconds.\n\nUpload it with `PUT <uploadUrl>` sending the same `Content-Type` returned\nin `headers` and the raw file as the body — no multipart, no extra\nheaders. Then post the returned `document` object on\n`POST /api/v1/stablecoin/limit/request` (or on\n`POST /api/v1/stablecoin/limit/request/{limitRequestId}/document`).\n\nFiles above `maxSizeBytes`, or whose content type is not one of\n`application/pdf`, `image/jpeg`, `image/png`, `image/webp`, are rejected\nwhen the document is attached to the request.\n\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n',
+    'requestExamples': [
+      {
+        'name': 'CompanyAddressProof',
+        'value': {
+          'type': 'PROOF_OF_ADDRESS_COMPANY',
+          'fileName': 'comprovante-endereco-empresa.pdf',
+          'mimeType': 'application/pdf',
+        },
+        'summary': 'Company address proof',
+      },
+      {
+        'name': 'FinancialCapacity',
+        'value': {
+          'type': 'PROOF_OF_FINANCIAL_CAPACITY',
+          'fileName': 'extrato-socio.pdf',
+          'mimeType': 'application/pdf',
+        },
+        'summary': 'Proof of financial capacity (UBO bank statement)',
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-stablecoin-limit-request-limitrequestid-document',
+    'method': 'POST',
+    'path': '/api/v1/stablecoin/limit/request/{limitRequestId}/document',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Add a supporting document to a limit-increase request',
+    'description': 'Attaches one more comprovante to a request that is still `IN_REVIEW` —\nthe path for "the analysis asked for another address proof" or for\nretrying a document whose `submissionStatus` came back `FAILED`.\n\nThe document must have been uploaded through\n`POST /api/v1/stablecoin/limit/document` first, and the same ownership,\nsize and content-type checks of the create call apply. A request accepts\nat most 10 documents.\n\nThe push to the KYB provider runs in the background: poll\n`GET /api/v1/stablecoin/limit/request/{limitRequestId}`.\n\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n',
+    'requestExamples': [
+      {
+        'name': 'UboAddressProof',
+        'value': {
+          'type': 'PROOF_OF_ADDRESS_UBO',
+          'bucketName': 'woovi-media',
+          'path': 'stablecoin/limit-request/6650abc1234def567890aaaa/91ae-endereco-socio.pdf',
+          'fileName': 'endereco-socio.pdf',
+          'mimeType': 'application/pdf',
+        },
+        'summary': 'UBO (partner) address proof',
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-stablecoin-limit-request',
+    'method': 'POST',
+    'path': '/api/v1/stablecoin/limit/request',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Request a higher monthly stablecoin limit',
+    'description': "Step 2 of the monthly limit-increase flow: opens the request with the\nsupporting documents (comprovantes) already uploaded through\n`POST /api/v1/stablecoin/limit/document`.\n\nEach document is checked before the request is persisted: it must live in\nthe company's own storage prefix, must actually have been uploaded, must\nbe within the size ceiling and must carry an accepted content type.\n\nThe push to the KYB provider runs in the background — the response comes\nback with `submissionStatus: PROCESSING`. Poll\n`GET /api/v1/stablecoin/limit/request/{limitRequestId}` until it flips to\n`SENT` or `FAILED`.\n\nThe request raises the ceiling of the account the AppID answers for\n(`companyBankAccountId` in the response). A company that holds several\naccounts — a BaaS partner holds one per sub-merchant, each with its own\nKYB — asks for each one separately, with that account's AppID.\n\nOnly one request per account can be under review at a time; while it is\n`IN_REVIEW`, extra documents go to\n`POST /api/v1/stablecoin/limit/request/{limitRequestId}/document`. The\nceiling itself is raised by the analysis team once the documents are\napproved — a successful call does not change the limit by itself.\n\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope, the company\n`STABLECOIN` feature and a confirmed stablecoin subaccount.\n",
+    'requestExamples': [
+      {
+        'name': 'FullSet',
+        'value': {
+          'desiredMonthlyLimit': 50000000,
+          'description': 'Aumento de volume para folha de pagamento',
+          'documents': [
+            {
+              'type': 'PROOF_OF_FINANCIAL_CAPACITY',
+              'bucketName': 'woovi-media',
+              'path': 'stablecoin/limit-request/6650abc1234def567890aaaa/8f1c-extrato.pdf',
+              'fileName': 'extrato.pdf',
+              'mimeType': 'application/pdf',
+            },
+            {
+              'type': 'PROOF_OF_ADDRESS_COMPANY',
+              'bucketName': 'woovi-media',
+              'path': 'stablecoin/limit-request/6650abc1234def567890aaaa/2b7d-endereco-empresa.pdf',
+              'fileName': 'endereco-empresa.pdf',
+              'mimeType': 'application/pdf',
+            },
+            {
+              'type': 'PROOF_OF_ADDRESS_UBO',
+              'bucketName': 'woovi-media',
+              'path': 'stablecoin/limit-request/6650abc1234def567890aaaa/91ae-endereco-socio.pdf',
+              'fileName': 'endereco-socio.pdf',
+              'mimeType': 'application/pdf',
+            },
+          ],
+        },
+        'summary': 'Financial capacity + company and UBO address proofs',
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
     'id': 'post-api-v1-stablecoin-subaccount',
     'method': 'POST',
     'path': '/api/v1/stablecoin/subaccount',
     'tag': 'stablecoin',
     'category': 'stablecoin',
     'summary': 'Request a new stablecoin subaccount (KYB)',
-    'description': "Requests the creation of a stablecoin subaccount for the authenticated company,\nreusing the KYC data already on the referenced account register.\n\nPass the company's `accountRegisterId`; the provider subaccount is created\nimmediately and a `StableSubAccount` is persisted with status `IN_REVIEW` while\nthe KYB is processed. When the KYB resolves, the merchant receives a\n`STABLECOIN_SUBACCOUNT_CONFIRMED` or `STABLECOIN_SUBACCOUNT_REJECTED` webhook.\n\nThe request is idempotent on `accountRegisterId`: a repeat call returns the\nexisting subaccount (HTTP `200`) instead of creating a duplicate. The first,\ncreating call returns HTTP `201`.\n\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company `STABLECOIN`\nfeature.\n",
+    'description': 'Requests a stablecoin subaccount (KYB) for the company behind your AppID,\nreusing the KYC data already on its account register.\n\n**The body can be empty** — the target account is resolved from the\ncredentials. Send `accountRegisterId` only to target another account\nregister of the same company (a BaaS partner asking for one of its\nsub-merchants), and `companyBankAccountId` only to override which account\nthe subaccount is stamped with.\n\nEvery gate runs before the response, so `status` is the verdict:\n\n| `status` | Meaning |\n| --- | --- |\n| `IN_REVIEW` | Accepted. The outcome arrives as a `STABLECOIN_SUBACCOUNT_CONFIRMED` or `STABLECOIN_SUBACCOUNT_REJECTED` webhook. |\n| `AWAITING_DOCUMENTS` | Documents are missing. Send the merchant to `rfi.url`; answering it re-runs the KYB. |\n| `REJECTED` | Refused for good — screening, fraud markers, a CNPJ that is not ACTIVE, a refused KYC score. `reasonCode` says which. |\n| `FAILED` | Blocked by a gap in the account register that only a Woovi operator can fix. Retrying does not help. |\n\nRepeat calls are idempotent on the resolved account register: they return\nthe existing subaccount with its current verdict (HTTP `200`, including an\nRFI link that is still open) instead of creating a duplicate. The first,\ncreating call returns HTTP `201`.\n\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n',
     'requestExamples': [
       {
         'name': 'MinimalRequest',
+        'value': {},
+        'summary': 'Empty body (target account resolved from the AppID)',
+      },
+      {
+        'name': 'WithAccountRegister',
         'value': {
           'accountRegisterId': '6650abc1234def567890aaaa',
         },
-        'summary': "Minimal request (uses the company's default bank account)",
+        'summary': 'Request for a specific account register of the same company',
       },
       {
         'name': 'WithCompanyBankAccount',
@@ -2259,6 +2470,61 @@ const endpoints: ApiEndpoint[] = [
           'companyBankAccountId': '6650def1234abc567890bbbb',
         },
         'summary': 'Request choosing an explicit company bank account',
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-stablecoin-swap',
+    'method': 'POST',
+    'path': '/api/v1/stablecoin/swap',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Swap a stablecoin asset, optionally delivering it on-chain',
+    'description': "Converts a balance from one stablecoin asset into another on the company's\nAvenia (sub-)account. Supported assets: `BRLA`, `USDC`, `USDT`.\n\n`value` is the amount spent from the source (`from`) asset balance, in cents.\n\n**Two output modes, one provider ticket either way:**\n\n- Without `network` / `destinationWalletAddress` — an\n  `INTERNAL -> INTERNAL` conversion. The output stays as a balance on the\n  sub-account. `from` and `to` must be different assets.\n- With both — an `INTERNAL -> <network>` ticket: the output is delivered\n  on-chain to `destinationWalletAddress` instead of being credited to the\n  balance. There is no second call and no second fee: the conversion and\n  the delivery are quoted and settled as one ticket. In this mode `from`\n  and `to` may be the same asset, which makes the request a plain\n  on-chain payout with no conversion.\n\nThe two fields are only meaningful together — sending one without the\nother is a `400`.\n\nWhen the subaccount has `enforceWalletWhitelist` on, an on-chain\n`destinationWalletAddress` must be an approved `(network, address)` pair;\nthe request is rejected before any limit is consumed or any provider call\nis made. An INTERNAL-only swap moves nothing off-platform and is not\ngated by the whitelist.\n\nThe company must have a stable subaccount in `CONFIRMED` status (a completed\nKYB). Otherwise the request is rejected with a `400`.\n\nIdempotency is supported via `correlationId`: reusing one returns the swap\nalready created for it instead of creating a second provider ticket. Always\nsend one when delivering on-chain — without it a retry sends the funds twice.\n\nRequires the `STABLECOIN_SWAP_CREATE` scope.\n",
+    'requestExamples': [
+      {
+        'name': 'BrlaToUsdc',
+        'value': {
+          'value': 100000,
+          'from': 'BRLA',
+          'to': 'USDC',
+        },
+        'summary': 'Swap BRLA into USDC, output stays INTERNAL',
+      },
+      {
+        'name': 'UsdcToBrla',
+        'value': {
+          'value': 50000,
+          'from': 'USDC',
+          'to': 'BRLA',
+          'correlationId': 'my-unique-id',
+        },
+        'summary': 'Swap USDC into BRLA with idempotency key',
+      },
+      {
+        'name': 'UsdcToBrlaOnChain',
+        'value': {
+          'value': 20,
+          'from': 'USDC',
+          'to': 'BRLA',
+          'network': 'BASE',
+          'destinationWalletAddress': '0xbd374a94d88F19b80F6aD8A3AE418e3f1eb054AE',
+          'correlationId': 'my-unique-id',
+        },
+        'summary': 'Swap USDC into BRLA and deliver it on Base',
+      },
+      {
+        'name': 'PayoutOnly',
+        'value': {
+          'value': 20000,
+          'from': 'BRLA',
+          'to': 'BRLA',
+          'network': 'BASE',
+          'destinationWalletAddress': '0xbd374a94d88F19b80F6aD8A3AE418e3f1eb054AE',
+          'correlationId': 'my-unique-id',
+        },
+        'summary': 'No conversion — send the BRLA balance on-chain',
       },
     ],
     'responseExamples': [],
@@ -2462,6 +2728,48 @@ const endpoints: ApiEndpoint[] = [
           'dayGenerateCharge': 25,
           'dayDue': 3,
         },
+      },
+      {
+        'name': 'SubscriptionSplit',
+        'value': {
+          'name': 'Pix Automático com split',
+          'value': 10000,
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+          },
+          'correlationID': 'My-UniqueID',
+          'comment': 'Comentários',
+          'frequency': 'MONTHLY',
+          'type': 'PIX_RECURRING',
+          'pixRecurringOptions': {
+            'journey': 'ONLY_RECURRENCY',
+            'retryPolicy': 'NON_PERMITED',
+            'splits': [
+              {
+                'destination': {
+                  'type': 'PIX_KEY',
+                  'pixKey': 'parceiro@example.com',
+                },
+                'percentage': 10,
+                'description': 'Comissão do parceiro',
+              },
+              {
+                'destination': {
+                  'type': 'SUB_ACCOUNT',
+                  'pixKey': 'subconta@example.com',
+                },
+                'value': 500,
+                'description': 'Repasse da subconta',
+              },
+            ],
+          },
+          'dayGenerateCharge': 25,
+          'dayDue': 3,
+        },
+        'summary': 'Pix Automático with split',
       },
       {
         'name': 'SubscriptionBoleto',
