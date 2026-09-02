@@ -16,7 +16,6 @@ Todas as rotas ficam sob `/api/v1/stablecoin/` e exigem autenticação com o seu
 | Escopo | Rotas |
 | --- | --- |
 | `STABLECOIN_DEPOSIT_CREATE` | `quote`, `deposit`, `deposit/approve` |
-| `STABLECOIN_DEPOSIT_LIST` | `deposit/find`, `deposit` (listar) |
 | `STABLECOIN_SUBACCOUNT_CREATE` | `subaccount` (POST — solicitar KYB) |
 | `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar/detalhe), `wallets`, `subaccount/{id}/wallets`, `subaccount/{id}/balances` |
 | `STABLECOIN_PAYOUT_CREATE` | `payout/quote`, `payout` (criar/aprovar/consultar) |
@@ -153,44 +152,9 @@ A aprovação é rejeitada com `400` quando o depósito não pode ser aprovado, 
 { "error": "Stablecoin deposit already completed", "correlationId": "my-unique-id", "depositId": "6650abc1234def567890aaaa" }
 ```
 
-### Buscar um depósito
+### Acompanhar um depósito
 
-GET `/api/v1/stablecoin/deposit/find?correlationId={correlationId}`
-
-Busca um único depósito pelo `correlationId`.
-
-```json
-{
-  "status": "ok",
-  "deposit": {
-    "id": "6650abc1234def567890aaaa",
-    "correlationId": "my-unique-id",
-    "status": "COMPLETED",
-    "inputAmount": 10000,
-    "inputCurrency": "BRL",
-    "outputAmount": 18.45,
-    "outputCurrency": "USDT",
-    "fee": 50,
-    "createdAt": "2026-06-05T12:00:00.000Z"
-  }
-}
-```
-
-### Listar depósitos
-
-GET `/api/v1/stablecoin/deposit?limit={limit}&skip={skip}`
-
-Lista os depósitos da empresa autenticada (paginado).
-
-```json
-{
-  "status": "ok",
-  "deposits": [ { "id": "6650abc1234def567890aaaa", "status": "COMPLETED", "inputAmount": 10000, "inputCurrency": "BRL", "outputAmount": 18.45, "outputCurrency": "USDT", "fee": 50, "createdAt": "2026-06-05T12:00:00.000Z" } ],
-  "count": 42,
-  "limit": 20,
-  "skip": 0
-}
-```
+Não há rota de consulta ou listagem de depósitos. O acompanhamento é feito pelos webhooks `STABLECOIN_DEPOSIT_COMPLETED` e `STABLECOIN_DEPOSIT_FAILED` (veja [Webhooks](./stablecoin-webhooks.md)), que trazem o `correlationID` do depósito.
 
 ### Carteiras de depósito (INTERNAL float)
 
