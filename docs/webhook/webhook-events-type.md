@@ -195,3 +195,11 @@ Esse evento é enviado quando uma tentativa de cobrança é realizada
 
 [Ver exemplo de payload →](/docs/pix-automatic/webhooks/pix-automatic-webhooks#pix_automatic_cobr_try_requested)
 
+## Eventos de abertura de conta (BaaS)
+
+Além dos eventos de desfecho (`ACCOUNT_REGISTER_APPROVED`, `_REJECTED`, `_PENDING`), o onboarding
+BaaS emite um evento por etapa concluída — BC Protege+, autenticação Pix, documentos de cada
+sócio, termos — e reemite a etapa marcada com `retrying: true` quando a conta é devolvida.
+
+A lista completa, com os payloads, está em
+[Webhooks por etapa do onboarding](/docs/baas/kyc/webhooks-por-etapa).
