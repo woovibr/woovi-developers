@@ -198,8 +198,10 @@ Esse evento é enviado quando uma tentativa de cobrança é realizada
 ## Eventos de abertura de conta (BaaS)
 
 Além dos eventos de desfecho (`ACCOUNT_REGISTER_APPROVED`, `_REJECTED`, `_PENDING`), o onboarding
-BaaS emite um evento por etapa concluída — BC Protege+, autenticação Pix, documentos de cada
-sócio, termos — e reemite a etapa marcada com `retrying: true` quando a conta é devolvida.
+BaaS emite `ACCOUNT_REGISTER_STEP_UPDATED` a cada etapa que avança — BC Protege+, autenticação
+Pix, documentos de cada sócio, termos — dizendo no payload qual é a etapa (`step`) e se ela foi
+concluída ou está barrada (`stepStatus`). Quando a conta é devolvida, a etapa refeita sai de novo
+marcada com `retrying: true`.
 
 A lista completa, com os payloads, está em
 [Webhooks por etapa do onboarding](/docs/baas/kyc/webhooks-por-etapa).

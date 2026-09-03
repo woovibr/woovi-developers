@@ -42,7 +42,7 @@ No registro, a Woovi faz um _handshake_: sua URL recebe um POST de teste e preci
 | `OPENPIX:MOVEMENT_CONFIRMED` / `OPENPIX:MOVEMENT_FAILED` | um envio de Pix da conta é confirmado / falha | AppID da conta |
 | `OPENPIX:TRANSACTION_REFUND_RECEIVED`                    | a conta recebe uma devolução                  | AppID da conta |
 | `ACCOUNT_REGISTER_APPROVED` / `_REJECTED` / `_PENDING`   | um registro de conta muda de status           | API Master     |
-| `ACCOUNT_REGISTER_STEP_*`                                | o lojista concluiu uma etapa do onboarding    | API Master     |
+| `ACCOUNT_REGISTER_STEP_UPDATED`                          | uma etapa do onboarding avançou ou travou     | API Master     |
 
 A lista completa de eventos está em `GET /api/v1/webhook/events` e em [Tipos de eventos de webhook](../webhook/webhook-events-type.md).
 

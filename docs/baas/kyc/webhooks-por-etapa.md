@@ -9,38 +9,51 @@ sidebar_position: 6
 ---
 
 Entre "link de onboarding criado" e o desfecho da conta existem várias etapas que o lojista
-precisa preencher. Cada uma emite seu próprio webhook, então você pode montar o checklist do
-seu lojista e dizer exatamente o que falta — sem consultar o console e sem dar suporte no escuro.
+precisa preencher. Um único evento — `ACCOUNT_REGISTER_STEP_UPDATED` — cobre todas elas, dizendo
+no payload **qual** etapa mudou e **como**. Assim você monta o checklist do seu lojista e diz
+exatamente o que falta, com **uma** assinatura de webhook em vez de uma por etapa.
 
-Registre esses eventos com a **API Master** (veja [Webhooks por conta](../webhooks-por-conta.md)).
+Registre o evento com a **API Master** (veja [Webhooks por conta](../webhooks-por-conta.md)).
 
-## Eventos de etapa
+## `ACCOUNT_REGISTER_STEP_UPDATED`
 
-### Etapas da empresa
+Três campos identificam a etapa:
 
-| Evento | Dispara quando |
+| Campo | O que é |
 | --- | --- |
-| `ACCOUNT_REGISTER_STEP_COMPANY_DATA` | os dados da empresa foram preenchidos |
-| `ACCOUNT_REGISTER_STEP_ADDRESS` | o endereço da empresa está completo |
-| `ACCOUNT_REGISTER_STEP_SOCIAL_CONTRACT` | o contrato social (ou o CCMEI, no caso de MEI) foi aceito |
-| `ACCOUNT_REGISTER_STEP_BC_PROTEGE` | o BC Protege+ foi autorizado — CNPJ e todos os sócios administradores |
-| `ACCOUNT_REGISTER_STEP_BC_PROTEGE_BLOCKED` | o BC Protege+ está barrando. O payload diz **quem** falta autorizar |
-| `ACCOUNT_REGISTER_STEP_PARTNERS` | todos os sócios ativos estão completos |
-| `ACCOUNT_REGISTER_STEP_TERMS` | os termos de uso foram aceitos |
+| `step` | qual etapa (tabela abaixo) |
+| `stepStatus` | `COMPLETED` (o lojista concluiu) ou `BLOCKED` (algo está barrando) |
+| `stepScope` | `COMPANY` ou `REPRESENTATIVE` — no segundo caso vem também o bloco `representative` |
 
-### Etapas de cada sócio
+### Etapas da empresa (`stepScope: "COMPANY"`)
 
-Estes vêm com `stepScope: "REPRESENTATIVE"` e um bloco `representative` com o CPF, para você
-saber de qual sócio se trata.
-
-| Evento | Dispara quando |
+| `step` | `COMPLETED` quando |
 | --- | --- |
-| `ACCOUNT_REGISTER_STEP_REPRESENTATIVE_DOCUMENTS` | o documento de identificação do sócio foi enviado |
-| `ACCOUNT_REGISTER_STEP_REPRESENTATIVE_FACEMATCH` | a selfie do sócio foi enviada |
-| `ACCOUNT_REGISTER_STEP_REPRESENTATIVE_ADDRESS` | o endereço do sócio foi salvo |
-| `ACCOUNT_REGISTER_STEP_PIX_AUTH` | a autenticação Pix do sócio administrador foi conferida |
+| `COMPANY_DATA` | os dados da empresa foram preenchidos |
+| `ADDRESS` | o endereço da empresa está completo |
+| `SOCIAL_CONTRACT` | o contrato social (ou o CCMEI, no caso de MEI) foi aceito |
+| `BC_PROTEGE` | o BC Protege+ foi autorizado — CNPJ e todos os sócios administradores |
+| `PARTNERS` | todos os sócios ativos estão completos |
+| `TERMS` | os termos de uso foram aceitos |
+
+`BC_PROTEGE` é a única etapa que também chega com `stepStatus: "BLOCKED"` — veja
+[Quando o BC Protege+ está barrando](#quando-o-bc-protege-está-barrando).
+
+### Etapas de cada sócio (`stepScope: "REPRESENTATIVE"`)
+
+Estas vêm com um bloco `representative` com o CPF, para você saber de qual sócio se trata.
+
+| `step` | `COMPLETED` quando |
+| --- | --- |
+| `REPRESENTATIVE_DOCUMENTS` | o documento de identificação do sócio foi enviado |
+| `REPRESENTATIVE_FACEMATCH` | a selfie do sócio foi enviada |
+| `REPRESENTATIVE_ADDRESS` | o endereço do sócio foi salvo |
+| `PIX_AUTH` | a autenticação Pix do sócio administrador foi conferida |
 
 ### Ciclo de vida da conta
+
+Estes continuam sendo eventos próprios: quem reage a eles normalmente não é o mesmo código que
+desenha o checklist, e eles não pertencem a nenhuma etapa.
 
 | Evento | Dispara quando |
 | --- | --- |
@@ -56,7 +69,7 @@ saber de qual sócio se trata.
 
 ```json
 {
-  "event": "ACCOUNT_REGISTER_STEP_PIX_AUTH",
+  "event": "ACCOUNT_REGISTER_STEP_UPDATED",
   "accountRegister": {
     "accountRegisterId": "6a99c2616bd0772f866024b8",
     "correlationID": "seu-id-de-correlacao",
@@ -67,7 +80,8 @@ saber de qual sócio se trata.
     "completedSteps": ["COMPANY_DATA", "ADDRESS", "SOCIAL_CONTRACT", "BC_PROTEGE"],
     "pendingSteps": ["PARTNERS", "TERMS", "REVIEW"],
 
-    "step": "REPRESENTATIVE_PIX_AUTH",
+    "step": "PIX_AUTH",
+    "stepStatus": "COMPLETED",
     "stepScope": "REPRESENTATIVE",
     "stepCompletedAt": "2026-09-03T18:57:44.000Z",
 
@@ -83,9 +97,24 @@ saber de qual sócio se trata.
 }
 ```
 
+Filtrar é um `if`:
+
+```js
+if (body.event === 'ACCOUNT_REGISTER_STEP_UPDATED' && body.accountRegister.step === 'PIX_AUTH') {
+  // ...
+}
+```
+
 `completedSteps` e `pendingSteps` juntos são o que permite renderizar o checklist inteiro a
 partir de um único evento. `pendingSteps` já respeita o que **aquela** conta deve: um MEI não
 recebe `SOCIAL_CONTRACT` na lista, e uma empresa que não usa BC Protege+ não recebe `BC_PROTEGE`.
+
+:::note `step` x `completedSteps`
+`step` é o nome público da etapa; `completedSteps` traz os nomes como estão gravados na conta e
+por isso é mais granular em dois casos — `REPRESENTATIVE_ADDRESS_PROOF` (endereço do sócio com
+comprovante anexado) aparece lá como tal, e a autenticação Pix aparece como
+`REPRESENTATIVE_PIX_AUTH`. Para lógica de negócio, use `step`.
+:::
 
 ## `retrying`: quando a conta é devolvida
 
@@ -93,12 +122,11 @@ Uma conta pode entrar em análise, receber um pedido de documento e voltar a fic
 o lojista refaz a etapa, **o evento dela sai de novo** — e vem marcado como retentativa.
 
 ```
-ACCOUNT_REGISTER_PENDING                        a conta voltou, com o motivo
-ACCOUNT_REGISTER_DOCUMENTS_REQUESTED            invalidatedSteps: ["REPRESENTATIVE_DOCUMENTS",
-                                                                   "PARTNERS"]
+ACCOUNT_REGISTER_PENDING              a conta voltou, com o motivo
+ACCOUNT_REGISTER_DOCUMENTS_REQUESTED  invalidatedSteps: ["REPRESENTATIVE_DOCUMENTS", "PARTNERS"]
       ... o lojista reenvia o documento ...
-ACCOUNT_REGISTER_STEP_REPRESENTATIVE_DOCUMENTS  retrying: true, retryCount: 1
-ACCOUNT_REGISTER_STEP_PARTNERS                  retrying: true, retryCount: 1
+ACCOUNT_REGISTER_STEP_UPDATED         step: REPRESENTATIVE_DOCUMENTS, retrying: true, retryCount: 1
+ACCOUNT_REGISTER_STEP_UPDATED         step: PARTNERS, retrying: true, retryCount: 1
 ACCOUNT_REGISTER_RFI_RESOLVED
 ACCOUNT_REGISTER_IN_REVIEW
 ```
@@ -122,14 +150,15 @@ pendente". Com esses dois campos você avisa o lojista na hora, sem esperar o re
 
 ## Quando o BC Protege+ está barrando
 
-`ACCOUNT_REGISTER_STEP_BC_PROTEGE_BLOCKED` traz um bloco `bcProtection` dizendo exatamente quem
+Com `stepStatus: "BLOCKED"`, o `BC_PROTEGE` traz um bloco `bcProtection` dizendo exatamente quem
 ainda não autorizou:
 
 ```json
 {
-  "event": "ACCOUNT_REGISTER_STEP_BC_PROTEGE_BLOCKED",
+  "event": "ACCOUNT_REGISTER_STEP_UPDATED",
   "accountRegister": {
     "step": "BC_PROTEGE",
+    "stepStatus": "BLOCKED",
     "stepScope": "COMPANY",
     "bcProtection": {
       "scope": "CNPJ",
@@ -141,11 +170,11 @@ ainda não autorizou:
 ```
 
 `scope` é `CNPJ` quando falta a autorização da empresa e `REPRESENTATIVE` quando falta a de um
-sócio. Quando o CNPJ autoriza mas um sócio ainda não, você recebe um novo `_BLOCKED` apontando
+sócio. Quando o CNPJ autoriza mas um sócio ainda não, você recebe um novo `BLOCKED` apontando
 para o sócio — cada bloqueio distinto é anunciado uma vez.
 
-Quando tudo libera, chega o `ACCOUNT_REGISTER_STEP_BC_PROTEGE` e `BC_PROTEGE` passa a aparecer em
-`completedSteps`.
+Quando tudo libera, chega o mesmo evento com `stepStatus: "COMPLETED"` e `BC_PROTEGE` passa a
+aparecer em `completedSteps`.
 
 ## Assinatura
 
