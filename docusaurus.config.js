@@ -1,5 +1,8 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { themes } from 'prism-react-renderer';
 import mdxMermaid from 'mdx-mermaid';
+import remarkApiRefLinks from './plugins/remarkApiRefLinks.mjs';
 
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
@@ -15,9 +18,39 @@ const localeConfigs = {
   },
 };
 
+const docsTrees = [
+  'docs',
+  ...locales.map((locale) => `i18n/${locale}/docusaurus-plugin-content-docs/current`),
+];
+
+// A relative .md link does not cross the translation boundary: the resolver only
+// looks in the tree of the locale being built. facebook/docusaurus#10907
+const resolveAcrossLocales = ({ sourceFilePath, url }) => {
+  const [target, anchor] = url.split('#');
+  if (!/\.mdx?$/.test(target)) return console.warn(`[links] unresolved ${url} in ${sourceFilePath}`);
+
+  const filePath = path.posix.normalize(path.posix.join(path.posix.dirname(sourceFilePath), target));
+  const tree = docsTrees.find((dir) => filePath.startsWith(`${dir}/`));
+  if (!tree) return console.warn(`[links] unresolved ${url} in ${sourceFilePath}`);
+
+  const docPath = filePath.slice(tree.length + 1);
+  const found = docsTrees.map((dir) => path.join(dir, docPath)).find((file) => fs.existsSync(file));
+  if (!found) return console.warn(`[links] ${url} in ${sourceFilePath} has no file in any locale`);
+
+  // the route comes from the frontmatter id when it is set, not from the file name
+  const [, frontmatter = ''] = fs.readFileSync(found, 'utf-8').split(/^---$/m);
+  const id = frontmatter.match(/^id:\s*(\S+)/m);
+  const route = id ? path.posix.join(path.posix.dirname(docPath), id[1]) : docPath.replace(/\.mdx?$/, '');
+
+  return `/docs/${route}${anchor ? `#${anchor}` : ''}`;
+};
+
 module.exports = {
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: resolveAcrossLocales,
+    },
   },
   themes: ['@docusaurus/theme-mermaid'],
   future: {
@@ -48,8 +81,7 @@ module.exports = {
   projectName: 'developer-portal',
   scripts: [],
   favicon: 'img/icons/woovi.svg',
-  onBrokenLinks: 'log',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'throw',
   trailingSlash: false,
   plugins: [
     [
@@ -78,11 +110,24 @@ module.exports = {
       { projectId: 'j6ihzvjzvu' },
     ],
     require.resolve('./webpack/sitePlugin'),
-    require.resolve('@cmfcmf/docusaurus-search-local', { language: 'pt-BR' }),
+    [
+      require.resolve('@cmfcmf/docusaurus-search-local'),
+      {
+        language: ['pt', 'en'],
+      },
+    ],
     [
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
+          {
+            from: '/docs/baas/documents-nescessary',
+            to: '/docs/baas/documentos-kyc',
+          },
+          {
+            from: '/docs/baas/baas-compliance',
+            to: '/docs/baas/documentos-kyc',
+          },
           {
             from: '/docs/ecommerce/woocommerce-plugin',
             to: '/docs/ecommerce/woocommerce/woocommerce-plugin',
@@ -207,6 +252,11 @@ module.exports = {
           position: 'left',
         },
         {
+          to: '/stable',
+          label: 'Stable',
+          position: 'left',
+        },
+        {
           to: 'docs/apis/api-explorer',
           label: 'API Explorer',
           position: 'left',
@@ -279,7 +329,13 @@ module.exports = {
             return `https://github.com/Open-Pix/woovi-developers/edit/main/${versionDocsDirPath}/${docPath}`;
           },
           editCurrentVersion: true,
-          remarkPlugins: [mdxMermaid],
+          remarkPlugins: [
+            mdxMermaid,
+            [
+              remarkApiRefLinks,
+              { specUrl: 'https://api.woovi.com/api/openapi.json' },
+            ],
+          ],
         },
         // "blog": {
         //   "path": "blog"
@@ -305,8 +361,11 @@ module.exports = {
             spec: './static/swaggers/bacen-dict.json',
           },
           {
+            // `id` names the plugin instance whose global data <ApiLink> reads;
+            // without it the id is positional (`plugin-redoc-<index>`).
+            id: 'woovi',
             route: '/api-redoc/',
-            spec: './src/swaggers/woovi.json',
+            spec: 'https://api.woovi.com/api/openapi.json',
           },
           {
             route: '/indirect/',

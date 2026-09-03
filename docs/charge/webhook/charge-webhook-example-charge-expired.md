@@ -9,10 +9,10 @@ tags:
 ## Webhook de cobrança expirada
 
 Segue abaixo o exemplo dos dados que são enviados numa requisição do webhook de
-cobrança expirada (`woovi:CHARGE_EXPIRED`). Esse webhook é disparado no momento
+cobrança expirada (`OPENPIX:CHARGE_EXPIRED`). Esse webhook é disparado no momento
 que a cobrança é expirada.
 
-- `event`: O tipo de evento realizado que neste caso seria `woovi:CHARGE_EXPIRED`.
+- `event`: O tipo de evento realizado que neste caso seria `OPENPIX:CHARGE_EXPIRED`.
 - `charge`: A cobrança que foi expirada.
 - `company`: Empresa a que a cobrança pertence.
 
@@ -20,7 +20,7 @@ que a cobrança é expirada.
 
 ```json
 {
-  "event": "woovi:CHARGE_EXPIRED",
+  "event": "OPENPIX:CHARGE_EXPIRED",
   "charge": {
     "customer": {
       "name": "Antonio Victor",

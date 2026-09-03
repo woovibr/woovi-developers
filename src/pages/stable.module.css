@@ -1,0 +1,96 @@
+.reference {
+  height: calc(100vh - 60px);
+}
+
+.status {
+  align-items: center;
+  background:
+    radial-gradient(
+      circle at 12% 20%,
+      rgb(37 194 160 / 14%),
+      transparent 30rem
+    ),
+    #f8fbfa;
+  color: #17352d;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 60px);
+  padding: 2rem;
+}
+
+.statusCard {
+  background: rgb(255 255 255 / 88%);
+  border: 1px solid rgb(23 53 45 / 12%);
+  border-radius: 0.75rem;
+  box-shadow: 0 1.5rem 4rem rgb(9 48 40 / 10%);
+  max-width: 30rem;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.statusMark {
+  animation: breathe 1.4s ease-in-out infinite;
+  background: #25c2a0;
+  border-radius: 999px;
+  display: inline-block;
+  height: 0.75rem;
+  margin-bottom: 1rem;
+  width: 0.75rem;
+}
+
+.statusCard h1 {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+}
+
+.statusCard p {
+  color: #557069;
+  margin: 0;
+}
+
+.statusCard a {
+  color: #087f67;
+  display: inline-block;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(37 194 160 / 25%);
+    opacity: 0.65;
+  }
+
+  50% {
+    box-shadow: 0 0 0 0.5rem rgb(37 194 160 / 0%);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statusMark {
+    animation: none;
+  }
+}
+
+:global(html[data-theme='dark']) .status {
+  background:
+    radial-gradient(
+      circle at 12% 20%,
+      rgb(37 194 160 / 12%),
+      transparent 30rem
+    ),
+    #101714;
+  color: #eff8f5;
+}
+
+:global(html[data-theme='dark']) .statusCard {
+  background: rgb(22 34 29 / 92%);
+  border-color: rgb(210 239 231 / 12%);
+}
+
+:global(html[data-theme='dark']) .statusCard p {
+  color: #abc1bb;
+}

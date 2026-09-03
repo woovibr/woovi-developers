@@ -83,7 +83,7 @@ curl -X GET "https://api.woovi.com/api/v1/pix-keys/tokens" \
 - `nextRefresh` — quando entra a próxima recarga.
 - `tokensAfterRefresh` — saldo previsto depois dessa recarga.
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/pixKey/paths/~1api~1v1~1pix-keys~1tokens/get) a documentação referente a esse _endpoint_.
+Você pode acessar [aqui](/api#tag/pixkey/GET/api/v1/pix-keys/tokens) a documentação referente a esse _endpoint_.
 
 :::info
 A recarga é calculada no momento da consulta, a partir do tempo decorrido. Você não perde tokens por ficar sem chamar a API — o saldo já vem atualizado.
@@ -146,7 +146,7 @@ Motivos possíveis em `reason`:
 
 Use esse histórico para descobrir **qual chave** está drenando seu balde: filtre por `reason: NOT_FOUND_PIX_KEY` e olhe o campo `pixKey`.
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/pixKey/paths/~1api~1v1~1pix-keys~1tokens~1logs/get) a documentação referente a esse _endpoint_.
+Você pode acessar [aqui](/api#tag/pixkey/GET/api/v1/pix-keys/tokens/logs) a documentação referente a esse _endpoint_.
 
 ## Boas práticas
 

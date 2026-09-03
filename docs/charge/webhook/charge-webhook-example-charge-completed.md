@@ -9,7 +9,7 @@ tags:
 ## Webhook de cobrança paga
 
 Segue abaixo o exemplo dos dados que são enviados numa requisição do webhook de cobrança
-paga (`woovi:CHARGE_COMPLETED`). Esse webhook é disparado no momento que um usuário paga uma cobrança.
+paga (`OPENPIX:CHARGE_COMPLETED`). Esse webhook é disparado no momento que um usuário paga uma cobrança.
 
 - `pix`: Objeto com detalhes da transação Pix relacionada ao pagamento da cobrança;
 - `company`: Empresa do qual a cobrança pertence;
@@ -20,7 +20,7 @@ paga (`woovi:CHARGE_COMPLETED`). Esse webhook é disparado no momento que um usu
 
 ```json
 {
-  "event": "woovi:CHARGE_COMPLETED",
+  "event": "OPENPIX:CHARGE_COMPLETED",
   "charge": {
     "customer": {
       "name": "John Doe",

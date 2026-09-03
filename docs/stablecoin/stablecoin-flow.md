@@ -105,10 +105,6 @@ A aprovação **debita o saldo em BRL da conta da sua empresa** (a `companyBankA
 
 Quando a stablecoin é entregue na blockchain, você recebe o webhook `STABLECOIN_DEPOSIT_COMPLETED` (com o `txHash` da transação on-chain). Em caso de falha, recebe `STABLECOIN_DEPOSIT_FAILED`.
 
-Você também pode consultar o status a qualquer momento:
-
-GET `/api/v1/stablecoin/deposit/find?correlationId=my-unique-id`
-
 ## Estados do depósito
 
 O depósito percorre os seguintes status:

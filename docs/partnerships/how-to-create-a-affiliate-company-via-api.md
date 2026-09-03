@@ -10,10 +10,10 @@ tags:
 
 ## Criando uma empresa afiliada
 
-Nós disponibilizamos o _endpoint_ `/api/woovi/v1/partner/application` para que
-você possa criar uma novo _pré-registro_ para a uma empresa afiliada.
+Nós disponibilizamos o _endpoint_ `POST /api/v1/partner/company` para que
+você possa criar um novo _pré-registro_ para uma empresa afiliada.
 
-Você pode acessar [aqui](https://developers.woovi.com.br/api#tag/partner-(request-access)/paths/~1api~1v1~1partner~1company/post)
+Você pode acessar [aqui](/api#tag/partner-request-access/POST/api/v1/partner/company)
 a documentação referente a esse _endpoint_.
 
 Como parte do `body` da requisição, esperamos o envio dos seguintes dois objetos: `preRegistration` e `user`,
@@ -23,6 +23,34 @@ respectivamente, eles consistem no seguinte:
 - **`user`**: Os dados do usuário de acesso mestre aquela empresa, toda empresa afiliada precisa de um usuário mestre para que seja possível efetuar o login na plataforma posteriormente
 
 Em um exemplo prático, o body da sua requisição seguiria semelhante a este exemplo:
+
+```bash
+curl -X POST "https://api.woovi.com/api/v1/partner/company" \
+  -H "Authorization: {APP_ID}" \
+  -H "Content-Type: application/json" \
+  --data-raw '{
+    "preRegistration": {
+      "name": "Example LLC",
+      "taxID": {
+        "taxID": "11111111111111",
+        "type": "BR:CNPJ"
+      },
+      "website": "examplellc.com"
+    },
+    "user": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "johndoe@examplellc.com",
+      "phone": "+5511912345678",
+      "taxID": {
+        "taxID": "1111111111",
+        "type": "BR:CPF"
+      }
+    }
+  }'
+```
+
+O mesmo `body`, isolado:
 
 ```json
 {
@@ -50,7 +78,7 @@ Em um exemplo prático, o body da sua requisição seguiria semelhante a este ex
 Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisição será `2xx` e no `body` da resposta,
 você estará vendo as informações sobre o seu afiliado recém criado.
 
-Em um exemplo, essa será a resposta a nossa resposta:
+Em um exemplo, essa será a nossa resposta:
 
 ```json
 {

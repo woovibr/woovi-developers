@@ -4,6 +4,7 @@ title: Fluxo básico de Baas
 tags: 
   - baas 
   - api
+sidebar_position: 4
 ---
 
 Este documento irá ajudá-lo a entender o fluxo básico de BaaS.
@@ -152,15 +153,14 @@ Caso tudo ocorra corretamente, um código 201 será retornado. No corpo da respo
 ## 4. Gere uma chave PIX aleatória
 
 - Utilize o endpoint pix-keys para gerar uma chave para a conta
-- Utilize o appId gerado no passo anterior para autenticar a requisição
+- Utilize o appID gerado no passo anterior para autenticar a requisição
 - Faça a requisição:
 
 ```bash
 curl -X POST "https://api.woovi.com/api/v1/pix-keys" \
-  -H "Authorization: <appId>" \
+  -H "Authorization: <appID>" \
   -H "Content-Type: application/json" \
   --data-raw '{
-    "key": "k1",
     "type": "EVP"
   }'
 ```
@@ -176,3 +176,5 @@ Caso tudo ocorra corretamente, um código 200 será retornado. No corpo da respo
   }
 }
 ```
+
+Para outros tipos de chave e gerenciamento, veja [Chaves Pix das contas](./chaves-pix-contas.md).

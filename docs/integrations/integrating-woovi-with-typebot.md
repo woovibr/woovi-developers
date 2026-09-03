@@ -36,7 +36,7 @@ Para isso, basta você especificar a seguinte configuração na caixinha:
 
 ![3](./__assets__/integrating-woovi-with-typebot-3.png)
 
-Nessa parte, vamos utilizar a API da woovi de criação de cobrança (segue o [link](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge/post) da especificação), ou seja, vamos configurar com as seguintes informações:
+Nessa parte, vamos utilizar a API da woovi de criação de cobrança (segue o [link](/api#tag/charge/POST/api/v1/charge) da especificação), ou seja, vamos configurar com as seguintes informações:
 
 Aqui está um exemplo da URL e o corpo da requisição:
 

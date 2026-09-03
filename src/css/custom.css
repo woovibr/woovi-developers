@@ -56,3 +56,16 @@ html[data-theme='dark'] .docusaurus-highlight-code-line {
 .explorer-fullwidth article > .markdown {
   max-width: none !important;
 }
+
+/*
+ * Infima 0.2.0-alpha.45 ships `:root { --ifm-background-color: transparent }`
+ * and only sets a concrete value for the dark theme
+ * (`html[data-theme=dark] { --ifm-background-color: #1b1b1d }`). In light mode
+ * the page background therefore resolves to `transparent`, so on a browser/OS
+ * with a dark canvas the near-black body text (`--ifm-color-content: #1c1e21`)
+ * is rendered over a dark backdrop and becomes unreadable. Restore the solid
+ * light-mode background the classic theme expects.
+ */
+html[data-theme=light] {
+  --ifm-background-color: #ffffff;
+}

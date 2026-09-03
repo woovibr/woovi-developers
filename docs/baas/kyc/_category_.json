@@ -1,0 +1,14 @@
+{
+  "label": "KYC Onboarding",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "title": "KYC Onboarding"
+  },
+  "customProps": {
+    "description": "Abra contas para seus clientes com o onboarding hospedado pela Woovi"
+  }
+}

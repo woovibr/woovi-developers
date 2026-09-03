@@ -37,7 +37,7 @@ A primeira chamada será uma teste, para identificar se o seu endpoint existe e 
 {
   "data_criacao": "2023-07-12T13:58:06.821Z",
   "evento": "teste_webhook",
-  "event": "woovi:TRANSACTION_RECEIVED"
+  "event": "OPENPIX:TRANSACTION_RECEIVED"
 }
 ```
 
@@ -54,7 +54,7 @@ curl -X 'POST' \
  -H 'x-woovi-authorization: ' \
  -H 'content-type: application/json' \
  -H 'accept: application/json' \
- -d $'{"data_criacao":"2023-07-12T13:58:06.821Z","evento":"teste_webhook","event":"woovi:TRANSACTION_RECEIVED"}'
+ -d $'{"data_criacao":"2023-07-12T13:58:06.821Z","evento":"teste_webhook","event":"OPENPIX:TRANSACTION_RECEIVED"}'
  ```
 
 #### 4.2. Segunda chamada

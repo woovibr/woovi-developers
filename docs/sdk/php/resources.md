@@ -12,13 +12,13 @@ tags:
 
 Chame o método `customers` seu cliente da API para obter o recurso de clientes.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/customer).
+[Documentação do endpoint para mais detalhes](/api#tag/customer).
 
 ### Criar um cliente
 
 Chame o método `create` no recurso de clientes passando um array com os dados do cliente:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/customer/paths/~1api~1v1~1customer/post).
+[Documentação do endpoint para mais detalhes](/api#tag/customer/POST/api/v1/customer).
 
 ```php
 $customer = [
@@ -53,7 +53,7 @@ $result = $client->customers()->create($customer);
 
 Obtenha um cliente por um ID chamando `getOne` no recurso de clientes:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/customer/paths/~1api~1v1~1customer/get).
+[Documentação do endpoint para mais detalhes](/api#tag/customer/GET/api/v1/customer).
 
 ```php
 $result = $client->customers()->getOne("test-php-sdk-8e7e3622-b209-46ef-b353-ec568e893177");
@@ -81,7 +81,7 @@ $result = $client->customers()->getOne("test-php-sdk-8e7e3622-b209-46ef-b353-ec5
 
 Liste clientes chamando o método `list` no recurso de clientes, que retorna um paginador:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/customer/paths/~1api~1v1~1customer/get).
+[Documentação do endpoint para mais detalhes](/api#tag/customer/GET/api/v1/customer).
 
 ```php
 $paginator = $client->customers()->list();
@@ -103,13 +103,13 @@ foreach ($paginator as $result) {
 
 O recurso de cobranças é acessado chamando o método `charges` no cliente da API.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/charge).
+[Documentação do endpoint para mais detalhes](/api#tag/charge).
 
 ### Criar uma cobrança
 
 Chame o método `create` no recurso de cobranças:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge/post).
+[Documentação do endpoint para mais detalhes](/api#tag/charge/POST/api/v1/charge).
 
 ```php
 $customer = [
@@ -172,7 +172,7 @@ $result = $client->charges()->create($charge, $returnExisting);
 
 Chame o método `getOne` no recurso de cobranças:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge/get).
+[Documentação do endpoint para mais detalhes](/api#tag/charge/GET/api/v1/charge).
 
 ```php
 $result = $client->charges()->getOne("coloque o ID da cobrança aqui");
@@ -187,7 +187,7 @@ $result["charge"]["customer"]; // Cliente. Array.
 
 Chame o método `list` no recurso de cobranças:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge/get).
+[Documentação do endpoint para mais detalhes](/api#tag/charge/GET/api/v1/charge).
 
 ```php
 $paginator = $client->charges()->list([
@@ -221,7 +221,7 @@ foreach ($paginator as $result) {
 
 Para remover uma cobrança, chame o método `delete` no recurso de cobranças, passando o ID:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge~1%7Bid%7D/delete).
+[Documentação do endpoint para mais detalhes](/api#tag/charge/DELETE/api/v1/charge/{id}).
 
 ```php
 $client->charges()->delete("id da cobrança");
@@ -231,7 +231,7 @@ $client->charges()->delete("id da cobrança");
 
 Para obter o link de uma imagem do Qr Code de uma cobrança, chame `getQrCodeImageLink`, que retornará uma string e aceita o ID do link de pagamento da cobrança (`paymentLinkID`) com um tamanho da imagem (`size`):
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/charge/paths/~1woovi~1charge~1brcode~1image~1%7B:id%7D.png?size=1024/get).
+[Documentação do endpoint para mais detalhes](/api#tag/charge/GET/openpix/charge/brcode/image/{id}.png).
 
 ```php
 $paymentLinkID = "7777-6f71-427a-bf00-241681624586"; // ID do link de pagamento da cobrança.
@@ -250,7 +250,7 @@ $result = $client->charges()->getQrCodeImageLink($paymentLinkID, $size);
 
 O recurso de assinaturas é acessado chamando o método `subscriptions` no cliente da API.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/subscription).
+[Documentação do endpoint para mais detalhes](/api#tag/subscription).
 
 ```php
 $client->subscriptions();
@@ -260,7 +260,7 @@ $client->subscriptions();
 
 Crie uma assinatura chamando o método `create` no recurso de assinaturas:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/subscription/paths/~1api~1v1~1subscriptions/post).
+[Documentação do endpoint para mais detalhes](/api#tag/subscription/POST/api/v1/subscriptions).
 
 ```php
 $customer = [
@@ -311,7 +311,7 @@ $result = $client->subscriptions()->create($subscription);
 
 Obtenha uma assinatura chamando o método `getOne` no recurso de assinaturas passando o ID:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/subscription/paths/~1api~1v1~1subscriptions/get).
+[Documentação do endpoint para mais detalhes](/api#tag/subscription/GET/api/v1/subscriptions).
 
 ```php
 $result = $client->subscriptions()->getOne("ID da assinatura");
@@ -342,7 +342,7 @@ $result = $client->subscriptions()->getOne("ID da assinatura");
 
 O recurso de transações é acessado chamando o método `transactions` no cliente da API.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/transaction).
+[Documentação do endpoint para mais detalhes](/api#tag/transactions).
 
 ```php
 $client->transactions();
@@ -352,7 +352,7 @@ $client->transactions();
 
 Para obter uma transação pelo ID da transação do woovi ou pelo `endToEndId` da transação do banco, é necessário chamar o método `getOne` no recurso de transações, passando o respectivo ID:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/transactions/paths/~1api~1v1~1transaction~1%7Bid%7D/get).
+[Documentação do endpoint para mais detalhes](/api#tag/transactions/GET/api/v1/transaction/{id}).
 
 ```php
 $client->transactions()->getOne("ID da transação");
@@ -412,7 +412,7 @@ $client->transactions()->getOne("ID da transação");
 
 Chame o método `list` no recurso de transações passando parâmetros de consulta que irá retornar um paginador com transações:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/transactions/paths/~1api~1v1~1transaction/get).
+[Documentação do endpoint para mais detalhes](/api#tag/transactions/GET/api/v1/transaction).
 
 ```php
 $paginator = $client->transactions()->list([
@@ -455,7 +455,7 @@ foreach ($paginator as $result) {
 
 O recurso de pagamentos é acessado chamando o método `payments` no cliente da API.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/payment).
+[Documentação do endpoint para mais detalhes](/api#tag/payment-request-access).
 
 ```php
 $client->payments();
@@ -465,7 +465,7 @@ $client->payments();
 
 Crie uma solicitação de pagamento chamando o método `create` no recurso de pagamentos.
 
-[Documentação do endpoint para mais detalhes]([https://developers.woovi.com.br/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post](https://developers.woovi.com.br/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/post)).
+<ApiLink method="POST" path="/api/v1/payment">Documentação do endpoint para mais detalhes</ApiLink>.
 
 ```php
 $payment = [
@@ -508,7 +508,7 @@ $result = $client->payments()->create($payment);
 
 Chame o método `getOne` no recurso de pagamentos para obter uma solicitação de pagamento a partir de um ID de pagamento ou correlationID.
 
-[Documentação do endpoint para mais detalhes]([https://developers.woovi.com.br/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1%7Bid%7D/get](https://developers.woovi.com.br/api#tag/payment-(request-access)/paths/~1api~1v1~1payment~1%7Bid%7D/get)).
+<ApiLink method="GET" path="/api/v1/payment/{id}">Documentação do endpoint para mais detalhes</ApiLink>.
 
 ```php
 $paymentOrCorrelationID = "id";
@@ -548,7 +548,7 @@ $result = $client->payments()->getOne($paymentOrCorrelationID);
 
 Chame o método `list` no recurso de pagamentos passando parâmetros de consulta que irá retornar um paginador com pagamentos:
 
-[Documentação do endpoint para mais detalhes]([https://developers.woovi.com.br/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/get](https://developers.woovi.com.br/api#tag/payment-(request-access)/paths/~1api~1v1~1payment/get)).
+<ApiLink method="GET" path="/api/v1/payment">Documentação do endpoint para mais detalhes</ApiLink>.
 
 ```php
 $paginator = $client->payments()->list();
@@ -578,7 +578,7 @@ foreach ($paginator as $result) {
 
 O recurso de reembolsos é acessado chamando o método `refunds` no cliente da API.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/refund).
+[Documentação do endpoint para mais detalhes](/api#tag/refund).
 
 ```php
 $client->refunds();
@@ -588,7 +588,7 @@ $client->refunds();
 
 Crie um reembolso chamando o método `create` no recurso de reembolsos:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/refund/paths/~1api~1v1~1refund/post).
+[Documentação do endpoint para mais detalhes](/api#tag/refund/POST/api/v1/refund).
 
 ```php
 $refund = [
@@ -626,7 +626,7 @@ $result = $client->refunds()->create($refund);
 
 Para obter um reembolso pelo ID de reembolso ou correlationID, chame o método `getOne`:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/refund/paths/~1api~1v1~1refund~1%7Bid%7D/get).
+[Documentação do endpoint para mais detalhes](/api#tag/refund/GET/api/v1/refund/{id}).
 
 ```php
 $result = $client->refunds()->getOne("Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA==");
@@ -650,7 +650,7 @@ $result = $client->refunds()->getOne("Q2hhcmdlOjYwM2U3NDlhNDI1NjAyYmJiZjRlN2JlZA
 
 Chame o método `list` no recurso de reembolsos que irá retornar um paginador com reembolsos:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/refund/paths/~1api~1v1~1refund/get).
+[Documentação do endpoint para mais detalhes](/api#tag/refund/GET/api/v1/refund).
 
 ```php
 $paginator = $client->refunds()->list();
@@ -686,7 +686,7 @@ foreach ($paginator as $result) {
 
 O recurso de webhooks é acessado chamando o método `webhooks` no cliente da API.
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/webhook).
+[Documentação do endpoint para mais detalhes](/api#tag/webhook).
 
 ```php
 $client->webhooks();
@@ -696,23 +696,23 @@ $client->webhooks();
 
 Crie um webhook chamando o método `create` no recurso de webhooks:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/webhook/paths/~1api~1v1~1webhook/post).
+[Documentação do endpoint para mais detalhes](/api#tag/webhook/POST/api/v1/webhook).
 
 ```php
 $webhook = [
     "webhook" => [
         "name" => "webhookName (php-sdk)",
 
-        // Eventos disponíveis para registrar um webhook para ouvir. Se ninguém selecionar ninguém, o evento padrão será woovi:TRANSACTION_RECEIVED.
-        // woovi:CHARGE_CREATED - Nova cobrança criada.
-        // woovi:CHARGE_COMPLETED - Cobrança concluída é quando uma cobrança é totalmente paga.
-        // woovi:CHARGE_EXPIRED - Cobrança expirada é quando uma cobrança não foi totalmente paga e expirou.
-        // woovi:TRANSACTION_RECEIVED - Nova transação PIX recebida.
-        // woovi:TRANSACTION_REFUND_RECEIVED - Novo reembolso de transação PIX recebido ou reembolsado.
-        // woovi:MOVEMENT_CONFIRMED - Pagamento confirmado é quando a transação do pix referente ao pagamento é confirmada.
-        // woovi:MOVEMENT_FAILED - Falha no pagamento é quando o pagamento é aprovado e ocorre um erro.
-        // woovi:MOVEMENT_REMOVED - O pagamento foi removido por um usuário.
-        "event" => "woovi:CHARGE_CREATED",
+        // Eventos disponíveis para registrar um webhook para ouvir. Se ninguém selecionar ninguém, o evento padrão será OPENPIX:TRANSACTION_RECEIVED.
+        // OPENPIX:CHARGE_CREATED - Nova cobrança criada.
+        // OPENPIX:CHARGE_COMPLETED - Cobrança concluída é quando uma cobrança é totalmente paga.
+        // OPENPIX:CHARGE_EXPIRED - Cobrança expirada é quando uma cobrança não foi totalmente paga e expirou.
+        // OPENPIX:TRANSACTION_RECEIVED - Nova transação PIX recebida.
+        // OPENPIX:TRANSACTION_REFUND_RECEIVED - Novo reembolso de transação PIX recebido ou reembolsado.
+        // OPENPIX:MOVEMENT_CONFIRMED - Pagamento confirmado é quando a transação do pix referente ao pagamento é confirmada.
+        // OPENPIX:MOVEMENT_FAILED - Falha no pagamento é quando o pagamento é aprovado e ocorre um erro.
+        // OPENPIX:MOVEMENT_REMOVED - O pagamento foi removido por um usuário.
+        "event" => "OPENPIX:CHARGE_CREATED",
 
         "url" => "https://example.com",
         "authorization" => "woovi-php-sdk",
@@ -732,7 +732,7 @@ $result = $client->webhooks()->create($webhook);
  *         "url" => "https://mycompany.com.br/webhook",
  *         "authorization" => "woovi",
  *         "isActive" => true,
- *         "event" => "woovi:TRANSACTION_RECEIVED",
+ *         "event" => "OPENPIX:TRANSACTION_RECEIVED",
  *         "createdAt" => "2021-03-02T22:29:10.720Z",
  *         "updatedAt" => "2021-03-02T22:29:10.720Z",
  *     ],
@@ -769,7 +769,7 @@ namespace YourIntegration\Http;
  */
 class WebhookHandler
 {
-    const woovi_CHARGE_COMPLETED = "woovi:CHARGE_COMPLETED";
+    const woovi_CHARGE_COMPLETED = "OPENPIX:CHARGE_COMPLETED";
 
     /**
      * Handle an webhook request sent by API.
@@ -800,7 +800,7 @@ class WebhookHandler
 
 Chame o método `list` no recurso de webhooks que irá retornar um paginador com webhooks:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/webhook/paths/~1api~1v1~1webhook/get).
+[Documentação do endpoint para mais detalhes](/api#tag/webhook/GET/api/v1/webhook).
 
 ```php
 // É possível passar uma string opcional com uma URL para filtrar todos os webhooks
@@ -831,7 +831,7 @@ foreach ($paginator as $result) {
 
 Para remover um webhook, chame o método `delete` no recurso de webhooks, passando o ID:
 
-[Documentação do endpoint para mais detalhes](https://developers.woovi.com.br/api#tag/webhook/paths/~1api~1v1~1webhook~1%7Bid%7D/delete).
+[Documentação do endpoint para mais detalhes](/api#tag/webhook/DELETE/api/v1/webhook/{id}).
 
 ```php
 $client->webhooks()->delete("id do webhook");
@@ -847,7 +847,7 @@ Exemplo do cabeçalho HTTP:
 x-webhook-signature: lL2nnXgmLFGgxJ8+jCDguqouU4ucrIxYJcU5SPrJFaNcJajTJHYVldqc/z4YFIjAjtPEALe699WosgPY08W7CLpidvtm06Qwa4YMB0l/DcTS93O91NdSH/adjugEKiOb76Zj/0jB8mqOmWCFYbweOBa17bssuEkd5Lw7Q5L314Y=
 ```
 
-[Veja um payload de exemplo recebido numa invocação de um webhook](https://developers.woovi.com.br/docs/webhook/seguranca/webhook-signature-validation#exemplo-de-valida%C3%A7%C3%A3o).
+[Veja um payload de exemplo recebido numa invocação de um webhook](/docs/webhook/seguranca/webhook-signature-validation#exemplo-de-valida%C3%A7%C3%A3o).
 
 Para validar a assinatura de uma chamada de webhook, utilize o método `isWebhookValid` no recurso de webhooks. Esse método retornará `true` se a assinatura fornecida junto com o payload for válida, ou `false` caso contrário.
 

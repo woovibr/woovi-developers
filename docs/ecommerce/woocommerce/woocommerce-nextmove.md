@@ -11,7 +11,7 @@ tags:
 ## Integrando a Woovi com o NextMove
 
 1. Instale o Plugin Woovi na sua instância WooCommerce
-2. Configure o Plugin WooCommerce [aqui](woocommerce-plugin.md)
+2. Configure o Plugin WooCommerce [aqui](./woocommerce-plugin.mdx)
 3. Dentro do plugin do NextMove, vá em `Configurações` > `Edit/rules` da página `Thank You`
 
 ![NextMove-settings](/img/ecommerce/woocommerce/woocommerce-nextmove-settings.png)

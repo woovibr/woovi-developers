@@ -26,7 +26,7 @@ Antes de começar, você precisará de:
 
 Para criar uma cobrança do tipo *Boleto* você precisará acessar o endpoint de criação de cobrança:
 
-[Criar cobrança](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge/get)
+[Criar cobrança](/api#tag/charge/GET/api/v1/charge)
 
 O processo de criaçao de um boleto é bem simples. Basta utilizar o mesmo endpoint que o de cobrança, porém, com a adição do parâmetro `type` com o valor `BOLETO`.
 

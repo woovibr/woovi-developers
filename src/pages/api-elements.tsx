@@ -53,7 +53,7 @@ function ApiElementsInner() {
   return (
     <div style={{ height: 'calc(100vh - 60px)' }}>
       <Component
-        apiDescriptionUrl="/swaggers/woovi.json"
+        apiDescriptionUrl="https://api.woovi.com/api/openapi.json"
         router="hash"
         layout="sidebar"
       />

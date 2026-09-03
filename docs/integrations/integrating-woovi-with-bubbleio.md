@@ -89,7 +89,7 @@ Neste mesmo campo do API Connector, ele irá adicionar uma nova chamada para um 
 
 ![Bubble.io API connector endpoint](./__assets__/bubbleio-api-connector-endpoint.png)
 
-Conforme a documentação da [API da woovi](https://developers.woovi.com.br/api), vamos preencher estes campos com:
+Conforme a documentação da [API da woovi](/api), vamos preencher estes campos com:
 
 - O endpoint que deseja consumir;
 - Os headers necessários;

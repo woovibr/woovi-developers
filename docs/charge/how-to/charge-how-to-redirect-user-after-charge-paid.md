@@ -13,7 +13,7 @@ Caso você deseja redirecionar o usuário para uma URL em específico após o pa
 cobrança. É necessário criar a respectiva cobrança daquele link de pagamento com um campo chamado
 `redirectUrl` acrescentado.
 
-Utilizando a API de [Charge POST](https://developers.woovi.com.br/api#tag/charge/paths/~1api~1v1~1charge/post),
+Utilizando a API de [Charge POST](/api#tag/charge/POST/api/v1/charge),
 para criar uma nova cobrança com esse novo campo. No body da requisição deveria ser encaminhado conforme o seguinte
 exemplo:
 

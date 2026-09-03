@@ -14,7 +14,7 @@ O appID é criado dentro da plataforma Woovi pelo administrador. Para criá-lo, 
 > 
 > Caso você não possua uma das permissão solicite para o admin da sua plataforma a inserção da mesma para seu usuário.
 > 
-> O usuário admin pode seguir este tutorial para [atualizar permissões de usuários](/docs/FAQ/faq-users)
+> O usuário admin pode seguir este tutorial para [atualizar permissões de usuários](../faq/users.md)
 
 Uma vez criada a API, copie o AppID para utilizar na integração do Plugin e siga para o próximo passo clicando em próximo no canto inferiro direito.
 

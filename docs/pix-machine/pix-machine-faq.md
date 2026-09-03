@@ -33,7 +33,7 @@ gratuita, e uma [impressora térmica](https://woovi.com/articles/maquininhas/), 
 
 ## Como configuro cashback para meus clientes nas cobranças impressas?
 
-[Neste artigo](https://developers.woovi.com.br/docs/cashback/cashback-how-to-config) você encontrará o passo a passo de como configurar o cashback para seus clientes nas cobranças
+[Neste artigo](/docs/cashback/cashback-how-to-config) você encontrará o passo a passo de como configurar o cashback para seus clientes nas cobranças
 impressas.
 
 ## Como configuro minha impressora térmica no Windows?

@@ -24,4 +24,4 @@ A URL irá conter os seguintes parâmetros:
 
 Por exemplo, se você configurou a URL de redirecionamento como `https://example.com/thank-you`, a URL final será `https://example.com/thank-you?order_id=identificacao-do-pedido&key=chave-do-pedido&correlationID=correlationID-do-pedido`.
 
-Para obter uma cobrança usando o `correlationID`, você pode utilizar a nossa [API](/api#tag/charge/paths/~1api~1v1~1charge~1%7Bid%7D/get) de cobranças.
+Para obter uma cobrança usando o `correlationID`, você pode utilizar a nossa [API](/api#tag/charge/GET/api/v1/charge/{id}) de cobranças.

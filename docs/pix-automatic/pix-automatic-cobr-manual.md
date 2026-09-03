@@ -31,7 +31,7 @@ no body da requisição é opcional enviar o novo valor em centavos.
 }
 ```
 
-Você pode ver em mais detalhes pelo [link](https://developers.woovi.com/api#tag/CobR)
+Você pode ver em mais detalhes pelo [link](/api#tag/cobr
 
 Caso a cobrança manual falhe, você poderá realizar novas retentativas de cobrança. 
 

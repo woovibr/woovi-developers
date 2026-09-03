@@ -5,6 +5,7 @@ tags:
   - api
   - baas
   - split
+sidebar_position: 11
 ---
 
 Este documento irá ajudá-lo a entender como configurar o split para a conta principal no modo BaaS.

@@ -12,7 +12,7 @@ tags:
 Nós disponibilizamos o _endpoint_ `/api/openpix/v1/partner/application` para que
 você possa criar uma nova _application_ para a respectiva empresa afiliada.
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/partner-(request-access)/paths/~1api~1openpix~1v1~1partner~1application/post)
+Você pode acessar [aqui](/api#tag/partner-request-access/POST/api/v1/partner/application)
 a documentação referente a esse _endpoint_.
 
 Como parte do `body` da requisição, esperamos o envio dos seguintes itens: `application` e `taxID`,

@@ -19,7 +19,7 @@ O _endpoint_ `POST /api/v1/account-register` é o **formato antigo** de cadastro
 
 Para **novas integrações**, use o link de onboarding: [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx). Nesse fluxo o seu cliente final preenche os dados e envia os documentos por uma tela hospedada pela Woovi, sem que você precise coletar, hospedar e enviar arquivos.
 
-Este endpoint também **não está publicado** na [API Reference](https://developers.woovi.com/api) — o schema abaixo é a documentação de referência dele.
+Este endpoint também **não está publicado** na [API Reference](/api) — o schema abaixo é a documentação de referência dele.
 :::
 
 Neste formato legado, é a **sua aplicação** que coleta todos os dados cadastrais da empresa (razão social, CNPJ, endereço de cobrança, dados do negócio), dos sócios e as URLs dos documentos, e envia tudo de uma vez para a Woovi através do _endpoint_ `POST /api/v1/account-register`.

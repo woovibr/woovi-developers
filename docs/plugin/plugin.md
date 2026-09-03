@@ -8,7 +8,7 @@ A Woovi possui 2 plugins para ser utilizados em seu negócio, o Plugin de `Order
 
 ## O que é necessário saber antes de utilizar os plugins?
 
-- É necessário entender que para utilizar as API's e plugins disponibilizados dentro da Woovi você precisa ter um AppID válido, veja como criar [aqui](./app-id).
+- É necessário entender que para utilizar as API's e plugins disponibilizados dentro da Woovi você precisa ter um AppID válido, veja como criar [aqui](./app-id.md).
 
 - Ao tentar consumir o plugin para criar uma cobrança você precisa gerar um correlationID único, para conseguir buscar essa cobrança dentro da Woovi, se você não informar um novo correlationID para uma nova cobrança, sera mostrado a cobrança anterior relacionada a esse correlationID
 
@@ -54,7 +54,7 @@ Para confirmar se o plugin foi inicializado corretamente, você pode acessar o c
 ### Inicializando o plugin `Widget`
 
 O plugin é consumido usando o objeto `Window` nativo da API Javascript. Para inicializar, crie um array `$openpix` window para se comunicar com o plugin.
-Insira a chave do seu [appID](./app-id) como abaixo:
+Insira a chave do seu [appID](./app-id.md) como abaixo:
 
 ```jsx
 window.$openpix = window.$openpix || []; // priorize o objeto já instanciado

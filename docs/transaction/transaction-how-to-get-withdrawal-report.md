@@ -11,7 +11,7 @@ tags:
 Nós disponibilizamos o _endpoint_ `/api/v1/transaction` para que você possa pegar
 _transactions_ da respectiva empresa afiliada.
 
-Você pode acessar [aqui](https://developers.woovi.com/api#tag/transactions/paths/~1api~1v1~1transaction/get)
+Você pode acessar [aqui](/api#tag/transactions/GET/api/v1/transaction)
 a documentação referente a esse _endpoint_.
 
 Utilizando o endpoint, é muito simples acessar o relatório de saque, basta informar o `endToEndId` do saque que deseja o relatório no parâmetro `withdrawal`

@@ -14,7 +14,7 @@ Below, you can see a list of all events that Woovi sends to your application.
 
 :::tip Get the list of events via API
 You can also programmatically get the complete list of available events through our API.
-Check the [GET /api/v1/webhook/events](https://developers.woovi.com/api#tag/webhook/paths/~1api~1v1~1webhook~1events/get) endpoint in the API reference.
+Check the [GET /api/v1/webhook/events](/en/api#tag/webhook/GET/api/v1/webhook/events) endpoint in the API reference.
 :::
 
 ## Charge Events
@@ -134,7 +134,7 @@ Events for platforms using customer onboarding (OpenPix for Platforms).
 ### ACCOUNT_REGISTER_APPROVED
 This event is sent when a subaccount registration is approved in compliance.
 
-[See payload example →](/docs/webhook/examples/webhook-account-register-approved-payload)
+[See payload example →](./examples/account-register-approved-payload.mdx)
 
 ### ACCOUNT_REGISTER_REJECTED
 This event is sent when a subaccount registration is rejected in compliance.

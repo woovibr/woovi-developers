@@ -14,7 +14,7 @@ Abaixo, você pode ver uma lista de todos os eventos que a Woovi envia para sua 
 
 :::tip Obtenha a lista de eventos via API
 Você também pode obter a lista completa de eventos disponíveis programaticamente através da nossa API. 
-Consulte o endpoint [GET /api/v1/webhook/events](https://developers.woovi.com/api#tag/webhook/paths/~1api~1v1~1webhook~1events/get) na referência da API.
+Consulte o endpoint [GET /api/v1/webhook/events](/api#tag/webhook/GET/api/v1/webhook/events) na referência da API.
 :::
 
 ## Eventos de cobrança
@@ -141,7 +141,7 @@ O corpo repete os blocos `charge` e `boleto` do evento de cobrança paga e acres
 ### ACCOUNT_REGISTER_APPROVED
 Esse evento é enviado quando um registro de subconta é aprovado no compliance.
 
-[Ver exemplo de payload →](/docs/webhook/examples/webhook-account-register-approved-payload)
+[Ver exemplo de payload →](./examples/account-register-approved-payload.mdx)
 
 ### ACCOUNT_REGISTER_REJECTED
 Esse evento é enviado quando um registro de subconta é reprovado no compliance.
