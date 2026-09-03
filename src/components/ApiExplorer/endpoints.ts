@@ -1336,7 +1336,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'kyc',
     'category': 'KYC',
     'summary': 'Create a KYC onboarding',
-    'description': 'Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n',
+    'description': 'Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\n`website` and `businessDescription` can be pre-filled by the caller. In the Brazilian\nflow `businessDescription` is the only field gating the `COMPANY_DATA` onboarding step,\nso sending it here lets the merchant skip that step of the wizard. On an idempotent\nreplay both fields are only written when still empty — data typed by the applicant is\nnever overwritten.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n',
     'requestExamples': [
       {
         'name': 'MinimalRequest',
@@ -1361,6 +1361,15 @@ const endpoints: ApiEndpoint[] = [
           'redirectUrl': 'https://partner.example.com/kyc-done',
         },
         'summary': 'Request with redirectUrl for post-onboarding redirect',
+      },
+      {
+        'name': 'WithBusinessDescription',
+        'value': {
+          'taxID': 'XX.XXX.XXX/0001-XX',
+          'correlationID': 'my-unique-id',
+          'businessDescription': 'Venda de roupas e acessorios pela internet',
+        },
+        'summary': 'Request pre-filling the business description (skips the COMPANY_DATA step)',
       },
       {
         'name': 'WithRepresentatives',
@@ -1479,6 +1488,94 @@ const endpoints: ApiEndpoint[] = [
           ],
           'createdAt': '2026-08-24T14:00:06.386Z',
           'completedAt': '2026-08-24T14:00:06.462Z',
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-limits-request',
+    'method': 'POST',
+    'path': '/api/v1/limits/request',
+    'tag': 'account limits',
+    'category': 'account limits',
+    'summary': 'Ask to raise the limits of an account',
+    'description': 'Opens a limit-increase request for one of your accounts. It is created with\n`status: IN_REVIEW`; poll\n[`GET /api/v1/limits/request/{limitRequestId}`](#operation/getLimitRequest)\nuntil it becomes `APPROVED` (with `approvedLimits`) or `REJECTED`.\n\n## Upload the supporting document FIRST\n\nA limit request is never accepted without at least one document justifying\nit, and the document does **not** travel in this request. It is a two-step\nflow, and the order matters:\n\n**Step 1 — upload the file.** Send it to\n[`POST /api/v1/files`](#operation/uploadFile) as `multipart/form-data`,\nwith **`purpose=ACCOUNT_LIMIT_REQUEST`**. That endpoint needs the\n`FILE_POST` scope and accepts `application/pdf`, `image/png`, `image/jpeg`\nand `image/webp` up to 10 MiB. Keep the `file.id` it returns.\n\n```\ncurl -X POST https://api.woovi.com/api/v1/files \\\n  -H \'Authorization: <your AppID>\' \\\n  -F \'purpose=ACCOUNT_LIMIT_REQUEST\' \\\n  -F \'file=@faturamento.pdf\'\n```\n\n**Step 2 — open the request with that id**, in `documents[].fileId`:\n\n```\ncurl -X POST https://api.woovi.com/api/v1/limits/request \\\n  -H \'Authorization: <your AppID>\' \\\n  -H \'Content-Type: application/json\' \\\n  -d \'{"companyBankAccountId":"65f1c2e9a1b2c3d4e5f60718",\n       "pixDayLimit":5000000,\n       "pixNightLimit":200000,\n       "documents":[{"fileId":"68c7d0a1f0b2c3d4e5f60718"}]}\'\n```\n\nA `fileId` is only accepted when the file belongs to **your** company and\nwas uploaded with `purpose=ACCOUNT_LIMIT_REQUEST`. Anything else — a file\nof another company, another purpose, or an id that does not exist —\nanswers `400` and no request is created. Uploading the file with the wrong\npurpose is the most common cause of that `400`: upload it again with the\nright one, you do not need to delete the first.\n\n## The limits you send\n\nLimits are in cents and use the same field names as\n[`GET /api/v1/limits/{accountId}`](#operation/getAccountLimits), so read\nthe current values there, raise the ones you need, and send them here.\n`pixDayLimit` and `pixNightLimit` are always required. No field may be\n**below** its current value, and at least one must be **above** it —\notherwise the request is a `400`.\n\nOnly one request per account can be `IN_REVIEW` at a time; a second one\nanswers `409` while the first is still being analysed.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'companyBankAccountId': '65f1c2e9a1b2c3d4e5f60718',
+          'pixDayLimit': 5000000,
+          'pixNightLimit': 200000,
+          'documents': [
+            {
+              'fileId': '68c7d0a1f0b2c3d4e5f60718',
+            },
+          ],
+          'description': 'faturamento dos ultimos 12 meses',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'limitRequest': {
+            'id': '68c7d0a1f0b2c3d4e5f6071a',
+            'companyBankAccountId': '65f1c2e9a1b2c3d4e5f60718',
+            'status': 'IN_REVIEW',
+            'requestedLimits': {
+              'pixDayLimit': 5000000,
+              'pixNightLimit': 200000,
+            },
+            'documents': [
+              {
+                'fileName': 'faturamento.pdf',
+                'contentType': 'application/pdf',
+              },
+            ],
+            'description': 'faturamento dos ultimos 12 meses',
+            'createdAt': '2026-09-03T17:49:59.204Z',
+            'updatedAt': '2026-09-03T17:49:59.204Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-limits-request-limitrequestid',
+    'method': 'GET',
+    'path': '/api/v1/limits/request/{limitRequestId}',
+    'tag': 'account limits',
+    'category': 'account limits',
+    'summary': 'Get one limit request',
+    'description': "Returns one limit-increase request. **This is the endpoint to poll** after\n[creating a request](#operation/createLimitRequest).\n\n`status` stays `IN_REVIEW` until Woovi decides, and then becomes:\n\n- `APPROVED` — `approvedLimits` carries what was actually granted, and it\n  may be **lower** than what you asked for. The account's effective limits\n  change at the same moment, so\n  [`GET /api/v1/limits/{accountId}`](#operation/getAccountLimits) reflects\n  them right away.\n- `REJECTED` — nothing changed on the account. You may open a new request\n  for the same account once this one is decided.\n\n`approvedLimits` is absent while the request is still `IN_REVIEW`.\n\nA request of another company answers `404`, never a `403` — the id alone\nnever confirms that a request exists.\n",
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'limitRequest': {
+            'id': '68c7d0a1f0b2c3d4e5f6071a',
+            'companyBankAccountId': '65f1c2e9a1b2c3d4e5f60718',
+            'status': 'APPROVED',
+            'requestedLimits': {
+              'pixDayLimit': 5000000,
+              'pixNightLimit': 200000,
+            },
+            'approvedLimits': {
+              'pixDayLimit': 4500000,
+              'pixNightLimit': 200000,
+            },
+            'documents': [
+              {
+                'fileName': 'faturamento.pdf',
+                'contentType': 'application/pdf',
+              },
+            ],
+            'createdAt': '2026-09-03T17:49:59.204Z',
+            'updatedAt': '2026-09-03T19:12:03.881Z',
+          },
         },
       },
     ],
