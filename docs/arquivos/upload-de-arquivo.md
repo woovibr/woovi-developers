@@ -6,7 +6,14 @@ tags:
   - arquivos
 ---
 
-O endpoint de arquivos guarda um arquivo na Woovi e devolve os metadados dele junto com uma URL de download temporária. Use esse arquivo em outras APIs da Woovi que consomem documentos, como a [evidência de uma disputa](../disputa/how-add-new-evidence-in-evidence.md), sem precisar hospedar o arquivo por conta própria.
+O endpoint de arquivos guarda um arquivo na Woovi e devolve os metadados dele junto com uma URL de download temporária. Use esse arquivo em outras APIs da Woovi que consomem documentos, como a [evidência de uma disputa](../disputa/how-add-new-evidence-in-evidence.md) ou o comprovante de um [pedido de aumento de limite](../apis/api-account-limits-increase-request.md), sem precisar hospedar o arquivo por conta própria.
+
+O `purpose` diz qual é esse uso, e cada API só aceita o `purpose` dela: um arquivo subido como `DISPUTE_EVIDENCE` não serve num pedido de limite, e vice-versa.
+
+| `purpose` | Usado por |
+| --- | --- |
+| `DISPUTE_EVIDENCE` | [Evidência de disputa](../disputa/how-add-new-evidence-in-evidence.md) |
+| `ACCOUNT_LIMIT_REQUEST` | [Pedido de aumento de limite](../apis/api-account-limits-increase-request.md) |
 
 ## Requisitos
 
@@ -29,7 +36,7 @@ curl -X POST "https://api.woovi.com/api/v1/files" \
 | Campo           | Obrigatório | Descrição                                                                                     |
 | --------------- | ----------- | --------------------------------------------------------------------------------------------- |
 | `file`          | Sim         | O arquivo em si.                                                                                |
-| `purpose`       | Sim         | Para que o arquivo será usado. Hoje aceita `DISPUTE_EVIDENCE`.                                  |
+| `purpose`       | Sim         | Para que o arquivo será usado. Aceita `DISPUTE_EVIDENCE` e `ACCOUNT_LIMIT_REQUEST`.             |
 | `correlationID` | Não         | Seu identificador para o upload. Quando não enviado, um UUID é gerado para você.                |
 
 ## 2. Entendendo o retorno
