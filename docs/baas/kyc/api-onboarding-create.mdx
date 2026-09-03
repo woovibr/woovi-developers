@@ -31,8 +31,14 @@ Para o schema, parâmetros e exemplos interativos, veja a [API Reference](/api#t
 ### Opcionais
 
 - **`correlationID`**: Identificador único para idempotência. Se não informado, o CNPJ será usado como correlationID. Se a mesma `correlationID` for enviada novamente, a API retorna o link existente (200) ao invés de criar um novo.
+- **`website`**: Site do merchant. Se informado, é persistido no AccountRegister e o merchant não precisa redigitá-lo no formulário de onboarding.
+- **`businessDescription`**: Descrição da atividade do merchant. Se informado, é persistido no AccountRegister e **destrava automaticamente a etapa `COMPANY_DATA`** do formulário — o merchant não precisa redigitá-lo. Útil quando o parceiro BaaS já coletou essa informação no próprio funil.
 - **`representatives`**: Array de sócios/representantes da empresa. Cada representante deve conter:
   - **`taxID`**: CPF do representante. Validado como CPF. Aceita formato com ou sem máscara.
+
+:::info Não-destrutivo
+`website` e `businessDescription` só são preenchidos quando estão vazios no AccountRegister. Em uma chamada idempotente (mesmo `correlationID`), um valor já informado pelo merchant **nunca é sobrescrito**.
+:::
 
 ## Exemplo
 
@@ -42,6 +48,8 @@ O body da sua requisição será semelhante a este exemplo:
 {
   "taxID": "XX.XXX.XXX/0001-XX",
   "correlationID": "my-unique-id",
+  "website": "https://loja-do-merchant.com.br",
+  "businessDescription": "Loja de roupas e acessórios femininos",
   "representatives": [
     { "taxID": "XXX.XXX.XXX-XX" },
     { "taxID": "XXX.XXX.XXX-XX" }
