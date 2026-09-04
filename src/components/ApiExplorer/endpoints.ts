@@ -2610,7 +2610,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'stablecoin',
     'category': 'stablecoin',
     'summary': 'Submit KYB USD (fiat rail) for a confirmed stablecoin subaccount',
-    'description': 'Unlocks the USD fiat rail on a company stablecoin subaccount that already has\nKYB Level 1 approved (`StableSubAccount.status = CONFIRMED`).\n\nThe call uploads the supporting documents to the provider, submits Proof of\nFinancial Capacity (and waits until it is `APPROVED`), optionally submits a\ncompany Proof of Address, then submits the KYB USD attempt.\n\nDocument URLs must be publicly fetchable (or pre-signed) HTTPS links to the\nPDF/image files. Typical sources: files already uploaded during onboarding /\nRFI, or merchant-hosted temporary URLs.\n\nRequired documents:\n- `proofOfFinancialCapacityUrl` — proof of financial capacity (PoFC)\n- `proofOfRevenueUrl` — proof of revenue\n\nOptional documents:\n- `proofOfAddressCompanyUrl` — company proof of address (raises limits;\n  independent of the USD rail, but accepted in the same call)\n\nAlso required:\n- `businessType` — Bridge business type enum\n- `businessIndustries` — at least one Bridge industry code (e.g. `519290`)\n- `website` — required only when the company website was not captured at\n  KYB Level 1\n\nThe subaccount must belong to the authenticated company and be `CONFIRMED`.\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n\nThe call is synchronous and waits on the provider: it can take up to two\nminutes, and answers `504` when the Proof of Financial Capacity is still\nnot approved by then (the document ids come back, so nothing has to be\nre-uploaded).\n\nA `201` only means the attempt was created — poll\n`GET /api/v1/stablecoin/subaccount/kyb/usd` for the verdict and for\n`usdUnlocked`.\n\nNote: USD fiat rails are not available in the provider sandbox — submission\nmay appear to succeed, but `usdUnlocked` will not become true there.\n',
+    'description': 'Unlocks the USD fiat rail on a company stablecoin subaccount that already has\nKYB Level 1 approved (`StableSubAccount.status = CONFIRMED`).\n\nThe call uploads the supporting documents to the provider, submits Proof of\nFinancial Capacity (and waits until it is `APPROVED`), optionally submits a\ncompany Proof of Address, then submits the KYB USD attempt.\n\nDocument URLs must be publicly fetchable (or pre-signed) HTTPS links to the\nPDF/image files. Typical sources: files already uploaded during onboarding /\nRFI, or merchant-hosted temporary URLs.\n\nRequired documents:\n- `proofOfFinancialCapacityUrl` — proof of financial capacity (PoFC)\n- `proofOfRevenueUrl` — proof of revenue\n\nOptional documents:\n- `proofOfAddressCompanyUrl` — company proof of address (raises limits;\n  independent of the USD rail, but accepted in the same call)\n\nAlso required:\n- `businessType` — Bridge business type enum\n- `businessIndustries` — at least one industry from the\n  `StablecoinSubAccountKybUsdIndustry` enum (e.g. `SOFTWARE`; `OTHER`\n  when none fits)\n- `website` — required only when the company website was not captured at\n  KYB Level 1\n\nThe subaccount must belong to the authenticated company and be `CONFIRMED`.\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n\nThe call is synchronous and waits on the provider: it can take up to two\nminutes, and answers `504` when the Proof of Financial Capacity is still\nnot approved by then (the document ids come back, so nothing has to be\nre-uploaded).\n\nA `201` only means the attempt was created — poll\n`GET /api/v1/stablecoin/subaccount/kyb/usd` for the verdict and for\n`usdUnlocked`.\n\nNote: USD fiat rails are not available in the provider sandbox — submission\nmay appear to succeed, but `usdUnlocked` will not become true there.\n',
     'requestExamples': [
       {
         'name': 'MinimalUsdKyb',
@@ -2618,7 +2618,7 @@ const endpoints: ApiEndpoint[] = [
           'subAccountId': 'sub_01HZ...',
           'businessType': 'llc',
           'businessIndustries': [
-            '519290',
+            'OTHER',
           ],
           'proofOfRevenueUrl': 'https://files.example.com/proof-of-revenue.pdf',
           'proofOfFinancialCapacityUrl': 'https://files.example.com/proof-of-financial-capacity.pdf',
@@ -2631,8 +2631,8 @@ const endpoints: ApiEndpoint[] = [
           'subAccountId': 'sub_01HZ...',
           'businessType': 'sole_prop',
           'businessIndustries': [
-            '519290',
-            '541511',
+            'SOFTWARE',
+            'ECOMMERCE',
           ],
           'website': 'https://example.com',
           'proofOfRevenueUrl': 'https://files.example.com/proof-of-revenue.pdf',
