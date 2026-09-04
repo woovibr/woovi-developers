@@ -209,5 +209,5 @@ console.log(selfie.url);
 
 1. **Crie o onboarding** via [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx) e envie o `linkOnboarding` ao seu cliente.
 2. **Aguarde o preenchimento** — o cliente final acessa o link, preenche os dados e envia os documentos.
-3. **Detecte a conclusão** — faça polling neste endpoint ou aguarde o webhook de mudança de status.
+3. **Detecte a conclusão** — aguarde os webhooks do onboarding (veja [Como acompanhar o onboarding em tempo real por webhooks](./webhooks-ciclo-de-vida.mdx)) ou, em último caso, faça polling neste endpoint.
 4. **Quando `status` for `APPROVED`** — chame este endpoint para sincronizar os dados no seu sistema e baixar os documentos enviados (lembre-se que as URLs são temporárias).
