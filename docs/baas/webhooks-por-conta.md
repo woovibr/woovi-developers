@@ -42,6 +42,7 @@ No registro, a Woovi faz um _handshake_: sua URL recebe um POST de teste e preci
 | `OPENPIX:MOVEMENT_CONFIRMED` / `OPENPIX:MOVEMENT_FAILED` | um envio de Pix da conta é confirmado / falha | AppID da conta |
 | `OPENPIX:TRANSACTION_REFUND_RECEIVED`                    | a conta recebe uma devolução                  | AppID da conta |
 | `ACCOUNT_REGISTER_APPROVED` / `_REJECTED` / `_PENDING`   | um registro de conta muda de status           | API Master     |
+| `ACCOUNT_REGISTER_STEP_UPDATED`                          | uma etapa do onboarding avançou ou travou     | API Master     |
 
 A lista completa de eventos está em `GET /api/v1/webhook/events` e em [Tipos de eventos de webhook](../webhook/webhook-events-type.md).
 
@@ -54,3 +55,9 @@ Os dois funcionam. Com muitas contas, prefira **um único endpoint** no seu sist
 - Máximo de **50 webhooks por empresa**; a mesma combinação de URL + evento não pode se repetir
 - Valide a assinatura `x-webhook-signature` de cada entrega — veja [Validação de assinatura](../webhook/seguranca/webhook-signature-validation.mdx)
 - Restrinja a origem aos IPs oficiais da Woovi — veja [IPs de webhook](../webhook/seguranca/webhook-ips.md)
+
+## Acompanhando o onboarding etapa por etapa
+
+Os eventos acima só avisam o desfecho. Se você quer saber o que falta enquanto o lojista ainda
+está preenchendo — BC Protege+, autenticação Pix, documentos do sócio — veja
+[Webhooks por etapa do onboarding](./kyc/webhooks-por-etapa.md).
