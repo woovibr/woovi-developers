@@ -42,6 +42,11 @@ No registro, a Woovi faz um _handshake_: sua URL recebe um POST de teste e preci
 | `OPENPIX:MOVEMENT_CONFIRMED` / `OPENPIX:MOVEMENT_FAILED` | um envio de Pix da conta é confirmado / falha | AppID da conta |
 | `OPENPIX:TRANSACTION_REFUND_RECEIVED`                    | a conta recebe uma devolução                  | AppID da conta |
 | `ACCOUNT_REGISTER_APPROVED` / `_REJECTED` / `_PENDING`   | um registro de conta muda de status           | API Master     |
+| `ACCOUNT_REGISTER_STEP_UPDATED`                          | o cliente final conclui um passo do onboarding | API Master    |
+| `ACCOUNT_REGISTER_IN_REVIEW`                             | o cadastro entra em análise                   | API Master     |
+| `ACCOUNT_REGISTER_DOCUMENTS_REQUESTED` / `_RFI_RESOLVED` | a análise pede documentos / o cliente responde | API Master    |
+
+Os eventos de onboarding — todos os passos, as idas e voltas entre `IN_REVIEW` e `PENDING`, e como saber se o cliente está refazendo um passo — estão detalhados em [Como acompanhar o onboarding em tempo real por webhooks](./kyc/webhooks-ciclo-de-vida.mdx).
 
 A lista completa de eventos está em `GET /api/v1/webhook/events` e em [Tipos de eventos de webhook](../webhook/webhook-events-type.md).
 
