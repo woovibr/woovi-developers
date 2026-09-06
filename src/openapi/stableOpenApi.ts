@@ -19,7 +19,7 @@ const STABLE_SECTIONS: StableSection[] = [
   {
     name: 'On Ramp',
     description:
-      'Convert BRL received through Pix into stablecoins, from quote to on-chain settlement.',
+      'Convert BRL through Pix or USD through WIRE/ACH into stablecoins on a supported destination network. USD requires an unlocked USD rail.',
   },
   {
     name: 'Off Ramp',
@@ -132,7 +132,7 @@ const buildStableOpenApi = (document: unknown): OpenApiRecord => {
       ...(isRecord(document.info) ? document.info : {}),
       title: 'Woovi Stablecoin API',
       description:
-        'APIs for BRL on-ramp, Pix off-ramp and stablecoin wallet infrastructure.',
+        'APIs for BRL and USD on-ramp, Pix off-ramp and stablecoin wallet infrastructure.',
     },
     tags: STABLE_SECTIONS,
     paths: Object.fromEntries(stablePaths),
