@@ -153,6 +153,26 @@ Esse evento é enviado quando um registro de subconta está em análise.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-account-register-pending-payload)
 
+### ACCOUNT_REGISTER_STEP_UPDATED
+Esse evento é enviado a cada passo do onboarding concluído pelo cliente final — dados da empresa, contrato social, sócios, selfie, BC Protege+, termos. O passo vem no payload, nos campos `step`, `stepScope` e `stepStatus`.
+
+[Ver o ciclo de vida completo →](../baas/kyc/webhooks-ciclo-de-vida.mdx)
+
+### ACCOUNT_REGISTER_IN_REVIEW
+Esse evento é enviado quando o registro entra em análise, seja porque o cliente final enviou o cadastro, seja porque um operador o promoveu de volta para análise.
+
+[Ver o ciclo de vida completo →](../baas/kyc/webhooks-ciclo-de-vida.mdx)
+
+### ACCOUNT_REGISTER_DOCUMENTS_REQUESTED
+Esse evento é enviado quando a análise solicita documentos novos (RFI). O payload lista os documentos pedidos para a empresa e para cada sócio, e quais passos voltaram a ficar pendentes.
+
+[Ver o ciclo de vida completo →](../baas/kyc/webhooks-ciclo-de-vida.mdx)
+
+### ACCOUNT_REGISTER_RFI_RESOLVED
+Esse evento é enviado quando o cliente final envia todos os documentos que haviam sido solicitados e a RFI é fechada.
+
+[Ver o ciclo de vida completo →](../baas/kyc/webhooks-ciclo-de-vida.mdx)
+
 ## Eventos de Pix Automatico
 
 ### PIX_AUTOMATIC_APPROVED
@@ -195,13 +215,3 @@ Esse evento é enviado quando uma tentativa de cobrança é realizada
 
 [Ver exemplo de payload →](/docs/pix-automatic/webhooks/pix-automatic-webhooks#pix_automatic_cobr_try_requested)
 
-## Eventos de abertura de conta (BaaS)
-
-Além dos eventos de desfecho (`ACCOUNT_REGISTER_APPROVED`, `_REJECTED`, `_PENDING`), o onboarding
-BaaS emite `ACCOUNT_REGISTER_STEP_UPDATED` a cada etapa que avança — BC Protege+, autenticação
-Pix, documentos de cada sócio, termos — dizendo no payload qual é a etapa (`step`) e se ela foi
-concluída ou está barrada (`stepStatus`). Quando a conta é devolvida, a etapa refeita sai de novo
-marcada com `retrying: true`.
-
-A lista completa, com os payloads, está em
-[Webhooks por etapa do onboarding](/docs/baas/kyc/webhooks-por-etapa).

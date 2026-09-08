@@ -1336,7 +1336,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'kyc',
     'category': 'KYC',
     'summary': 'Create a KYC onboarding',
-    'description': 'Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n',
+    'description': 'Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\n`website` and `businessDescription` can be pre-filled by the caller. In the Brazilian\nflow `businessDescription` is the only field gating the `COMPANY_DATA` onboarding step,\nso sending it here lets the merchant skip that step of the wizard. On an idempotent\nreplay both fields are only written when still empty — data typed by the applicant is\nnever overwritten.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n',
     'requestExamples': [
       {
         'name': 'MinimalRequest',
@@ -1361,6 +1361,15 @@ const endpoints: ApiEndpoint[] = [
           'redirectUrl': 'https://partner.example.com/kyc-done',
         },
         'summary': 'Request with redirectUrl for post-onboarding redirect',
+      },
+      {
+        'name': 'WithBusinessDescription',
+        'value': {
+          'taxID': 'XX.XXX.XXX/0001-XX',
+          'correlationID': 'my-unique-id',
+          'businessDescription': 'Venda de roupas e acessorios pela internet',
+        },
+        'summary': 'Request pre-filling the business description (skips the COMPANY_DATA step)',
       },
       {
         'name': 'WithRepresentatives',
@@ -1479,6 +1488,94 @@ const endpoints: ApiEndpoint[] = [
           ],
           'createdAt': '2026-08-24T14:00:06.386Z',
           'completedAt': '2026-08-24T14:00:06.462Z',
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-limits-request',
+    'method': 'POST',
+    'path': '/api/v1/limits/request',
+    'tag': 'account limits',
+    'category': 'account limits',
+    'summary': 'Ask to raise the limits of an account',
+    'description': 'Opens a limit-increase request for one of your accounts. It is created with\n`status: IN_REVIEW`; poll\n[`GET /api/v1/limits/request/{limitRequestId}`](#operation/getLimitRequest)\nuntil it becomes `APPROVED` (with `approvedLimits`) or `REJECTED`.\n\n## Upload the supporting document FIRST\n\nA limit request is never accepted without at least one document justifying\nit, and the document does **not** travel in this request. It is a two-step\nflow, and the order matters:\n\n**Step 1 — upload the file.** Send it to\n[`POST /api/v1/files`](#operation/uploadFile) as `multipart/form-data`,\nwith **`purpose=ACCOUNT_LIMIT_REQUEST`**. That endpoint needs the\n`FILE_POST` scope and accepts `application/pdf`, `image/png`, `image/jpeg`\nand `image/webp` up to 10 MiB. Keep the `file.id` it returns.\n\n```\ncurl -X POST https://api.woovi.com/api/v1/files \\\n  -H \'Authorization: <your AppID>\' \\\n  -F \'purpose=ACCOUNT_LIMIT_REQUEST\' \\\n  -F \'file=@faturamento.pdf\'\n```\n\n**Step 2 — open the request with that id**, in `documents[].fileId`:\n\n```\ncurl -X POST https://api.woovi.com/api/v1/limits/request \\\n  -H \'Authorization: <your AppID>\' \\\n  -H \'Content-Type: application/json\' \\\n  -d \'{"companyBankAccountId":"65f1c2e9a1b2c3d4e5f60718",\n       "pixDayLimit":5000000,\n       "pixNightLimit":200000,\n       "documents":[{"fileId":"68c7d0a1f0b2c3d4e5f60718"}]}\'\n```\n\nA `fileId` is only accepted when the file belongs to **your** company and\nwas uploaded with `purpose=ACCOUNT_LIMIT_REQUEST`. Anything else — a file\nof another company, another purpose, or an id that does not exist —\nanswers `400` and no request is created. Uploading the file with the wrong\npurpose is the most common cause of that `400`: upload it again with the\nright one, you do not need to delete the first.\n\n## The limits you send\n\nLimits are in cents and use the same field names as\n[`GET /api/v1/limits/{accountId}`](#operation/getAccountLimits), so read\nthe current values there, raise the ones you need, and send them here.\n`pixDayLimit` and `pixNightLimit` are always required. No field may be\n**below** its current value, and at least one must be **above** it —\notherwise the request is a `400`.\n\nOnly one request per account can be `IN_REVIEW` at a time; a second one\nanswers `409` while the first is still being analysed.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'companyBankAccountId': '65f1c2e9a1b2c3d4e5f60718',
+          'pixDayLimit': 5000000,
+          'pixNightLimit': 200000,
+          'documents': [
+            {
+              'fileId': '68c7d0a1f0b2c3d4e5f60718',
+            },
+          ],
+          'description': 'faturamento dos ultimos 12 meses',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'limitRequest': {
+            'id': '68c7d0a1f0b2c3d4e5f6071a',
+            'companyBankAccountId': '65f1c2e9a1b2c3d4e5f60718',
+            'status': 'IN_REVIEW',
+            'requestedLimits': {
+              'pixDayLimit': 5000000,
+              'pixNightLimit': 200000,
+            },
+            'documents': [
+              {
+                'fileName': 'faturamento.pdf',
+                'contentType': 'application/pdf',
+              },
+            ],
+            'description': 'faturamento dos ultimos 12 meses',
+            'createdAt': '2026-09-03T17:49:59.204Z',
+            'updatedAt': '2026-09-03T17:49:59.204Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-limits-request-limitrequestid',
+    'method': 'GET',
+    'path': '/api/v1/limits/request/{limitRequestId}',
+    'tag': 'account limits',
+    'category': 'account limits',
+    'summary': 'Get one limit request',
+    'description': "Returns one limit-increase request. **This is the endpoint to poll** after\n[creating a request](#operation/createLimitRequest).\n\n`status` stays `IN_REVIEW` until Woovi decides, and then becomes:\n\n- `APPROVED` — `approvedLimits` carries what was actually granted, and it\n  may be **lower** than what you asked for. The account's effective limits\n  change at the same moment, so\n  [`GET /api/v1/limits/{accountId}`](#operation/getAccountLimits) reflects\n  them right away.\n- `REJECTED` — nothing changed on the account. You may open a new request\n  for the same account once this one is decided.\n\n`approvedLimits` is absent while the request is still `IN_REVIEW`.\n\nA request of another company answers `404`, never a `403` — the id alone\nnever confirms that a request exists.\n",
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'limitRequest': {
+            'id': '68c7d0a1f0b2c3d4e5f6071a',
+            'companyBankAccountId': '65f1c2e9a1b2c3d4e5f60718',
+            'status': 'APPROVED',
+            'requestedLimits': {
+              'pixDayLimit': 5000000,
+              'pixNightLimit': 200000,
+            },
+            'approvedLimits': {
+              'pixDayLimit': 4500000,
+              'pixNightLimit': 200000,
+            },
+            'documents': [
+              {
+                'fileName': 'faturamento.pdf',
+                'contentType': 'application/pdf',
+              },
+            ],
+            'createdAt': '2026-09-03T17:49:59.204Z',
+            'updatedAt': '2026-09-03T19:12:03.881Z',
+          },
         },
       },
     ],
@@ -2441,6 +2538,124 @@ const endpoints: ApiEndpoint[] = [
       },
     ],
     'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-stablecoin-subaccount-kyb-usd',
+    'method': 'GET',
+    'path': '/api/v1/stablecoin/subaccount/kyb/usd',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Read the KYB USD (fiat rail) state of the company subaccount',
+    'description': "Status of the USD rail on the company's `CONFIRMED` stablecoin subaccount:\nhow far its KYB USD got and whether the provider currently accepts a USD\nticket for it.\n\nPoll this after `POST /api/v1/stablecoin/subaccount/kyb/usd` — the\nsubmission only creates the attempt, and the verdict lands later. While\nthe attempt can still change verdict the stored status is reconciled with\nthe provider on every read, so a rejection shows up here as soon as the\nprovider has it.\n\n`usdUnlocked` is the field that actually gates the rail: an `APPROVED`\nattempt alone is not enough, and it never turns true in the provider\nsandbox.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope and the company\n`STABLECOIN` feature.\n",
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'NotRequested',
+        'value': {
+          'status': 'ok',
+          'usdKyb': {
+            'subAccountId': 'sub_01HZ...',
+            'status': 'NOT_REQUESTED',
+            'usdUnlocked': false,
+          },
+        },
+        'summary': 'KYB USD never started',
+      },
+      {
+        'name': 'Pending',
+        'value': {
+          'status': 'ok',
+          'usdKyb': {
+            'subAccountId': 'sub_01HZ...',
+            'status': 'PENDING',
+            'attemptId': '7d2f5b18-3e9c-4a7f-d246-6b0e1f8d4c52',
+            'usdUnlocked': false,
+          },
+        },
+        'summary': 'Attempt submitted, waiting on the provider',
+      },
+      {
+        'name': 'Approved',
+        'value': {
+          'status': 'ok',
+          'usdKyb': {
+            'subAccountId': 'sub_01HZ...',
+            'status': 'APPROVED',
+            'attemptId': '7d2f5b18-3e9c-4a7f-d246-6b0e1f8d4c52',
+            'usdUnlocked': true,
+          },
+        },
+        'summary': 'Rail open',
+      },
+      {
+        'name': 'Rejected',
+        'value': {
+          'status': 'ok',
+          'usdKyb': {
+            'subAccountId': 'sub_01HZ...',
+            'status': 'REJECTED',
+            'attemptId': '7d2f5b18-3e9c-4a7f-d246-6b0e1f8d4c52',
+            'resultMessage': 'proof of revenue is unreadable',
+            'usdUnlocked': false,
+          },
+        },
+        'summary': 'Provider refused the attempt',
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-stablecoin-subaccount-kyb-usd',
+    'method': 'POST',
+    'path': '/api/v1/stablecoin/subaccount/kyb/usd',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Submit KYB USD (fiat rail) for a confirmed stablecoin subaccount',
+    'description': 'Unlocks the USD fiat rail on a company stablecoin subaccount that already has\nKYB Level 1 approved (`StableSubAccount.status = CONFIRMED`).\n\nThe call uploads the supporting documents to the provider, submits Proof of\nFinancial Capacity (and waits until it is `APPROVED`), optionally submits a\ncompany Proof of Address, then submits the KYB USD attempt.\n\nDocument URLs must be publicly fetchable (or pre-signed) HTTPS links to the\nPDF/image files. Typical sources: files already uploaded during onboarding /\nRFI, or merchant-hosted temporary URLs.\n\nRequired documents:\n- `proofOfFinancialCapacityUrl` — proof of financial capacity (PoFC)\n- `proofOfRevenueUrl` — proof of revenue\n\nOptional documents:\n- `proofOfAddressCompanyUrl` — company proof of address (raises limits;\n  independent of the USD rail, but accepted in the same call)\n\nAlso required:\n- `businessType` — Bridge business type enum\n- `businessIndustries` — at least one industry from the\n  `StablecoinSubAccountKybUsdIndustry` enum (e.g. `SOFTWARE`; `OTHER`\n  when none fits)\n- `website` — required only when the company website was not captured at\n  KYB Level 1\n\nThe subaccount must belong to the authenticated company and be `CONFIRMED`.\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n\nThe call is synchronous and waits on the provider: it can take up to two\nminutes, and answers `504` when the Proof of Financial Capacity is still\nnot approved by then (the document ids come back, so nothing has to be\nre-uploaded).\n\nA `201` only means the attempt was created — poll\n`GET /api/v1/stablecoin/subaccount/kyb/usd` for the verdict and for\n`usdUnlocked`.\n\nNote: USD fiat rails are not available in the provider sandbox — submission\nmay appear to succeed, but `usdUnlocked` will not become true there.\n',
+    'requestExamples': [
+      {
+        'name': 'MinimalUsdKyb',
+        'value': {
+          'subAccountId': 'sub_01HZ...',
+          'businessType': 'llc',
+          'businessIndustries': [
+            'OTHER',
+          ],
+          'proofOfRevenueUrl': 'https://files.example.com/proof-of-revenue.pdf',
+          'proofOfFinancialCapacityUrl': 'https://files.example.com/proof-of-financial-capacity.pdf',
+        },
+        'summary': 'Required fields only (PoFC + proof of revenue)',
+      },
+      {
+        'name': 'WithWebsiteAndAddressProof',
+        'value': {
+          'subAccountId': 'sub_01HZ...',
+          'businessType': 'sole_prop',
+          'businessIndustries': [
+            'SOFTWARE',
+            'ECOMMERCE',
+          ],
+          'website': 'https://example.com',
+          'proofOfRevenueUrl': 'https://files.example.com/proof-of-revenue.pdf',
+          'proofOfFinancialCapacityUrl': 'https://files.example.com/proof-of-financial-capacity.pdf',
+          'proofOfAddressCompanyUrl': 'https://files.example.com/proof-of-address-company.pdf',
+        },
+        'summary': 'Include website + company proof of address',
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'Success',
+        'value': {
+          'subAccountId': 'sub_01HZ...',
+          'usdKybAttemptId': '7d2f5b18-3e9c-4a7f-d246-6b0e1f8d4c52',
+          'proofOfRevenueDocId': '5f8d3c16-b2e7-4a9f-c834-1e6b0d5f2a91',
+          'proofOfFinancialCapacityDocId': 'c4e9b27f-1a3d-4e8c-b561-7d2f0a9e4b38',
+          'proofOfFinancialCapacityAttemptId': '1e6b8c43-5f2a-4d9e-b782-4c1f0a7e3b65',
+          'proofOfAddressDocId': 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+          'proofOfAddressAttemptId': 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
+        },
+      },
+    ],
   },
   {
     'id': 'post-api-v1-stablecoin-subaccount',
