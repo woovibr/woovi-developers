@@ -92,7 +92,7 @@ E com os mesmos _headers_ de assinatura de qualquer webhook da Woovi:
 | `x-webhook-signature` | assinatura RSA-SHA256 em base64, feita com a chave privada da Woovi — **use esta** ([como validar](../../webhook/seguranca/webhook-signature-validation.mdx)) |
 | `x-openpix-signature` | HMAC-SHA1 em base64 com o `hmacSecretKey` do seu webhook ([como validar](../../webhook/seguranca/webhook-hmac.mdx)) |
 
-## `ACCOUNT_REGISTER_STEP_UPDATED`
+## `ACCOUNT_REGISTER_STEP_UPDATED` {#account-register-step-updated}
 
 O evento de progresso. Um disparo por passo concluído, na hora em que o passo é concluído.
 
@@ -221,7 +221,7 @@ O BC Protege+ é o único passo que também reporta um estado negativo. Quando o
 
 Quando a autorização é concedida, chega o mesmo evento com `step: "BC_PROTEGE"` e `stepStatus: "COMPLETED"`. É o gancho certo para avisar o seu cliente que ele precisa abrir o app do banco dele — é a causa mais comum de onboarding travado sem erro aparente.
 
-## `ACCOUNT_REGISTER_IN_REVIEW`
+## `ACCOUNT_REGISTER_IN_REVIEW` {#account-register-in-review}
 
 O cadastro entrou em análise: a bola está com a Woovi. Chega dos **dois** caminhos possíveis, com o mesmo formato:
 
@@ -247,7 +247,7 @@ O cadastro entrou em análise: a bola está com a Woovi. Chega dos **dois** cami
 
 Como é um evento de ciclo de vida e não de passo, ele **não** traz `step`, `stepStatus`, `stepScope` nem `stepCompletedAt`. Traz `retrying`/`retryCount`, e é aí que eles mais importam: `retrying: true` significa "este cadastro já tinha sido devolvido antes — é a segunda (ou n-ésima) vez que ele entra em análise".
 
-## `ACCOUNT_REGISTER_DOCUMENTS_REQUESTED`
+## `ACCOUNT_REGISTER_DOCUMENTS_REQUESTED` {#account-register-documents-requested}
 
 A análise pediu documentos (uma RFI — _request for information_). É o evento que diz **o que exatamente** foi pedido, e quais passos o cliente vai ter que refazer:
 
@@ -308,7 +308,7 @@ Que passo cada documento invalida:
 Uma RFI pode ser aberta com o cadastro ainda `IN_REVIEW` (o `status` do payload mostra isso). Quando a análise **devolve** o cadastro para o cliente, você recebe `ACCOUNT_REGISTER_DOCUMENTS_REQUESTED` **e** `ACCOUNT_REGISTER_PENDING` — este último com o `requestReason`, o texto que explica a pendência para o seu cliente. Os dois chegam sem ordem garantida entre si.
 :::
 
-## `ACCOUNT_REGISTER_RFI_RESOLVED`
+## `ACCOUNT_REGISTER_RFI_RESOLVED` {#account-register-rfi-resolved}
 
 O cliente respondeu: todos os documentos pedidos foram enviados e a RFI foi fechada. Mesmo formato de `IN_REVIEW`, sem campos de passo:
 
