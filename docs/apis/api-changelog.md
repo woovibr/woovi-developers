@@ -13,6 +13,16 @@ com anúncio prévio e prazo de _sunset_.
 
 Tipos: **Adicionado** · **Alterado** · **Depreciado** · **Removido**.
 
+## 2026-09
+
+- **Adicionado** — `GET /api/v1/subscriptions/{id}/payment-book`, que emite as cobranças
+  das parcelas de uma assinatura `RECURRENT` até o mês/ano informados e devolve o carnê
+  em PDF (`application/pdf`). `month` e `year` são obrigatórios e vão no máximo até o
+  final do ano que vem. **A chamada cria cobranças** — com `chargeType: BOLETO` cada uma
+  é um boleto registrado — e é idempotente por parcela, então repetir não cobra de novo.
+  Exige o escopo `SUBSCRIPTION_PAYMENT_BOOK_GET`. Veja
+  [Como gerar carnê de assinatura usando a API?](../subscription-recurrence/subscription-payment-book-api.mdx).
+
 ## 2026-08
 
 - **Adicionado** — campo opcional `fileId` nos itens de `documents` em
