@@ -153,6 +153,26 @@ Esse evento é enviado quando um registro de subconta está em análise.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-account-register-pending-payload)
 
+### ACCOUNT_REGISTER_STEP_UPDATED
+Esse evento é enviado a cada passo do onboarding concluído pelo cliente final — dados da empresa, contrato social, sócios, selfie, BC Protege+, termos. O passo vem no payload, nos campos `step`, `stepScope` e `stepStatus`.
+
+[Ver o ciclo de vida completo →](../baas/kyc/webhooks-ciclo-de-vida.mdx)
+
+### ACCOUNT_REGISTER_IN_REVIEW
+Esse evento é enviado quando o registro entra em análise, seja porque o cliente final enviou o cadastro, seja porque um operador o promoveu de volta para análise.
+
+[Ver o ciclo de vida completo →](../baas/kyc/webhooks-ciclo-de-vida.mdx)
+
+### ACCOUNT_REGISTER_DOCUMENTS_REQUESTED
+Esse evento é enviado quando a análise solicita documentos novos (RFI). O payload lista os documentos pedidos para a empresa e para cada sócio, e quais passos voltaram a ficar pendentes.
+
+[Ver o ciclo de vida completo →](../baas/kyc/webhooks-ciclo-de-vida.mdx)
+
+### ACCOUNT_REGISTER_RFI_RESOLVED
+Esse evento é enviado quando o cliente final envia todos os documentos que haviam sido solicitados e a RFI é fechada.
+
+[Ver o ciclo de vida completo →](../baas/kyc/webhooks-ciclo-de-vida.mdx)
+
 ## Eventos de Pix Automatico
 
 ### PIX_AUTOMATIC_APPROVED
