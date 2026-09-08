@@ -355,6 +355,17 @@ O `retrying` responde a perguntas diferentes conforme o evento:
 - em `ACCOUNT_REGISTER_IN_REVIEW`: **o cadastro inteiro está reentrando em análise** (`retryCount > 0`).
 - nos demais eventos, `retrying` é sempre `false` — use `retryCount`.
 
+:::note Só uma devolução marca uma retentativa
+`retrying` sai de uma marca gravada no cadastro quando a RFI invalida o passo, e essa marca
+é consumida no momento em que o passo é reconcluído. Duas consequências práticas:
+
+- **é por passo, nunca pelo cadastro inteiro.** Uma devolução que pediu só o contrato social
+  não marca `TERMS` como retentativa quando o cliente passa por ele de novo;
+- **refazer um passo sem uma nova devolução não emite nada.** O evento sai só na transição
+  de pendente para concluído: reenviar o mesmo documento, ou salvar o mesmo formulário duas
+  vezes, não gera um segundo `STEP_UPDATED`.
+:::
+
 Na prática:
 
 ```js
