@@ -22,6 +22,10 @@ Para gerar, faça uma chamada GET para o _endpoint_
 [aqui](/api#tag/subscription/GET/api/v1/subscriptions/{id}/payment-book) a
 documentação referente a esse _endpoint_.
 
+Você precisa de um AppID com o escopo `SUBSCRIPTION_PAYMENT_BOOK_GET`
+([como adicionar escopos](../apis/api-scopes.md)). Ele não é um escopo de leitura:
+como a chamada cria cobranças, não o conceda a uma integração que apenas consulta.
+
 :::warning Só para assinatura recorrente
 
 O carnê existe apenas para assinaturas do tipo `RECURRENT` — as que você cria com
