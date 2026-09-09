@@ -22,11 +22,13 @@ Todas as rotas ficam sob `/api/v1/stablecoin/` e exigem autenticação com o seu
 
 > A URL base de produção é `https://api.woovi.com`. Caso o App não tenha o escopo necessário, a resposta é `401` com `Application is missing required scope: ...`.
 
+Para USD via WIRE/ACH, veja o [passo a passo de entrada em USD](./stablecoin-flow.md#entrada-em-usd-wire-ou-ach). As rotas `quote` e `deposit` também aceitam `inputCurrency: USD`; `/deposit/approve` é exclusivo do fluxo em BRL.
+
 ### Cotação (Quote)
 
 GET `/api/v1/stablecoin/quote`
 
-Retorna uma cotação BRL → stablecoin **sem criar um depósito**. Use para exibir ao cliente exatamente quanto de stablecoin ele receberia antes de confirmar. A cotação é armazenada em cache por 60 segundos.
+Com `inputCurrency` omitido ou `BRL`, retorna uma cotação BRL → stablecoin **sem criar um depósito**. Use para exibir ao cliente exatamente quanto de stablecoin ele receberia antes de confirmar. A cotação é armazenada em cache por 60 segundos.
 
 Query params:
 
@@ -64,7 +66,7 @@ Resposta:
 
 POST `/api/v1/stablecoin/deposit`
 
-Cria um depósito de stablecoin a partir do saldo em BRL da conta. Retorna `depositId`, `correlationId` e uma cotação com as taxas aplicadas. A aprovação (`/deposit/approve`) é que debita o saldo da conta.
+Com `inputCurrency` omitido ou `BRL`, cria um depósito de stablecoin a partir do saldo em BRL da conta. Retorna `depositId`, `correlationId` e uma cotação com as taxas aplicadas. A aprovação (`/deposit/approve`) é que debita o saldo da conta.
 
 Body:
 
@@ -122,7 +124,7 @@ Erros comuns (`400`):
 
 POST `/api/v1/stablecoin/deposit/approve`
 
-Aprova um depósito já criado, identificado pelo `correlationId`, disparando a liquidação on-chain (pagamento do QR Code stablecoin). O depósito passa para `PROCESSING` enquanto a liquidação está em andamento.
+Aprova um depósito em BRL já criado, identificado pelo `correlationId`, disparando a liquidação on-chain (pagamento do QR Code stablecoin). O depósito passa para `PROCESSING` enquanto a liquidação está em andamento.
 
 Body:
 
