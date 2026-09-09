@@ -1,9 +1,12 @@
 import React from 'react';
+// eslint-disable-next-line import/no-unresolved
 import BrowserOnly from '@docusaurus/BrowserOnly';
+// eslint-disable-next-line import/no-unresolved
 import Layout from '@theme/Layout';
 
 function ApiElementsInner() {
   const [Component, setComponent] =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     React.useState<React.ComponentType<any> | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -31,6 +34,8 @@ function ApiElementsInner() {
 
     return () => {
       mounted = false;
+      // Stoplight's sheet restyles bare html/body, so it must not outlive the page.
+      link.remove();
     };
   }, []);
 
@@ -53,9 +58,9 @@ function ApiElementsInner() {
   return (
     <div style={{ height: 'calc(100vh - 60px)' }}>
       <Component
-        apiDescriptionUrl="https://api.woovi.com/api/openapi.json"
-        router="hash"
-        layout="sidebar"
+        apiDescriptionUrl='https://api.woovi.com/api/openapi.json'
+        router='hash'
+        layout='sidebar'
       />
     </div>
   );
@@ -64,8 +69,8 @@ function ApiElementsInner() {
 export default function ApiElements() {
   return (
     <Layout
-      title="Woovi API - Stoplight Elements"
-      description="Woovi API Documentation with Stoplight Elements"
+      title='Woovi API - Stoplight Elements'
+      description='Woovi API Documentation with Stoplight Elements'
     >
       <BrowserOnly fallback={<div style={{ padding: '20px' }}>Loading...</div>}>
         {() => <ApiElementsInner />}

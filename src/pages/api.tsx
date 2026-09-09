@@ -1,47 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+// eslint-disable-next-line import/no-unresolved
 import BrowserOnly from '@docusaurus/BrowserOnly';
+// eslint-disable-next-line import/no-unresolved
 import Layout from '@theme/Layout';
 
-function ApiScalarInner() {
-  const [ApiReference, setApiReference] = useState(null);
+import ScalarApiReference from '../components/ScalarApiReference';
 
-  useEffect(() => {
-    let mounted = true;
-
-    (async () => {
-      const mod = await import('@scalar/api-reference-react');
-      await import('@scalar/api-reference-react/style.css');
-
-      if (mounted) setApiReference(() => mod.ApiReferenceReact);
-    })();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (!ApiReference) return <div>Loading...</div>;
-
-  return (
-    <div style={{ height: 'calc(100vh - 60px)' }}>
-      <ApiReference
-        configuration={{
-          url: 'https://api.woovi.com/api/openapi.json',
-          theme: 'default',
-        }}
-      />
-    </div>
-  );
-}
-
-export default function ApiScalar() {
+export default function WooviApiPage() {
   return (
     <Layout
-      title="Woovi API"
-      description="Woovi API Documentation"
+      title='Woovi API'
+      description='Woovi API Documentation'
     >
       <BrowserOnly fallback={<div>Loading...</div>}>
-        {() => <ApiScalarInner />}
+        {() => (
+          <ScalarApiReference
+            configuration={{
+              url: 'https://api.woovi.com/api/openapi.json',
+              theme: 'default',
+            }}
+          />
+        )}
       </BrowserOnly>
     </Layout>
   );
