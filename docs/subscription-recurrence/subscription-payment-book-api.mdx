@@ -117,6 +117,12 @@ Content-Type: application/pdf
 Content-Disposition: inline; filename="payment-book-63e3b2b773d3d93bcdd32993.pdf"
 ```
 
+O PDF traz uma via por parcela, numeradas como "Parcela N de M", cada uma com o
+recibo do pagador, o código de barras e o QR Code Pix — o seu cliente paga a via
+por qualquer um dos dois:
+
+![Carnê gerado pela API, com uma via por parcela](./__assets__/subscription-payment-book-pdf.png)
+
 :::tip No Postman use "Send and Download"
 
 O corpo é binário. Um `Send` normal mostra o PDF como texto embaralhado e parece erro.
