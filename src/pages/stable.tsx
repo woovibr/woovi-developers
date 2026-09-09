@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+// eslint-disable-next-line import/no-unresolved
 import BrowserOnly from '@docusaurus/BrowserOnly';
+// eslint-disable-next-line import/no-unresolved
 import Layout from '@theme/Layout';
 
 import { buildStableOpenApi } from '../openapi/stableOpenApi';
@@ -68,6 +70,8 @@ function StableApiReference() {
     return () => {
       mounted = false;
       abortController.abort();
+      // @scalar/use-hooks writes this class on document.body and never removes it.
+      document.body.classList.remove('light-mode', 'dark-mode');
     };
   }, []);
 
