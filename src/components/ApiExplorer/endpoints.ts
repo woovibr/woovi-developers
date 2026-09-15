@@ -2540,13 +2540,43 @@ const endpoints: ApiEndpoint[] = [
     'responseExamples': [],
   },
   {
+    'id': 'post-api-v1-stablecoin-subaccount-kyb-usd-document',
+    'method': 'POST',
+    'path': '/api/v1/stablecoin/subaccount/kyb/usd/document',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Get a pre-signed URL to upload a KYB USD supporting document',
+    'description': "Step 1 of the USD fiat rail submission: returns a pre-signed URL to upload\none supporting document — proof of revenue, proof of financial capacity or\ncompany proof of address.\n\nThe file goes straight from the client to storage; it never transits the\nAPI. The URL is scoped to a key that belongs to the authenticated company,\nis single use and expires in `expiresIn` seconds.\n\nUpload it with `PUT <uploadUrl>` sending the same `Content-Type` returned\nin `headers` and the raw file as the body — no multipart, no extra\nheaders. Then post the returned `document` object on\n`POST /api/v1/stablecoin/subaccount/kyb/usd` as `proofOfRevenue`,\n`proofOfFinancialCapacity` or `proofOfAddressCompany`.\n\nThis is the preferred way to send the documents: the `*Url` fields of the\nsubmission need a publicly fetchable link, which means exposing the\ncompany's financial documents on the open internet.\n\nFiles above `maxSizeBytes`, or whose content type is not one of\n`application/pdf`, `image/jpeg`, `image/png`, `image/webp`, are rejected\nwhen the document is attached to the submission.\n\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n",
+    'requestExamples': [
+      {
+        'name': 'ProofOfRevenue',
+        'value': {
+          'type': 'PROOF_OF_REVENUE',
+          'fileName': 'proof-of-revenue.pdf',
+          'mimeType': 'application/pdf',
+        },
+        'summary': 'Proof of revenue',
+      },
+      {
+        'name': 'ProofOfFinancialCapacity',
+        'value': {
+          'type': 'PROOF_OF_FINANCIAL_CAPACITY',
+          'fileName': 'extrato.pdf',
+          'mimeType': 'application/pdf',
+        },
+        'summary': 'Proof of financial capacity (account statement)',
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
     'id': 'get-api-v1-stablecoin-subaccount-kyb-usd',
     'method': 'GET',
     'path': '/api/v1/stablecoin/subaccount/kyb/usd',
     'tag': 'stablecoin',
     'category': 'stablecoin',
     'summary': 'Read the KYB USD (fiat rail) state of the company subaccount',
-    'description': "Status of the USD rail on the company's `CONFIRMED` stablecoin subaccount:\nhow far its KYB USD got and whether the provider currently accepts a USD\nticket for it.\n\nPoll this after `POST /api/v1/stablecoin/subaccount/kyb/usd` — the\nsubmission only creates the attempt, and the verdict lands later. While\nthe attempt can still change verdict the stored status is reconciled with\nthe provider on every read, so a rejection shows up here as soon as the\nprovider has it.\n\n`usdUnlocked` is the field that actually gates the rail: an `APPROVED`\nattempt alone is not enough, and it never turns true in the provider\nsandbox.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope and the company\n`STABLECOIN` feature.\n",
+    'description': "Status of the USD rail on the company's `CONFIRMED` stablecoin subaccount:\nhow far its KYB USD got and whether the provider currently accepts a USD\nticket for it.\n\nPoll this after `POST /api/v1/stablecoin/subaccount/kyb/usd` — the\nsubmission only creates the attempt, and the verdict lands later. While\nthe attempt can still change verdict the stored status is reconciled with\nthe provider on every read, so a rejection shows up here as soon as the\nprovider has it.\n\n`usdUnlocked` is the field that actually gates the rail: an `APPROVED`\nattempt alone is not enough, and it never turns true in the provider\nsandbox.\n\nMost of the wait is the Proof of Financial Capacity, which the provider\ncan leave undecided for hours and publishes no SLA for. `usdKyb.\nproofOfFinancialCapacity` reports that step on its own — when it was last\nread, when it will be read next, how long the wait may last and when it\ncleared — so a healthy wait is never indistinguishable from a rail that\nwas abandoned.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope and the company\n`STABLECOIN` feature.\n",
     'requestExamples': [],
     'responseExamples': [
       {
@@ -2562,6 +2592,44 @@ const endpoints: ApiEndpoint[] = [
         'summary': 'KYB USD never started',
       },
       {
+        'name': 'WaitingOnProofOfFinancialCapacity',
+        'value': {
+          'status': 'ok',
+          'usdKyb': {
+            'subAccountId': 'sub_01HZ...',
+            'status': 'PROOF_OF_FINANCIAL_CAPACITY_PENDING',
+            'usdUnlocked': false,
+            'proofOfFinancialCapacity': {
+              'attemptId': '613d4467-3987-4d43-90d6-baed4c671723',
+              'status': 'PENDING',
+              'checkedAt': '2026-09-08T02:18:24Z',
+              'nextCheckAt': '2026-09-08T02:48:24Z',
+              'deadlineAt': '2026-09-14T19:46:24Z',
+            },
+          },
+        },
+        'summary': 'Waiting on the Proof of Financial Capacity verdict',
+      },
+      {
+        'name': 'Stalled',
+        'value': {
+          'status': 'ok',
+          'usdKyb': {
+            'subAccountId': 'sub_01HZ...',
+            'status': 'PROOF_OF_FINANCIAL_CAPACITY_STALLED',
+            'usdUnlocked': false,
+            'proofOfFinancialCapacity': {
+              'attemptId': '613d4467-3987-4d43-90d6-baed4c671723',
+              'status': 'PENDING',
+              'checkedAt': '2026-09-14T19:46:24Z',
+              'deadlineAt': '2026-09-14T19:46:24Z',
+              'stalledAt': '2026-09-14T19:46:25Z',
+            },
+          },
+        },
+        'summary': 'The provider never decided; we stopped waiting',
+      },
+      {
         'name': 'Pending',
         'value': {
           'status': 'ok',
@@ -2572,7 +2640,7 @@ const endpoints: ApiEndpoint[] = [
             'usdUnlocked': false,
           },
         },
-        'summary': 'Attempt submitted, waiting on the provider',
+        'summary': 'KYB USD submitted, waiting on the provider',
       },
       {
         'name': 'Approved',
@@ -2610,8 +2678,76 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'stablecoin',
     'category': 'stablecoin',
     'summary': 'Submit KYB USD (fiat rail) for a confirmed stablecoin subaccount',
-    'description': 'Unlocks the USD fiat rail on a company stablecoin subaccount that already has\nKYB Level 1 approved (`StableSubAccount.status = CONFIRMED`).\n\nThe call uploads the supporting documents to the provider, submits Proof of\nFinancial Capacity (and waits until it is `APPROVED`), optionally submits a\ncompany Proof of Address, then submits the KYB USD attempt.\n\nDocument URLs must be publicly fetchable (or pre-signed) HTTPS links to the\nPDF/image files. Typical sources: files already uploaded during onboarding /\nRFI, or merchant-hosted temporary URLs.\n\nRequired documents:\n- `proofOfFinancialCapacityUrl` — proof of financial capacity (PoFC)\n- `proofOfRevenueUrl` — proof of revenue\n\nOptional documents:\n- `proofOfAddressCompanyUrl` — company proof of address (raises limits;\n  independent of the USD rail, but accepted in the same call)\n\nAlso required:\n- `businessType` — Bridge business type enum\n- `businessIndustries` — at least one industry from the\n  `StablecoinSubAccountKybUsdIndustry` enum (e.g. `SOFTWARE`; `OTHER`\n  when none fits)\n- `website` — required only when the company website was not captured at\n  KYB Level 1\n\nThe subaccount must belong to the authenticated company and be `CONFIRMED`.\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n\nThe call is synchronous and waits on the provider: it can take up to two\nminutes, and answers `504` when the Proof of Financial Capacity is still\nnot approved by then (the document ids come back, so nothing has to be\nre-uploaded).\n\nA `201` only means the attempt was created — poll\n`GET /api/v1/stablecoin/subaccount/kyb/usd` for the verdict and for\n`usdUnlocked`.\n\nNote: USD fiat rails are not available in the provider sandbox — submission\nmay appear to succeed, but `usdUnlocked` will not become true there.\n',
+    'description': 'Unlocks the USD fiat rail on a company stablecoin subaccount that already has\nKYB Level 1 approved (`StableSubAccount.status = CONFIRMED`).\n\nThe call **accepts** the submission and hands it to a worker: it answers\n`202` right away and the provider work happens off the request path. That\nwork is uploading the supporting documents, submitting Proof of Financial\nCapacity and waiting until it is `APPROVED`, optionally submitting a\ncompany Proof of Address, then submitting the KYB USD attempt.\n\nIt has to be asynchronous: the provider can leave a Proof of Financial\nCapacity pending for hours, far past any HTTP gateway timeout. Poll\n`GET /api/v1/stablecoin/subaccount/kyb/usd` for the outcome — the rail\nreports `PROOF_OF_FINANCIAL_CAPACITY_PENDING` from the moment this call\nis accepted, `PENDING` once the KYB attempt is created, and finally\n`APPROVED` or `REJECTED`.\n\nThe call is idempotent. The queued job is keyed by the sub-account, and\nthe Proof of Financial Capacity attempt is claimed on the sub-account\nitself, so posting twice converges on the submission already running\ninstead of opening a second provider attempt or re-uploading documents.\nA repeat POST answers `202` with the same `jobId`, and the payload of the\nsubmission already running is the one that counts.\n\nEach document is sent in one of two forms.\n\n**Preferred — upload it first.** Call\n`POST /api/v1/stablecoin/subaccount/kyb/usd/document` for a pre-signed\nURL, `PUT` the file to it, and post the returned `document` object back\nhere. The file never has to be exposed publicly, and the reference is\nvalidated (ownership, size, content type) before any provider call runs.\n\n**Or hand over a link.** The `*Url` fields still work and take a publicly\nfetchable (or pre-signed) HTTPS link to the PDF/image. A reference wins\nwhen both forms are sent for the same document.\n\n**Several files for the same document.** Every reference field also takes\na list. The provider verifies one document per attempt and reuses the\nattempt a subaccount already has, so extra files cannot be extra\nattempts — the first entry is the one the provider is told about, and the\nrest are uploaded to the subaccount document store, where the analyst\nreviewing the attempt reads them. At most 10 files per document.\n\nRequired documents:\n- `proofOfFinancialCapacity` / `proofOfFinancialCapacityUrl` — proof of\n  financial capacity (PoFC)\n- `proofOfRevenue` / `proofOfRevenueUrl` — proof of revenue\n\nOptional documents:\n- `proofOfAddressCompany` / `proofOfAddressCompanyUrl` — company proof of\n  address (raises limits; independent of the USD rail, but accepted in the\n  same call)\n\nAlso required:\n- `businessType` — Bridge business type enum\n- `businessIndustries` — at least one industry from the\n  `StablecoinSubAccountKybUsdIndustry` enum (e.g. `SOFTWARE`; `OTHER`\n  when none fits)\n- `website` — required only when the company website was not captured at\n  KYB Level 1\n\nThe subaccount must belong to the authenticated company and be `CONFIRMED`.\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n\nNote: USD fiat rails are not available in the provider sandbox — submission\nmay appear to succeed, but `usdUnlocked` will not become true there.\n',
     'requestExamples': [
+      {
+        'name': 'UploadedDocuments',
+        'value': {
+          'subAccountId': 'sub_01HZ...',
+          'businessType': 'llc',
+          'businessIndustries': [
+            'FINANCIAL',
+          ],
+          'proofOfRevenue': {
+            'type': 'PROOF_OF_REVENUE',
+            'bucketName': 'woovi-media',
+            'path': 'stablecoin/kyb-usd/6650abc1234def567890aaaa/8f1c-proof-of-revenue.pdf',
+            'fileName': 'proof-of-revenue.pdf',
+            'mimeType': 'application/pdf',
+          },
+          'proofOfFinancialCapacity': {
+            'type': 'PROOF_OF_FINANCIAL_CAPACITY',
+            'bucketName': 'woovi-media',
+            'path': 'stablecoin/kyb-usd/6650abc1234def567890aaaa/2b7d-extrato.pdf',
+            'fileName': 'extrato.pdf',
+            'mimeType': 'application/pdf',
+          },
+        },
+        'summary': 'Documents uploaded through /kyb/usd/document (preferred)',
+      },
+      {
+        'name': 'SeveralFilesPerDocument',
+        'value': {
+          'subAccountId': 'sub_01HZ...',
+          'businessType': 'llc',
+          'businessIndustries': [
+            'FINANCIAL',
+          ],
+          'proofOfRevenue': [
+            {
+              'type': 'PROOF_OF_REVENUE',
+              'bucketName': 'woovi-media',
+              'path': 'stablecoin/kyb-usd/6650abc1234def567890aaaa/8f1c-dre.pdf',
+              'fileName': 'dre.pdf',
+              'mimeType': 'application/pdf',
+            },
+          ],
+          'proofOfFinancialCapacity': [
+            {
+              'type': 'PROOF_OF_FINANCIAL_CAPACITY',
+              'bucketName': 'woovi-media',
+              'path': 'stablecoin/kyb-usd/6650abc1234def567890aaaa/2b7d-balanco.pdf',
+              'fileName': 'balanco.pdf',
+              'mimeType': 'application/pdf',
+            },
+            {
+              'type': 'PROOF_OF_FINANCIAL_CAPACITY',
+              'bucketName': 'woovi-media',
+              'path': 'stablecoin/kyb-usd/6650abc1234def567890aaaa/4c1a-balancete.pdf',
+              'fileName': 'balancete.pdf',
+              'mimeType': 'application/pdf',
+            },
+            {
+              'type': 'PROOF_OF_FINANCIAL_CAPACITY',
+              'bucketName': 'woovi-media',
+              'path': 'stablecoin/kyb-usd/6650abc1234def567890aaaa/9d3e-extrato.pdf',
+              'fileName': 'extrato.pdf',
+              'mimeType': 'application/pdf',
+            },
+          ],
+        },
+        'summary': 'Three financial-capacity files, first one verified',
+      },
       {
         'name': 'MinimalUsdKyb',
         'value': {
@@ -2623,7 +2759,7 @@ const endpoints: ApiEndpoint[] = [
           'proofOfRevenueUrl': 'https://files.example.com/proof-of-revenue.pdf',
           'proofOfFinancialCapacityUrl': 'https://files.example.com/proof-of-financial-capacity.pdf',
         },
-        'summary': 'Required fields only (PoFC + proof of revenue)',
+        'summary': 'Required fields only, as public links',
       },
       {
         'name': 'WithWebsiteAndAddressProof',
@@ -2642,20 +2778,7 @@ const endpoints: ApiEndpoint[] = [
         'summary': 'Include website + company proof of address',
       },
     ],
-    'responseExamples': [
-      {
-        'name': 'Success',
-        'value': {
-          'subAccountId': 'sub_01HZ...',
-          'usdKybAttemptId': '7d2f5b18-3e9c-4a7f-d246-6b0e1f8d4c52',
-          'proofOfRevenueDocId': '5f8d3c16-b2e7-4a9f-c834-1e6b0d5f2a91',
-          'proofOfFinancialCapacityDocId': 'c4e9b27f-1a3d-4e8c-b561-7d2f0a9e4b38',
-          'proofOfFinancialCapacityAttemptId': '1e6b8c43-5f2a-4d9e-b782-4c1f0a7e3b65',
-          'proofOfAddressDocId': 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-          'proofOfAddressAttemptId': 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
-        },
-      },
-    ],
+    'responseExamples': [],
   },
   {
     'id': 'post-api-v1-stablecoin-subaccount',
