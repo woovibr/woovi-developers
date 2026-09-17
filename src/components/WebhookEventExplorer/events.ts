@@ -246,6 +246,33 @@ const events: WebhookEvent[] = [
     },
   },
   {
+    id: 'boleto-settled',
+    event: 'BOLETO_SETTLED',
+    category: 'Boleto',
+    description:
+      'Enviado quando um boleto é liquidado pelo banco emissor — quando o valor efetivamente cai na conta (D+3 após o pagamento), distinto do boleto ser pago.',
+    docsPath: '/docs/boleto/boleto-webhook',
+    payload: {
+      event: 'BOLETO_SETTLED',
+      charge: {
+        correlationID: '3f2a2690-8224-4aae-a1ba-ed26d4d61f81',
+        value: 242898,
+        status: 'COMPLETED',
+      },
+      boleto: {
+        boletoTransactionID: '6a84929cb1bfe8079db8105e',
+        value: 245000,
+        status: 'SETTLED',
+        boletoBarcode: '34191790010104351004791020150008291070026000',
+        boletoDigitable: '34191.79001 01043.510047 91020.150008 2 91070000026000',
+        fee: 250,
+        settledAt: '2026-08-22T20:18:13.098Z',
+        finesValue: 1902,
+        interestsValue: 200,
+      },
+    },
+  },
+  {
     id: 'transaction-received',
     event: 'OPENPIX:TRANSACTION_RECEIVED',
     category: 'Transação',
