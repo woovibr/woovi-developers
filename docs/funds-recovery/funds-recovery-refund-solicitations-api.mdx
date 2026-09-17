@@ -1,0 +1,103 @@
+---
+id: funds-recovery-refund-solicitations-api
+sidebar_position: 5
+title: Como consultar as solicitações de devolução de uma recuperação de fundos (MED)?
+tags:
+  - funds-recovery
+  - med
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Quando o Banco Central conclui a análise de uma recuperação de fundos, ele abre uma **solicitação de devolução** em cada conta por onde o dinheiro passou. Cada solicitação é analisada pela instituição que guarda os fundos e pode ser aceita total ou parcialmente, ou rejeitada.
+
+Para consultar as solicitações de devolução de uma recuperação de fundos, faça uma chamada GET para o _endpoint_ `/api/v1/funds-recovery/{id}/refund-solicitations`, usando como `{id}` o `dictId` retornado na [criação](./funds-recovery-create-api.mdx) **ou** o `endToEndId` da transação Pix que originou a recuperação.
+
+Use este endpoint para saber, por perna do rastreamento, **quanto foi solicitado**, **quanto foi efetivamente devolvido** e **qual transação Pix trouxe o dinheiro de volta**.
+
+## Exemplo
+
+Se tudo ocorreu bem, o _status code_ da requisição será `200` e no `body` da resposta retornaremos a lista de solicitações de devolução:
+
+```json
+[
+  {
+    "bacenRefundId": "9d1f2c3a-1b2c-4d5e-8f90-1a2b3c4d5e6f",
+    "fundsRecoveryId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+    "endToEndId": "E31680151202606101530AbCdEf12345",
+    "refundReason": "FRAUD",
+    "refundAmount": 50000,
+    "EffectiveRefundedAmount": 32000,
+    "status": "CLOSED",
+    "analysisResult": "PARTIALLY_ACCEPTED",
+    "rejectionReason": "NO_BALANCE",
+    "contestedParticipant": "12345678",
+    "requestingParticipant": "31680151",
+    "refundTransactionId": "D31680151202606120000AbCdEf67890",
+    "refundedAt": "2026-06-12T00:00:00.000Z",
+    "refundTransaction": {
+      "endToEndId": "D31680151202606120000AbCdEf67890",
+      "value": 32000,
+      "date": "2026-06-12T00:00:00.000Z"
+    },
+    "creationTime": "2026-06-11T00:35:00.000Z",
+    "lastModified": "2026-06-12T00:00:00.000Z",
+    "createdAt": "2026-06-11T00:35:00.000Z",
+    "updatedAt": "2026-06-12T00:00:00.000Z"
+  }
+]
+```
+
+### Campos principais
+
+| Campo                     | Descrição                                                                                                                      |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `status`                  | `OPEN` enquanto a instituição analisa a solicitação; `CLOSED` ou `CANCELLED` são finais.                                       |
+| `refundAmount`            | Valor solicitado nesta perna, em centavos.                                                                                     |
+| `EffectiveRefundedAmount` | Valor efetivamente devolvido nesta perna, em centavos. Pode ser menor que `refundAmount` em uma devolução parcial.             |
+| `analysisResult`          | Resultado da análise: `TOTALLY_ACCEPTED`, `PARTIALLY_ACCEPTED` ou `REJECTED`.                                                  |
+| `rejectionReason`         | Motivo quando a devolução não foi totalmente aceita: `NO_BALANCE`, `ACCOUNT_CLOSURE`, `CANNOT_REFUND` ou `OTHER`.              |
+| `refundTransaction`       | A transação Pix de devolução que liquidou esta solicitação, com `endToEndId`, `value` (centavos) e `date`. `null` enquanto nada foi devolvido. |
+
+:::tip
+Somando o `refundTransaction.value` de todas as solicitações você obtém o total recuperado até o momento. Cada `refundTransaction.endToEndId` é uma transação Pix recebida na sua conta, que também aparece no seu extrato.
+:::
+
+## Possíveis erros
+
+| Status | Motivo                                                                                  |
+| ------ | --------------------------------------------------------------------------------------- |
+| `401`  | `AppID` inválido ou ausente                                                              |
+| `403`  | Sua conta não possui a funcionalidade MED API ou o AppID não possui o escopo necessário |
+| `404`  | Recuperação de fundos não encontrada para a sua conta                                   |
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request GET \
+    --url https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/refund-solicitations \
+    --header 'Authorization: AUTHORIZATION'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch(
+  'https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/refund-solicitations',
+  {
+    method: 'GET',
+    headers: {
+      Authorization: 'AUTHORIZATION',
+    },
+  },
+).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>

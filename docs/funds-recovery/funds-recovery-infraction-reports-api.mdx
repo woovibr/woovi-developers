@@ -1,0 +1,96 @@
+---
+id: funds-recovery-infraction-reports-api
+sidebar_position: 6
+title: Como consultar as notificações de infração de uma recuperação de fundos (MED)?
+tags:
+  - funds-recovery
+  - med
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Uma **notificação de infração** (_infraction report_) é o registro de fraude que uma instituição envia ao Banco Central sobre uma transação Pix. Ao abrir uma recuperação de fundos, a Woovi registra a notificação de infração da transação original; a instituição do recebedor deve reconhecê-la e responder se concorda ou não com o relato.
+
+Para consultar as notificações de infração ligadas a uma recuperação de fundos, faça uma chamada GET para o _endpoint_ `/api/v1/funds-recovery/{id}/infraction-reports`, usando como `{id}` o `dictId` retornado na [criação](./funds-recovery-create-api.mdx) **ou** o `endToEndId` da transação Pix que originou a recuperação.
+
+## Exemplo
+
+Se tudo ocorreu bem, o _status code_ da requisição será `200` e no `body` da resposta retornaremos a lista de notificações de infração da sua conta relacionadas à recuperação de fundos:
+
+```json
+[
+  {
+    "bacenInfractionReportId": "7c2e4b1a-3d5f-4a6b-9c8d-0e1f2a3b4c5d",
+    "fundsRecoveryId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+    "transactionId": "E31680151202606101530AbCdEf12345",
+    "reason": "REFUND_REQUEST",
+    "situationType": "SCAM",
+    "reportDetails": "Pagamento realizado para um falso vendedor. Após o pagamento, o vendedor parou de responder e não entregou o produto.",
+    "status": "CLOSED",
+    "analysisResult": "AGREED",
+    "analysisDetails": "Conta do recebedor bloqueada após verificação.",
+    "reporterParticipant": "31680151",
+    "counterpartyParticipant": "12345678",
+    "infractionAmount": 50000,
+    "contactInformation": {
+      "email": "suporte@woovi.com",
+      "phone": "+5511999999999"
+    },
+    "creationTime": "2026-06-11T00:30:00.000Z",
+    "lastModified": "2026-06-11T12:00:00.000Z",
+    "createdAt": "2026-06-11T00:30:00.000Z",
+    "updatedAt": "2026-06-11T12:00:00.000Z"
+  }
+]
+```
+
+### Campos principais
+
+| Campo                     | Descrição                                                                                                       |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `status`                  | `OPEN` ao ser registrada, `ACKNOWLEDGED` quando a outra instituição a reconhece, `CLOSED` após a análise, `CANCELLED` se cancelada. |
+| `reason`                  | `REFUND_REQUEST` para um pedido de devolução; `REFUND_CANCELLED` quando a devolução foi cancelada.               |
+| `situationType`           | A situação relatada: `SCAM`, `ACCOUNT_TAKEOVER`, `COERCION`, `FRAUDULENT_ACCESS`, `OTHER` ou `UNKNOWN`.          |
+| `analysisResult`          | Resposta da outra instituição após a análise: `AGREED` ou `DISAGREED`.                                          |
+| `reporterParticipant`     | ISPB da instituição que registrou a notificação.                                                                 |
+| `counterpartyParticipant` | ISPB da instituição da contraparte.                                                                              |
+| `infractionAmount`        | Valor da transação reportada, em centavos.                                                                       |
+
+## Possíveis erros
+
+| Status | Motivo                                                                                  |
+| ------ | --------------------------------------------------------------------------------------- |
+| `401`  | `AppID` inválido ou ausente                                                              |
+| `403`  | Sua conta não possui a funcionalidade MED API ou o AppID não possui o escopo necessário |
+| `404`  | Recuperação de fundos não encontrada para a sua conta                                   |
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request GET \
+    --url https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/infraction-reports \
+    --header 'Authorization: AUTHORIZATION'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch(
+  'https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/infraction-reports',
+  {
+    method: 'GET',
+    headers: {
+      Authorization: 'AUTHORIZATION',
+    },
+  },
+).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
