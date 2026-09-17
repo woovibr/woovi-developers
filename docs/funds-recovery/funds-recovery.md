@@ -26,6 +26,9 @@ Para usar a API de recuperação de fundos você precisa:
 | [`/api/v1/funds-recovery`](./funds-recovery-create-api.mdx)                     | POST   | Abrir uma recuperação de fundos           |
 | [`/api/v1/funds-recovery/{id}`](./funds-recovery-get-api.mdx)                   | GET    | Consultar uma recuperação de fundos       |
 | [`/api/v1/funds-recovery/{id}/cancel`](./funds-recovery-cancel-api.mdx)         | POST   | Cancelar uma recuperação de fundos        |
+| [`/api/v1/funds-recovery/{id}/refund-solicitations`](./funds-recovery-refund-solicitations-api.mdx) | GET | Consultar as solicitações de devolução e o que já foi devolvido |
+| [`/api/v1/funds-recovery/{id}/infraction-reports`](./funds-recovery-infraction-reports-api.mdx) | GET | Consultar as notificações de infração |
+| [`/api/v1/funds-recovery/{id}/disputes`](./funds-recovery-disputes-api.mdx) | GET | Consultar as disputas da sua conta relacionadas |
 
 ## Ciclo de vida
 
@@ -40,6 +43,8 @@ Uma recuperação de fundos passa pelos seguintes status:
 - **`CANCELLED`**: a recuperação de fundos foi cancelada.
 
 `COMPLETED` e `CANCELLED` são status finais — após atingi-los a recuperação de fundos não pode mais ser alterada.
+
+A partir de `ANALYSED`, acompanhe o dinheiro de volta pelas [solicitações de devolução](./funds-recovery-refund-solicitations-api.mdx): cada uma informa o valor devolvido e a transação Pix que o trouxe para a sua conta.
 
 :::info
 O valor devolvido depende do saldo encontrado nas contas rastreadas. A recuperação pode ser **total**, **parcial** ou pode não haver fundos disponíveis para devolução.

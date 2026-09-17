@@ -10880,6 +10880,867 @@
                       "protocolProfileBehavior": {
                         "disableBodyPruning": true
                       }
+                    },
+                    {
+                      "id": "f0a086b4-06f2-b1d9-ae00-7e7d6e9b7d5c",
+                      "name": "List the disputes related to a funds recovery (MED)",
+                      "request": {
+                        "name": "List the disputes related to a funds recovery (MED)",
+                        "description": {
+                          "content": "Returns the disputes (MED) of your account that are related to a funds recovery. Only disputes that belong to your account are returned.\n\nRequires the **MED API** feature enabled on your account.\n",
+                          "type": "text/plain"
+                        },
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "funds-recovery",
+                            ":id",
+                            "disputes"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "id",
+                              "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_LIMITS_GET ACCOUNT_LIMITS_REQUEST_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE ANTICIPATION_REQUEST_READ ANTICIPATION_REQUEST_APPROVE ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST APPLICATION_POST APPLICATION_DELETE BOLETO_TRANSACTION_GET BOLETO_TRANSACTION_GET_LIST BOLETO_VALIDATE_POST CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST FUNDS_RECOVERY_GET FUNDS_RECOVERY_POST FUNDS_RECOVERY_DELETE PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT SUBSCRIPTION_PAYMENT_BOOK_GET TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "2888095d-3d9d-53e8-d1cc-2eaf0847cb67",
+                          "name": "The disputes related to the funds recovery",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "disputes"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "[\n  {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"sentOrReceived\": \"<string>\",\n    \"situationType\": \"<string>\",\n    \"value\": \"<integer>\",\n    \"endToEndId\": \"<string>\",\n    \"fundsRecoveryId\": \"<uuid>\",\n    \"disputeReason\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"updatedAt\": \"<string>\"\n  },\n  {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"sentOrReceived\": \"<string>\",\n    \"situationType\": \"<string>\",\n    \"value\": \"<integer>\",\n    \"endToEndId\": \"<string>\",\n    \"fundsRecoveryId\": \"<uuid>\",\n    \"disputeReason\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"updatedAt\": \"<string>\"\n  }\n]",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "7ccfe4e3-307e-b551-8645-3a3c9da65230",
+                          "name": "Invalid or missing AppID",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "disputes"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "abdafbe0-f024-52e9-e626-962758418acf",
+                          "name": "Your account does not have the MED API feature or the AppID does not have the required scope",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "disputes"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "a7912060-5c27-0884-e0e1-f85aff6aa3a0",
+                          "name": "Funds recovery not found for your account",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "disputes"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        }
+                      ],
+                      "event": [],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      }
+                    },
+                    {
+                      "id": "663ecbd5-9c0c-0418-7322-45f63ccc39cd",
+                      "name": "List the infraction reports of a funds recovery (MED)",
+                      "request": {
+                        "name": "List the infraction reports of a funds recovery (MED)",
+                        "description": {
+                          "content": "Returns the infraction reports (fraud notifications opened with the Central Bank) linked to the funds recovery, for infraction reports that belong to your account.\n\nRequires the **MED API** feature enabled on your account.\n",
+                          "type": "text/plain"
+                        },
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "funds-recovery",
+                            ":id",
+                            "infraction-reports"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "id",
+                              "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_LIMITS_GET ACCOUNT_LIMITS_REQUEST_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE ANTICIPATION_REQUEST_READ ANTICIPATION_REQUEST_APPROVE ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST APPLICATION_POST APPLICATION_DELETE BOLETO_TRANSACTION_GET BOLETO_TRANSACTION_GET_LIST BOLETO_VALIDATE_POST CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST FUNDS_RECOVERY_GET FUNDS_RECOVERY_POST FUNDS_RECOVERY_DELETE PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT SUBSCRIPTION_PAYMENT_BOOK_GET TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "9b0c913c-35e3-cae7-2bba-ce9c08ac053f",
+                          "name": "The infraction reports of the funds recovery",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "infraction-reports"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "[\n  {\n    \"bacenInfractionReportId\": \"<string>\",\n    \"fundsRecoveryId\": \"<uuid>\",\n    \"transactionId\": \"<string>\",\n    \"reason\": \"<string>\",\n    \"situationType\": \"<string>\",\n    \"reportDetails\": \"<string>\",\n    \"status\": \"<string>\",\n    \"reporterParticipant\": \"<string>\",\n    \"counterpartyParticipant\": \"<string>\",\n    \"fraudMarkerId\": \"<string>\",\n    \"analysisResult\": \"<string>\",\n    \"analysisDetails\": \"<string>\",\n    \"infractionAmount\": \"<integer>\",\n    \"contactInformation\": {\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\"\n    },\n    \"creationTime\": \"<string>\",\n    \"lastModified\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"updatedAt\": \"<string>\"\n  },\n  {\n    \"bacenInfractionReportId\": \"<string>\",\n    \"fundsRecoveryId\": \"<uuid>\",\n    \"transactionId\": \"<string>\",\n    \"reason\": \"<string>\",\n    \"situationType\": \"<string>\",\n    \"reportDetails\": \"<string>\",\n    \"status\": \"<string>\",\n    \"reporterParticipant\": \"<string>\",\n    \"counterpartyParticipant\": \"<string>\",\n    \"fraudMarkerId\": \"<string>\",\n    \"analysisResult\": \"<string>\",\n    \"analysisDetails\": \"<string>\",\n    \"infractionAmount\": \"<integer>\",\n    \"contactInformation\": {\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\"\n    },\n    \"creationTime\": \"<string>\",\n    \"lastModified\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"updatedAt\": \"<string>\"\n  }\n]",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "c2e69f7a-3817-db49-8e10-c50b4932fccf",
+                          "name": "Invalid or missing AppID",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "infraction-reports"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "38ae4fe9-3590-43b2-abe4-460d42a2cf5b",
+                          "name": "Your account does not have the MED API feature or the AppID does not have the required scope",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "infraction-reports"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "04a94252-2c4e-0db4-97d8-4b8ed4bd5815",
+                          "name": "Funds recovery not found for your account",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "infraction-reports"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        }
+                      ],
+                      "event": [],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      }
+                    },
+                    {
+                      "id": "509151ab-af0e-879a-ff6f-4f7c5360f432",
+                      "name": "List the refund solicitations of a funds recovery (MED)",
+                      "request": {
+                        "name": "List the refund solicitations of a funds recovery (MED)",
+                        "description": {
+                          "content": "Returns every refund solicitation the Central Bank opened on the legs of a funds recovery. Use it to follow, per leg, the `status`, the requested `refundAmount` and the amount effectively returned in `EffectiveRefundedAmount`.\n\nRequires the **MED API** feature enabled on your account.\n",
+                          "type": "text/plain"
+                        },
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "funds-recovery",
+                            ":id",
+                            "refund-solicitations"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "id",
+                              "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_LIMITS_GET ACCOUNT_LIMITS_REQUEST_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE ANTICIPATION_REQUEST_READ ANTICIPATION_REQUEST_APPROVE ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST APPLICATION_POST APPLICATION_DELETE BOLETO_TRANSACTION_GET BOLETO_TRANSACTION_GET_LIST BOLETO_VALIDATE_POST CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST FUNDS_RECOVERY_GET FUNDS_RECOVERY_POST FUNDS_RECOVERY_DELETE PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT SUBSCRIPTION_PAYMENT_BOOK_GET TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "9f300513-b12e-f653-7460-210b2ae1c4e7",
+                          "name": "The refund solicitations of the funds recovery",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "refund-solicitations"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "[\n  {\n    \"bacenRefundId\": \"<string>\",\n    \"fundsRecoveryId\": \"<uuid>\",\n    \"endToEndId\": \"<string>\",\n    \"refundTransactionId\": \"<string>\",\n    \"refundReason\": \"<string>\",\n    \"refundAmount\": \"<integer>\",\n    \"EffectiveRefundedAmount\": \"<integer>\",\n    \"refundedAt\": \"<string>\",\n    \"refundTransaction\": {\n      \"endToEndId\": \"<string>\",\n      \"value\": \"<integer>\",\n      \"date\": \"<string>\"\n    },\n    \"status\": \"<string>\",\n    \"analysisResult\": \"<string>\",\n    \"rejectionReason\": \"<string>\",\n    \"contestedParticipant\": \"<string>\",\n    \"requestingParticipant\": \"<string>\",\n    \"creationTime\": \"<string>\",\n    \"lastModified\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"updatedAt\": \"<string>\"\n  },\n  {\n    \"bacenRefundId\": \"<string>\",\n    \"fundsRecoveryId\": \"<uuid>\",\n    \"endToEndId\": \"<string>\",\n    \"refundTransactionId\": \"<string>\",\n    \"refundReason\": \"<string>\",\n    \"refundAmount\": \"<integer>\",\n    \"EffectiveRefundedAmount\": \"<integer>\",\n    \"refundedAt\": \"<string>\",\n    \"refundTransaction\": {\n      \"endToEndId\": \"<string>\",\n      \"value\": \"<integer>\",\n      \"date\": \"<string>\"\n    },\n    \"status\": \"<string>\",\n    \"analysisResult\": \"<string>\",\n    \"rejectionReason\": \"<string>\",\n    \"contestedParticipant\": \"<string>\",\n    \"requestingParticipant\": \"<string>\",\n    \"creationTime\": \"<string>\",\n    \"lastModified\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"updatedAt\": \"<string>\"\n  }\n]",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "4529fe55-7899-ba7d-44ed-6fefbad62e6f",
+                          "name": "Invalid or missing AppID",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "refund-solicitations"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "b0afe0d4-0a88-763a-90b9-0669c60ca524",
+                          "name": "Your account does not have the MED API feature or the AppID does not have the required scope",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "refund-solicitations"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "134543bf-ccd7-036d-ca90-f3b3b0260a63",
+                          "name": "Funds recovery not found for your account",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "funds-recovery",
+                                ":id",
+                                "refund-solicitations"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": [
+                                {
+                                  "disabled": false,
+                                  "type": "any",
+                                  "value": "<string>",
+                                  "key": "id",
+                                  "description": "(Required) The `dictId` of the funds recovery (its `rootTransactionId` is also accepted)"
+                                }
+                              ]
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        }
+                      ],
+                      "event": [],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      }
                     }
                   ],
                   "event": []
@@ -22988,7 +23849,7 @@
                           "value": "application/json"
                         }
                       ],
-                      "body": "{\n  \"status\": \"<string>\",\n  \"transactions\": [\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_2\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_3\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"pageInfo\": {\n    \"errors\": [\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      },\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      }\n    ],\n    \"skip\": \"<number>\",\n    \"limit\": \"<number>\",\n    \"hasPreviousPage\": \"<boolean>\",\n    \"hasNextPage\": \"<boolean>\"\n  }\n}",
+                      "body": "{\n  \"status\": \"<string>\",\n  \"transactions\": [\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"charge\": {\n        \"value\": \"<number>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"globalID\": {},\n        \"transactionID\": {},\n        \"identifier\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"additionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixKey\": \"<string>\",\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\",\n        \"expiresIn\": \"<string>\",\n        \"expiresDate\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"subscription\": {\n          \"globalID\": \"<string>\",\n          \"value\": \"<number>\",\n          \"name\": \"<string>\",\n          \"customer\": {\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"email\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"phone\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"correlationID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"dayGenerateCharge\": \"<number>\",\n          \"type\": \"<string>\",\n          \"frequency\": \"<string>\",\n          \"installmentsCount\": \"<number>\",\n          \"isActive\": \"<boolean>\",\n          \"status\": \"<string>\",\n          \"correlationID\": \"<string>\",\n          \"paymentLinkUrl\": \"<string>\",\n          \"addtionalInfo\": [\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"key\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"value\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"pixRecurringOptions\": {\n            \"emv\": \"<string>\",\n            \"status\": \"<string>\",\n            \"retryPolicy\": \"<string>\",\n            \"journey\": \"<string>\"\n          }\n        },\n        \"paymentMethods\": {\n          \"pix\": {\n            \"method\": \"<string>\",\n            \"transactionID\": \"<string>\",\n            \"identifier\": \"<string>\",\n            \"additionalInfo\": [\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"key\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"fee\": \"<number>\",\n            \"value\": \"<number>\",\n            \"status\": \"<string>\",\n            \"txId\": \"<string>\",\n            \"brCode\": \"<string>\",\n            \"qrCodeImage\": \"<string>\"\n          }\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": \"<number>\",\n        \"time\": \"<string>\",\n        \"endToEndID\": \"<string>\",\n        \"transactionID\": \"<string>\",\n        \"infoPagador\": \"<string>\",\n        \"endToEndId\": \"<string>\",\n        \"payer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": \"<string>\",\n            \"street\": \"<string>\",\n            \"number\": \"<string>\",\n            \"neighborhood\": \"<string>\",\n            \"city\": \"<string>\",\n            \"state\": \"<string>\",\n            \"complement\": \"<string>\",\n            \"country\": \"<string>\"\n          }\n        },\n        \"type\": \"<string>\"\n      },\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\",\n        \"comment\": \"<string>\",\n        \"brCode\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkID\": \"<string>\",\n        \"paymentLinkUrl\": {},\n        \"pixKey\": \"<string>\",\n        \"qrCodeImage\": {},\n        \"createdAt\": \"<string>\",\n        \"updatedAt\": \"<string>\"\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_2\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        },\n        {\n          \"isRetry\": \"<boolean>\",\n          \"key_0\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_1\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          },\n          \"key_2\": {\n            \"status\": \"<number>\",\n            \"time\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"pageInfo\": {\n    \"errors\": [\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      },\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      }\n    ],\n    \"skip\": \"<number>\",\n    \"limit\": \"<number>\",\n    \"hasPreviousPage\": \"<boolean>\",\n    \"hasNextPage\": \"<boolean>\"\n  }\n}",
                       "cookie": [],
                       "_postman_previewlanguage": "json"
                     },
@@ -23191,7 +24052,7 @@
                           "value": "application/json"
                         }
                       ],
-                      "body": "{\n  \"transaction\": {\n    \"charge\": {\n      \"value\": \"<number>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"globalID\": {},\n      \"transactionID\": {},\n      \"identifier\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"additionalInfo\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"pixKey\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"expiresIn\": \"<string>\",\n      \"expiresDate\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"subscription\": {\n        \"globalID\": \"<string>\",\n        \"value\": \"<number>\",\n        \"name\": \"<string>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"street\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"neighborhood\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"city\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"complement\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"country\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"dayGenerateCharge\": \"<number>\",\n        \"type\": \"<string>\",\n        \"frequency\": \"<string>\",\n        \"installmentsCount\": \"<number>\",\n        \"isActive\": \"<boolean>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkUrl\": \"<string>\",\n        \"addtionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixRecurringOptions\": {\n          \"emv\": \"<string>\",\n          \"status\": \"<string>\",\n          \"retryPolicy\": \"<string>\",\n          \"journey\": \"<string>\"\n        }\n      },\n      \"paymentMethods\": {\n        \"pix\": {\n          \"method\": \"<string>\",\n          \"transactionID\": \"<string>\",\n          \"identifier\": \"<string>\",\n          \"additionalInfo\": [\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            },\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"fee\": \"<number>\",\n          \"value\": \"<number>\",\n          \"status\": \"<string>\",\n          \"txId\": \"<string>\",\n          \"brCode\": \"<string>\",\n          \"qrCodeImage\": \"<string>\"\n        }\n      }\n    },\n    \"value\": \"<number>\",\n    \"time\": \"<string>\",\n    \"endToEndID\": \"<string>\",\n    \"transactionID\": \"<string>\",\n    \"infoPagador\": \"<string>\",\n    \"endToEndId\": \"<string>\",\n    \"customer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"withdraw\": {\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\"\n    },\n    \"payer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"globalID\": {},\n    \"pixQrCode\": {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"pixKey\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\"\n    },\n    \"webhookSent\": [\n      {\n        \"isRetry\": \"<boolean>\"\n      },\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+                      "body": "{\n  \"transaction\": {\n    \"charge\": {\n      \"value\": \"<number>\",\n      \"customer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"globalID\": {},\n      \"transactionID\": {},\n      \"identifier\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"additionalInfo\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"pixKey\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"expiresIn\": \"<string>\",\n      \"expiresDate\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"subscription\": {\n        \"globalID\": \"<string>\",\n        \"value\": \"<number>\",\n        \"name\": \"<string>\",\n        \"customer\": {\n          \"name\": \"<string>\",\n          \"email\": \"<string>\",\n          \"phone\": \"<string>\",\n          \"taxID\": {\n            \"taxID\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"correlationID\": \"<string>\",\n          \"address\": {\n            \"zipcode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"street\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"number\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"neighborhood\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"city\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"complement\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"country\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"dayGenerateCharge\": \"<number>\",\n        \"type\": \"<string>\",\n        \"frequency\": \"<string>\",\n        \"installmentsCount\": \"<number>\",\n        \"isActive\": \"<boolean>\",\n        \"status\": \"<string>\",\n        \"correlationID\": \"<string>\",\n        \"paymentLinkUrl\": \"<string>\",\n        \"addtionalInfo\": [\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"key\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ],\n        \"pixRecurringOptions\": {\n          \"emv\": \"<string>\",\n          \"status\": \"<string>\",\n          \"retryPolicy\": \"<string>\",\n          \"journey\": \"<string>\"\n        }\n      },\n      \"paymentMethods\": {\n        \"pix\": {\n          \"method\": \"<string>\",\n          \"transactionID\": \"<string>\",\n          \"identifier\": \"<string>\",\n          \"additionalInfo\": [\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            },\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"fee\": \"<number>\",\n          \"value\": \"<number>\",\n          \"status\": \"<string>\",\n          \"txId\": \"<string>\",\n          \"brCode\": \"<string>\",\n          \"qrCodeImage\": \"<string>\"\n        }\n      }\n    },\n    \"value\": \"<number>\",\n    \"time\": \"<string>\",\n    \"endToEndID\": \"<string>\",\n    \"transactionID\": \"<string>\",\n    \"infoPagador\": \"<string>\",\n    \"endToEndId\": \"<string>\",\n    \"customer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"withdraw\": {\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"payer\": {\n        \"name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"taxID\": {\n          \"taxID\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"correlationID\": \"<string>\",\n        \"address\": {\n          \"zipcode\": \"<string>\",\n          \"street\": \"<string>\",\n          \"number\": \"<string>\",\n          \"neighborhood\": \"<string>\",\n          \"city\": \"<string>\",\n          \"state\": \"<string>\",\n          \"complement\": \"<string>\",\n          \"country\": \"<string>\"\n        }\n      },\n      \"type\": \"<string>\"\n    },\n    \"payer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": \"<string>\",\n        \"street\": \"<string>\",\n        \"number\": \"<string>\",\n        \"neighborhood\": \"<string>\",\n        \"city\": \"<string>\",\n        \"state\": \"<string>\",\n        \"complement\": \"<string>\",\n        \"country\": \"<string>\"\n      }\n    },\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"globalID\": {},\n    \"pixQrCode\": {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"pixKey\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\"\n    },\n    \"webhookSent\": [\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_1\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        },\n        \"key_2\": {\n          \"status\": \"<number>\",\n          \"time\": \"<string>\"\n        }\n      },\n      {\n        \"isRetry\": \"<boolean>\"\n      }\n    ]\n  }\n}",
                       "cookie": [],
                       "_postman_previewlanguage": "json"
                     },
@@ -29217,7 +30078,7 @@
                                   "value": "application/json"
                                 }
                               ],
-                              "body": "{\n  \"status\": \"<string>\",\n  \"subAccountId\": \"<string>\",\n  \"balances\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\",\n    \"key_2\": \"<number>\"\n  }\n}",
+                              "body": "{\n  \"status\": \"<string>\",\n  \"subAccountId\": \"<string>\",\n  \"balances\": {\n    \"key_0\": \"<number>\"\n  }\n}",
                               "cookie": [],
                               "_postman_previewlanguage": "json"
                             },
@@ -29700,7 +30561,7 @@
                           "request": {
                             "name": "Read the KYB USD (fiat rail) state of the company subaccount",
                             "description": {
-                              "content": "Status of the USD rail on the company's `CONFIRMED` stablecoin subaccount:\nhow far its KYB USD got and whether the provider currently accepts a USD\nticket for it.\n\nPoll this after `POST /api/v1/stablecoin/subaccount/kyb/usd` — the\nsubmission only creates the attempt, and the verdict lands later. While\nthe attempt can still change verdict the stored status is reconciled with\nthe provider on every read, so a rejection shows up here as soon as the\nprovider has it.\n\n`usdUnlocked` is the field that actually gates the rail: an `APPROVED`\nattempt alone is not enough, and it never turns true in the provider\nsandbox.\n\nMost of the wait is the Proof of Financial Capacity, which the provider\ncan leave undecided for hours and publishes no SLA for. `usdKyb.\nproofOfFinancialCapacity` reports that step on its own — when it was last\nread, when it will be read next, how long the wait may last and when it\ncleared — so a healthy wait is never indistinguishable from a rail that\nwas abandoned.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope and the company\n`STABLECOIN` feature.\n",
+                              "content": "Status of the USD rail on the company's `CONFIRMED` stablecoin subaccount:\nhow far its KYB USD got and whether the provider currently accepts a USD\nticket for it.\n\nPoll this after `POST /api/v1/stablecoin/subaccount/kyb/usd` — the\nsubmission only creates the attempt, and the verdict lands later. While\nthe attempt can still change verdict the stored status is reconciled with\nthe provider on every read, so a rejection shows up here as soon as the\nprovider has it.\n\n`usdUnlocked` is the field that actually gates the rail: an `APPROVED`\nattempt alone is not enough, and it never turns true in the provider\nsandbox.\n\nThe KYB USD is submitted on top of the Proof of Financial Capacity\nattempt without waiting for its verdict; while the provider refuses the\nsubmission the rail stays `PROOF_OF_FINANCIAL_CAPACITY_PENDING` and the\nworker retries on a schedule. `usdKyb.proofOfFinancialCapacity` reports\nthat attempt on its own — when it was last read, when the next retry is\ndue, how long the wait may last and when it cleared — so a healthy wait\nis never indistinguishable from a rail that was abandoned.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope and the company\n`STABLECOIN` feature.\n",
                               "type": "text/plain"
                             },
                             "url": {
@@ -29952,7 +30813,7 @@
                           "request": {
                             "name": "Submit KYB USD (fiat rail) for a confirmed stablecoin subaccount",
                             "description": {
-                              "content": "Unlocks the USD fiat rail on a company stablecoin subaccount that already has\nKYB Level 1 approved (`StableSubAccount.status = CONFIRMED`).\n\nThe call **accepts** the submission and hands it to a worker: it answers\n`202` right away and the provider work happens off the request path. That\nwork is uploading the supporting documents, submitting Proof of Financial\nCapacity and waiting until it is `APPROVED`, optionally submitting a\ncompany Proof of Address, then submitting the KYB USD attempt.\n\nIt has to be asynchronous: the provider can leave a Proof of Financial\nCapacity pending for hours, far past any HTTP gateway timeout. Poll\n`GET /api/v1/stablecoin/subaccount/kyb/usd` for the outcome — the rail\nreports `PROOF_OF_FINANCIAL_CAPACITY_PENDING` from the moment this call\nis accepted, `PENDING` once the KYB attempt is created, and finally\n`APPROVED` or `REJECTED`.\n\nThe call is idempotent. The queued job is keyed by the sub-account, and\nthe Proof of Financial Capacity attempt is claimed on the sub-account\nitself, so posting twice converges on the submission already running\ninstead of opening a second provider attempt or re-uploading documents.\nA repeat POST answers `202` with the same `jobId`, and the payload of the\nsubmission already running is the one that counts.\n\nEach document is sent in one of two forms.\n\n**Preferred — upload it first.** Call\n`POST /api/v1/stablecoin/subaccount/kyb/usd/document` for a pre-signed\nURL, `PUT` the file to it, and post the returned `document` object back\nhere. The file never has to be exposed publicly, and the reference is\nvalidated (ownership, size, content type) before any provider call runs.\n\n**Or hand over a link.** The `*Url` fields still work and take a publicly\nfetchable (or pre-signed) HTTPS link to the PDF/image. A reference wins\nwhen both forms are sent for the same document.\n\n**Several files for the same document.** Every reference field also takes\na list. The provider verifies one document per attempt and reuses the\nattempt a subaccount already has, so extra files cannot be extra\nattempts — the first entry is the one the provider is told about, and the\nrest are uploaded to the subaccount document store, where the analyst\nreviewing the attempt reads them. At most 10 files per document.\n\nRequired documents:\n- `proofOfFinancialCapacity` / `proofOfFinancialCapacityUrl` — proof of\n  financial capacity (PoFC)\n- `proofOfRevenue` / `proofOfRevenueUrl` — proof of revenue\n\nOptional documents:\n- `proofOfAddressCompany` / `proofOfAddressCompanyUrl` — company proof of\n  address (raises limits; independent of the USD rail, but accepted in the\n  same call)\n\nAlso required:\n- `businessType` — Bridge business type enum\n- `businessIndustries` — at least one industry from the\n  `StablecoinSubAccountKybUsdIndustry` enum (e.g. `SOFTWARE`; `OTHER`\n  when none fits)\n- `website` — required only when the company website was not captured at\n  KYB Level 1\n\nThe subaccount must belong to the authenticated company and be `CONFIRMED`.\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n\nNote: USD fiat rails are not available in the provider sandbox — submission\nmay appear to succeed, but `usdUnlocked` will not become true there.\n",
+                              "content": "Unlocks the USD fiat rail on a company stablecoin subaccount that already has\nKYB Level 1 approved (`StableSubAccount.status = CONFIRMED`).\n\nThe call **accepts** the submission and hands it to a worker: it answers\n`202` right away and the provider work happens off the request path. That\nwork is uploading the supporting documents, opening the Proof of\nFinancial Capacity attempt, optionally submitting a company Proof of\nAddress, and submitting the KYB USD attempt on top of the Proof of\nFinancial Capacity — without waiting for that attempt to be `APPROVED`.\nUploading a Proof of Financial Capacity on its own never reaches the\nprovider's review; the KYB USD submission is what puts the subaccount in\nfront of it, and the provider judges both there.\n\nIt is still asynchronous: the provider may refuse the KYB USD while the\nProof of Financial Capacity is undecided, and the worker retries the\nsubmission on a schedule for days, far past any HTTP gateway timeout.\nPoll `GET /api/v1/stablecoin/subaccount/kyb/usd` for the outcome — the\nrail reports `PROOF_OF_FINANCIAL_CAPACITY_PENDING` from the moment this\ncall is accepted, `PENDING` once the KYB USD attempt is created, and\nfinally `APPROVED` or `REJECTED`.\n\nThe call is idempotent. The queued job is keyed by the sub-account, and\nthe Proof of Financial Capacity attempt is claimed on the sub-account\nitself, so posting twice converges on the submission already running\ninstead of opening a second provider attempt or re-uploading documents.\nA repeat POST answers `202` with the same `jobId`, and the payload of the\nsubmission already running is the one that counts.\n\nEach document is sent in one of two forms.\n\n**Preferred — upload it first.** Call\n`POST /api/v1/stablecoin/subaccount/kyb/usd/document` for a pre-signed\nURL, `PUT` the file to it, and post the returned `document` object back\nhere. The file never has to be exposed publicly, and the reference is\nvalidated (ownership, size, content type) before any provider call runs.\n\n**Or hand over a link.** The `*Url` fields still work and take a publicly\nfetchable (or pre-signed) HTTPS link to the PDF/image. A reference wins\nwhen both forms are sent for the same document.\n\n**Several files for the same document.** Every reference field also takes\na list. The provider verifies one document per attempt and reuses the\nattempt a subaccount already has, so extra files cannot be extra\nattempts — the first entry is the one the provider is told about, and the\nrest are uploaded to the subaccount document store, where the analyst\nreviewing the attempt reads them. At most 10 files per document.\n\nRequired documents:\n- `proofOfFinancialCapacity` / `proofOfFinancialCapacityUrl` — proof of\n  financial capacity (PoFC)\n- `proofOfRevenue` / `proofOfRevenueUrl` — proof of revenue\n\nOptional documents:\n- `proofOfAddressCompany` / `proofOfAddressCompanyUrl` — company proof of\n  address (raises limits; independent of the USD rail, but accepted in the\n  same call)\n\nAlso required:\n- `businessType` — Bridge business type enum\n- `businessIndustries` — at least one industry from the\n  `StablecoinSubAccountKybUsdIndustry` enum (e.g. `SOFTWARE`; `OTHER`\n  when none fits)\n- `website` — required only when the company website was not captured at\n  KYB Level 1\n\nThe subaccount must belong to the authenticated company and be `CONFIRMED`.\nRequires the `STABLECOIN_SUBACCOUNT_CREATE` scope and the company\n`STABLECOIN` feature.\n\nNote: USD fiat rails are not available in the provider sandbox — submission\nmay appear to succeed, but `usdUnlocked` will not become true there.\n",
                               "type": "text/plain"
                             },
                             "url": {

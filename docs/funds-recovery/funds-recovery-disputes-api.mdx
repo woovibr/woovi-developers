@@ -1,0 +1,88 @@
+---
+id: funds-recovery-disputes-api
+sidebar_position: 7
+title: Como consultar as disputas relacionadas a uma recuperação de fundos (MED)?
+tags:
+  - funds-recovery
+  - med
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Uma recuperação de fundos também pode chegar até a sua conta pelo outro lado: quando **um pagamento que você recebeu** é apontado como parte do caminho do dinheiro de uma fraude, a Woovi abre uma **disputa** (MED recebido) na sua conta para que você apresente evidências ou aceite a devolução.
+
+Para consultar as disputas da sua conta relacionadas a uma recuperação de fundos, faça uma chamada GET para o _endpoint_ `/api/v1/funds-recovery/{id}/disputes`, usando como `{id}` o `dictId` da recuperação **ou** o `endToEndId` da transação Pix que a originou.
+
+## Exemplo
+
+Se tudo ocorreu bem, o _status code_ da requisição será `200` e no `body` da resposta retornaremos a lista de disputas da sua conta:
+
+```json
+[
+  {
+    "type": "MED",
+    "status": "IN_REVIEW",
+    "sentOrReceived": "RECEIVED",
+    "situationType": "SCAM",
+    "value": 50000,
+    "endToEndId": "E31680151202606101530AbCdEf12345",
+    "fundsRecoveryId": "3e760cd5-39b2-45da-8ab6-b212cf205568",
+    "disputeReason": "Pagamento apontado como parte de um golpe pela instituição do pagador.",
+    "createdAt": "2026-06-11T00:35:00.000Z",
+    "updatedAt": "2026-06-11T00:35:00.000Z"
+  }
+]
+```
+
+### Campos principais
+
+| Campo            | Descrição                                                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`           | `MED`, `DISPUTE` ou `CHARGEBACK`.                                                                                                                 |
+| `status`         | `IN_REVIEW`, `OPENED`, `PENDING`, `PENDING_DOCUMENTATION`, `ACCEPTED`, `REJECTED`, `CANCELED`, `ACKNOWLEDGED` ou `CLOSED`.                        |
+| `sentOrReceived` | `RECEIVED` quando a disputa foi aberta contra um pagamento que a sua conta recebeu; `SENT` quando a sua conta é a pagadora.                       |
+| `value`          | Valor em disputa, em centavos.                                                                                                                    |
+| `endToEndId`     | `endToEndId` da transação Pix em disputa.                                                                                                         |
+
+:::info
+Este endpoint retorna apenas as disputas **da sua conta**. Uma mesma recuperação de fundos no Banco Central pode envolver várias contas, e cada uma enxerga somente as suas próprias disputas.
+:::
+
+## Possíveis erros
+
+| Status | Motivo                                                                                  |
+| ------ | --------------------------------------------------------------------------------------- |
+| `401`  | `AppID` inválido ou ausente                                                              |
+| `403`  | Sua conta não possui a funcionalidade MED API ou o AppID não possui o escopo necessário |
+| `404`  | Recuperação de fundos não encontrada para a sua conta                                   |
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request GET \
+    --url https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/disputes \
+    --header 'Authorization: AUTHORIZATION'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch(
+  'https://api.woovi.com/api/v1/funds-recovery/3e760cd5-39b2-45da-8ab6-b212cf205568/disputes',
+  {
+    method: 'GET',
+    headers: {
+      Authorization: 'AUTHORIZATION',
+    },
+  },
+).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
