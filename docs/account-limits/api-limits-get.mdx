@@ -14,6 +14,10 @@ Para consultar os limites configurados em uma conta bancária do merchant, utili
 
 O endpoint retorna o conjunto mais recente de limites configurados para a conta, contendo apenas os campos públicos — campos internos são filtrados antes da resposta.
 
+A resposta tem dois blocos: `limits`, com os tetos configurados na conta, e `usage`, com
+**quanto de cada teto já foi consumido** na janela em vigor — veja
+[Consumo em tempo real](#consumo-em-tempo-real-usage).
+
 :::info
 Antes de usar este endpoint, garanta que sua empresa tenha a feature **`ACCOUNT_LIMITS_PUBLIC_API`** habilitada e que sua aplicação possua o scope **`ACCOUNT_LIMITS_GET`**. Veja [Primeiros passos com a API de Account Limits](./api-getting-started.mdx) para detalhes.
 :::
@@ -53,13 +57,18 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
     "dayStartAt": "06:00",
     "nightStartAt": "20:00",
     "boletoEmissionLimit": 200,
-    "boletoMaximumValueLimit": 1000000
-  }
+    "boletoMaximumValueLimit": 1000000,
+    "stableInDayLimit": 500000,
+    "stableOutDayLimit": 500000,
+    "tedInLimit": 500000,
+    "tedOutLimit": 500000
+  },
+  "usage": { "...": "..." }
 }
 ```
 
 :::info
-Todos os valores monetários são expressos em **centavos**. Os horários `dayStartAt`/`nightStartAt` estão no formato `HH:mm`.
+Todos os valores monetários são expressos em **centavos**. Os horários `dayStartAt`/`nightStartAt` estão no formato `HH:mm`. Campos sem teto configurado não aparecem na resposta.
 :::
 
 ## Campos da resposta
@@ -80,6 +89,149 @@ Todos os valores monetários são expressos em **centavos**. Os horários `daySt
 | `nightStartAt` | string | Início da janela noturna (`HH:mm`) |
 | `boletoEmissionLimit` | number | Máximo de boletos emitidos por dia |
 | `boletoMaximumValueLimit` | number | Valor máximo por boleto emitido (centavos) |
+| `stableIn*` / `stableOut*` | number | Limites de compra e venda de stablecoin, diurno/noturno e por transação (centavos) |
+| `tedIn*` / `tedOut*` | number | Limites de TED recebida e enviada, total do dia e por transação (centavos) |
+| `tedRefundReceived*` / `tedRefundSent*` | number | Limites de devolução de TED recebida e enviada (centavos) |
+
+## Consumo em tempo real (`usage`)
+
+Junto de `limits`, a resposta traz o bloco `usage`: **quanto de cada limite já foi consumido** na
+janela em vigor. É o que responde "ainda dá para mandar esse Pix agora?" sem precisar tentar e
+tomar a rejeição.
+
+O bloco sai do mesmo documento de limites que alimenta `limits`, somado aos contadores ao vivo —
+não há chamada extra a fazer. O teto já vem **resolvido para a janela em vigor** (diurna ou
+noturna), então você nunca precisa escolher entre `*DayLimit` e `*NightLimit` na mão.
+
+:::info Compatível com quem já integra
+O objeto `limits` não mudou. `usage` é um campo novo ao lado dele, então integrações existentes
+continuam funcionando sem alteração.
+:::
+
+```json
+{
+  "limits": { "...": "..." },
+  "usage": {
+    "window": "DAY",
+    "asOf": "2026-01-15T14:00:00-03:00",
+    "aggregate": {
+      "pixOut": {
+        "period": "DAY_WINDOW",
+        "totalLimit": 4000000,
+        "usedValue": 1250000,
+        "availableValue": 2750000,
+        "usedPercentage": 31.25,
+        "resetsAt": "2026-01-15T20:00:00-03:00"
+      },
+      "pixOutMonthly": {
+        "period": "MONTH",
+        "totalLimit": null,
+        "usedValue": 500000,
+        "availableValue": null,
+        "usedPercentage": null,
+        "resetsAt": "2026-02-01T00:00:00-03:00"
+      },
+      "tedOut": {
+        "period": "CALENDAR_DAY",
+        "totalLimit": 500000,
+        "usedValue": 0,
+        "availableValue": 500000,
+        "usedPercentage": 0,
+        "resetsAt": "2026-01-16T00:00:00-03:00"
+      },
+      "...": "..."
+    },
+    "perTransaction": {
+      "pixOutSameHolder": 4000000,
+      "pixOutDifferentHolder": 4000000,
+      "boletoMaximumValue": 1000000,
+      "...": "..."
+    }
+  }
+}
+```
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `window` | string | Janela em vigor para a conta agora: `DAY` ou `NIGHT`. |
+| `asOf` | string | Instante em que o retrato foi tirado (ISO-8601, `America/Sao_Paulo`). |
+| `aggregate` | object | Os 12 contadores que acumulam gasto na janela. |
+| `perTransaction` | object | Os 15 tetos cobrados por transação, que não têm contador. |
+
+### `usage.aggregate` — os contadores que acumulam
+
+São 12: `pixOut`, `pixOutMonthly`, `internalTransferOut`, `internalTransferIn`, `boletoOut`,
+`pixRefundSent`, `stableIn`, `stableOut`, `tedIn`, `tedOut`, `tedRefundReceived` e
+`tedRefundSent`.
+
+:::note Pix de entrada não aparece aqui
+Pix recebido não tem contador acumulado — só teto por transação. Os campos `pixIn*` aparecem em
+`usage.perTransaction`, nunca em `usage.aggregate`.
+:::
+
+Cada contador tem o mesmo formato:
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `period` | string | Tipo do balde: `DAY_WINDOW`, `CALENDAR_DAY` ou `MONTH` (veja abaixo). |
+| `totalLimit` | number \| null | Teto em vigor agora, em centavos, já resolvido para a janela. |
+| `usedValue` | number | Quanto já foi consumido no balde atual, em centavos. Sempre um número — `0` quando o contador ainda não foi tocado. |
+| `availableValue` | number \| null | `max(totalLimit - usedValue, 0)`, em centavos. |
+| `usedPercentage` | number \| null | `usedValue / totalLimit * 100`, arredondado em 2 casas. |
+| `resetsAt` | string | Quando esse balde vira (ISO-8601, `America/Sao_Paulo`). |
+
+:::caution `null` e `0` querem dizer coisas diferentes
+- **`totalLimit: null`** — não há teto configurado, o fluxo é **ilimitado**. `availableValue` e
+  `usedPercentage` também vêm `null`, e `usedValue` continua sendo reportado.
+- **`totalLimit: 0`** — o fluxo está **bloqueado**. `availableValue` é `0` (um número, não `null`)
+  e `usedPercentage` é `null`, porque não existe razão a expressar.
+
+Não trate os dois como "sem limite": um libera tudo, o outro não deixa passar nada.
+:::
+
+`availableValue` **nunca é negativo** — se o teto for reduzido no meio da janela e o consumo já
+estiver acima dele, o disponível é `0`, não um número negativo. Já `usedPercentage` **não é travado
+em 100**: nesse mesmo caso ele passa de 100, de propósito, para a anomalia continuar visível.
+
+### `period` — quando o contador zera
+
+| `period` | Vira quando | Quem usa |
+|----------|-------------|----------|
+| `DAY_WINDOW` | Na troca entre as janelas diurna e noturna da conta (`dayStartAt` / `nightStartAt`) | Pix, transferência interna, boleto, devolução de Pix, stablecoin |
+| `CALENDAR_DAY` | À meia-noite de Brasília, independente da janela | os quatro contadores de TED |
+| `MONTH` | No dia 1º do mês seguinte | `pixOutMonthly` |
+
+`resetsAt` vem do relógio e das janelas configuradas na própria conta — não do TTL de nenhuma
+chave interna.
+
+### `usage.perTransaction` — os tetos por transação
+
+São os 15 tetos cobrados sobre **uma** transação, em centavos, já resolvidos para a janela em vigor
+(`null` quando não há teto configurado): `pixOutSameHolder`, `pixOutDifferentHolder`,
+`pixInSameHolder`, `pixInDifferentHolder`, `internalTransferOut`, `internalTransferIn`,
+`boletoOut`, `boletoMaximumValue`, `pixRefundSent`, `stableIn`, `stableOut`, `tedIn`, `tedOut`,
+`tedRefundReceived` e `tedRefundSent`.
+
+Eles não têm contador: passar do teto por transação reprova aquele pagamento, sem consumir nada.
+
+### Exemplo: dá para mandar esse Pix agora?
+
+```js
+const { usage } = await response.json();
+
+const amount = 150000; // centavos
+const { availableValue } = usage.aggregate.pixOut;
+const perTransaction = usage.perTransaction.pixOutDifferentHolder;
+
+const fitsInTheDayTotal = availableValue === null || amount <= availableValue;
+const fitsInOneTransaction = perTransaction === null || amount <= perTransaction;
+
+if (fitsInTheDayTotal && fitsInOneTransaction) {
+  // manda
+} else {
+  // espera o `usage.aggregate.pixOut.resetsAt` ou peça aumento de limite
+}
+```
 
 ## Códigos de resposta
 
@@ -162,6 +314,9 @@ const data = await response.json();
 
 console.log(data.limits.pixDayLimit);
 // 4000000
+
+console.log(data.usage.aggregate.pixOut.availableValue);
+// 2750000
 ```
 
   </TabItem>
