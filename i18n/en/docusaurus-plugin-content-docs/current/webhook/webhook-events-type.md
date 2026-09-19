@@ -14,7 +14,7 @@ Below, you can see a list of all events that Woovi sends to your application.
 
 :::tip Get the list of events via API
 You can also programmatically get the complete list of available events through our API.
-Check the [GET /api/v1/webhook/events](/en/api#tag/webhook/GET/api/v1/webhook/events) endpoint in the API reference.
+Check the [GET /api/v1/webhook/events](/api#tag/webhook/GET/api/v1/webhook/events) endpoint in the API reference.
 :::
 
 ## Charge Events

@@ -7,9 +7,11 @@ tags:
   - api
 ---
 
-O fluxo de stablecoin segue a ideia de **criar um depósito e aprová-lo**: a aprovação debita o saldo em BRL da conta da sua empresa e entrega a stablecoin (USDT) na carteira de destino.
+O fluxo em BRL segue a ideia de **criar um depósito e aprová-lo**: a aprovação debita o saldo em BRL da conta da sua empresa e entrega a stablecoin (USDT) na carteira de destino.
 
-## Fluxograma
+Para entrada em USD via WIRE ou ACH, siga o [fluxo em USD](#entrada-em-usd-wire-ou-ach). Ele retorna instruções bancárias e não usa a aprovação do depósito.
+
+## Fluxograma (BRL)
 
 ```mermaid
 sequenceDiagram
@@ -123,3 +125,36 @@ flowchart LR
   PENDING --> FAILED
   PROCESSING --> FAILED
 ```
+
+## Entrada em USD (WIRE ou ACH)
+
+A subconta vinculada à conta bancária do AppID precisa estar `CONFIRMED` e com `usdUnlocked: true`. Consulte `GET /api/v1/stablecoin/subaccount/kyb/usd?subAccountId=...`. O upload de documentos e a aceitação de um pedido de KYB não liberam USD automaticamente; aguarde a aprovação da análise. O sandbox da Avenia não libera as operações em USD, embora o upload de documentos possa ser validado em staging.
+
+1. Opcionalmente, cote com `GET /api/v1/stablecoin/quote?inputCurrency=USD&inputPaymentMethod=WIRE&value=10000&currency=USDC&network=BASE`. Para ACH, use `inputPaymentMethod=ACH`. Essa cotação não cria um depósito.
+2. Crie o depósito em `POST /api/v1/stablecoin/deposit` com os parâmetros abaixo. `value` é um inteiro em centavos de USD (`10000` = USD 100,00); `grossAmount` não é aceito. Os valores de `quote` na resposta são em unidades da moeda e as taxas do provedor aparecem em `quote.appliedFees`, cada uma com sua moeda.
+
+```json
+{
+  "inputCurrency": "USD",
+  "inputPaymentMethod": "WIRE",
+  "value": 10000,
+  "currency": "USDC",
+  "network": "BASE",
+  "destinationWalletAddress": "0x1234567890123456789012345678901234567890",
+  "correlationId": "usd-wire-order-1"
+}
+```
+
+3. Guarde o `depositId` e o `correlationId`. Use os dados bancários e a referência `depositMessage` retornados em `usdDepositInstructions` para enviar a transferência pela modalidade solicitada. Não chame `/deposit/approve`: a entrada USD não debita a conta BRL da Woovi.
+4. Acompanhe a entrega pelos webhooks `STABLECOIN_DEPOSIT_COMPLETED` e `STABLECOIN_DEPOSIT_FAILED`. `PENDING` significa que o depósito aguarda o envio/processamento da transferência; somente `COMPLETED` confirma a entrega da stablecoin.
+
+`correlationId` e `destinationWalletAddress` são obrigatórios para USD. Repetir a mesma requisição com o mesmo `correlationId` retorna o depósito existente. Se a resposta for HTTP `202` sem instruções bancárias, guarde esse identificador e contate o suporte para conciliar o resultado original. Não crie outro depósito ou envie outra transferência para tentar resolver uma resposta incerta.
+
+A carteira de destino pode estar nas seguintes redes, conforme o ativo:
+
+| Ativo | Redes de destino |
+| --- | --- |
+| USDC | POLYGON, ETHEREUM, BASE, CELO, BNB |
+| USDT | POLYGON, ETHEREUM, CELO, TRON, BNB |
+
+Se a rede for omitida, o padrão é `POLYGON`. Uma combinação não suportada é rejeitada. Quando a subconta exige whitelist, a carteira e sua rede precisam estar previamente aprovadas. O `subAccountId`, quando informado, deve pertencer à mesma conta bancária do AppID.
