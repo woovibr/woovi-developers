@@ -25713,6 +25713,326 @@
                   "name": "limit",
                   "item": [
                     {
+                      "id": "c39581bf-8819-f309-3f2a-580a29e561dc",
+                      "name": "Read the monthly limits of the AppID sub-account, live from the provider",
+                      "request": {
+                        "name": "Read the monthly limits of the AppID sub-account, live from the provider",
+                        "description": {
+                          "content": "Returns the monthly limits the provider (Avenia) enforces on the stable\nsub-account linked to the authenticated Application's `companyBankAccount`,\nread **live** at request time — not a copy stored by Woovi. For each entry\nyou get the ceiling (`limit`), how much of it this month already consumed\n(`used`) and what is left (`remaining`), split by direction: `fiatIn`\n(Pix → stable deposits), `fiatOut` (stable → Pix payouts), `chainIn` and\n`chainOut` (on-chain transfers).\n\n**Units.** Every amount is an integer in the minor unit (cents) of the\nentry's `currency` — `10000000` in a `BRL` entry is R$ 100.000,00. The\nentry with `scope: GLOBAL` is the provider's account-wide ceiling,\nexpressed in USD cents; `scope: CURRENCY` entries apply to that currency\nonly. `limit` and `remaining` are `null` when the provider reports no\nceiling for that direction. `year`/`month` identify the month `used`\nrefers to.\n\n`blocked: true` means the provider has blocked every operation on this\nsub-account because of its limits.\n\nTo raise the monthly limit use `POST /api/v1/stablecoin/limit/request`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n\n**Choosing the sub-account.** `subAccountId` is optional. Sent, it is the sub-account\nthe call runs on; omitted, the one linked to the AppID's `companyBankAccount` answers.\nYou may name the sub-account of that bank account, or of another OPEN account of the\nsame company under the same taxID. Any other id is refused with\n`400 STABLE_SUBACCOUNT_NOT_ALLOWED`. `GET /api/v1/stablecoin/subaccount/list` lists\nthe ids you can use.\n",
+                          "type": "text/plain"
+                        },
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "stablecoin",
+                            "limit"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "disabled": false,
+                              "key": "subAccountId",
+                              "value": "<string>",
+                              "description": "Sub-account this call runs on. Optional — the one linked to the AppID bank account answers when omitted. Must belong to that bank account or to another OPEN account of the same company under the same taxID, otherwise 400 STABLE_SUBACCOUNT_NOT_ALLOWED."
+                            }
+                          ],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_LIMITS_GET ACCOUNT_LIMITS_REQUEST_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE ANTICIPATION_REQUEST_READ ANTICIPATION_REQUEST_APPROVE ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST APPLICATION_POST APPLICATION_DELETE BOLETO_TRANSACTION_GET BOLETO_TRANSACTION_GET_LIST BOLETO_VALIDATE_POST CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST FUNDS_RECOVERY_GET FUNDS_RECOVERY_POST FUNDS_RECOVERY_DELETE PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT SUBSCRIPTION_PAYMENT_BOOK_GET TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://api.woovi.com"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "fd051b1b-b652-a30d-473e-7e4b9a797243",
+                          "name": "Monthly limits of the sub-account, live from the provider",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "limit"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "subAccountId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"status\": \"<string>\",\n  \"companyBankAccountId\": \"<string>\",\n  \"subAccountId\": \"<string>\",\n  \"blocked\": \"<boolean>\",\n  \"generatedAt\": \"<string>\",\n  \"limits\": [\n    {\n      \"currency\": \"<string>\",\n      \"scope\": \"<string>\",\n      \"period\": \"<string>\",\n      \"year\": \"<integer>\",\n      \"month\": \"<integer>\",\n      \"fiatIn\": {\n        \"limit\": \"<integer>\",\n        \"used\": \"<integer>\",\n        \"remaining\": \"<integer>\"\n      },\n      \"fiatOut\": {\n        \"limit\": \"<integer>\",\n        \"used\": \"<integer>\",\n        \"remaining\": \"<integer>\"\n      },\n      \"chainIn\": {\n        \"limit\": \"<integer>\",\n        \"used\": \"<integer>\",\n        \"remaining\": \"<integer>\"\n      },\n      \"chainOut\": {\n        \"limit\": \"<integer>\",\n        \"used\": \"<integer>\",\n        \"remaining\": \"<integer>\"\n      }\n    },\n    {\n      \"currency\": \"<string>\",\n      \"scope\": \"<string>\",\n      \"period\": \"<string>\",\n      \"year\": \"<integer>\",\n      \"month\": \"<integer>\",\n      \"fiatIn\": {\n        \"limit\": \"<integer>\",\n        \"used\": \"<integer>\",\n        \"remaining\": \"<integer>\"\n      },\n      \"fiatOut\": {\n        \"limit\": \"<integer>\",\n        \"used\": \"<integer>\",\n        \"remaining\": \"<integer>\"\n      },\n      \"chainIn\": {\n        \"limit\": \"<integer>\",\n        \"used\": \"<integer>\",\n        \"remaining\": \"<integer>\"\n      },\n      \"chainOut\": {\n        \"limit\": \"<integer>\",\n        \"used\": \"<integer>\",\n        \"remaining\": \"<integer>\"\n      }\n    }\n  ]\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "022d0125-d9a1-aecf-547c-cbc9fbd542d9",
+                          "name": "AppID has no companyBankAccount (`APPLICATION_COMPANY_BANK_ACCOUNT_MISSING`), the subAccountId is outside this account's scope (`STABLE_SUBACCOUNT_NOT_ALLOWED`), or the provider is not supported (`STABLE_SUBACCOUNT_PROVIDER_UNKNOWN`)",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "limit"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "subAccountId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\",\n  \"errorCode\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "0852df85-f745-a290-c6f0-b4f15f9a959f",
+                          "name": "Invalid credentials or missing required scope",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "limit"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "subAccountId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "afdb4cc3-916c-d4d8-b381-6ecc5063fd83",
+                          "name": "No sub-account for this company bank account (`STABLE_SUBACCOUNT_NOT_FOUND`)",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "limit"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "subAccountId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\",\n  \"errorCode\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        },
+                        {
+                          "id": "6455a380-eaea-819c-c151-1dc43f1b1b4f",
+                          "name": "The provider could not be reached or returned no limit information (`STABLE_SUBACCOUNT_PROVIDER_ERROR`)",
+                          "originalRequest": {
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "stablecoin",
+                                "limit"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [
+                                {
+                                  "key": "subAccountId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "description": {
+                                  "content": "Added as a part of security scheme: oauth2",
+                                  "type": "text/plain"
+                                },
+                                "key": "Authorization",
+                                "value": "<token>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "GET",
+                            "body": {}
+                          },
+                          "status": "Bad Gateway",
+                          "code": 502,
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": "{\n  \"status\": \"<string>\",\n  \"error\": \"<string>\",\n  \"errorCode\": \"<string>\"\n}",
+                          "cookie": [],
+                          "_postman_previewlanguage": "json"
+                        }
+                      ],
+                      "event": [],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      }
+                    },
+                    {
                       "id": "3f70c7e9-a3fc-3dca-56c1-d3db2bae60f2",
                       "name": "Get a pre-signed URL to upload a limit-increase document",
                       "request": {
