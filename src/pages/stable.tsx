@@ -19,7 +19,7 @@ const LoadingState = () => (
     <div className={styles.statusCard} role='status'>
       <span className={styles.statusMark} aria-hidden='true' />
       <h1>Loading Stablecoin API</h1>
-      <p>Preparing On Ramp, Off Ramp and Wallets endpoints.</p>
+      <p>Preparing On Ramp, Off Ramp, KYB, Limits and Wallets endpoints.</p>
     </div>
   </div>
 );
@@ -106,7 +106,7 @@ export default function StableApiPage() {
   return (
     <Layout
       title='Stablecoin API'
-      description='Woovi Stablecoin API: On Ramp, Off Ramp and Wallets'
+      description='Woovi Stablecoin API: On Ramp, Off Ramp, KYB, KYB USD, Limits and Wallets'
     >
       <BrowserOnly fallback={<LoadingState />}>
         {() => <StableApiReference />}

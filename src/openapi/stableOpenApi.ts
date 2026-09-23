@@ -1,7 +1,10 @@
 type OpenApiRecord = Record<string, unknown>;
 
+type StableSectionName =
+  'On Ramp' | 'Off Ramp' | 'KYB' | 'KYB USD' | 'Limits' | 'Wallets';
+
 type StableSection = {
-  name: 'On Ramp' | 'Off Ramp' | 'Wallets';
+  name: StableSectionName;
   description: string;
 };
 
@@ -27,11 +30,47 @@ const STABLE_SECTIONS: StableSection[] = [
       'Convert a stablecoin balance into BRL and pay it out to a Pix destination.',
   },
   {
+    name: 'KYB',
+    description:
+      'Request a stablecoin subaccount and follow its KYB review until it is confirmed.',
+  },
+  {
+    name: 'KYB USD',
+    description:
+      'Submit and follow the KYB for the USD fiat rail of a confirmed stablecoin subaccount.',
+  },
+  {
+    name: 'Limits',
+    description:
+      'Request a higher monthly stablecoin limit and attach the supporting documents.',
+  },
+  {
     name: 'Wallets',
     description:
-      'Create and inspect stablecoin subaccounts, deposit addresses and available balances.',
+      'Inspect deposit addresses and balances, and swap assets, optionally delivering them on-chain.',
   },
 ];
+
+const getSection = (name: StableSectionName): StableSection => {
+  const section = STABLE_SECTIONS.find((item) => item.name === name);
+
+  if (!section) throw new Error(`Unknown stablecoin section: ${name}`);
+
+  return section;
+};
+
+// First match wins, so more specific prefixes must come before broader ones.
+const SECTION_RULES: Array<{ prefix: string; section: StableSectionName }> = [
+  { prefix: '/quote', section: 'On Ramp' },
+  { prefix: '/deposit', section: 'On Ramp' },
+  { prefix: '/payout', section: 'Off Ramp' },
+  { prefix: '/subaccount/kyb/usd', section: 'KYB USD' },
+  { prefix: '/limit', section: 'Limits' },
+  { prefix: '/wallets', section: 'Wallets' },
+  { prefix: '/swap', section: 'Wallets' },
+];
+
+const SUBACCOUNT_WALLET_PATH = /^\/subaccount\/[^/]+\/(wallets|balances)$/;
 
 const HTTP_METHODS = new Set([
   'delete',
@@ -48,18 +87,19 @@ const isRecord = (value: unknown): value is OpenApiRecord =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
 const getStableSection = (path: string): StableSection => {
-  if (
-    path === `${STABLECOIN_PATH_PREFIX}/quote` ||
-    path.startsWith(`${STABLECOIN_PATH_PREFIX}/deposit`)
-  ) {
-    return STABLE_SECTIONS[0];
-  }
+  const relativePath = path.slice(STABLECOIN_PATH_PREFIX.length);
 
-  if (path.startsWith(`${STABLECOIN_PATH_PREFIX}/payout`)) {
-    return STABLE_SECTIONS[1];
-  }
+  if (SUBACCOUNT_WALLET_PATH.test(relativePath)) return getSection('Wallets');
 
-  return STABLE_SECTIONS[2];
+  const rule = SECTION_RULES.find(({ prefix }) =>
+    relativePath.startsWith(prefix),
+  );
+
+  if (rule) return getSection(rule.section);
+
+  if (relativePath.startsWith('/subaccount')) return getSection('KYB');
+
+  return getSection('Wallets');
 };
 
 const tagOperations = (path: string, pathItem: unknown): unknown => {
@@ -132,7 +172,7 @@ const buildStableOpenApi = (document: unknown): OpenApiRecord => {
       ...(isRecord(document.info) ? document.info : {}),
       title: 'Woovi Stablecoin API',
       description:
-        'APIs for BRL on-ramp, Pix off-ramp and stablecoin wallet infrastructure.',
+        'APIs for BRL on-ramp, Pix off-ramp, subaccount KYB (BRL and USD), monthly limits and stablecoin wallets.',
     },
     tags: STABLE_SECTIONS,
     paths: Object.fromEntries(stablePaths),
@@ -145,4 +185,4 @@ const buildStableOpenApi = (document: unknown): OpenApiRecord => {
 };
 
 export { buildStableOpenApi, STABLE_SECTIONS, STABLECOIN_PATH_PREFIX };
-export type { StableSection };
+export type { StableSection, StableSectionName };
