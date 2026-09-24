@@ -50,6 +50,10 @@ const endpoints: ApiEndpoint[] = [
             'branch': '0001',
             'account': '123456',
             'accountName': 'Main Account',
+            'pixKeyWithdraw': {
+              'pixKey': 'withdraw@example.com',
+              'type': 'EMAIL',
+            },
           },
         },
       },
@@ -102,6 +106,10 @@ const endpoints: ApiEndpoint[] = [
                 'blocked': 0,
                 'available': 129430,
               },
+              'pixKeyWithdraw': {
+                'pixKey': 'withdraw@example.com',
+                'type': 'EMAIL',
+              },
             },
             {
               'accountId': '6286b467a7910113577e00ce',
@@ -111,6 +119,7 @@ const endpoints: ApiEndpoint[] = [
                 'blocked': 100,
                 'available': 30,
               },
+              'pixKeyWithdraw': null,
             },
           ],
         },
