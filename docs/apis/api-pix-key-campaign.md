@@ -49,6 +49,7 @@ Atenção: Somente para clientes BaaS.
 - Crie uma nova aplicação utilizando o accountId retornado na última requisição.
 - Armazene o AppID relacionado a essa conta. Você usará ele para pegar o saldo de uma campanha.
 - Crie uma nova chave pix utilizando o AppID da conta que deseja.
+- Defina a chave Pix de saque da conta, para onde vão os saques da campanha, com o AppID dela. Veja [Definindo a Chave Pix de Saque](#6-definindo-a-chave-pix-de-saque). A chave atual aparece no campo `pixKeyWithdraw` de `GET /api/v1/account/{accountId}`.
 - Cada conta bancária tem um saldo, então é recomendado que crie uma nova conta bancária para cada campanha.
 
 ### 1. Criando uma conta bancária
@@ -233,3 +234,27 @@ curl -X PUT "https://api.woovi.com/api/v1/pix-keys/withdraw" \
 - Se a chave já for a chave de saque da conta, a conta é retornada sem mudanças.
 - Se a empresa não tiver essa chave de saque, o retorno será 404. Nesse caso, utilize o `POST` acima.
 
+#### Consultando a chave de saque atual
+- A chave Pix de saque da conta aparece no campo `pixKeyWithdraw` de `GET /api/v1/account/{accountId}` e de `GET /api/v1/account`.
+- O campo só é retornado para contas com a API de chave Pix de saque habilitada.
+
+```json
+curl -X GET "https://api.woovi.com/api/v1/account/{{ACCOUNT_ID}}" \
+  -H "Authorization: {{APPLICATION_APP_ID}}"
+```
+
+```json
+{
+  "account": {
+    "accountId": "6290ccfd42831958a405debc",
+    "isDefault": true,
+    "pixKeyWithdraw": {
+      "pixKey": "saque@empresa.com",
+      "type": "EMAIL"
+    }
+  }
+}
+```
+
+- Quando a conta não tem chave de saque, o campo vem como `null`.
+- `type` pode ser `CPF`, `CNPJ`, `EMAIL`, `PHONE` ou `RANDOM`. Chaves aleatórias vêm como `RANDOM` aqui, enquanto os endpoints de chave Pix usam `EVP`.

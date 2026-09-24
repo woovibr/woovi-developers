@@ -15,6 +15,12 @@ Tipos: **Adicionado** · **Alterado** · **Depreciado** · **Removido**.
 
 ## 2026-09
 
+- **Adicionado** — campo opcional `pixKeyWithdraw` em `GET /api/v1/account` e
+  `GET /api/v1/account/{accountId}`, e nas respostas do saque e dos endpoints de chave Pix de
+  saque. Vem como `{ pixKey, type }` ou `null` quando a conta não tem chave de saque, e só é
+  retornado para contas com a API de chave Pix de saque habilitada. `type` usa `RANDOM` para
+  chaves aleatórias, não `EVP`. Veja
+  [Começando Campanha Usando Chave Pix](./api-pix-key-campaign).
 - **Adicionado** — `POST /api/v1/pix-keys/withdraw` e `PUT /api/v1/pix-keys/withdraw`, que
   definem a chave Pix de saque da conta ligada ao AppID. O `POST` cadastra uma chave nova e já a
   seleciona; o `PUT` seleciona uma chave de saque que a empresa já tem. A chave é consultada no

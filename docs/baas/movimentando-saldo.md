@@ -12,7 +12,9 @@ Este documento mostra como movimentar o saldo das contas do modo BaaS: saque, tr
 
 ## Saque de uma conta (API Master)
 
-Envia o saldo da conta para a conta bancária de destino configurada para ela. O `value` é em **centavos**:
+Envia o saldo da conta para a conta bancária de destino configurada para ela. O `value` é em **centavos**.
+
+O destino é a chave Pix de saque da conta. Com a API de chave Pix de saque habilitada, ela aparece no campo `pixKeyWithdraw` de `GET /api/v1/account/{accountId}` e pode ser definida pela API: veja [Definindo a Chave Pix de Saque](../apis/api-pix-key-campaign.md#6-definindo-a-chave-pix-de-saque).
 
 ```bash
 curl --request POST \
