@@ -15293,9 +15293,9 @@
                   "item": [
                     {
                       "id": "79a9c882-deaf-38ec-1c2e-23e706f9a560",
-                      "name": "Get the NFe.io integration status and config for the authenticated company",
+                      "name": "Get the invoice integration status and config for the authenticated company",
                       "request": {
-                        "name": "Get the NFe.io integration status and config for the authenticated company",
+                        "name": "Get the invoice integration status and config for the authenticated company",
                         "description": {},
                         "url": {
                           "path": [
@@ -15508,9 +15508,9 @@
                     },
                     {
                       "id": "7d9d8d75-fac0-5999-14c1-4750bfa6af18",
-                      "name": "Activate or deactivate the NFe.io integration for the authenticated company",
+                      "name": "Activate or deactivate the invoice integration for the authenticated company",
                       "request": {
-                        "name": "Activate or deactivate the NFe.io integration for the authenticated company",
+                        "name": "Activate or deactivate the invoice integration for the authenticated company",
                         "description": {},
                         "url": {
                           "path": [
@@ -15822,11 +15822,11 @@
                     },
                     {
                       "id": "41046c71-76ff-448c-0319-0f53534cba65",
-                      "name": "Create or upsert the NFe.io integration for the authenticated company",
+                      "name": "Create or upsert the invoice integration for the authenticated company",
                       "request": {
-                        "name": "Create or upsert the NFe.io integration for the authenticated company",
+                        "name": "Create or upsert the invoice integration for the authenticated company",
                         "description": {
-                          "content": "Upserts the NFe.io integration for the authenticated company and sets its tax fields. Optionally activates it (only allowed once configured).\n",
+                          "content": "Upserts the invoice integration for the authenticated company and sets its tax fields. Optionally activates it (only allowed once configured).\n",
                           "type": "text/plain"
                         },
                         "url": {
@@ -16197,7 +16197,7 @@
                       "request": {
                         "name": "Update the tax fields of the invoice integration",
                         "description": {
-                          "content": "Updates the tax configuration of the authenticated company's existing NFEIO integration (city service code, municipal subscription, rps number, special tax, tax regime, legal nature and tax determination fields). The integration must already exist; otherwise a 404 is returned. The response never echoes credentials.",
+                          "content": "Updates the tax configuration of the authenticated company's existing invoice integration (city service code, municipal subscription, rps number, special tax, tax regime, legal nature and tax determination fields). The integration must already exist; otherwise a 404 is returned. The response never echoes credentials.",
                           "type": "text/plain"
                         },
                         "url": {
@@ -16406,11 +16406,11 @@
                     },
                     {
                       "id": "7dcd2815-2e30-4010-6ee2-a1cdd4cd41d8",
-                      "name": "Upload the NFe.io A1 certificate for the invoice integration",
+                      "name": "Upload the A1 certificate for the invoice integration",
                       "request": {
-                        "name": "Upload the NFe.io A1 certificate for the invoice integration",
+                        "name": "Upload the A1 certificate for the invoice integration",
                         "description": {
-                          "content": "Uploads the company's NFe.io A1 certificate (base64-encoded pkcs12) to the configured NFEIO integration. The response returns only the resulting integration status and never echoes the certificate, passphrase or credentials.",
+                          "content": "Uploads the company's A1 certificate (base64-encoded pkcs12) to the configured invoice integration. The response returns only the resulting integration status and never echoes the certificate, passphrase or credentials.",
                           "type": "text/plain"
                         },
                         "url": {
@@ -16729,11 +16729,11 @@
                     },
                     {
                       "id": "b0b1b1a9-368c-2baf-5c0b-62e4c9167d23",
-                      "name": "Issue a NFe.io test invoice for the invoice integration",
+                      "name": "Issue a test invoice for the invoice integration",
                       "request": {
-                        "name": "Issue a NFe.io test invoice for the invoice integration",
+                        "name": "Issue a test invoice for the invoice integration",
                         "description": {
-                          "content": "Issues a test NFe.io invoice for the authenticated company's NFEIO integration. This is the bootstrap step that moves the integration to VALIDATING; once NFe.io confirms the test note via webhook the integration becomes CONFIGURED and active, which unblocks real invoice issuance. A configured integration can no longer issue test invoices.",
+                          "content": "Issues a test invoice for the authenticated company's invoice integration. This is the bootstrap step that moves the integration to VALIDATING; once the invoice provider confirms the test note via webhook the integration becomes CONFIGURED and active, which unblocks real invoice issuance. A configured integration can no longer issue test invoices.",
                           "type": "text/plain"
                         },
                         "url": {
