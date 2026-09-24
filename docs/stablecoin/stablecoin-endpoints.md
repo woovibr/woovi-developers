@@ -17,7 +17,7 @@ Todas as rotas ficam sob `/api/v1/stablecoin/` e exigem autenticação com o seu
 | --- | --- |
 | `STABLECOIN_DEPOSIT_CREATE` | `quote`, `deposit`, `deposit/approve` |
 | `STABLECOIN_SUBACCOUNT_CREATE` | `subaccount` (POST — solicitar KYB) |
-| `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar/detalhe), `wallets`, `subaccount/{id}/wallets`, `subaccount/{id}/balances` |
+| `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar/detalhe), `wallets`, `subaccount/{id}/wallets`, `subaccount/{id}/balances`, `limit` (GET) |
 | `STABLECOIN_PAYOUT_CREATE` | `payout/quote`, `payout` (criar/aprovar/consultar) |
 
 > A URL base de produção é `https://api.woovi.com`. Caso o App não tenha o escopo necessário, a resposta é `401` com `Application is missing required scope: ...`.
@@ -203,6 +203,62 @@ curl --request GET \
   "status": "ok",
   "subAccountId": "b3e144dd-7d10-457c-9b85-033085722ed1",
   "balances": { "USDT": 0.425458, "USDC": 0, "BRLA": 0 }
+}
+```
+
+### Limites mensais da subconta (Avenia, ao vivo)
+
+GET `/api/v1/stablecoin/limit`
+
+Retorna os limites mensais que o provedor (Avenia) aplica na subconta ligada ao `companyBankAccount` do AppID, lidos **ao vivo** no momento da chamada. Para cada entrada vem o teto (`limit`), quanto já foi consumido no mês (`used`) e quanto resta (`remaining`), separados por direção: `fiatIn` (depósito Pix → stable), `fiatOut` (payout stable → Pix), `chainIn` e `chainOut` (transferências on-chain).
+
+- Todos os valores são inteiros em **centavos** da moeda da entrada (`currency`) — `10000000` numa entrada `BRL` = R$ 100.000,00.
+- A entrada com `scope: GLOBAL` é o teto geral da conta no provedor, em **centavos de USD**; entradas `scope: CURRENCY` valem só para aquela moeda.
+- `limit` e `remaining` vêm `null` quando o provedor não informa teto para aquela direção. `year`/`month` indicam o mês a que `used` se refere.
+- `blocked: true` significa que o provedor bloqueou todas as operações da subconta por limite.
+- `subAccountId` (query, opcional) escolhe a subconta, com as mesmas regras das demais rotas (`400 STABLE_SUBACCOUNT_NOT_ALLOWED` fora do escopo do AppID).
+
+Para pedir um limite maior, use `POST /api/v1/stablecoin/limit/request`.
+
+Exige o escopo `STABLECOIN_SUBACCOUNT_LIST`.
+
+```bash
+curl --request GET \
+  --url https://api.woovi.com/api/v1/stablecoin/limit \
+  --header 'Authorization: <SEU_APP_ID>'
+```
+
+```json
+{
+  "status": "ok",
+  "companyBankAccountId": "682b62fe5afc2e15760223c5",
+  "subAccountId": "b3e144dd-7d10-457c-9b85-033085722ed1",
+  "blocked": false,
+  "generatedAt": "2026-09-23T12:00:00.000Z",
+  "limits": [
+    {
+      "currency": "BRL",
+      "scope": "CURRENCY",
+      "period": "MONTHLY",
+      "year": 2026,
+      "month": 9,
+      "fiatIn": { "limit": 10000000, "used": 250000, "remaining": 9750000 },
+      "fiatOut": { "limit": 10000000, "used": 100000, "remaining": 9900000 },
+      "chainIn": { "limit": 10000000, "used": 0, "remaining": 10000000 },
+      "chainOut": { "limit": 10000000, "used": 0, "remaining": 10000000 }
+    },
+    {
+      "currency": "USD",
+      "scope": "GLOBAL",
+      "period": "MONTHLY",
+      "year": 2026,
+      "month": 9,
+      "fiatIn": { "limit": 2000000, "used": 45000, "remaining": 1955000 },
+      "fiatOut": { "limit": 2000000, "used": 18000, "remaining": 1982000 },
+      "chainIn": { "limit": 2000000, "used": 0, "remaining": 2000000 },
+      "chainOut": { "limit": 2000000, "used": 0, "remaining": 2000000 }
+    }
+  ]
 }
 ```
 

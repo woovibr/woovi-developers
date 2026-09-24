@@ -2585,6 +2585,84 @@ const endpoints: ApiEndpoint[] = [
     'responseExamples': [],
   },
   {
+    'id': 'get-api-v1-stablecoin-limit',
+    'method': 'GET',
+    'path': '/api/v1/stablecoin/limit',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Read the monthly limits of the AppID sub-account, live from the provider',
+    'description': "Returns the monthly limits the provider (Avenia) enforces on the stable\nsub-account linked to the authenticated Application's `companyBankAccount`,\nread **live** at request time — not a copy stored by Woovi. For each entry\nyou get the ceiling (`limit`), how much of it this month already consumed\n(`used`) and what is left (`remaining`), split by direction: `fiatIn`\n(Pix → stable deposits), `fiatOut` (stable → Pix payouts), `chainIn` and\n`chainOut` (on-chain transfers).\n\n**Units.** Every amount is an integer in the minor unit (cents) of the\nentry's `currency` — `10000000` in a `BRL` entry is R$ 100.000,00. The\nentry with `scope: GLOBAL` is the provider's account-wide ceiling,\nexpressed in USD cents; `scope: CURRENCY` entries apply to that currency\nonly. `limit` and `remaining` are `null` when the provider reports no\nceiling for that direction. `year`/`month` identify the month `used`\nrefers to.\n\n`blocked: true` means the provider has blocked every operation on this\nsub-account because of its limits.\n\nTo raise the monthly limit use `POST /api/v1/stablecoin/limit/request`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n\n**Choosing the sub-account.** `subAccountId` is optional. Sent, it is the sub-account\nthe call runs on; omitted, the one linked to the AppID's `companyBankAccount` answers.\nYou may name the sub-account of that bank account, or of another OPEN account of the\nsame company under the same taxID. Any other id is refused with\n`400 STABLE_SUBACCOUNT_NOT_ALLOWED`. `GET /api/v1/stablecoin/subaccount/list` lists\nthe ids you can use.\n",
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'status': 'ok',
+          'companyBankAccountId': '6650abc1234def567890aaaa',
+          'subAccountId': 'c54e84fa-a3c8-414f-a1f7-30af2e64ca6c',
+          'blocked': false,
+          'generatedAt': '2026-09-23T12:00:00.000Z',
+          'limits': [
+            {
+              'currency': 'BRL',
+              'scope': 'CURRENCY',
+              'period': 'MONTHLY',
+              'year': 2026,
+              'month': 9,
+              'fiatIn': {
+                'limit': 10000000,
+                'used': 250000,
+                'remaining': 9750000,
+              },
+              'fiatOut': {
+                'limit': 10000000,
+                'used': 100000,
+                'remaining': 9900000,
+              },
+              'chainIn': {
+                'limit': 10000000,
+                'used': 0,
+                'remaining': 10000000,
+              },
+              'chainOut': {
+                'limit': 10000000,
+                'used': 0,
+                'remaining': 10000000,
+              },
+            },
+            {
+              'currency': 'USD',
+              'scope': 'GLOBAL',
+              'period': 'MONTHLY',
+              'year': 2026,
+              'month': 9,
+              'fiatIn': {
+                'limit': 2000000,
+                'used': 45000,
+                'remaining': 1955000,
+              },
+              'fiatOut': {
+                'limit': 2000000,
+                'used': 18000,
+                'remaining': 1982000,
+              },
+              'chainIn': {
+                'limit': 2000000,
+                'used': 0,
+                'remaining': 2000000,
+              },
+              'chainOut': {
+                'limit': 2000000,
+                'used': 0,
+                'remaining': 2000000,
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+  {
     'id': 'post-api-v1-stablecoin-limit-request-limitrequestid-document',
     'method': 'POST',
     'path': '/api/v1/stablecoin/limit/request/{limitRequestId}/document',
