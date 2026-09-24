@@ -189,6 +189,11 @@ curl -X DELETE "https://api.woovi.com/api/v1/pix-keys/{{PIX_KEY_VALUE}}" \
 ```
 
 ### 6. Definindo a Chave Pix de Saque
+
+:::info
+Estes endpoints não vêm habilitados por padrão. Peça ao suporte para habilitar a API de chave Pix de saque na sua conta. Sem isso, o retorno será 403.
+:::
+
 - A chave Pix de saque é para onde vão os saques da conta de uma campanha.
 - Utilize o AppID da conta que você quer configurar.
 - A chave é consultada no DICT e o titular precisa ser o mesmo da conta. Chaves Pix de contas Woovi não são aceitas.

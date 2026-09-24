@@ -1372,16 +1372,12 @@ const endpoints: ApiEndpoint[] = [
         'value': {
           'integration': {
             'id': '67001bbf0b0621890af7dc28',
-            'type': 'NFEIO',
             'status': 'CONFIGURED',
             'isActive': true,
             'metadata': {
-              'nfeio': {
-                'nfeioCompanyId': 'nfeio-company-id',
-                'cityServiceCode': '2690',
-                'municipalSubscription': '123456',
-                'taxRegime': 'SimplesNacional',
-              },
+              'cityServiceCode': '2690',
+              'municipalSubscription': '123456',
+              'taxRegime': 'SimplesNacional',
             },
           },
         },
@@ -1403,14 +1399,11 @@ const endpoints: ApiEndpoint[] = [
         'value': {
           'integration': {
             'id': '67001bbf0b0621890af7dc28',
-            'type': 'NFEIO',
             'status': 'CONFIGURING',
             'isActive': false,
             'metadata': {
-              'nfeio': {
-                'cityServiceCode': '2690',
-                'municipalSubscription': '123456',
-              },
+              'cityServiceCode': '2690',
+              'municipalSubscription': '123456',
             },
           },
         },
@@ -1432,9 +1425,208 @@ const endpoints: ApiEndpoint[] = [
         'value': {
           'integration': {
             'id': '67001bbf0b0621890af7dc28',
-            'type': 'NFEIO',
             'status': 'CONFIGURED',
             'isActive': true,
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-kyc-bc-protection',
+    'method': 'GET',
+    'path': '/api/v1/kyc/bc-protection',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Read the BC Protege+ gate of an account register',
+    'description': 'BC Protege+ is a Banco Central registry. A holder who enables it blocks\nthe opening of accounts in their name, so while it is active for the\ncompany CNPJ or for any active ADMIN CPF, Woovi cannot open the account.\n\nThe gate requires the CNPJ and every active ADMIN to be `AUTHORIZED`.\nAnything else blocks, the absence of a record included. `blocking` lists\nevery scope currently blocking, not just the first one.\n\nOnly the merchant can resolve a block: they disable BC Protege+ at Banco\nCentral, you call `POST /api/v1/kyc/bc-protection/resend`, Woovi\nre-queries, and the record turns `AUTHORIZED`. No Woovi endpoint or\noperator action can force it.\n\nWhen `applicable` is `false` (the company lacks\n`BC_PROTECTION_KYC_AUTHORIZE`, or the account is international) the gate\nnever blocks and the rest of the body is informational.\n\nRequired scope: `KYC_BC_PROTECTION_GET`.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'applicable': true,
+          'authorized': false,
+          'company': {
+            'taxID': {
+              'taxID': '11222333000181',
+              'type': 'BR:CNPJ',
+            },
+            'situation': 'AUTHORIZED',
+            'updatedAt': '2026-09-24T14:02:11.000Z',
+            'nextResendAt': null,
+          },
+          'representatives': [
+            {
+              'id': '6721f0b3c1d4e80012a4f9aa',
+              'taxID': {
+                'taxID': '52998224725',
+                'type': 'BR:CPF',
+              },
+              'situation': 'UNAUTHORIZED',
+              'updatedAt': '2026-09-24T14:02:12.000Z',
+              'nextResendAt': '2026-09-24T15:02:12.000Z',
+            },
+          ],
+          'blocking': [
+            {
+              'scope': 'REPRESENTATIVE',
+              'taxID': '52998224725',
+              'situation': 'UNAUTHORIZED',
+            },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-kyc-bc-protection-resend',
+    'method': 'POST',
+    'path': '/api/v1/kyc/bc-protection/resend',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Re-run the BC Protege+ verification for one tax ID',
+    'description': 'Call this after the merchant says they disabled the protection at Banco\nCentral. It re-runs the Banco Central query (SRC0001) for that tax ID.\n\nThe answer is asynchronous: `202` means the query was accepted, not that\nthe situation changed. Read `GET /api/v1/kyc/bc-protection` again (or\nwait for the `ACCOUNT_REGISTER_STEP_UPDATED` webhook) to see the result.\n\nRate limited to one resend per hour per (account register, tax ID). A\nresend inside the window answers `429` with `nextResendAt` in the body.\nThe first query on a register is not a resend and never consumes the\ncooldown.\n\nRequired scope: `KYC_BC_PROTECTION_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'taxID': '52998224725',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-kyc-documents',
+    'method': 'GET',
+    'path': '/api/v1/kyc/documents',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'List the company documents of an account register',
+    'description': 'Every company document the register carries, whatever path stored it\n(API or hosted link), with a download `url` valid for five minutes, plus\nthe document types compliance is still waiting on (`requestDocuments`).\n\nRequired scope: `KYC_DOCUMENTS_GET`.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'documents': [
+            {
+              'type': 'SOCIAL_CONTRACT',
+              'fileName': 'contrato-social.pdf',
+              'mimeType': 'application/pdf',
+              'url': 'https://storage.woovi.com/company/abc/account_register_document/6712c2ac7c2f1e0012a4b8d1?X-Amz-Expires=300',
+            },
+          ],
+          'requestDocuments': [
+            'COMPANY_ADDRESS_PROOF',
+          ],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-kyc-documents',
+    'method': 'POST',
+    'path': '/api/v1/kyc/documents',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Attach company documents to an account register',
+    'description': 'Company documents are sent as files uploaded first. Two calls:\n\n1. `POST /api/v1/files` (multipart) with `purpose=ACCOUNT_REGISTER_DOCUMENT`.\n   Keep the `id` it returns.\n2. This endpoint, with that id as `documents[].fileId` and the document\n   `type`.\n\nA `fileId` must belong to the calling company **and** have been uploaded\nwith purpose `ACCOUNT_REGISTER_DOCUMENT`; any other file is not found.\nEvery `fileId` is resolved before anything is written, so a request with\none unknown file attaches none of them.\n\nAccepted while the register waits on the merchant (`DRAFT`, `PENDING`)\nand while compliance has an open request for information. A document\nthat answers a requested item clears it, and the request closes once\nnothing is left.\n\nRequired scope: `KYC_DOCUMENTS_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'documents': [
+            {
+              'type': 'SOCIAL_CONTRACT',
+              'fileId': '6712c2ac7c2f1e0012a4b8d1',
+            },
+          ],
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'documents': [
+            {
+              'type': 'SOCIAL_CONTRACT',
+              'fileName': 'contrato-social.pdf',
+              'mimeType': 'application/pdf',
+              'url': 'https://storage.woovi.com/company/abc/account_register_document/6712c2ac7c2f1e0012a4b8d1?X-Amz-Expires=300',
+            },
+          ],
+          'requestDocuments': [],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-kyc-pix-authentication-pixauthenticationid',
+    'method': 'GET',
+    'path': '/api/v1/kyc/pix-authentication/{pixAuthenticationId}',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Read the result of a Pix authentication ceremony',
+    'description': 'Reconciles the ceremony and reports its result. This read is what settles\nit: a payment that landed since the last poll is matched here.\n\nSwitch on `result`, not on `status`:\n\n| result | Meaning | Next action |\n|---|---|---|\n| `UNVERIFIED` | No payment settled yet | Keep polling until `dueDate` |\n| `MATCHED` | The payer CPF is the representative CPF | Done for this representative |\n| `MISMATCH` | A payment settled but the payer failed a check | Create a new ceremony |\n\n`MISMATCH` covers three failures — the payer CPF differs, the paying\ninstitution failed the ISPB check, or the payer could not be resolved.\nAll three consume the ceremony, so the representative needs a new QR.\n\nSuggested cadence (same as the hosted wizard): poll every 5 seconds,\nback off to 10, 20 and 40 seconds on consecutive transport errors, and\nstop after four consecutive failures.\n\nRequired scope: `KYC_PIX_AUTHENTICATION_GET`.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pixAuthentication': {
+            'id': '6722a1d0e4b1f30012c0ffee',
+            'txId': '7a1c9e04b2d84f3b9c61e0d2a5f8b713',
+            'status': 'COMPLETED',
+            'result': 'MATCHED',
+            'amount': 1,
+            'dueDate': '2026-09-24T18:30:00.000Z',
+            'taxID': {
+              'taxID': '52998224725',
+              'type': 'BR:CPF',
+            },
+          },
+          'representative': {
+            'id': '6721f0b3c1d4e80012a4f9aa',
+            'verified': true,
+          },
+          'allRepresentativesVerified': true,
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-kyc-pix-authentication',
+    'method': 'POST',
+    'path': '/api/v1/kyc/pix-authentication',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Create a Pix authentication ceremony for a representative',
+    'description': 'Mints the Pix charge an ADMIN representative pays to prove they hold a\nbank account under their own CPF. The charge is created with\n`ensureSameTaxID`, so the Pix arrangement itself refuses a payment whose\npayer CPF differs from the representative CPF. The amount is refunded on\nevery terminal outcome.\n\nRequires the feature `PIX_AUTHENTICATION_KYC` on the company that owns\nthe register. In sandbox the ceremony cannot be completed (it needs a\nreal Pix payment), so the gate is dropped there.\n\n**Idempotent by ceremony, not by request.** Calling it again while a\nceremony is open returns the same `txId` and `brCode` instead of minting\na second charge. A representative already verified answers `200` with\n`result: MATCHED` and no `brCode` — treat that as success.\n\nAccepted while the register is `PENDING`, or later while an open request\nfor information asks this representative for a Pix authentication.\n\nRequired scope: `KYC_PIX_AUTHENTICATION_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'representativeId': '6721f0b3c1d4e80012a4f9aa',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pixAuthentication': {
+            'id': '6722a1d0e4b1f30012c0ffee',
+            'result': 'MATCHED',
+          },
+          'representative': {
+            'id': '6721f0b3c1d4e80012a4f9aa',
+            'verified': true,
           },
         },
       },
@@ -1447,7 +1639,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'kyc',
     'category': 'KYC',
     'summary': 'Create a KYC onboarding',
-    'description': 'Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\n`website` and `businessDescription` can be pre-filled by the caller. In the Brazilian\nflow `businessDescription` is the only field gating the `COMPANY_DATA` onboarding step,\nso sending it here lets the merchant skip that step of the wizard. On an idempotent\nreplay both fields are only written when still empty — data typed by the applicant is\nnever overwritten.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n',
+    'description': 'Creates a new KYC onboarding for a merchant. Returns a link that should be sent\nto the merchant so they can fill in their registration data.\n\nThe register starts in `PENDING`, with the representatives enriched from the\nCNPJ. Instead of (or besides) sending the link, your integration can drive every\nstep over the API — `POST /api/v1/kyc/documents`, `/api/v1/kyc/representatives`,\n`/api/v1/kyc/pix-authentication`, `/api/v1/kyc/bc-protection` — and finish with\n`POST /api/v1/kyc/onboarding/submit`. The `correlationID` sent here is how every\none of those endpoints addresses the register.\n\nThe API is idempotent by `correlationID`. If the same `correlationID` is sent again\nfor the same company, the API returns the existing onboarding link (200 OK) instead\nof creating a new one.\n\nThe fields `officialName`, `tradeName` and `representatives[].name` are automatically\npopulated via data enrichment when available. You do not need to send them in the request.\n\n`website` and `businessDescription` can be pre-filled by the caller. In the Brazilian\nflow `businessDescription` is the only field gating the `COMPANY_DATA` onboarding step,\nso sending it here lets the merchant skip that step of the wizard. On an idempotent\nreplay both fields are only written when still empty — data typed by the applicant is\nnever overwritten.\n\nIf `redirectUrl` is provided, the merchant is automatically redirected to that URL\n5 seconds after completing the onboarding flow (terminal states: submitted, approved,\nor rejected). The `redirectUrl` is bound to the onboarding link at creation time and\ncannot be changed later — subsequent idempotent calls will return the original value.\n',
     'requestExamples': [
       {
         'name': 'MinimalRequest',
@@ -1500,6 +1692,293 @@ const endpoints: ApiEndpoint[] = [
       },
     ],
     'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-kyc-representatives-documents',
+    'method': 'POST',
+    'path': '/api/v1/kyc/representatives/documents',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Attach identity and selfie files to a representative',
+    'description': 'Attaches files uploaded through `POST /api/v1/files` (purpose\n`ACCOUNT_REGISTER_DOCUMENT`, same company) to one representative,\naddressed by `representativeId` (from `GET /api/v1/kyc/representatives`).\n\nAccepted while the register waits on the merchant (`DRAFT`, `PENDING`)\nand while a request for information is open — a requested identity\ndocument or selfie is answered here, and the request closes once nothing\nis left.\n\nSubmit requires every active ADMIN to carry a `PICTURE` (selfie) and one\nvalid identity: `CNH`, or `CNH_FRONT` + `CNH_BACK`, or `IDENTITY_FRONT` +\n`IDENTITY_BACK`, or `PASSPORT`.\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'representativeId': '6721f0b3c1d4e80012a4f9aa',
+          'documents': [
+            {
+              'type': 'IDENTITY_FRONT',
+              'fileId': '6712c2ac7c2f1e0012a4b8d3',
+            },
+            {
+              'type': 'IDENTITY_BACK',
+              'fileId': '6712c2ac7c2f1e0012a4b8d4',
+            },
+            {
+              'type': 'PICTURE',
+              'fileId': '6712c2ac7c2f1e0012a4b8d5',
+            },
+          ],
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'representative': {
+            'id': '6721f0b3c1d4e80012a4f9aa',
+            'name': 'MARIA DE SOUZA',
+            'type': 'ADMIN',
+            'active': true,
+            'documents': [
+              {
+                'type': 'IDENTITY_FRONT',
+                'fileName': 'rg-frente.jpg',
+                'mimeType': 'image/jpeg',
+                'url': 'https://storage.woovi.com/company/abc/account_register_document/6712c2ac7c2f1e0012a4b8d3?X-Amz-Expires=300',
+              },
+              {
+                'type': 'PICTURE',
+                'fileName': 'selfie.jpg',
+                'mimeType': 'image/jpeg',
+                'url': 'https://storage.woovi.com/company/abc/account_register_document/6712c2ac7c2f1e0012a4b8d5?X-Amz-Expires=300',
+              },
+            ],
+          },
+          'rejectedDocuments': [
+            {
+              'type': 'IDENTITY_BACK',
+              'fileId': '6712c2ac7c2f1e0012a4b8d4',
+              'error': 'Document rejected by the quality check',
+            },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-kyc-representatives',
+    'method': 'GET',
+    'path': '/api/v1/kyc/representatives',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'List the representatives of an account register',
+    'description': 'Every representative of the register: the partners enrichment found on\nthe CNPJ (`source: ENRICHMENT`), the ones added through the API\n(`API_INPUT`) or by the merchant on the hosted link (`KYC_FRONTEND`), and\nthe deactivated ones (`active: false`).\n\nThe `id` is how every other representative endpoint — documents, Pix\nauthentication — addresses one. A CPF can appear twice when a partner was\ndeactivated and replaced, so never address a representative by CPF.\n\nRequired scope: `KYC_REPRESENTATIVES_GET`.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'representatives': [
+            {
+              'id': '6721f0b3c1d4e80012a4f9aa',
+              'name': 'MARIA DE SOUZA',
+              'taxID': {
+                'taxID': '52998224725',
+                'type': 'BR:CPF',
+              },
+              'type': 'ADMIN',
+              'active': true,
+              'birthDate': '1985-03-14',
+              'email': 'maria@exemplo.com',
+              'phone': '+5511999999999',
+              'source': 'ENRICHMENT',
+              'pixAuthenticationVerified': false,
+              'documents': [],
+              'requestDocuments': [],
+              'steps': [],
+            },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-kyc-representatives',
+    'method': 'POST',
+    'path': '/api/v1/kyc/representatives',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Add a representative, optionally with its documents',
+    'description': 'Adds a partner to a register that is still `DRAFT` or `PENDING`: the\nperson, then their identity and selfie as the ids of files uploaded\nfirst through `POST /api/v1/files` (purpose `ACCOUNT_REGISTER_DOCUMENT`,\nsame company).\n\nEvery `fileId` is resolved before the partner is written: an unknown\nfile adds nothing. A file the synchronous quality check refuses (blurred,\ncropped) comes back in `rejectedDocuments` and can be resent through\n`POST /api/v1/kyc/representatives/documents`.\n\nA CPF already active on the register answers `409`. A CPF on a\ndeactivated representative reactivates that row (`200`,\n`reactivated: true`) instead of creating a second one. A MEI has a single\nowner. Domestic registers require a valid CPF.\n\n`type: ADMIN` (the default) owes the Pix authentication and the BC\nProtege+ release; `REPRESENTATIVE` does not.\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'name': 'MARIA DE SOUZA',
+          'taxID': '52998224725',
+          'type': 'ADMIN',
+          'birthDate': '1985-03-14',
+          'email': 'maria@exemplo.com',
+          'phone': '+5511999999999',
+          'documents': [
+            {
+              'type': 'CNH',
+              'fileId': '6712c2ac7c2f1e0012a4b8d1',
+            },
+            {
+              'type': 'PICTURE',
+              'fileId': '6712c2ac7c2f1e0012a4b8d2',
+            },
+          ],
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-kyc-rfi',
+    'method': 'GET',
+    'path': '/api/v1/kyc/rfi',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Read the request for information of an account register',
+    'description': 'When compliance needs more from the merchant it opens a request for\ninformation (RFI) and sends the `ACCOUNT_REGISTER_DOCUMENTS_REQUESTED`\nwebhook. This endpoint returns what was asked (`rfi`), what is still\npending for the company and for each representative, how each pending\nitem is answered (`answeredBy`), and the hosted `link` that answers it.\n\nThere are two ways to answer, and they can be mixed:\n\n- **API** — `POST /api/v1/kyc/rfi` with the fileIds of files uploaded\n  through `POST /api/v1/files` (purpose `ACCOUNT_REGISTER_DOCUMENT`).\n- **Link** — send the merchant to `link`. It is the only way to answer an\n  item whose `answeredBy` is `LINK` (a website, a business description, a\n  tax ID regularization).\n\n| answeredBy | answered through |\n|---|---|\n| `FILE` | `POST /api/v1/kyc/rfi` (or the documents endpoints) |\n| `PIX_AUTHENTICATION` | `POST /api/v1/kyc/pix-authentication` |\n| `BC_PROTECTION` | `POST /api/v1/kyc/bc-protection/resend`, once the merchant disabled it |\n| `LINK` | the hosted `link` |\n\nThe request closes (`status: RESOLVED`, webhook\n`ACCOUNT_REGISTER_RFI_RESOLVED`) once nothing is pending.\n\nRequired scope: `KYC_RFI_GET`.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'rfi': {
+            'status': 'OPEN',
+            'kind': 'DOCUMENTS',
+            'reason': 'Enviar contrato social atualizado e documento do sócio',
+            'requestedAt': '2026-09-24T17:00:00.000Z',
+            'deadlineAt': '2026-10-01T17:00:00.000Z',
+          },
+          'company': {
+            'pending': [
+              {
+                'type': 'SOCIAL_CONTRACT',
+                'answeredBy': 'FILE',
+              },
+              {
+                'type': 'WEBSITE',
+                'answeredBy': 'LINK',
+              },
+            ],
+          },
+          'representatives': [
+            {
+              'id': '6721f0b3c1d4e80012a4f9aa',
+              'name': 'MARIA DE SOUZA',
+              'pending': [
+                {
+                  'type': 'CNH',
+                  'answeredBy': 'FILE',
+                },
+                {
+                  'type': 'PIX_AUTHENTICATION',
+                  'answeredBy': 'PIX_AUTHENTICATION',
+                },
+              ],
+            },
+          ],
+          'link': 'https://kyc.woovi.com/rfi/QWNjb3VudFJlZ2lzdGVyOjY5...',
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-kyc-rfi',
+    'method': 'POST',
+    'path': '/api/v1/kyc/rfi',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Answer the file items of an open request for information',
+    'description': 'Answers company and representative file items in one call. Every file\nmust answer an item that was requested (a representative identity\nrequest is answered by any identity family: `CNH`, `CNH_FRONT`/`CNH_BACK`,\n`IDENTITY_FRONT`/`IDENTITY_BACK`, `PASSPORT`), and every `fileId` must\nresolve for the calling company with purpose `ACCOUNT_REGISTER_DOCUMENT`\n— otherwise nothing is written. A file refused by the document quality\ncheck comes back in `rejectedDocuments`.\n\nItems that are not files are answered elsewhere: the Pix ceremony and\nBC Protege+ through their own endpoints, the rest through `link`.\n\nRequired scope: `KYC_RFI_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'documents': [
+            {
+              'type': 'SOCIAL_CONTRACT',
+              'fileId': '6712c2ac7c2f1e0012a4b8d1',
+            },
+          ],
+          'representatives': [
+            {
+              'representativeId': '6721f0b3c1d4e80012a4f9aa',
+              'documents': [
+                {
+                  'type': 'CNH',
+                  'fileId': '6712c2ac7c2f1e0012a4b8d2',
+                },
+              ],
+            },
+          ],
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'rfi': {
+            'status': 'OPEN',
+            'kind': 'DOCUMENTS',
+            'reason': 'Enviar contrato social atualizado e documento do sócio',
+            'requestedAt': '2026-09-24T17:00:00.000Z',
+            'deadlineAt': '2026-10-01T17:00:00.000Z',
+          },
+          'company': {
+            'pending': [
+              {
+                'type': 'WEBSITE',
+                'answeredBy': 'LINK',
+              },
+            ],
+          },
+          'representatives': [
+            {
+              'id': '6721f0b3c1d4e80012a4f9aa',
+              'name': 'MARIA DE SOUZA',
+              'pending': [
+                {
+                  'type': 'PIX_AUTHENTICATION',
+                  'answeredBy': 'PIX_AUTHENTICATION',
+                },
+              ],
+            },
+          ],
+          'link': 'https://kyc.woovi.com/rfi/QWNjb3VudFJlZ2lzdGVyOjY5...',
+          'rejectedDocuments': [],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-kyc-onboarding-submit',
+    'method': 'POST',
+    'path': '/api/v1/kyc/onboarding/submit',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Submit an account register for compliance review',
+    'description': 'The last step of the full-API onboarding: sends a register created by\n`POST /api/v1/kyc/onboarding` into compliance analysis (`IN_REVIEW`).\nThe hosted link has its own submit on its review screen; this is the\nequivalent when your integration drives every step over the API.\n\nOnly a register waiting on the merchant (`DRAFT` or `PENDING`) can be\nsubmitted. A register in any other status (`APPROVED`, `REJECTED`,\n`CREATING`, `FAILED`) is refused with `409` and code\n`STATUS_NOT_SUBMITTABLE`; concurrent calls move it into review once.\n\nEvery gate runs on the server. Submission is refused with `409` while\nany of them is open, and `code` says which one:\n\n| code | Cause |\n|---|---|\n| `MISSING_PIX_AUTHENTICATION` | An active ADMIN has no `MATCHED` Pix ceremony (only when the company has `PIX_AUTHENTICATION_KYC`) |\n| `BC_PROTECTION_NOT_AUTHORIZED` | The CNPJ or an active ADMIN is not `AUTHORIZED` at Banco Central |\n| `MISSING_REPRESENTATIVE_DOCUMENTS` | An active ADMIN lacks the selfie (`PICTURE`) or a valid identity document |\n| `PENDING_REQUESTED_DOCUMENTS` | Compliance asked for documents that were not sent |\n| `PENDING_BC_PROTEGE` | The only pending request is the BC Protege+ one |\n| `STATUS_NOT_SUBMITTABLE` | The register is not in `DRAFT`/`PENDING` (already decided, or being provisioned) |\n\n**The Pix ceremony blocks here and does not block the hosted link.** The\nlink lets an unverified register into review and enforces the ceremony\nafterwards; an API integration has no later screen to send the merchant\nback to, so it is enforced up front.\n\nIdempotent: a register already `IN_REVIEW` answers `200` with its\nexisting `inReviewAt` and re-runs nothing, so a timed-out call is safe to\nretry. On success Woovi sends the `ACCOUNT_REGISTER_IN_REVIEW` webhook,\nand later `ACCOUNT_REGISTER_APPROVED`, `ACCOUNT_REGISTER_REJECTED` or\n`ACCOUNT_REGISTER_DOCUMENTS_REQUESTED`.\n\nRequired scope: `KYC_ONBOARDING_SUBMIT_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'status': 'IN_REVIEW',
+          'inReviewAt': '2026-09-24T16:10:00.000Z',
+        },
+      },
+    ],
   },
   {
     'id': 'get-api-v1-kyc-validation-correlationid',
@@ -2237,6 +2716,88 @@ const endpoints: ApiEndpoint[] = [
     ],
   },
   {
+    'id': 'post-api-v1-pix-keys-withdraw',
+    'method': 'POST',
+    'path': '/api/v1/pix-keys/withdraw',
+    'tag': 'pixKey',
+    'category': 'Chave Pix',
+    'summary': 'Create the withdraw Pix key of the account',
+    'description': 'Registers a new Pix key as a withdraw key of the company and sets it as the\nwithdraw Pix key of the account linked to the AppID.\n\n**This endpoint is not enabled by default.** Ask support to enable the withdraw\nPix key API for your account; without it the endpoint returns 403.\n\nThe Pix key is checked on the DICT and its holder must match the account holder.\nPix keys of Woovi accounts can not be used.\n\nIf the Pix key is already a withdraw key of the company, use\n`PUT /api/v1/pix-keys/withdraw` to select it. If the key was created but could\nnot be selected, retry with `PUT /api/v1/pix-keys/withdraw`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pixKey': 'withdraw@example.com',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'account': {
+            'accountId': '6290ccfd42831958a405debc',
+            'isDefault': true,
+            'balance': {
+              'total': 129430,
+              'blocked': 0,
+              'available': 129430,
+              'blockedBySecurity': 0,
+              'blockedByWithdrawSafety': 0,
+            },
+            'taxId': '12345678901',
+            'officialName': 'Company Name LLC',
+            'tradeName': 'Company Trade Name',
+            'branch': '0001',
+            'account': '123456',
+            'accountName': 'Main Account',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'put-api-v1-pix-keys-withdraw',
+    'method': 'PUT',
+    'path': '/api/v1/pix-keys/withdraw',
+    'tag': 'pixKey',
+    'category': 'Chave Pix',
+    'summary': 'Set the withdraw Pix key of the account',
+    'description': 'Sets which Pix key receives the withdrawals of the account linked to the AppID.\n\n**This endpoint is not enabled by default.** Ask support to enable the withdraw\nPix key API for your account; without it the endpoint returns 403.\n\nThe Pix key must already be registered as a withdraw key of the company. It is\nchecked on the DICT and its holder must match the account holder. Pix keys of\nWoovi accounts can not be used.\n\nSending the current withdraw Pix key returns the account unchanged.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pixKey': 'withdraw@example.com',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'account': {
+            'accountId': '6290ccfd42831958a405debc',
+            'isDefault': true,
+            'balance': {
+              'total': 129430,
+              'blocked': 0,
+              'available': 129430,
+              'blockedBySecurity': 0,
+              'blockedByWithdrawSafety': 0,
+            },
+            'taxId': '12345678901',
+            'officialName': 'Company Name LLC',
+            'tradeName': 'Company Trade Name',
+            'branch': '0001',
+            'account': '123456',
+            'accountName': 'Main Account',
+          },
+        },
+      },
+    ],
+  },
+  {
     'id': 'post-api-v1-qrcode-static',
     'method': 'POST',
     'path': '/api/v1/qrcode-static',
@@ -2583,6 +3144,84 @@ const endpoints: ApiEndpoint[] = [
       },
     ],
     'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-stablecoin-limit',
+    'method': 'GET',
+    'path': '/api/v1/stablecoin/limit',
+    'tag': 'stablecoin',
+    'category': 'stablecoin',
+    'summary': 'Read the monthly limits of the AppID sub-account, live from the provider',
+    'description': "Returns the monthly limits the provider (Avenia) enforces on the stable\nsub-account linked to the authenticated Application's `companyBankAccount`,\nread **live** at request time — not a copy stored by Woovi. For each entry\nyou get the ceiling (`limit`), how much of it this month already consumed\n(`used`) and what is left (`remaining`), split by direction: `fiatIn`\n(Pix → stable deposits), `fiatOut` (stable → Pix payouts), `chainIn` and\n`chainOut` (on-chain transfers).\n\n**Units.** Every amount is an integer in the minor unit (cents) of the\nentry's `currency` — `10000000` in a `BRL` entry is R$ 100.000,00. The\nentry with `scope: GLOBAL` is the provider's account-wide ceiling,\nexpressed in USD cents; `scope: CURRENCY` entries apply to that currency\nonly. `limit` and `remaining` are `null` when the provider reports no\nceiling for that direction. `year`/`month` identify the month `used`\nrefers to.\n\n`blocked: true` means the provider has blocked every operation on this\nsub-account because of its limits.\n\nTo raise the monthly limit use `POST /api/v1/stablecoin/limit/request`.\n\nRequires the `STABLECOIN_SUBACCOUNT_LIST` scope.\n\n**Choosing the sub-account.** `subAccountId` is optional. Sent, it is the sub-account\nthe call runs on; omitted, the one linked to the AppID's `companyBankAccount` answers.\nYou may name the sub-account of that bank account, or of another OPEN account of the\nsame company under the same taxID. Any other id is refused with\n`400 STABLE_SUBACCOUNT_NOT_ALLOWED`. `GET /api/v1/stablecoin/subaccount/list` lists\nthe ids you can use.\n",
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'status': 'ok',
+          'companyBankAccountId': '6650abc1234def567890aaaa',
+          'subAccountId': 'c54e84fa-a3c8-414f-a1f7-30af2e64ca6c',
+          'blocked': false,
+          'generatedAt': '2026-09-23T12:00:00.000Z',
+          'limits': [
+            {
+              'currency': 'BRL',
+              'scope': 'CURRENCY',
+              'period': 'MONTHLY',
+              'year': 2026,
+              'month': 9,
+              'fiatIn': {
+                'limit': 10000000,
+                'used': 250000,
+                'remaining': 9750000,
+              },
+              'fiatOut': {
+                'limit': 10000000,
+                'used': 100000,
+                'remaining': 9900000,
+              },
+              'chainIn': {
+                'limit': 10000000,
+                'used': 0,
+                'remaining': 10000000,
+              },
+              'chainOut': {
+                'limit': 10000000,
+                'used': 0,
+                'remaining': 10000000,
+              },
+            },
+            {
+              'currency': 'USD',
+              'scope': 'GLOBAL',
+              'period': 'MONTHLY',
+              'year': 2026,
+              'month': 9,
+              'fiatIn': {
+                'limit': 2000000,
+                'used': 45000,
+                'remaining': 1955000,
+              },
+              'fiatOut': {
+                'limit': 2000000,
+                'used': 18000,
+                'remaining': 1982000,
+              },
+              'chainIn': {
+                'limit': 2000000,
+                'used': 0,
+                'remaining': 2000000,
+              },
+              'chainOut': {
+                'limit': 2000000,
+                'used': 0,
+                'remaining': 2000000,
+              },
+            },
+          ],
+        },
+      },
+    ],
   },
   {
     'id': 'post-api-v1-stablecoin-limit-request-limitrequestid-document',
@@ -3251,6 +3890,157 @@ const endpoints: ApiEndpoint[] = [
       },
     ],
     'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-ted-correlationid',
+    'method': 'GET',
+    'path': '/api/v1/ted/{correlationID}',
+    'tag': 'ted',
+    'category': 'ted',
+    'summary': 'Get a TED',
+    'description': 'Returns one TED of your company, incoming or outgoing, by the\n`correlationID` you sent it with. An incoming TED is identified by the\nnuop Woovi assigned it.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'ted': {
+            'correlationID': 'payout-20260203-1',
+            'nuop': '1234567820260203000001',
+            'status': 'COMPLETED',
+            'type': 'PAYMENT',
+            'direction': 'OUT',
+            'value': 150050,
+            'moveDate': '2026-02-03',
+            'accountId': '6290ccfd42831958a405debc',
+            'sender': {
+              'name': 'Empresa LTDA',
+              'document': '12345678000199',
+              'ispb': '12345678',
+              'agency': 1234,
+              'account': 567890,
+              'accountType': 'CACC',
+            },
+            'receiver': {
+              'name': 'Joao da Silva',
+              'document': '12345678901',
+              'ispb': '87654321',
+              'agency': 4321,
+              'account': 98765,
+              'accountType': 'CACC',
+            },
+            'reason': null,
+            'createdAt': '2026-02-03T14:30:00.000Z',
+            'updatedAt': '2026-02-03T14:31:02.000Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-ted',
+    'method': 'GET',
+    'path': '/api/v1/ted',
+    'tag': 'ted',
+    'category': 'ted',
+    'summary': 'Get a list of TEDs',
+    'description': 'TEDs of your company, newest first. Incoming and outgoing TEDs are in the\nsame list; `direction` tells them apart.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'teds': [
+            {
+              'correlationID': 'payout-20260203-1',
+              'nuop': '1234567820260203000001',
+              'status': 'COMPLETED',
+              'type': 'PAYMENT',
+              'direction': 'OUT',
+              'value': 150050,
+              'moveDate': '2026-02-03',
+              'accountId': '6290ccfd42831958a405debc',
+              'reason': null,
+              'createdAt': '2026-02-03T14:30:00.000Z',
+              'updatedAt': '2026-02-03T14:31:02.000Z',
+            },
+          ],
+          'pageInfo': {
+            'skip': 0,
+            'limit': 100,
+            'totalCount': 1,
+            'hasPreviousPage': false,
+            'hasNextPage': false,
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-ted',
+    'method': 'POST',
+    'path': '/api/v1/ted',
+    'tag': 'ted',
+    'category': 'ted',
+    'summary': 'Send a TED',
+    'description': 'Sends a TED from one of your accounts. The response means the TED was\naccepted for processing — it settles when the BACEN answers, and the\n`TED_OUT_CONFIRMED` / `TED_OUT_REJECTED` webhooks say which way it went.\n\nRetrying with the same `correlationID` is safe: it returns the TED that\nalready exists, without a second debit and without a second STR request.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'payout-20260203-1',
+          'value': 150050,
+          'moveDate': '2026-02-03',
+          'accountId': '6290ccfd42831958a405debc',
+          'receiver': {
+            'name': 'Joao da Silva',
+            'document': '12345678901',
+            'ispb': '87654321',
+            'agency': 4321,
+            'account': 98765,
+            'accountType': 'CACC',
+          },
+          'clientFinality': 10,
+          'description': 'Payment for services',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'ted': {
+            'correlationID': 'payout-20260203-1',
+            'nuop': '1234567820260203000001',
+            'status': 'PROCESSING',
+            'type': 'PAYMENT',
+            'direction': 'OUT',
+            'value': 150050,
+            'moveDate': '2026-02-03',
+            'accountId': '6290ccfd42831958a405debc',
+            'sender': {
+              'name': 'Empresa LTDA',
+              'document': '12345678000199',
+              'ispb': '12345678',
+              'agency': 1234,
+              'account': 567890,
+              'accountType': 'CACC',
+            },
+            'receiver': {
+              'name': 'Joao da Silva',
+              'document': '12345678901',
+              'ispb': '87654321',
+              'agency': 4321,
+              'account': 98765,
+              'accountType': 'CACC',
+            },
+            'reason': null,
+            'createdAt': '2026-02-03T14:30:00.000Z',
+            'updatedAt': '2026-02-03T14:30:00.000Z',
+          },
+        },
+      },
+    ],
   },
   {
     'id': 'post-api-v1-transfer',
