@@ -319,7 +319,7 @@ curl -X POST https://api.woovi.com/api/v1/kyc/onboarding/submit \
 }
 ```
 
-- Só é aceito para cadastros em `DRAFT` ou `PENDING`. Cadastros em qualquer outro status (`APPROVED`, `REJECTED`…) são recusados.
+- Só é aceito para cadastros em `DRAFT` ou `PENDING`. Cadastros em qualquer outro status (`APPROVED`, `REJECTED`, `CREATING`, `FAILED`) são recusados com `409 STATUS_NOT_SUBMITTABLE` — um cadastro já decidido nunca volta para análise.
 - É idempotente: um cadastro que já está `IN_REVIEW` responde `200` com o `inReviewAt` original, sem refazer nada. Pode repetir uma chamada que deu timeout.
 - Todas as validações rodam no servidor. Enquanto alguma estiver pendente, a resposta é `409` com `code`:
 
@@ -330,6 +330,7 @@ curl -X POST https://api.woovi.com/api/v1/kyc/onboarding/submit \
 | `MISSING_REPRESENTATIVE_DOCUMENTS` | ADMIN sem selfie ou sem identidade válida | [Passo 4](#4-sócios-e-representantes) |
 | `PENDING_REQUESTED_DOCUMENTS` | A análise pediu documentos que não foram enviados | [Passo 3](#3-documentos-da-empresa) / [RFI](#9-rfi-pedido-de-informações) |
 | `PENDING_BC_PROTEGE` | A única pendência é o BC Protege+ | [Passo 6](#6-bc-protege) |
+| `STATUS_NOT_SUBMITTABLE` | O cadastro não está em `DRAFT`/`PENDING` | Consulte o status; não há o que reenviar |
 
 :::info Diferença para o link
 No link hospedado a autenticação Pix não impede o envio (ela é cobrada depois, na análise). Pela API ela bloqueia o submit, porque a sua integração não tem uma "próxima tela" para mandar o cliente de volta.
