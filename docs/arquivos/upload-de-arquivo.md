@@ -14,6 +14,7 @@ O `purpose` diz qual é esse uso, e cada API só aceita o `purpose` dela: um arq
 | --- | --- |
 | `DISPUTE_EVIDENCE` | [Evidência de disputa](../disputa/how-add-new-evidence-in-evidence.md) |
 | `ACCOUNT_LIMIT_REQUEST` | [Pedido de aumento de limite](../apis/api-account-limits-increase-request.md) |
+| `ACCOUNT_REGISTER_DOCUMENT` | [Onboarding KYC 100% via API](../baas/kyc/api-onboarding-full-api.mdx): documentos da empresa, dos sócios e respostas de RFI |
 
 ## Requisitos
 
@@ -36,7 +37,7 @@ curl -X POST "https://api.woovi.com/api/v1/files" \
 | Campo           | Obrigatório | Descrição                                                                                     |
 | --------------- | ----------- | --------------------------------------------------------------------------------------------- |
 | `file`          | Sim         | O arquivo em si.                                                                                |
-| `purpose`       | Sim         | Para que o arquivo será usado. Aceita `DISPUTE_EVIDENCE` e `ACCOUNT_LIMIT_REQUEST`.             |
+| `purpose`       | Sim         | Para que o arquivo será usado. Aceita `DISPUTE_EVIDENCE`, `ACCOUNT_LIMIT_REQUEST` e `ACCOUNT_REGISTER_DOCUMENT`.           |
 | `correlationID` | Não         | Seu identificador para o upload. Quando não enviado, um UUID é gerado para você.                |
 
 ## 2. Entendendo o retorno

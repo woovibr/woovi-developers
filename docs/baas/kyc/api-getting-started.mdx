@@ -65,6 +65,10 @@ curl -X POST https://api.woovi.com/api/v1/kyc/onboarding \
 - A empresa deve possuir as features **BAAS** e **KYC_ONBOARDING_LINK** habilitadas
 - A aplicação deve possuir o scope **`KYC_ONBOARDING_POST`**
 
+## Onboarding 100% via API
+
+Se você quer conduzir o onboarding inteiro pelo seu produto — documentos, sócios, autenticação Pix, BC Protege+, envio para análise e resposta a RFI — sem mandar o cliente para o link hospedado, siga o guia [Onboarding KYC 100% via API](./api-onboarding-full-api.mdx). Os padrões gerais (upload + `fileId`, `correlationID`, idempotência, webhooks) estão em [Como construir integrações 100% via API com a Woovi](../../apis/api-driven-integrations.md).
+
 ## Restrições de API
 
 - Todas as requisições devem ser criptografadas usando `https`
