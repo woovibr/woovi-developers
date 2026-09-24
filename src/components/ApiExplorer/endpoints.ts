@@ -1363,7 +1363,7 @@ const endpoints: ApiEndpoint[] = [
     'path': '/api/v1/invoice/integration',
     'tag': 'invoice',
     'category': 'Invoice',
-    'summary': 'Get the NFe.io integration status and config for the authenticated company',
+    'summary': 'Get the invoice integration status and config for the authenticated company',
     'description': '',
     'requestExamples': [],
     'responseExamples': [
@@ -1394,8 +1394,8 @@ const endpoints: ApiEndpoint[] = [
     'path': '/api/v1/invoice/integration',
     'tag': 'invoice',
     'category': 'Invoice',
-    'summary': 'Create or upsert the NFe.io integration for the authenticated company',
-    'description': 'Upserts the NFe.io integration for the authenticated company and sets its tax fields. Optionally activates it (only allowed once configured).\n',
+    'summary': 'Create or upsert the invoice integration for the authenticated company',
+    'description': 'Upserts the invoice integration for the authenticated company and sets its tax fields. Optionally activates it (only allowed once configured).\n',
     'requestExamples': [],
     'responseExamples': [
       {
@@ -1423,7 +1423,7 @@ const endpoints: ApiEndpoint[] = [
     'path': '/api/v1/invoice/integration',
     'tag': 'invoice',
     'category': 'Invoice',
-    'summary': 'Activate or deactivate the NFe.io integration for the authenticated company',
+    'summary': 'Activate or deactivate the invoice integration for the authenticated company',
     'description': '',
     'requestExamples': [],
     'responseExamples': [
