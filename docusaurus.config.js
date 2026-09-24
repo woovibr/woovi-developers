@@ -121,6 +121,10 @@ module.exports = {
       {
         redirects: [
           {
+            from: '/docs/flows/api-pix-key-campaign',
+            to: '/docs/apis/api-pix-key-campaign',
+          },
+          {
             from: '/docs/baas/documents-nescessary',
             to: '/docs/baas/documentos-kyc',
           },
