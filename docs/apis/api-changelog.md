@@ -15,6 +15,12 @@ Tipos: **Adicionado** · **Alterado** · **Depreciado** · **Removido**.
 
 ## 2026-09
 
+- **Adicionado** — `POST /api/v1/pix-keys/withdraw` e `PUT /api/v1/pix-keys/withdraw`, que
+  definem a chave Pix de saque da conta ligada ao AppID. O `POST` cadastra uma chave nova e já a
+  seleciona; o `PUT` seleciona uma chave de saque que a empresa já tem. A chave é consultada no
+  DICT, o titular precisa ser o mesmo da conta e chaves de contas Woovi não são aceitas. Exigem os
+  escopos `PIX_KEY_WITHDRAW_POST` e `PIX_KEY_WITHDRAW_PUT`. Veja
+  [Começando Campanha Usando Chave Pix](./api-pix-key-campaign).
 - **Adicionado** — `GET /api/v1/subscriptions/{id}/payment-book`, que emite as cobranças
   das parcelas de uma assinatura `RECURRENT` até o mês/ano informados e devolve o carnê
   em PDF (`application/pdf`). `month` e `year` são obrigatórios e vão no máximo até o

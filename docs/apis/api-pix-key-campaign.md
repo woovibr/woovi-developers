@@ -188,8 +188,43 @@ curl -X DELETE "https://api.woovi.com/api/v1/pix-keys/{{PIX_KEY_VALUE}}" \
   -H "Authorization: {{APPLICATION_APP_ID}}"
 ```
 
+### 6. Definindo a Chave Pix de Saque
+- A chave Pix de saque é para onde vão os saques da conta de uma campanha.
+- Utilize o AppID da conta que você quer configurar.
+- A chave é consultada no DICT e o titular precisa ser o mesmo da conta. Chaves Pix de contas Woovi não são aceitas.
+- A consulta ao DICT usa os mesmos tokens da consulta de chave Pix (`/api/v1/pix-keys/check`).
 
+#### Cadastrando uma nova chave de saque
+- Utilize o `POST` para cadastrar uma chave nova. Ela já passa a ser a chave de saque da conta.
+- Exige o escopo `PIX_KEY_WITHDRAW_POST`.
 
+```json
+curl -X POST "https://api.woovi.com/api/v1/pix-keys/withdraw" \
+  -H "Authorization: {{APPLICATION_APP_ID}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pixKey": "saque@empresa.com"
+  }'
+```
 
+- Se tudo ocorrer bem, o código de retorno será 200, com os dados da conta.
+- Se a empresa já tiver essa chave de saque, o retorno será 400 com `Chave pix já existente`. Nesse caso, utilize o `PUT` abaixo.
+- Se a chave foi cadastrada mas não chegou a ser selecionada, repita a chamada com o `PUT`.
 
+#### Trocando a chave de saque
+- Utilize o `PUT` para selecionar uma chave de saque que a empresa já tem.
+- Exige o escopo `PIX_KEY_WITHDRAW_PUT`.
+
+```json
+curl -X PUT "https://api.woovi.com/api/v1/pix-keys/withdraw" \
+  -H "Authorization: {{APPLICATION_APP_ID}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pixKey": "saque@empresa.com"
+  }'
+```
+
+- Se tudo ocorrer bem, o código de retorno será 200, com os dados da conta.
+- Se a chave já for a chave de saque da conta, a conta é retornada sem mudanças.
+- Se a empresa não tiver essa chave de saque, o retorno será 404. Nesse caso, utilize o `POST` acima.
 
