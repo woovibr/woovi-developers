@@ -29,7 +29,7 @@ stateDiagram-v2
     PROCESSING --> FAILED: TED_OUT_REJECTED
     FAILED --> COMPLETED: TED_OUT_CONFIRMED (reprocessada)
     COMPLETED --> REFUNDED: TED_REFUND_RECEIVED_CONFIRMED
-    REFUNDED --> COMPLETED: devolução rejeitada no BACEN
+    REFUNDED --> [*]
 ```
 
 | Transição | Quando | Webhook |
@@ -41,7 +41,6 @@ stateDiagram-v2
 | `PROCESSING` → `FAILED` | O BACEN rejeitou a TED, ou ela não chegou a ser entregue. O débito é estornado e o saldo volta | `TED_OUT_REJECTED` |
 | `FAILED` → `COMPLETED` | Uma TED marcada como falha, mas que o extrato do BACEN mostra que saiu, foi reprocessada pela Woovi | `TED_OUT_CONFIRMED` |
 | `COMPLETED` → `REFUNDED` | O banco recebedor devolveu a TED e o valor voltou para a sua conta. A devolução chega como uma TED nova, `type: REFUND_RECEIVED` | `TED_REFUND_RECEIVED_CONFIRMED`, com a TED da devolução |
-| `REFUNDED` → `COMPLETED` | O BACEN rejeitou a devolução, e a TED volta a valer | — |
 
 :::caution `FAILED` quase sempre é final, mas não sempre
 Uma TED `FAILED` pode voltar a `COMPLETED` quando a Woovi confirma pelo extrato
@@ -54,6 +53,12 @@ falhou.
 `COMPLETED` também não é final: uma TED liquidada ainda pode ser devolvida pelo
 banco recebedor.
 
+:::info `REFUNDED` é final
+Uma TED só fica `REFUNDED` depois que o dinheiro voltou de fato, com a devolução
+aceita pelo BACEN, e nunca sai desse `status`. Uma devolução que o BACEN
+rejeita não muda a TED original: ela continua `COMPLETED`.
+:::
+
 ## TED recebida (`direction: IN`)
 
 Uma TED recebida já foi liquidada pelo BACEN quando chega. Ela nunca falha:
@@ -64,13 +69,14 @@ stateDiagram-v2
     [*] --> COMPLETED: TED_IN_CONFIRMED
     [*] --> REFUNDED: TED_IN_REJECTED, depois TED_REFUND_SENT_CONFIRMED
     COMPLETED --> REFUNDED: devolvida, TED_REFUND_SENT_CONFIRMED
+    REFUNDED --> [*]
 ```
 
 | Transição | Quando | Webhook |
 | --- | --- | --- |
 | → `COMPLETED` | A TED foi creditada na sua conta | `TED_IN_CONFIRMED` |
 | → `REFUNDED` | A conta de destino está encerrada ou bloqueada para receber TED. A TED é devolvida ao remetente; `errorCode` diz o motivo | `TED_IN_REJECTED` na hora, e `TED_REFUND_SENT_CONFIRMED` com a TED da devolução quando o BACEN confirma |
-| `COMPLETED` → `REFUNDED` | A TED foi devolvida ao remetente depois de creditada, a seu pedido ou pelo suporte. A devolução é uma TED nova, `type: REFUND_SENT` | `TED_REFUND_SENT_CONFIRMED`, com a TED da devolução, quando o BACEN confirma |
+| `COMPLETED` → `REFUNDED` | A TED foi devolvida ao remetente depois de creditada, a seu pedido ou pelo suporte. A devolução é uma TED nova, `type: REFUND_SENT`, e a original só fica `REFUNDED` quando o BACEN aceita a devolução; se ele rejeitar, a original continua `COMPLETED` | `TED_REFUND_SENT_CONFIRMED`, com a TED da devolução, quando o BACEN confirma |
 
 Uma TED para uma conta que **não existe** na Woovi também é devolvida, mas não
 gera webhook: não há empresa para avisar.
