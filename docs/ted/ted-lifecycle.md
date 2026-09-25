@@ -27,7 +27,6 @@ stateDiagram-v2
     PENDING --> FAILED: TED_OUT_REJECTED
     PROCESSING --> COMPLETED: TED_OUT_CONFIRMED
     PROCESSING --> FAILED: TED_OUT_REJECTED
-    FAILED --> COMPLETED: TED_OUT_CONFIRMED (reprocessada)
     COMPLETED --> REFUNDED: TED_REFUND_RECEIVED_CONFIRMED
     REFUNDED --> [*]
 ```
@@ -39,16 +38,7 @@ stateDiagram-v2
 | `PENDING` → `FAILED` | Falha antes do envio (saldo insuficiente, tarifa, lançamento). O débito não fica | `TED_OUT_REJECTED` |
 | `PROCESSING` → `COMPLETED` | O BACEN liquidou a TED | `TED_OUT_CONFIRMED` |
 | `PROCESSING` → `FAILED` | O BACEN rejeitou a TED, ou ela não chegou a ser entregue. O débito é estornado e o saldo volta | `TED_OUT_REJECTED` |
-| `FAILED` → `COMPLETED` | Uma TED marcada como falha, mas que o extrato do BACEN mostra que saiu, foi reprocessada pela Woovi | `TED_OUT_CONFIRMED` |
 | `COMPLETED` → `REFUNDED` | O banco recebedor devolveu a TED e o valor voltou para a sua conta. A devolução chega como uma TED nova, `type: REFUND_RECEIVED` | `TED_REFUND_RECEIVED_CONFIRMED`, com a TED da devolução |
-
-:::caution `FAILED` quase sempre é final, mas não sempre
-Uma TED `FAILED` pode voltar a `COMPLETED` quando a Woovi confirma pelo extrato
-do BACEN que ela saiu. Nesse caso chega um `TED_OUT_CONFIRMED` depois do
-`TED_OUT_REJECTED`, e o valor é debitado de novo. Trate sempre o **último**
-evento como o estado da TED, e não libere de novo um pagamento só porque ele
-falhou.
-:::
 
 `COMPLETED` também não é final: uma TED liquidada ainda pode ser devolvida pelo
 banco recebedor.
@@ -97,7 +87,7 @@ gera webhook: não há empresa para avisar.
 | Evento | `direction` | `ted.status` no payload | É final? |
 | --- | --- | --- | --- |
 | `TED_OUT_CONFIRMED` | `OUT` | `COMPLETED` | Pode ainda ser devolvida |
-| `TED_OUT_REJECTED` | `OUT` | `FAILED` | Quase sempre; veja o aviso acima |
+| `TED_OUT_REJECTED` | `OUT` | `FAILED` | Sim |
 | `TED_IN_CONFIRMED` | `IN` | `COMPLETED` | Pode ainda ser devolvida |
 | `TED_IN_REJECTED` | `IN` | `REFUNDED` | Sim |
 | `TED_REFUND_SENT_CONFIRMED` | `OUT` (`type: REFUND_SENT`) | `COMPLETED` | Sim |
