@@ -56,15 +56,18 @@ curl https://api.woovi.com/api/v1/ted/payout-20260203-1 \
       "account": 98765,
       "accountType": "CACC"
     },
+    "errorCode": null,
     "reason": null,
+    "bcbCode": null,
     "createdAt": "2026-02-03T14:30:00.000Z",
     "updatedAt": "2026-02-03T14:31:02.000Z"
   }
 }
 ```
 
-Quando a TED falha ou é devolvida, `reason` traz o motivo, em texto livre vindo
-do STR/SPB; nos outros casos é `null`.
+Quando a TED falha ou é devolvida, `errorCode`, `reason` e `bcbCode` explicam o
+motivo; nos outros casos são `null`. Veja
+[Por que uma TED falhou](./ted-api-getting-started.md#por-que-uma-ted-falhou).
 
 Consultar a TED é a alternativa ao webhook para saber o resultado. Se for fazer
 _polling_, use intervalos de alguns segundos e pare quando o `status` for
@@ -74,12 +77,13 @@ _polling_, use intervalos de alguns segundos e pare quando o `status` for
 | --- | --- |
 | `200` | TED encontrada |
 | `401` | AppID ausente ou inválido |
-| `403` | Empresa sem a funcionalidade `TED` ou aplicação sem o scope `TED_GET` |
-| `404` | Nenhuma TED com esse `correlationID` na sua empresa |
+| `403` | Empresa sem a funcionalidade `TED` (`TED_FEATURE_REQUIRED`) ou aplicação sem o scope `TED_GET` |
+| `404` | Nenhuma TED com esse `correlationID` na sua empresa (`TED_NOT_FOUND`) |
 
 ```json
 {
-  "error": "TED não encontrada"
+  "error": "TED não encontrada",
+  "errorCode": "TED_NOT_FOUND"
 }
 ```
 
@@ -120,7 +124,9 @@ curl 'https://api.woovi.com/api/v1/ted?direction=OUT&status=COMPLETED&start=2026
       "value": 150050,
       "moveDate": "2026-02-03",
       "accountId": "6290ccfd42831958a405debc",
+      "errorCode": null,
       "reason": null,
+      "bcbCode": null,
       "createdAt": "2026-02-03T14:30:00.000Z",
       "updatedAt": "2026-02-03T14:31:02.000Z"
     }
@@ -141,6 +147,6 @@ for `true`. Veja também [Campos comuns da API](../apis/api-common-fields.md).
 | Status | Quando |
 | --- | --- |
 | `200` | Lista retornada, possivelmente vazia |
-| `400` | `accountId` inválido |
+| `400` | `accountId` inválido (`INVALID_ACCOUNT_ID`) |
 | `401` | AppID ausente ou inválido |
 | `403` | Empresa sem a funcionalidade `TED` ou aplicação sem o scope `TED_GET_LIST` |

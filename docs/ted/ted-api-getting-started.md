@@ -67,16 +67,67 @@ curl https://api.woovi.com/api/v1/ted \
 A empresa vem do AppID, nunca da requisição: você só envia de contas da sua
 empresa, e só enxerga as TEDs dela.
 
-## Idioma das mensagens de erro
+## Erros
 
-As mensagens de erro são traduzidas conforme o header `Accept-Language`
-(`pt-BR` ou `en`). Sem o header, a resposta vem em português.
+Toda resposta de erro traz dois campos:
+
+- **`errorCode`**: um código estável. Use-o no seu código para decidir o que
+  fazer.
+- **`error`**: a mensagem, para mostrar ao seu usuário. Ela segue o header
+  `Accept-Language` (`pt-BR` ou `en`); sem o header, vem em português.
 
 ```json
 {
-  "error": "Saldo insuficiente para completar a transação"
+  "error": "Saldo insuficiente para completar a transação",
+  "errorCode": "INSUFFICIENT_BALANCE"
 }
 ```
+
+Não compare o texto de `error`: ele pode mudar. Compare o `errorCode`, e novos
+códigos podem surgir.
+
+:::note
+Os erros de autenticação (`401`) e de scope (`403`) são respondidos pelo
+gateway, antes da API de TED, e trazem só o `error`.
+:::
+
+## Por que uma TED falhou
+
+Uma TED `FAILED` ou `REFUNDED` explica o motivo em três campos, na
+[consulta](./ted-get-api.md) e nos [webhooks](./ted-webhooks.md):
+
+| Campo | Para quê |
+| --- | --- |
+| `errorCode` | Código estável do motivo. Use-o para decidir |
+| `reason` | O `errorCode` explicado, para mostrar ao usuário. Segue o `Accept-Language`; nos webhooks vem em português |
+| `bcbCode` | O código do BACEN por trás do motivo, para o suporte e a conciliação. `null` quando a falha não veio do BACEN |
+
+```json
+{
+  "status": "FAILED",
+  "errorCode": "RECEIVER_ACCOUNT_CLOSED",
+  "reason": "Conta recebedora encerrada",
+  "bcbCode": "1"
+}
+```
+
+| `errorCode` | `reason` | `bcbCode` |
+| --- | --- | --- |
+| `INSUFFICIENT_BALANCE` | Saldo insuficiente | — |
+| `OUTSIDE_STR_WINDOW` | Fora do horário de funcionamento da TED | `EGEN0300` ou SitLancSTR `15` |
+| `STR_REJECTED` | Rejeitada pelo Banco Central | CodErro ou ErroGEN do BACEN |
+| `STR_CANCELLED` | Cancelada no Banco Central | SitLancSTR `8`, `9` ou `24` |
+| `REFUSED_BY_RECEIVER_BANK` | Devolvida pelo banco recebedor | CodDevTransf da devolução |
+| `RECEIVER_ACCOUNT_NOT_FOUND` | Conta recebedora não encontrada | CodDevTransf `2` |
+| `RECEIVER_ACCOUNT_CLOSED` | Conta recebedora encerrada | CodDevTransf `1` |
+| `RECEIVER_ACCOUNT_BLOCKED` | Conta recebedora bloqueada para receber TED | CodDevTransf `70` |
+| `FEE_FETCH_FAILED` | Falha ao calcular a tarifa | — |
+| `LEDGER_ERROR` | Falha ao lançar a transação no saldo | — |
+| `SPB_PUBLISH_FAILED` | Falha ao enviar a TED ao Banco Central | — |
+| `SPB_DEAD_LETTERED` | TED não entregue ao Banco Central por um erro interno | — |
+| `UNKNOWN` | Motivo desconhecido | — |
+
+Em uma TED que não falhou, os três campos são `null`.
 
 ## Valores
 

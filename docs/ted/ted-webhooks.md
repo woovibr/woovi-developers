@@ -19,9 +19,9 @@ conta, e quando uma devolução foi confirmada.
 | Evento | Quando dispara | `ted.status` |
 | --- | --- | --- |
 | `TED_OUT_CONFIRMED` | Uma TED que você enviou foi liquidada no BACEN | `COMPLETED` |
-| `TED_OUT_REJECTED` | Uma TED que você enviou não foi liquidada. O débito foi estornado e o saldo voltou; `reason` traz o motivo | `FAILED` |
+| `TED_OUT_REJECTED` | Uma TED que você enviou não foi liquidada. O débito foi estornado e o saldo voltou; `errorCode` e `reason` trazem o motivo | `FAILED` |
 | `TED_IN_CONFIRMED` | Uma TED chegou e foi creditada na sua conta | `COMPLETED` |
-| `TED_IN_REJECTED` | Uma TED para você foi recusada na chegada e devolvida ao remetente; `reason` traz o motivo | `REFUNDED` |
+| `TED_IN_REJECTED` | Uma TED para você foi recusada na chegada e devolvida ao remetente; `errorCode` e `reason` trazem o motivo | `REFUNDED` |
 | `TED_REFUND_SENT_CONFIRMED` | Uma TED que você recebeu foi devolvida ao remetente, e o BACEN confirmou a devolução | `COMPLETED` |
 | `TED_REFUND_RECEIVED_CONFIRMED` | Uma TED que você enviou foi devolvida pela instituição de destino, e o valor voltou para a sua conta | `COMPLETED` |
 
@@ -96,7 +96,9 @@ O corpo tem o nome do evento e o objeto `ted`, no mesmo formato de
       "account": 98765,
       "accountType": "CACC"
     },
-    "reason": "Insufficient balance",
+    "errorCode": "INSUFFICIENT_BALANCE",
+    "reason": "Saldo insuficiente",
+    "bcbCode": null,
     "createdAt": "2026-02-03T14:30:00.000Z",
     "updatedAt": "2026-02-03T14:31:02.000Z"
   }
@@ -106,10 +108,11 @@ O corpo tem o nome do evento e o objeto `ted`, no mesmo formato de
 Use o `correlationID` para achar a TED no seu sistema. O payload de cada evento
 está na [API Reference](/api#tag/webhook).
 
-:::note `reason` é texto livre
-`reason` repete o motivo que veio do STR/SPB, sem tradução (por exemplo,
-`GEN0004: ...`). Use-o para diagnóstico e suporte, mas não baseie decisões no
-texto: ele pode mudar. Para decidir, use o `event` e o `ted.status`.
+:::note Motivo da falha
+Decida pelo `event` e pelo `errorCode`. O `reason` é o `errorCode` explicado
+para mostrar ao usuário, e nos webhooks vem sempre em português. O `bcbCode` é o
+código do BACEN, para o suporte. Veja
+[Por que uma TED falhou](./ted-api-getting-started.md#por-que-uma-ted-falhou).
 :::
 
 ## Validando e respondendo
