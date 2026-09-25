@@ -2,7 +2,7 @@
 id: ted-webhooks
 title: Webhooks de TED
 sidebar_label: Webhooks de TED
-sidebar_position: 4
+sidebar_position: 5
 tags:
   - ted
   - webhook
@@ -27,6 +27,11 @@ conta, e quando uma devolução foi confirmada.
 
 Não existe webhook para `PROCESSING` ou `SCHEDULED`: a resposta de
 [`POST /api/v1/ted`](./ted-send-api.mdx) já traz esse estado.
+
+:::tip Qual evento vem depois de qual
+Veja [Ciclo de vida de uma TED](./ted-lifecycle.md): o diagrama de `status` e o
+evento de cada transição.
+:::
 
 ## Como cadastrar o webhook
 
