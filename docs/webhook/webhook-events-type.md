@@ -136,6 +136,30 @@ O corpo repete os blocos `charge` e `boleto` do evento de cobrança paga e acres
 
 [Ver como conciliar →](/docs/boleto/boleto-reconciliation)
 
+## Eventos de TED
+
+O corpo de todos os eventos de TED traz o `event` e o objeto `ted`.
+
+### TED_OUT_CONFIRMED
+Esse evento é enviado quando uma TED que você enviou é liquidada no BACEN.
+
+### TED_OUT_REJECTED
+Esse evento é enviado quando uma TED que você enviou não é liquidada. O débito é estornado e o saldo volta para a conta.
+
+### TED_IN_CONFIRMED
+Esse evento é enviado quando uma TED chega e é creditada na sua conta.
+
+### TED_IN_REJECTED
+Esse evento é enviado quando uma TED para você é recusada na chegada e devolvida ao remetente.
+
+### TED_REFUND_SENT_CONFIRMED
+Esse evento é enviado quando o BACEN confirma a devolução de uma TED que você recebeu.
+
+### TED_REFUND_RECEIVED_CONFIRMED
+Esse evento é enviado quando uma TED que você enviou é devolvida pela instituição de destino e o valor volta para a sua conta.
+
+[Ver webhooks de TED →](/docs/ted/ted-webhooks)
+
 ## Eventos de Registro de contas 
 
 ### ACCOUNT_REGISTER_APPROVED

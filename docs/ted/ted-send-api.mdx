@@ -1,0 +1,264 @@
+---
+id: ted-send-api
+title: Como enviar uma TED via API
+sidebar_label: Enviar TED
+sidebar_position: 2
+tags:
+  - api
+  - ted
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Como enviar uma TED via API
+
+Para enviar uma TED a partir de uma conta da sua empresa, use o _endpoint_
+`POST /api/v1/ted`.
+
+:::info
+Sua aplicação precisa do scope **`TED_POST`** e a empresa precisa da
+funcionalidade **`TED`**. Veja
+[Primeiros passos com a API de TED](./ted-api-getting-started.md).
+:::
+
+:::tip Referência completa
+Para o schema, parâmetros e exemplos interativos, veja a
+[API Reference](/api#tag/ted/POST/api/v1/ted).
+:::
+
+## Corpo da requisição
+
+| Campo | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `correlationID` | string | sim | Seu identificador da TED. No máximo **20 caracteres** e sem espaços. Veja [Reenvio seguro](#reenvio-seguro-com-o-mesmo-correlationid). |
+| `value` | number | sim | Valor em centavos, inteiro e maior que zero |
+| `accountId` | string | sim | Conta de origem, de `GET /api/v1/account` |
+| `receiver` | object | sim | Quem recebe a TED (veja abaixo) |
+| `moveDate` | string | não | Data de liquidação, `YYYY-MM-DD`. Padrão: hoje |
+| `clientFinality` | number | não | Finalidade da TED no domínio do BACEN. Padrão: `10` (crédito em conta) |
+| `description` | string | não | Descrição livre |
+| `schedule` | boolean | não | Com o STR fechado, `true` agenda a TED para a próxima janela em vez de recusá-la |
+
+### `receiver`
+
+| Campo | Tipo | Descrição |
+| --- | --- | --- |
+| `name` | string | Nome do titular |
+| `document` | string | CPF ou CNPJ, só dígitos |
+| `ispb` | string | ISPB da instituição, 8 dígitos |
+| `agency` | number | Agência, sem o dígito |
+| `account` | number | Número da conta |
+| `accountType` | string | `CACC` conta corrente, `SVGS` poupança, `SLRY` conta salário |
+
+:::caution O `correlationID` é curto
+O `correlationID` vai para o STR como número de controle da operação, por isso
+aceita no máximo 20 caracteres. Um UUID (36 caracteres) é recusado com `400`.
+:::
+
+## Exemplo de requisição
+
+```json
+{
+  "correlationID": "payout-20260203-1",
+  "value": 150050,
+  "accountId": "6290ccfd42831958a405debc",
+  "moveDate": "2026-02-03",
+  "receiver": {
+    "name": "Joao da Silva",
+    "document": "12345678901",
+    "ispb": "87654321",
+    "agency": 4321,
+    "account": 98765,
+    "accountType": "CACC"
+  },
+  "clientFinality": 10,
+  "description": "Pagamento de serviços"
+}
+```
+
+## Exemplo de resposta
+
+Se a TED foi aceita, o _status code_ é `200` e o corpo traz o objeto `ted`:
+
+```json
+{
+  "ted": {
+    "correlationID": "payout-20260203-1",
+    "nuop": "1234567820260203000001",
+    "status": "PROCESSING",
+    "type": "PAYMENT",
+    "direction": "OUT",
+    "value": 150050,
+    "moveDate": "2026-02-03",
+    "accountId": "6290ccfd42831958a405debc",
+    "sender": {
+      "name": "Empresa LTDA",
+      "document": "12345678000199",
+      "ispb": "12345678",
+      "agency": 1234,
+      "account": 567890,
+      "accountType": "CACC"
+    },
+    "receiver": {
+      "name": "Joao da Silva",
+      "document": "12345678901",
+      "ispb": "87654321",
+      "agency": 4321,
+      "account": 98765,
+      "accountType": "CACC"
+    },
+    "reason": null,
+    "createdAt": "2026-02-03T14:30:00.000Z",
+    "updatedAt": "2026-02-03T14:30:00.000Z"
+  }
+}
+```
+
+:::warning `200` não quer dizer que o dinheiro chegou
+A resposta confirma que a TED foi aceita. A liquidação é confirmada pelo webhook
+`TED_OUT_CONFIRMED`, e a falha pelo `TED_OUT_REJECTED`. Veja
+[Webhooks de TED](./ted-webhooks.md).
+:::
+
+O `nuop` (Número Único de Operação) é o identificador da TED no SPB, gerado pela
+Woovi. Guarde-o para conciliar com o extrato e para falar com o suporte.
+
+## Reenvio seguro com o mesmo `correlationID`
+
+Reenviar com um `correlationID` que já existe **não** cria outra TED: a resposta
+é `200` com a TED que já existe, sem um segundo débito e sem uma segunda
+mensagem ao STR. Assim, se a requisição der _timeout_ ou a conexão cair, reenvie
+com o mesmo `correlationID` sem risco de pagar duas vezes.
+
+:::caution Um `correlationID` por TED
+A TED existente é devolvida **como está**, mesmo que o reenvio traga outro
+valor ou outro recebedor, e o novo corpo é ignorado. Para uma TED nova, use um
+`correlationID` novo.
+:::
+
+## Códigos de resposta
+
+| Status | Quando |
+| --- | --- |
+| `200` | TED aceita, ou reenvio de um `correlationID` existente |
+| `400` | Corpo inválido (campo faltando, tipo errado, `correlationID` com mais de 20 caracteres ou com espaços) |
+| `401` | AppID ausente ou inválido |
+| `403` | Empresa sem a funcionalidade `TED`, aplicação sem o scope `TED_POST`, ou conta de outra empresa |
+| `404` | A conta de origem não existe |
+| `422` | Requisição válida, mas a TED foi recusada: saldo insuficiente, limite de TED, conta bloqueada para envio de TED, ou STR fechado |
+| `503` | Serviço de limites ou SPB indisponível. Tente de novo com o mesmo `correlationID` |
+
+Um `422` é uma recusa de negócio: repetir a mesma requisição dá o mesmo
+resultado. Um `503` é temporário, e o reenvio com o mesmo `correlationID` é
+seguro.
+
+### Exemplos de erro
+
+Corpo inválido, com o detalhe de cada campo em `errors`:
+
+```json
+{
+  "error": "Corpo da requisição inválido",
+  "errors": [
+    {
+      "origin": "string",
+      "code": "too_big",
+      "maximum": 20,
+      "inclusive": true,
+      "path": ["correlationID"],
+      "message": "Too big: expected string to have <=20 characters"
+    }
+  ]
+}
+```
+
+```json
+{
+  "error": "Você precisa da funcionalidade TED para acessar este endpoint"
+}
+```
+
+```json
+{
+  "error": "Saldo insuficiente para completar a transação"
+}
+```
+
+```json
+{
+  "error": "Valor acima do limite de TED disponível para o período"
+}
+```
+
+```json
+{
+  "error": "O STR está fora da sessão de hoje, o SPB recusaria a mensagem com EGEN0300"
+}
+```
+
+Os limites de TED da conta (por transação e por dia) podem ser consultados em
+[`GET /api/v1/limits/{accountId}`](../account-limits/api-limits-get.mdx).
+
+## Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request POST \
+  --url https://api.woovi.com/api/v1/ted \
+  --header 'Authorization: {APP_ID}' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "correlationID": "payout-20260203-1",
+    "value": 150050,
+    "accountId": "6290ccfd42831958a405debc",
+    "receiver": {
+      "name": "Joao da Silva",
+      "document": "12345678901",
+      "ispb": "87654321",
+      "agency": 4321,
+      "account": 98765,
+      "accountType": "CACC"
+    }
+  }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch">
+
+```js
+const response = await fetch('https://api.woovi.com/api/v1/ted', {
+  method: 'POST',
+  headers: {
+    Authorization: process.env.WOOVI_APP_ID,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    correlationID: 'payout-20260203-1',
+    value: 150050,
+    accountId: '6290ccfd42831958a405debc',
+    receiver: {
+      name: 'Joao da Silva',
+      document: '12345678901',
+      ispb: '87654321',
+      agency: 4321,
+      account: 98765,
+      accountType: 'CACC',
+    },
+  }),
+});
+
+const data = await response.json();
+
+if (!response.ok) {
+  throw new Error(data.error);
+}
+
+console.log(data.ted.status);
+// PROCESSING — o resultado chega pelo webhook
+```
+
+  </TabItem>
+</Tabs>
