@@ -9,12 +9,12 @@ tags:
   - baas
 ---
 
-O [link de onboarding](./api-onboarding-create.mdx) é o caminho mais curto: você cria o onboarding e o seu cliente preenche tudo numa página hospedada pela Woovi. Quando você já tem o seu próprio funil — coleta os documentos, a selfie e os dados dos sócios dentro do seu produto — dá para fazer **o onboarding inteiro pela API**, sem que o cliente final veja nenhuma tela da Woovi.
+O [link de onboarding](./api-onboarding-create.mdx) é o caminho mais curto: você cria o onboarding e o seu cliente preenche tudo numa página hospedada pela Woovi. Quando a sua integração BAAS já tem o próprio funil — coleta os documentos, a selfie e os dados dos sócios dentro do seu produto — dá para fazer **o onboarding inteiro pela API**, sem que o cliente final veja nenhuma tela da Woovi.
 
 Esta página descreve esse fluxo de ponta a ponta. Todos os endpoints endereçam o cadastro pelo mesmo `correlationID` que você enviou ao criar o onboarding.
 
 :::info Pré-requisitos
-- Empresa com a feature **BAAS** (ou **PARTNER**) habilitada; para criar o onboarding, também **KYC_ONBOARDING_LINK**.
+- Empresa com as features **BAAS** e **KYC_ONBOARDING_LINK** habilitadas.
 - Um AppID com os escopos da [tabela de escopos](#escopos) abaixo. Veja [Primeiros passos com a API de KYC Onboarding](./api-getting-started.mdx) e [Adicionando escopos ao seu AppID](../../apis/api-scopes.md).
 - Se a sua integração ainda não segue o padrão de upload + `fileId`, webhooks e idempotência, leia antes [Como construir integrações 100% via API com a Woovi](../../apis/api-driven-integrations.md).
 :::
@@ -431,7 +431,7 @@ Todas as respostas de erro têm `error` (mensagem já traduzida) e, quando exist
 | `400` | — | Body inválido (lista de erros de validação), CPF inválido, ou `fileId` não encontrado para a sua empresa/`purpose` |
 | `400` | `NOT_REQUESTED` | Arquivo de RFI que não responde a nada pedido |
 | `401` | — | AppID ausente ou inválido |
-| `403` | — | Empresa sem BAAS/PARTNER, sem `PIX_AUTHENTICATION_KYC` (Pix), ou AppID sem o escopo |
+| `403` | — | Empresa sem BAAS, sem `PIX_AUTHENTICATION_KYC` (Pix), ou AppID sem o escopo |
 | `404` | — | Nenhum cadastro com esse `correlationID` na sua empresa, ou sócio desconhecido |
 | `409` | `ACCOUNT_REGISTER_NOT_OPEN` | O cadastro não aceita mais alterações no status atual |
 | `409` | `REPRESENTATIVE_ALREADY_REGISTERED` / `MEI_SINGLE_OWNER` | Sócio duplicado / MEI com mais de um titular |
