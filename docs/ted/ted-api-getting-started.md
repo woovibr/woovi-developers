@@ -11,12 +11,14 @@ tags:
 # Primeiros passos com a API de TED
 
 A API de TED permite **enviar** uma TED a partir de uma conta da sua empresa,
-**consultar** uma TED e **listar** as TEDs enviadas e recebidas. O resultado de
-cada TED chega por [webhook](./ted-webhooks.md).
+**devolver** uma TED recebida, **consultar** uma TED e **listar** as TEDs
+enviadas e recebidas. O resultado de cada TED chega por
+[webhook](./ted-webhooks.md).
 
 | Endpoint | O que faz | Scope |
 | --- | --- | --- |
 | [`POST /api/v1/ted`](./ted-send-api.mdx) | Envia uma TED | `TED_POST` |
+| [`POST /api/v1/ted/{correlationID}/refund`](./ted-refund-api.mdx) | Devolve uma TED recebida | `TED_REFUND_POST` |
 | [`GET /api/v1/ted/{correlationID}`](./ted-get-api.md#consultar-uma-ted) | Consulta uma TED | `TED_GET` |
 | [`GET /api/v1/ted`](./ted-get-api.md#listar-teds) | Lista as TEDs | `TED_GET_LIST` |
 

@@ -2,7 +2,7 @@
 id: ted-get-api
 title: Como consultar e listar TEDs via API
 sidebar_label: Consultar e listar TEDs
-sidebar_position: 3
+sidebar_position: 4
 tags:
   - api
   - ted
