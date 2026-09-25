@@ -158,8 +158,9 @@ com o mesmo `correlationID` sem risco de pagar duas vezes.
 
 :::caution Um `correlationID` por TED
 A TED existente é devolvida **como está**, mesmo que o reenvio traga outro
-valor ou outro recebedor, e o novo corpo é ignorado. Para uma TED nova, use um
-`correlationID` novo.
+valor ou outro recebedor, e o novo corpo é ignorado. Olhe o `ted.status` da
+resposta: um reenvio também pode devolver uma TED `FAILED`. Para uma TED nova,
+use um `correlationID` novo.
 :::
 
 ## Códigos de resposta
@@ -177,18 +178,20 @@ Todo erro traz o `errorCode` e o `error` (veja
 | `403` | `ACCOUNT_NOT_OWNED` | A conta de origem é de outra empresa |
 | `403` | — | Aplicação sem o scope `TED_POST` |
 | `404` | `SENDER_NOT_FOUND`, `ACCOUNT_NOT_FOUND` | A conta de origem não existe |
-| `422` | `INSUFFICIENT_BALANCE` | Saldo insuficiente |
 | `422` | `TED_PER_TRANSACTION_LIMIT_EXCEEDED` | Valor acima do limite de TED por transação |
 | `422` | `TED_TOTAL_LIMIT_EXCEEDED` | Valor acima do limite de TED disponível no dia |
 | `422` | `ACCOUNT_LIMIT_NOT_FOUND` | A conta não tem limite de TED configurado |
 | `422` | `ACCOUNT_BLOCKED_TED_OUT` | Conta bloqueada para envio de TED |
 | `422` | `OUTSIDE_STR_SESSION` | STR fechado. Envie de novo quando o STR abrir |
-| `422` | `LEDGER_FAILED` | Não foi possível debitar o saldo |
-| `503` | `TED_LIMIT_SERVICE_UNAVAILABLE`, `SPB_FAILED` | Indisponibilidade temporária. Tente de novo com o mesmo `correlationID` |
+| `422` | `LEDGER_FAILED` | Não foi possível debitar o saldo, inclusive por saldo insuficiente. A TED fica `FAILED`, com o motivo em `errorCode` |
+| `500` | `FEE_FETCH_FAILED` | Não foi possível calcular a tarifa. A TED fica `FAILED` |
+| `503` | `TED_LIMIT_SERVICE_UNAVAILABLE` | Serviço de limites indisponível. Nenhuma TED foi criada: reenvie com o mesmo `correlationID` |
+| `503` | `SPB_FAILED` | A TED não foi entregue ao BACEN. Ela fica `FAILED`: para tentar de novo, use um `correlationID` novo |
 
-Um `422` é uma recusa de negócio: repetir a mesma requisição dá o mesmo
-resultado. Um `503` é temporário, e o reenvio com o mesmo `correlationID` é
-seguro.
+Alguns erros acontecem depois de a TED ser criada (`LEDGER_FAILED`,
+`FEE_FETCH_FAILED`, `SPB_FAILED`). Nesses casos a TED fica `FAILED`, chega um
+`TED_OUT_REJECTED`, e reenviar com o mesmo `correlationID` devolve essa TED
+`FAILED` com `200`. Veja [Depois de um erro no `POST`](./ted-lifecycle.md#depois-de-um-erro-no-post).
 
 ### Exemplos de erro
 
@@ -215,13 +218,6 @@ Corpo inválido, com o detalhe de cada campo em `errors`:
 {
   "error": "A empresa não possui o recurso TED habilitado",
   "errorCode": "TED_FEATURE_REQUIRED"
-}
-```
-
-```json
-{
-  "error": "Saldo insuficiente para completar a transação",
-  "errorCode": "INSUFFICIENT_BALANCE"
 }
 ```
 

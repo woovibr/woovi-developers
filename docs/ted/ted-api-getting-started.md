@@ -38,7 +38,8 @@ O resultado chega depois, por webhook:
   voltou para a conta.
 
 Não trate a resposta do `POST` como pagamento concluído. Espere o webhook ou
-consulte a TED.
+consulte a TED. Os caminhos possíveis e o evento de cada um estão em
+[Ciclo de vida de uma TED](./ted-lifecycle.md).
 
 ## Pré-requisitos
 
@@ -78,8 +79,8 @@ Toda resposta de erro traz dois campos:
 
 ```json
 {
-  "error": "Saldo insuficiente para completar a transação",
-  "errorCode": "INSUFFICIENT_BALANCE"
+  "error": "Valor acima do limite de TED disponível para o período",
+  "errorCode": "TED_TOTAL_LIMIT_EXCEEDED"
 }
 ```
 
@@ -139,7 +140,7 @@ Todos os valores são inteiros em **centavos**: `150050` é R$ 1.500,50.
 | --- | --- |
 | `PENDING` | Em processamento |
 | `PROCESSING` | Enviada ao STR, aguardando a resposta do BACEN |
-| `SCHEDULED` | Aguardando a próxima janela do STR |
+| `SCHEDULED` | Reservado; hoje nenhuma TED fica neste `status` |
 | `COMPLETED` | Liquidada |
 | `FAILED` | Não liquidada; o saldo voltou para a conta |
 | `REFUNDED` | Liquidada e depois devolvida |
