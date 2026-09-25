@@ -78,6 +78,17 @@ stateDiagram-v2
 | → `REFUNDED` | A conta de destino está encerrada ou bloqueada para receber TED. A TED é devolvida ao remetente; `errorCode` diz o motivo | `TED_IN_REJECTED` na hora, e `TED_REFUND_SENT_CONFIRMED` com a TED da devolução quando o BACEN confirma |
 | `COMPLETED` → `REFUNDED` | A TED foi devolvida ao remetente depois de creditada, a seu pedido ou pelo suporte. A devolução é uma TED nova, `type: REFUND_SENT`, e a original só fica `REFUNDED` quando o BACEN aceita a devolução; se ele rejeitar, a original continua `COMPLETED` | `TED_REFUND_SENT_CONFIRMED`, com a TED da devolução, quando o BACEN confirma |
 
+:::info Uma TED é devolvida uma vez só
+Pedir a devolução de novo, ao mesmo tempo ou depois, não cria outra devolução
+nem outro débito:
+
+- com uma devolução ainda em andamento, o pedido repetido só reenvia a mesma
+  devolução ao BACEN;
+- com a TED já `REFUNDED`, o pedido é recusado.
+
+Só uma devolução `FAILED` libera um novo pedido, porque o dinheiro não saiu.
+:::
+
 Uma TED para uma conta que **não existe** na Woovi também é devolvida, mas não
 gera webhook: não há empresa para avisar.
 
