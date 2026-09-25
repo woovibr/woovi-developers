@@ -22,7 +22,7 @@ conta, e quando uma devolução foi confirmada.
 | `TED_OUT_REJECTED` | Uma TED que você enviou não foi liquidada. O débito foi estornado e o saldo voltou; `errorCode` e `reason` trazem o motivo | `FAILED` |
 | `TED_IN_CONFIRMED` | Uma TED chegou e foi creditada na sua conta | `COMPLETED` |
 | `TED_IN_REJECTED` | Uma TED para você foi recusada na chegada e devolvida ao remetente; `errorCode` e `reason` trazem o motivo | `REFUNDED` |
-| `TED_REFUND_SENT_CONFIRMED` | Uma TED que você recebeu foi devolvida ao remetente, e o BACEN confirmou a devolução | `COMPLETED` |
+| `TED_REFUND_SENT_CONFIRMED` | Uma TED que você recebeu foi devolvida ao remetente, e o BACEN confirmou a devolução. É a resposta a [`POST /api/v1/ted/{correlationID}/refund`](./ted-refund-api.mdx) | `COMPLETED` |
 | `TED_REFUND_RECEIVED_CONFIRMED` | Uma TED que você enviou foi devolvida pela instituição de destino, e o valor voltou para a sua conta | `COMPLETED` |
 
 Não existe webhook para `PROCESSING` ou `SCHEDULED`: a resposta de

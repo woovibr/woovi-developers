@@ -1,0 +1,193 @@
+---
+id: ted-refund-api
+title: Como devolver uma TED recebida via API
+sidebar_label: Devolver TED
+sidebar_position: 3
+tags:
+  - api
+  - ted
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Como devolver uma TED recebida via API
+
+Para devolver ao remetente uma TED que a sua empresa recebeu, use o _endpoint_
+`POST /api/v1/ted/{correlationID}/refund`. A devolução é sempre do **valor
+total** da TED.
+
+:::info
+Sua aplicação precisa do scope **`TED_REFUND_POST`** e a empresa precisa da
+funcionalidade **`TED`**. Veja
+[Primeiros passos com a API de TED](./ted-api-getting-started.md).
+:::
+
+:::tip Referência completa
+Para o schema, parâmetros e exemplos interativos, veja a
+[API Reference](/api#tag/ted/POST/api/v1/ted/{correlationID}/refund).
+:::
+
+## Qual TED pode ser devolvida
+
+Só uma TED que você **recebeu** (`direction: IN`, `type: PAYMENT`) e que está
+`COMPLETED`. Não dá para devolver uma TED que você enviou, nem uma devolução que
+você recebeu.
+
+O `correlationID` da TED recebida é o `nuop` que a Woovi atribuiu a ela: é o
+que vem no webhook [`TED_IN_CONFIRMED`](./ted-webhooks.md) e na
+[listagem de TEDs](./ted-get-api.md#listar-teds).
+
+## Parâmetros
+
+| Parâmetro | Onde | Descrição |
+| --- | --- | --- |
+| `correlationID` | path | O `correlationID` da TED recebida |
+
+A requisição não tem corpo.
+
+## Exemplo de resposta
+
+Se a devolução foi aceita, o _status code_ é `200` e o corpo traz a **TED de
+devolução** (`type: REFUND_SENT`, `direction: OUT`), com remetente e recebedor
+invertidos em relação à TED original:
+
+```json
+{
+  "ted": {
+    "correlationID": "RFD20260203000001",
+    "nuop": "1234567820260203000001",
+    "status": "PROCESSING",
+    "type": "REFUND_SENT",
+    "direction": "OUT",
+    "value": 150050,
+    "moveDate": "2026-02-03",
+    "accountId": "6290ccfd42831958a405debc",
+    "sender": {
+      "name": "Empresa LTDA",
+      "document": "12345678000199",
+      "ispb": "12345678",
+      "agency": 1234,
+      "account": 567890,
+      "accountType": "CACC"
+    },
+    "receiver": {
+      "name": "Joao da Silva",
+      "document": "12345678901",
+      "ispb": "87654321",
+      "agency": 4321,
+      "account": 98765,
+      "accountType": "CACC"
+    },
+    "errorCode": null,
+    "reason": null,
+    "bcbCode": null,
+    "createdAt": "2026-02-03T14:30:00.000Z",
+    "updatedAt": "2026-02-03T14:30:00.000Z"
+  }
+}
+```
+
+O `correlationID` da devolução é gerado pela Woovi. Guarde-o para
+[consultar a devolução](./ted-get-api.md#consultar-uma-ted).
+
+:::warning `200` não quer dizer que o dinheiro voltou
+A resposta confirma que a devolução foi aceita e o valor debitado da sua conta.
+Quando o BACEN confirma, chega o webhook `TED_REFUND_SENT_CONFIRMED` e a TED
+original passa a `REFUNDED`. Veja [Webhooks de TED](./ted-webhooks.md).
+
+Se o BACEN rejeitar a devolução, não há webhook: a devolução fica `FAILED`, o
+débito é estornado e a TED original volta a `COMPLETED`, pronta para uma nova
+tentativa. Consulte a devolução pelo `correlationID` dela para saber o resultado.
+:::
+
+## Reenvio seguro
+
+Enquanto a devolução está em andamento, repetir a requisição **não** cria outra
+devolução nem debita de novo: a resposta é `200` com a mesma devolução. Assim,
+se a requisição der _timeout_, repita sem risco de devolver duas vezes.
+
+Depois que a devolução foi liquidada, uma nova requisição responde `422`
+(`ALREADY_REFUNDED`).
+
+## Códigos de resposta
+
+Todo erro traz o `errorCode` e o `error` (veja
+[Erros](./ted-api-getting-started.md#erros)).
+
+| Status | `errorCode` | Quando |
+| --- | --- | --- |
+| `200` | — | Devolução aceita, ou repetição de uma devolução em andamento |
+| `401` | — | AppID ausente ou inválido |
+| `403` | `TED_FEATURE_REQUIRED` | Empresa sem a funcionalidade `TED` |
+| `403` | — | Aplicação sem o scope `TED_REFUND_POST` |
+| `404` | `TED_NOT_FOUND` | Nenhuma TED com esse `correlationID` na sua empresa |
+| `404` | `ACCOUNT_NOT_FOUND` | A conta que recebeu a TED não existe mais |
+| `422` | `TED_NOT_REFUNDABLE` | A TED não é uma TED recebida: é uma TED enviada ou uma devolução |
+| `422` | `ALREADY_REFUNDED` | A TED já foi devolvida |
+| `422` | `INVALID_STATUS` | A TED não está `COMPLETED` |
+| `422` | `MISSING_STR_CONTROL_ID` | A TED não tem o número de controle do STR, sem o qual não pode ser devolvida |
+| `422` | `ACCOUNT_BLOCKED_TED_REFUND_SENT` | Conta bloqueada para devolução de TED |
+| `422` | `TED_PER_TRANSACTION_LIMIT_EXCEEDED` | Valor acima do limite de devolução por transação |
+| `422` | `TED_TOTAL_LIMIT_EXCEEDED` | Valor acima do limite de devolução disponível no dia |
+| `422` | `ACCOUNT_LIMIT_NOT_FOUND` | A conta não tem limite de devolução configurado |
+| `422` | `OUTSIDE_STR_SESSION` | STR fechado. Tente de novo quando o STR abrir |
+| `422` | `LEDGER_FAILED` | Não foi possível debitar o saldo |
+| `503` | `TED_LIMIT_SERVICE_UNAVAILABLE`, `SPB_FAILED` | Indisponibilidade temporária. Tente de novo |
+
+### Exemplos de erro
+
+```json
+{
+  "error": "Só uma TED recebida pode ser devolvida",
+  "errorCode": "TED_NOT_REFUNDABLE"
+}
+```
+
+```json
+{
+  "error": "A transação já foi estornada",
+  "errorCode": "ALREADY_REFUNDED"
+}
+```
+
+## Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request POST \
+  --url https://api.woovi.com/api/v1/ted/8765432120260203000042/refund \
+  --header 'Authorization: {APP_ID}'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch">
+
+```js
+const correlationID = '8765432120260203000042';
+
+const response = await fetch(
+  `https://api.woovi.com/api/v1/ted/${correlationID}/refund`,
+  {
+    method: 'POST',
+    headers: {
+      Authorization: process.env.WOOVI_APP_ID,
+    },
+  },
+);
+
+const data = await response.json();
+
+if (!response.ok) {
+  // `errorCode` para decidir, `error` para mostrar ao usuário
+  throw new Error(`${data.errorCode}: ${data.error}`);
+}
+
+console.log(data.ted.correlationID, data.ted.status);
+// RFD20260203000001 PROCESSING — a confirmação chega pelo webhook
+```
+
+  </TabItem>
+</Tabs>
