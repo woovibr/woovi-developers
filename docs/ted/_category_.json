@@ -1,0 +1,12 @@
+{
+  "label": "TED",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "TED visão geral"
+  },
+  "customProps": {
+    "description": "Documentação da API pública de TED"
+  }
+}
