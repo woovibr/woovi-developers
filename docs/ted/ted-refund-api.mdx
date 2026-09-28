@@ -30,7 +30,7 @@ Para o schema, parâmetros e exemplos interativos, veja a
 
 ## Qual TED pode ser devolvida
 
-Só uma TED que você **recebeu** (`direction: IN`, `type: PAYMENT`) e que está
+Só uma TED que você **recebeu** (`type: TED_IN`) e que está
 `COMPLETED`. Não dá para devolver uma TED que você enviou, nem uma devolução que
 você recebeu.
 
@@ -49,7 +49,7 @@ A requisição não tem corpo.
 ## Exemplo de resposta
 
 Se a devolução foi aceita, o _status code_ é `200` e o corpo traz a **TED de
-devolução** (`type: REFUND_SENT`, `direction: OUT`), com remetente e recebedor
+devolução** (`type: TED_REFUND_SENT`), com `debitParty` e `creditParty`
 invertidos em relação à TED original:
 
 ```json
@@ -58,30 +58,28 @@ invertidos em relação à TED original:
     "correlationID": "RFD20260203000001",
     "nuop": "1234567820260203000001",
     "status": "PROCESSING",
-    "type": "REFUND_SENT",
-    "direction": "OUT",
+    "type": "TED_REFUND_SENT",
     "value": 150050,
     "moveDate": "2026-02-03",
     "accountId": "6290ccfd42831958a405debc",
-    "sender": {
-      "name": "Empresa LTDA",
-      "document": "12345678000199",
-      "ispb": "12345678",
-      "agency": 1234,
-      "account": 567890,
-      "accountType": "CACC"
+    "debitParty": {
+      "account": { "branch": "1234", "account": "567890", "accountType": "CACC" },
+      "psp": { "id": "12345678" },
+      "holder": {
+        "name": "Empresa LTDA",
+        "taxID": { "taxID": "12345678000199", "type": "BR:CNPJ" }
+      }
     },
-    "receiver": {
-      "name": "Joao da Silva",
-      "document": "12345678901",
-      "ispb": "87654321",
-      "agency": 4321,
-      "account": 98765,
-      "accountType": "CACC"
+    "creditParty": {
+      "account": { "branch": "4321", "account": "98765", "accountType": "CACC" },
+      "psp": { "id": "87654321" },
+      "holder": {
+        "name": "Joao da Silva",
+        "taxID": { "taxID": "12345678901", "type": "BR:CPF" }
+      }
     },
     "errorCode": null,
     "reason": null,
-    "bcbCode": null,
     "createdAt": "2026-02-03T14:30:00.000Z",
     "updatedAt": "2026-02-03T14:30:00.000Z"
   }

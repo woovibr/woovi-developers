@@ -80,30 +80,28 @@ O corpo tem o nome do evento e o objeto `ted`, no mesmo formato de
     "correlationID": "payout-20260203-1",
     "nuop": "1234567820260203000001",
     "status": "FAILED",
-    "type": "PAYMENT",
-    "direction": "OUT",
+    "type": "TED_OUT",
     "value": 150050,
     "moveDate": "2026-02-03",
     "accountId": "6290ccfd42831958a405debc",
-    "sender": {
-      "name": "Empresa LTDA",
-      "document": "12345678000199",
-      "ispb": "12345678",
-      "agency": 1234,
-      "account": 567890,
-      "accountType": "CACC"
+    "debitParty": {
+      "account": { "branch": "1234", "account": "567890", "accountType": "CACC" },
+      "psp": { "id": "12345678" },
+      "holder": {
+        "name": "Empresa LTDA",
+        "taxID": { "taxID": "12345678000199", "type": "BR:CNPJ" }
+      }
     },
-    "receiver": {
-      "name": "Joao da Silva",
-      "document": "12345678901",
-      "ispb": "87654321",
-      "agency": 4321,
-      "account": 98765,
-      "accountType": "CACC"
+    "creditParty": {
+      "account": { "branch": "4321", "account": "98765", "accountType": "CACC" },
+      "psp": { "id": "87654321" },
+      "holder": {
+        "name": "Joao da Silva",
+        "taxID": { "taxID": "12345678901", "type": "BR:CPF" }
+      }
     },
     "errorCode": "INSUFFICIENT_BALANCE",
     "reason": "Saldo insuficiente",
-    "bcbCode": null,
     "createdAt": "2026-02-03T14:30:00.000Z",
     "updatedAt": "2026-02-03T14:31:02.000Z"
   }
@@ -115,8 +113,7 @@ está na [API Reference](/api#tag/webhook).
 
 :::note Motivo da falha
 Decida pelo `event` e pelo `errorCode`. O `reason` é o `errorCode` explicado
-para mostrar ao usuário, e nos webhooks vem sempre em português. O `bcbCode` é o
-código do BACEN, para o suporte. Veja
+para mostrar ao usuário, e nos webhooks vem sempre em português. Veja
 [Por que uma TED falhou](./ted-api-getting-started.md#por-que-uma-ted-falhou).
 :::
 
