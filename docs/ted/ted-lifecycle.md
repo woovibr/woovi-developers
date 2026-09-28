@@ -18,7 +18,7 @@ O `status` atual está sempre em
 [`GET /api/v1/ted/{correlationID}`](./ted-get-api.md#consultar-uma-ted). Os
 webhooks avisam das mudanças.
 
-## TED enviada (`direction: OUT`)
+## TED enviada (`type: TED_OUT`)
 
 ```mermaid
 stateDiagram-v2
@@ -38,7 +38,7 @@ stateDiagram-v2
 | `PENDING` → `FAILED` | Falha antes do envio (saldo insuficiente, tarifa, lançamento). O débito não fica | `TED_OUT_REJECTED` |
 | `PROCESSING` → `COMPLETED` | O BACEN liquidou a TED | `TED_OUT_CONFIRMED` |
 | `PROCESSING` → `FAILED` | O BACEN rejeitou a TED, ou ela não chegou a ser entregue. O débito é estornado e o saldo volta | `TED_OUT_REJECTED` |
-| `COMPLETED` → `REFUNDED` | O banco recebedor devolveu a TED e o valor voltou para a sua conta. A devolução chega como uma TED nova, `type: REFUND_RECEIVED` | `TED_REFUND_RECEIVED_CONFIRMED`, com a TED da devolução |
+| `COMPLETED` → `REFUNDED` | O banco recebedor devolveu a TED e o valor voltou para a sua conta. A devolução chega como uma TED nova, `type: TED_REFUND_RECEIVED` | `TED_REFUND_RECEIVED_CONFIRMED`, com a TED da devolução |
 
 `COMPLETED` também não é final: uma TED liquidada ainda pode ser devolvida pelo
 banco recebedor.
@@ -49,7 +49,7 @@ aceita pelo BACEN, e nunca sai desse `status`. Uma devolução que o BACEN
 rejeita não muda a TED original: ela continua `COMPLETED`.
 :::
 
-## TED recebida (`direction: IN`)
+## TED recebida (`type: TED_IN`)
 
 Uma TED recebida já foi liquidada pelo BACEN quando chega. Ela nunca falha:
 ou é creditada, ou é recusada e devolvida ao remetente.
@@ -66,7 +66,7 @@ stateDiagram-v2
 | --- | --- | --- |
 | → `COMPLETED` | A TED foi creditada na sua conta | `TED_IN_CONFIRMED` |
 | → `REFUNDED` | A conta de destino está encerrada ou bloqueada para receber TED. A TED é devolvida ao remetente; `errorCode` diz o motivo | `TED_IN_REJECTED` na hora, e `TED_REFUND_SENT_CONFIRMED` com a TED da devolução quando o BACEN confirma |
-| `COMPLETED` → `REFUNDED` | A TED foi devolvida ao remetente depois de creditada, a seu pedido ou pelo suporte. A devolução é uma TED nova, `type: REFUND_SENT`, e a original só fica `REFUNDED` quando o BACEN aceita a devolução; se ele rejeitar, a original continua `COMPLETED` | `TED_REFUND_SENT_CONFIRMED`, com a TED da devolução, quando o BACEN confirma |
+| `COMPLETED` → `REFUNDED` | A TED foi devolvida ao remetente depois de creditada, a seu pedido ou pelo suporte. A devolução é uma TED nova, `type: TED_REFUND_SENT`, e a original só fica `REFUNDED` quando o BACEN aceita a devolução; se ele rejeitar, a original continua `COMPLETED` | `TED_REFUND_SENT_CONFIRMED`, com a TED da devolução, quando o BACEN confirma |
 
 :::info Uma TED é devolvida uma vez só
 Pedir a devolução de novo, ao mesmo tempo ou depois, não cria outra devolução
@@ -84,14 +84,14 @@ gera webhook: não há empresa para avisar.
 
 ## Os eventos, por status
 
-| Evento | `direction` | `ted.status` no payload | É final? |
+| Evento | `ted.type` | `ted.status` no payload | É final? |
 | --- | --- | --- | --- |
-| `TED_OUT_CONFIRMED` | `OUT` | `COMPLETED` | Pode ainda ser devolvida |
-| `TED_OUT_REJECTED` | `OUT` | `FAILED` | Sim |
-| `TED_IN_CONFIRMED` | `IN` | `COMPLETED` | Pode ainda ser devolvida |
-| `TED_IN_REJECTED` | `IN` | `REFUNDED` | Sim |
-| `TED_REFUND_SENT_CONFIRMED` | `OUT` (`type: REFUND_SENT`) | `COMPLETED` | Sim |
-| `TED_REFUND_RECEIVED_CONFIRMED` | `IN` (`type: REFUND_RECEIVED`) | `COMPLETED` | Sim |
+| `TED_OUT_CONFIRMED` | `TED_OUT` | `COMPLETED` | Pode ainda ser devolvida |
+| `TED_OUT_REJECTED` | `TED_OUT` | `FAILED` | Sim |
+| `TED_IN_CONFIRMED` | `TED_IN` | `COMPLETED` | Pode ainda ser devolvida |
+| `TED_IN_REJECTED` | `TED_IN` | `REFUNDED` | Sim |
+| `TED_REFUND_SENT_CONFIRMED` | `TED_REFUND_SENT` | `COMPLETED` | Sim |
+| `TED_REFUND_RECEIVED_CONFIRMED` | `TED_REFUND_RECEIVED` | `COMPLETED` | Sim |
 
 Os eventos de devolução trazem a **TED da devolução**, com `correlationID`
 próprio, e não a original. Hoje a TED da devolução não aponta para a original;
