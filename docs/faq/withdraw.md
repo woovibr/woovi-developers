@@ -33,7 +33,7 @@ Os saques da plataforma são instantâneos pelo Pix. 24 horas por dia, 7 dias po
 
 Todo saldo gerado pelas cobranças é depositado de maneira automática, todos os dias às 19h, na conta bancária vinculada a Chave Pix do seu CNPJ.
 
-Você pode solicitar o saque manual a qualquer momento, nesse caso, se a solicitação de saque for inferior a R$ 1.000,00 será cobrada uma taxa de R$ 1,00 por saque.
+Você pode solicitar o saque manual a qualquer momento, nesse caso, se a solicitação de saque for inferior a R$ 500,00 será cobrada uma taxa de R$ 1,00 por saque.
 
 ### Saque automático
 
