@@ -38,7 +38,6 @@ curl https://api.woovi.com/api/v1/ted/payout-20260203-1 \
     "type": "TED_OUT",
     "value": 150050,
     "moveDate": "2026-02-03",
-    "accountId": "6290ccfd42831958a405debc",
     "debitParty": {
       "account": { "branch": "1234", "account": "567890", "accountType": "CACC" },
       "psp": { "id": "12345678" },
@@ -119,7 +118,6 @@ curl 'https://api.woovi.com/api/v1/ted?type=TED_OUT&status=COMPLETED&start=2026-
       "type": "TED_OUT",
       "value": 150050,
       "moveDate": "2026-02-03",
-      "accountId": "6290ccfd42831958a405debc",
       "errorCode": null,
       "reason": null,
       "createdAt": "2026-02-03T14:30:00.000Z",

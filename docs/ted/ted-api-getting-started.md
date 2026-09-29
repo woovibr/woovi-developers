@@ -50,8 +50,9 @@ consulte a TED. Os caminhos possíveis e o evento de cada um estão em
 - A funcionalidade **`TED`** habilitada na empresa. Sem ela, todos os endpoints
   respondem `403`. Peça a ativação ao suporte.
 - Os scopes da tabela acima na sua aplicação, conforme os endpoints que ela usa.
-- Uma **conta** da empresa para debitar a TED. O `accountId` é o mesmo ID que
-  `GET /api/v1/account` retorna.
+- Uma **conta** da empresa para debitar a TED: a conta vinculada à aplicação
+  ou, se ela não tiver, a conta padrão da empresa. Veja
+  [Conta de origem](./ted-send-api.mdx#conta-de-origem).
 
 ## Autenticação
 
@@ -67,8 +68,8 @@ curl https://api.woovi.com/api/v1/ted \
 | Produção | `https://api.woovi.com` |
 | Sandbox | `https://api.woovi-sandbox.com` |
 
-A empresa vem do AppID, nunca da requisição: você só envia de contas da sua
-empresa, e só enxerga as TEDs dela.
+A empresa e a conta de origem vêm do AppID, nunca da requisição: você só envia
+de contas da sua empresa, e só enxerga as TEDs dela.
 
 ## Erros
 
