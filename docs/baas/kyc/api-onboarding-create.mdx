@@ -28,6 +28,10 @@ Para o schema, parâmetros e exemplos interativos, veja a [API Reference](/api#t
 
 - **`taxID`**: CNPJ da empresa do merchant. Aceita formato com ou sem máscara (ex: `XX.XXX.XXX/0001-XX` ou `XXXXXXXXXXXXXX`). Validado como CNPJ.
 
+:::tip Conta de pessoa física
+Para abrir uma conta PF (CPF), use o mesmo _endpoint_ com `taxIDType: "BR:CPF"`. Veja [Como criar uma conta PF (pessoa física)?](./api-onboarding-conta-pf.mdx).
+:::
+
 ### Opcionais
 
 - **`correlationID`**: Identificador único para idempotência. Se não informado, o CNPJ será usado como correlationID. Se a mesma `correlationID` for enviada novamente, a API retorna o link existente (200) ao invés de criar um novo.
