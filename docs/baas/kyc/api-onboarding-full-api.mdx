@@ -31,6 +31,28 @@ Esta página descreve esse fluxo de ponta a ponta. Todos os endpoints endereçam
 
 Os dois caminhos gravam no mesmo cadastro e passam pelas mesmas validações, então dá para misturar: criar pela API, enviar os documentos que você já tem e mandar o link só para o que faltar. Na dúvida, comece pelo link; migre para a API quando a experiência dentro do seu produto justificar.
 
+## Dados e documentos necessários para onboarding de PF e PJ
+
+O fluxo 100% via API atende contas de empresa (PJ, por CNPJ) e contas de pessoa física (PF, por CPF). Os endpoints são os mesmos; muda o que cada cadastro precisa ter antes do [envio para análise](#7-enviar-para-análise).
+
+| O que | Conta de empresa (PJ) | Conta PF | Onde enviar |
+| --- | --- | --- | --- |
+| Identificação | `taxID` com o CNPJ | `taxID` com o CPF **e** `taxIDType: "BR:CPF"` | [Passo 1](#1-criar-o-onboarding) |
+| Nome | Vem do enriquecimento do CNPJ | `officialName` (nome completo do titular), obrigatório | [Passo 1](#1-criar-o-onboarding) |
+| Descrição do negócio e site | `businessDescription` e `website` | Não se aplica | [Passo 1](#1-criar-o-onboarding) |
+| Documento de constituição | `SOCIAL_CONTRACT`, `ATA` ou `BYLAWS`; MEI envia `CCMEI` quando exigido | Não se aplica | [Passo 3](#3-documentos-da-empresa) |
+| Sócios e representantes | Vêm do CNPJ; adicione os que faltarem | Só o titular, criado automaticamente. Não adicione outros representantes | [Passo 4](#4-sócios-e-representantes) |
+| Selfie e documento de identidade | De cada ADMIN ativo | Do titular | [Passo 4](#4-sócios-e-representantes) |
+| Autenticação Pix | De cada ADMIN ativo | Do titular, pagando com o próprio CPF | [Passo 5](#5-autenticação-pix-dos-administradores) |
+| BC Protege+ | CNPJ e cada ADMIN ativo | CPF do titular | [Passo 6](#6-bc-protege) |
+| Documentos extras pedidos na análise | Pela RFI | Pela RFI | [Passo 9](#9-rfi-pedido-de-informações) |
+
+A selfie é o `PICTURE`. A identidade pode ser `CNH`, `CNH_FRONT` + `CNH_BACK`, `IDENTITY_FRONT` + `IDENTITY_BACK` ou `PASSPORT`.
+
+:::caution Conta PF precisa ser liberada
+A conta PF **não vem habilitada por padrão**: peça ao [time de suporte](../suporte-baas.md) antes de integrar. Sem a liberação, `POST /api/v1/kyc/onboarding` com `taxIDType: "BR:CPF"` responde `403`. Na conta PF o titular não paga tarifas: elas são cobradas da conta padrão da sua empresa. Veja [Como criar uma conta PF (pessoa física)?](./api-onboarding-conta-pf.mdx).
+:::
+
 ## Visão geral
 
 ```mermaid
@@ -118,6 +140,22 @@ curl -X POST https://api.woovi.com/api/v1/kyc/onboarding \
 ```
 
 O cadastro nasce em `PENDING`, já com os sócios encontrados no CNPJ (`source: ENRICHMENT`). A chamada é idempotente por `correlationID`: repetir devolve o mesmo cadastro (`200`). Os campos estão em [Como criar um onboarding KYC via API?](./api-onboarding-create.mdx).
+
+Para uma conta PF, envie o CPF com `taxIDType: "BR:CPF"` e o nome do titular:
+
+```bash
+curl -X POST https://api.woovi.com/api/v1/kyc/onboarding \
+  -H "Authorization: <APP_ID>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "taxID": "529.982.247-25",
+    "taxIDType": "BR:CPF",
+    "officialName": "MARIA DE SOUZA",
+    "correlationID": "cliente-pf-1021"
+  }'
+```
+
+O cadastro nasce com um único representante, o próprio titular (`type: ADMIN`). Pule o [passo 3](#3-documentos-da-empresa): pegue o `id` do titular em `GET /api/v1/kyc/representatives` e siga do envio da selfie e da identidade em diante.
 
 A partir daqui, todo endpoint recebe `correlationID` (no body ou na query). O CNPJ do cadastro também é aceito no lugar dele.
 
