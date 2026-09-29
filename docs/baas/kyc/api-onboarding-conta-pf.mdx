@@ -1,0 +1,134 @@
+---
+id: kyc-api-onboarding-conta-pf
+title: Como criar uma conta PF (pessoa física)?
+tags:
+  - api
+  - kyc
+  - onboarding
+  - conta-pf
+---
+
+Além de contas para empresas (CNPJ), uma empresa BaaS pode abrir **contas de pessoa física (PF)** para os seus clientes, identificadas pelo **CPF** do titular.
+
+O fluxo é o mesmo do [onboarding KYC via API](./api-onboarding-create.mdx): mesmo _endpoint_, mesma autenticação e o mesmo link de onboarding. A única diferença na requisição é informar o **tipo do documento** `taxIDType: "BR:CPF"` e o nome do titular.
+
+:::caution Solicite a feature ao time de suporte
+A conta PF **não vem habilitada por padrão**. Antes de integrar, peça ao [time de suporte](../suporte-baas.md) para habilitar a abertura de contas PF para a sua empresa. Sem essa liberação, a API responde `403`.
+
+A liberação passa por aprovação interna. Na conta PF, **o titular nunca paga tarifas**: todas as tarifas da conta são cobradas da **conta padrão da sua empresa**.
+:::
+
+## Requisição
+
+- **Método/URL**: `POST https://api.woovi.com/api/v1/kyc/onboarding`
+- **Scope necessário**: `KYC_ONBOARDING_POST`
+- **Pré-requisitos**: as mesmas features do [onboarding de empresa](./api-getting-started.mdx) (**BAAS** e **KYC_ONBOARDING_LINK**), mais a liberação de conta PF pelo suporte.
+
+## Campos
+
+### Obrigatórios
+
+- **`taxID`**: CPF do titular, com ou sem máscara (ex: `XXX.XXX.XXX-XX` ou `XXXXXXXXXXX`). Validado como CPF.
+- **`taxIDType`**: sempre `"BR:CPF"`. É este campo que indica que a conta é PF. Sem ele, o `taxID` é validado como CNPJ.
+- **`officialName`**: nome completo do titular.
+
+### Opcionais
+
+- **`correlationID`**: identificador único para idempotência. Se não for informado, o CPF é usado como `correlationID`.
+- **`redirectUrl`**: URL para onde o titular é redirecionado ao concluir o onboarding.
+
+:::info
+Uma conta PF não tem sócios. O próprio titular é o único representante da conta e é criado automaticamente a partir do `taxID` e do `officialName`, então você não precisa enviar `representatives`.
+:::
+
+## Exemplo
+
+```sh
+curl -X POST https://api.woovi.com/api/v1/kyc/onboarding \
+  -H "Content-Type: application/json" \
+  -H "Authorization: SEU_APPID_AQUI" \
+  -d '{
+    "taxID": "XXX.XXX.XXX-XX",
+    "taxIDType": "BR:CPF",
+    "officialName": "NOME_COMPLETO_DO_TITULAR",
+    "correlationID": "cliente-123"
+  }'
+```
+
+Se tudo ocorrer bem, a API responde `201` com o link de onboarding e o registro da conta:
+
+```json
+{
+  "linkOnboarding": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...",
+  "accountRegister": {
+    "status": "PENDING",
+    "officialName": "NOME_COMPLETO_DO_TITULAR",
+    "taxID": {
+      "taxID": "XXXXXXXXXXX",
+      "type": "BR:CPF"
+    },
+    "correlationID": "cliente-123",
+    "representatives": [
+      {
+        "name": "NOME_COMPLETO_DO_TITULAR",
+        "taxID": {
+          "taxID": "XXXXXXXXXXX",
+          "type": "BR:CPF"
+        }
+      }
+    ]
+  }
+}
+```
+
+Envie o `linkOnboarding` ao titular. No link, as telas são de pessoa física: não aparecem contrato social, dados da empresa nem BC Protege+ Empresa. O titular informa os dados, o endereço e envia o documento de identidade e a selfie.
+
+Depois disso, acompanhe o andamento da conta pelos [webhooks do ciclo de vida](./webhooks-ciclo-de-vida.mdx) ou pelo [`GET /api/v1/account-register/:id`](./api-account-register-get.mdx), da mesma forma que uma conta de empresa.
+
+## Diferenças em relação à conta de empresa
+
+| | Conta de empresa (PJ) | Conta PF |
+|---|---|---|
+| `taxID` | CNPJ | CPF |
+| `taxIDType` | omitido ou `"BR:CNPJ"` | `"BR:CPF"` (obrigatório) |
+| `officialName` | preenchido pelo enriquecimento de dados | obrigatório na requisição |
+| Representantes | sócios da empresa | só o próprio titular |
+| Contrato social | obrigatório | não se aplica |
+| Tarifas | cobradas da própria conta | cobradas da conta padrão da sua empresa |
+
+## Códigos de resposta
+
+| Status | Descrição |
+|--------|-----------|
+| `200` | Onboarding já existe para este `correlationID` (idempotente) |
+| `201` | Onboarding criado com sucesso |
+| `400` | Input inválido (CPF inválido ou `officialName` ausente) |
+| `401` | Credenciais inválidas |
+| `403` | Conta PF não habilitada para a sua empresa (solicite ao suporte) |
+| `409` | Já existe um onboarding para este CPF com outro `correlationID` |
+
+### Exemplos de erro
+
+```json
+{
+  "error": "Natural-person onboarding requires BAAS, BAAS_PF_ACCOUNT, and BAAS_FEE_FROM_DEFAULT_ACCOUNT"
+}
+```
+
+Sua empresa ainda não tem a conta PF habilitada. Fale com o [time de suporte](../suporte-baas.md).
+
+```json
+{
+  "error": "Invalid CPF"
+}
+```
+
+```json
+{
+  "error": "Invalid input: officialName: officialName is required when taxIDType is \"BR:CPF\" — it is the account holder name"
+}
+```
+
+:::info Combinações não permitidas
+`taxIDType: "BR:CPF"` não pode ser combinado com `partner: true` (uma pessoa física não tem empresa afiliada) nem com `internationalAccount: true`.
+:::
