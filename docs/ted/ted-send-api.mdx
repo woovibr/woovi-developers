@@ -33,12 +33,27 @@ Para o schema, parâmetros e exemplos interativos, veja a
 | --- | --- | --- | --- |
 | `correlationID` | string | sim | Seu identificador da TED. No máximo **20 caracteres** e sem espaços. Veja [Reenvio seguro](#reenvio-seguro-com-o-mesmo-correlationid). |
 | `value` | number | sim | Valor em centavos, inteiro e maior que zero |
-| `accountId` | string | sim | Conta de origem, de `GET /api/v1/account` |
 | `receiver` | object | sim | Quem recebe a TED (veja abaixo) |
 | `moveDate` | string | não | Data de liquidação, `YYYY-MM-DD`. Padrão: hoje |
 | `clientFinality` | number | não | Finalidade da transferência. Padrão: `10` (crédito em conta). Veja [Finalidade](#finalidade-clientfinality) |
 | `description` | string | não | Descrição livre |
 | `schedule` | boolean | não | Reservado. Hoje, com o STR fechado, a TED é recusada com `422` (`OUTSIDE_STR_SESSION`) mesmo com `schedule: true` |
+
+## Conta de origem
+
+A conta que a TED debita vem do **AppID**, e não do corpo da requisição, na mesma
+ordem do Pix out:
+
+1. a conta vinculada à aplicação do AppID;
+2. se a aplicação não tiver conta, a conta padrão da empresa.
+
+Não há campo para escolher a conta: um `accountId` no corpo é ignorado. Para
+enviar de outra conta, use um AppID de uma aplicação vinculada a ela.
+
+A conta precisa ser da empresa do AppID. Se for de outra empresa, a TED é
+recusada com `403` (`ACCOUNT_NOT_OWNED`), e sem nenhuma conta, nem na aplicação
+nem na empresa, com `403` (`SOURCE_ACCOUNT_NOT_FOUND`). Nos dois casos nenhuma
+TED é criada.
 
 ### `receiver`
 
@@ -85,7 +100,6 @@ Qualquer outro valor é recusado com `400` (`INVALID_REQUEST_BODY`).
 {
   "correlationID": "payout-20260203-1",
   "value": 150050,
-  "accountId": "6290ccfd42831958a405debc",
   "moveDate": "2026-02-03",
   "receiver": {
     "name": "Joao da Silva",
@@ -113,8 +127,7 @@ Se a TED foi aceita, o _status code_ é `200` e o corpo traz o objeto `ted`:
     "type": "TED_OUT",
     "value": 150050,
     "moveDate": "2026-02-03",
-    "accountId": "6290ccfd42831958a405debc",
-    "debitParty": {
+      "debitParty": {
       "account": { "branch": "1234", "account": "567890", "accountType": "CACC" },
       "psp": { "id": "12345678" },
       "holder": {
@@ -173,9 +186,10 @@ Todo erro traz o `errorCode` e o `error` (veja
 | `400` | `INVALID_CORRELATION_ID` | `correlationID` com mais de 20 caracteres |
 | `401` | — | AppID ausente ou inválido |
 | `403` | `TED_FEATURE_REQUIRED` | Empresa sem a funcionalidade `TED` |
-| `403` | `ACCOUNT_NOT_OWNED` | A conta de origem é de outra empresa |
+| `403` | `ACCOUNT_NOT_OWNED` | A conta de origem (da aplicação ou a padrão da empresa) é de outra empresa |
+| `403` | `SOURCE_ACCOUNT_NOT_FOUND` | Nem a aplicação nem a empresa têm uma conta de origem. Veja [Conta de origem](#conta-de-origem) |
 | `403` | — | Aplicação sem o scope `TED_POST` |
-| `404` | `SENDER_NOT_FOUND`, `ACCOUNT_NOT_FOUND` | A conta de origem não existe |
+| `404` | `SENDER_NOT_FOUND`, `ACCOUNT_NOT_FOUND` | A conta vinculada à aplicação, ou a padrão da empresa, não existe |
 | `422` | `TED_PER_TRANSACTION_LIMIT_EXCEEDED` | Valor acima do limite de TED por transação |
 | `422` | `TED_TOTAL_LIMIT_EXCEEDED` | Valor acima do limite de TED disponível no dia |
 | `422` | `ACCOUNT_LIMIT_NOT_FOUND` | A conta não tem limite de TED configurado |
@@ -249,8 +263,7 @@ curl --request POST \
   --data '{
     "correlationID": "payout-20260203-1",
     "value": 150050,
-    "accountId": "6290ccfd42831958a405debc",
-    "receiver": {
+      "receiver": {
       "name": "Joao da Silva",
       "document": "12345678901",
       "ispb": "87654321",
@@ -274,7 +287,6 @@ const response = await fetch('https://api.woovi.com/api/v1/ted', {
   body: JSON.stringify({
     correlationID: 'payout-20260203-1',
     value: 150050,
-    accountId: '6290ccfd42831958a405debc',
     receiver: {
       name: 'Joao da Silva',
       document: '12345678901',
