@@ -815,52 +815,102 @@ const events: WebhookEvent[] = [
     },
   },
   {
-    id: 'qrcode-static',
-    event: 'OPENPIX:QRCODE_STATIC',
-    category: 'QR Code Estático',
-    description: 'Pagamento associado a um QR Code estático.',
-    docsPath: '/docs/webhook/examples/webhook-qrcode-static-payload',
+    id: 'dispute-refunded',
+    event: 'OPENPIX:DISPUTE_REFUNDED',
+    category: 'Disputa',
+    description:
+      'Enviado quando a devolução Pix de uma transação contestada (MED) é confirmada, uma vez para cada disputa não cancelada da transação.',
+    docsPath: '/docs/disputa/webhook-dispute',
     payload: {
-      pixQrCode: {
-        name: 'Pix QrCode',
-        value: 1000,
-        comment: 'Pagamento Woovi',
-        identifier: 'ea83401ed4834b3ea6f1f283b389af29',
-        correlationID: '417bae21-3d08-4cdb-9c2d-fee63c89e9e4',
-        paymentLinkID: '34697ed2-3790-4b60-8512-e7465b142d84',
-        createdAt: '2021-03-12T12:43:54.528Z',
-        updatedAt: '2021-03-12T12:44:09.360Z',
-        brCode:
-          'https://api.woovi.com/openpix/openpix/testing?idenfifier=ea83401ed4834b3ea6f1f283b389af29',
+      event: 'OPENPIX:DISPUTE_REFUNDED',
+      dispute: {
+        id: '66f1a2b3c4d5e6f7a8b9c0d1',
+        status: 'ACCEPTED',
+        type: 'MED',
+        endToEndId: 'E12345678202609101200abcdef01234',
+        value: 10050,
+        disputeReason: 'Fraude identificada',
       },
-      charge: null,
-      pix: {
-        charge: null,
-        customer: {
-          correlationID: '9134e286-6f71-427a-bf00-241681624586',
-          email: 'email1@example.com',
-          name: 'Loma',
-          phone: '+5511999999999',
-          taxID: { taxID: '47043622050', type: 'BR:CPF' },
-        },
-        payer: {
-          correlationID: '9134e286-6f71-427a-bf00-241681624586',
-          email: 'email1@example.com',
-          name: 'Loma',
-          phone: '+5511999999999',
-          taxID: { taxID: '47043622050', type: 'BR:CPF' },
-        },
-        time: '2021-03-12T12:44:09.269Z',
-        value: 1,
-        transactionID: 'ea83401ed4834b3ea6f1f283b389af29',
-        infoPagador: 'Woovi testing',
+      refund: {
+        endToEndId: 'D12345678202609101205abcdef05678',
+        value: 10050,
+        refundedAt: '2026-09-10T12:00:00.000Z',
       },
-      company: {
-        id: '624f46f9e93f9f521c8308d7',
-        name: 'Pizzaria do José',
-        taxID: '4722767300014',
+    },
+  },
+  {
+    id: 'funds-recovery-analysed',
+    event: 'OPENPIX:FUNDS_RECOVERY_ANALYSED',
+    category: 'Recuperação de fundos (MED 2.0)',
+    description: 'Enviado quando uma recuperação de fundos é analisada.',
+    docsPath: '/docs/funds-recovery/funds-recovery',
+    payload: {
+      event: 'OPENPIX:FUNDS_RECOVERY_ANALYSED',
+      fundsRecovery: {
+        id: '6710a2f0e4b0a1c2d3e4f5a6',
+        fundsRecoveryId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        status: 'ANALYSED',
+        direction: 'SENT',
+        situationType: 'SCAM',
+        endToEndId: 'E12345678202601151000abcdef00001',
       },
-      account: { clientId: 'ZOJ64B9B-ZM1W-89MI-4UCI-OP2LVIU6NY75' },
+    },
+  },
+  {
+    id: 'funds-recovery-refunding',
+    event: 'OPENPIX:FUNDS_RECOVERY_REFUNDING',
+    category: 'Recuperação de fundos (MED 2.0)',
+    description: 'Enviado quando uma recuperação de fundos entra em devolução.',
+    docsPath: '/docs/funds-recovery/funds-recovery',
+    payload: {
+      event: 'OPENPIX:FUNDS_RECOVERY_REFUNDING',
+      fundsRecovery: {
+        id: '6710a2f0e4b0a1c2d3e4f5a6',
+        fundsRecoveryId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        status: 'REFUNDING',
+        direction: 'SENT',
+        situationType: 'SCAM',
+        endToEndId: 'E12345678202601151000abcdef00001',
+      },
+    },
+  },
+  {
+    id: 'funds-recovery-completed',
+    event: 'OPENPIX:FUNDS_RECOVERY_COMPLETED',
+    category: 'Recuperação de fundos (MED 2.0)',
+    description:
+      'Enviado quando uma recuperação de fundos é concluída. Traz o total devolvido em totalRefundedAmount, que pode ser 0.',
+    docsPath: '/docs/funds-recovery/funds-recovery',
+    payload: {
+      event: 'OPENPIX:FUNDS_RECOVERY_COMPLETED',
+      fundsRecovery: {
+        id: '6710a2f0e4b0a1c2d3e4f5a6',
+        fundsRecoveryId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        status: 'COMPLETED',
+        direction: 'SENT',
+        situationType: 'SCAM',
+        endToEndId: 'E12345678202601151000abcdef00001',
+        totalRefundedAmount: 32000,
+      },
+    },
+  },
+  {
+    id: 'funds-recovery-canceled',
+    event: 'OPENPIX:FUNDS_RECOVERY_CANCELED',
+    category: 'Recuperação de fundos (MED 2.0)',
+    description:
+      'Enviado quando uma recuperação de fundos é cancelada. O evento se escreve CANCELED, mas o status vem como CANCELLED.',
+    docsPath: '/docs/funds-recovery/funds-recovery',
+    payload: {
+      event: 'OPENPIX:FUNDS_RECOVERY_CANCELED',
+      fundsRecovery: {
+        id: '6710a2f0e4b0a1c2d3e4f5a6',
+        fundsRecoveryId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        status: 'CANCELLED',
+        direction: 'SENT',
+        situationType: 'SCAM',
+        endToEndId: 'E12345678202601151000abcdef00001',
+      },
     },
   },
   {
@@ -1347,6 +1397,710 @@ const events: WebhookEvent[] = [
       paymentSubscriptionGlobalID:
         'UGF5bWVudFN1YnNjcmlwdGlvbjo2ODlhNTA1NmVjY2NkZTViMzdmYzE0MDE=',
       globalID: 'UGF5bWVudFN1YnNjcmlwdGlvbkluc3RhbGxtZW50OjY4YjkwMGM0ZDE5ZTBlY2QwMmQ2NzViMg==',
+    },
+  },
+  {
+    id: 'company-bank-account-blocked',
+    event: 'COMPANY_BANK_ACCOUNT_BLOCKED',
+    category: 'Conta',
+    description:
+      'Enviado quando os bloqueios de uma conta mudam e ela continua com pelo menos um bloqueio. blockings traz a lista completa de bloqueios ativos; remover o último bloqueio não gera evento.',
+    docsPath: '/docs/baas/webhooks-por-conta',
+    payload: {
+      event: 'COMPANY_BANK_ACCOUNT_BLOCKED',
+      account: {
+        accountId: '6710e8b0c93f0d0012f5a1b2',
+        account: '1234567',
+        officialName: 'EMPRESA EXEMPLO LTDA',
+        tradeName: 'Exemplo',
+        taxID: {
+          taxID: '00000000000191',
+          type: 'BR:CNPJ',
+        },
+      },
+      blockings: ['PIX_IN', 'PIX_OUT'],
+    },
+  },
+  {
+    id: 'stablecoin-deposit-completed',
+    event: 'STABLECOIN_DEPOSIT_COMPLETED',
+    category: 'Stablecoin',
+    description:
+      'Enviado quando um depósito é concluído e a stablecoin é entregue.',
+    docsPath: '/docs/stablecoin/stablecoin-webhooks',
+    payload: {
+      event: 'STABLECOIN_DEPOSIT_COMPLETED',
+      stableDeposit: {
+        id: '6650abc1234def567890aaaa',
+        status: 'COMPLETED',
+        inputAmount: 10000,
+        inputCurrency: 'BRL',
+        outputAmount: 18.45,
+        outputCurrency: 'USDT',
+        correlationID: 'deposit-001',
+        txHash:
+          '0x587a660fe5349113801ec77fa6f79ae096e53a67bfa7f9098f096d1b9575fa53',
+        completedAt: '2026-09-30T12:00:00.000Z',
+      },
+      company: {
+        id: '6650aaa1234bbb567890cccc',
+        name: 'Empresa Exemplo Ltda',
+        taxID: '00000000000191',
+      },
+    },
+  },
+  {
+    id: 'stablecoin-deposit-failed',
+    event: 'STABLECOIN_DEPOSIT_FAILED',
+    category: 'Stablecoin',
+    description:
+      'Enviado quando um depósito falha. reason e errorCode trazem o motivo.',
+    docsPath: '/docs/stablecoin/stablecoin-webhooks',
+    payload: {
+      event: 'STABLECOIN_DEPOSIT_FAILED',
+      stableDeposit: {
+        id: '6650abc1234def567890aaaa',
+        status: 'FAILED',
+        inputAmount: 10000,
+        inputCurrency: 'BRL',
+        outputAmount: 18.45,
+        outputCurrency: 'USDT',
+        correlationID: 'deposit-001',
+        failedAt: '2026-09-30T12:00:00.000Z',
+      },
+      company: {
+        id: '6650aaa1234bbb567890cccc',
+        name: 'Empresa Exemplo Ltda',
+        taxID: '00000000000191',
+      },
+      reason: 'Avenia ticket DEPOSIT-FAILED',
+      errorCode: 'DEPOSIT-FAILED',
+    },
+  },
+  {
+    id: 'stablecoin-payout-completed',
+    event: 'STABLECOIN_PAYOUT_COMPLETED',
+    category: 'Stablecoin',
+    description: 'Enviado quando o Pix de um payout é pago.',
+    docsPath: '/docs/stablecoin/stablecoin-webhooks',
+    payload: {
+      event: 'STABLECOIN_PAYOUT_COMPLETED',
+      stablePayout: {
+        id: '6a721b1e3c785acfaebfa01c',
+        status: 'COMPLETED',
+        inputAmount: 3379,
+        inputCurrency: 'BRLA',
+        outputAmount: 33.73,
+        outputCurrency: 'BRL',
+        pixKey: 'recebedor@exemplo.com',
+        endToEndId: 'E11111111202609301200abcdef123456',
+        completedAt: '2026-09-30T12:00:00.000Z',
+        correlationID: 'payout-001',
+        isRefunded: false,
+      },
+      company: {
+        id: '6650aaa1234bbb567890cccc',
+        name: 'Empresa Exemplo Ltda',
+        taxID: '00000000000191',
+      },
+    },
+  },
+  {
+    id: 'stablecoin-payout-failed',
+    event: 'STABLECOIN_PAYOUT_FAILED',
+    category: 'Stablecoin',
+    description:
+      'Enviado quando um payout falha e o Pix não sai. reason e errorCode trazem o motivo.',
+    docsPath: '/docs/stablecoin/stablecoin-webhooks',
+    payload: {
+      event: 'STABLECOIN_PAYOUT_FAILED',
+      stablePayout: {
+        id: '6a721b1e3c785acfaebfa01c',
+        status: 'FAILED',
+        inputAmount: 3379,
+        inputCurrency: 'BRLA',
+        outputAmount: 33.73,
+        outputCurrency: 'BRL',
+        pixKey: 'recebedor@exemplo.com',
+        failedAt: '2026-09-30T12:00:00.000Z',
+        correlationID: 'payout-001',
+        isRefunded: false,
+      },
+      company: {
+        id: '6650aaa1234bbb567890cccc',
+        name: 'Empresa Exemplo Ltda',
+        taxID: '00000000000191',
+      },
+      reason: 'Pix rejected',
+      errorCode: 'FAILED',
+    },
+  },
+  {
+    id: 'stablecoin-payout-refund-confirmed',
+    event: 'STABLECOIN_PAYOUT_REFUND_CONFIRMED',
+    category: 'Stablecoin',
+    description:
+      'Enviado quando um payout já pago é devolvido e o valor volta ao saldo da subconta.',
+    docsPath: '/docs/stablecoin/stablecoin-webhooks',
+    payload: {
+      event: 'STABLECOIN_PAYOUT_REFUND_CONFIRMED',
+      stablePayout: {
+        id: '6a721b1e3c785acfaebfa01c',
+        status: 'COMPLETED',
+        inputAmount: 3379,
+        inputCurrency: 'BRLA',
+        outputAmount: 33.73,
+        outputCurrency: 'BRL',
+        pixKey: 'recebedor@exemplo.com',
+        endToEndId: 'E11111111202609301200abcdef123456',
+        correlationID: 'payout-001',
+        isRefunded: true,
+      },
+      company: {
+        id: '6650aaa1234bbb567890cccc',
+        name: 'Empresa Exemplo Ltda',
+        taxID: '00000000000191',
+      },
+      refund: {
+        status: 'CONFIRMED',
+        amount: 3379,
+        currency: 'BRLA',
+        destination: 'SUBACCOUNT_BALANCE',
+        providerTicketId: '9a1c4f7e-2b83-4d55-9c0e-1f6a2d3b4c5d',
+        originalProviderTicketId: '018f2b2c-9a4d-4a6f-b0d5-7c9f1e2a3b44',
+        reason:
+          'payout reversed - original ticket id: 018f2b2c-9a4d-4a6f-b0d5-7c9f1e2a3b44',
+        refundEndToEndId: 'D11111111202609301402abcdef654321',
+        refundedAt: '2026-09-30T14:02:41.318Z',
+      },
+    },
+  },
+  {
+    id: 'stablecoin-payout-refund-failed',
+    event: 'STABLECOIN_PAYOUT_REFUND_FAILED',
+    category: 'Stablecoin',
+    description:
+      'Enviado quando um payout é devolvido mas o valor não fica disponível no saldo e precisa de conciliação. refund.failureReason traz o motivo.',
+    docsPath: '/docs/stablecoin/stablecoin-webhooks',
+    payload: {
+      event: 'STABLECOIN_PAYOUT_REFUND_FAILED',
+      stablePayout: {
+        id: '6a721b1e3c785acfaebfa01c',
+        status: 'COMPLETED',
+        inputAmount: 3379,
+        inputCurrency: 'BRLA',
+        outputAmount: 33.73,
+        outputCurrency: 'BRL',
+        pixKey: 'recebedor@exemplo.com',
+        endToEndId: 'E11111111202609301200abcdef123456',
+        correlationID: 'payout-001',
+        isRefunded: true,
+      },
+      company: {
+        id: '6650aaa1234bbb567890cccc',
+        name: 'Empresa Exemplo Ltda',
+        taxID: '00000000000191',
+      },
+      refund: {
+        status: 'FAILED',
+        amount: 3379,
+        currency: 'BRLA',
+        destination: 'NONE',
+        providerTicketId: '9a1c4f7e-2b83-4d55-9c0e-1f6a2d3b4c5d',
+        originalProviderTicketId: '018f2b2c-9a4d-4a6f-b0d5-7c9f1e2a3b44',
+        reason:
+          'payout reversed - original ticket id: 018f2b2c-9a4d-4a6f-b0d5-7c9f1e2a3b44',
+        failureReason:
+          'Returned amount is not available in the sub-account balance (available 0.10 BRLA, returned 3379 cents)',
+        refundedAt: '2026-09-30T14:02:41.318Z',
+      },
+    },
+  },
+  {
+    id: 'stablecoin-subaccount-confirmed',
+    event: 'STABLECOIN_SUBACCOUNT_CONFIRMED',
+    category: 'Stablecoin',
+    description:
+      'Enviado quando o KYC/KYB da subconta de stablecoin é aprovado.',
+    docsPath: '/docs/stablecoin/stablecoin-webhooks',
+    payload: {
+      event: 'STABLECOIN_SUBACCOUNT_CONFIRMED',
+      stableSubAccount: {
+        id: '6650abc1234def567890aaaa',
+        status: 'CONFIRMED',
+        subAccountId: 'sub-0000-exemplo',
+        accountRegisterId: '6650def1234abc567890bbbb',
+        confirmedAt: '2026-09-30T12:00:00.000Z',
+      },
+      company: {
+        id: '6650aaa1234bbb567890cccc',
+        name: 'Empresa Exemplo Ltda',
+        taxID: '00000000000191',
+      },
+    },
+  },
+  {
+    id: 'stablecoin-subaccount-rejected',
+    event: 'STABLECOIN_SUBACCOUNT_REJECTED',
+    category: 'Stablecoin',
+    description:
+      'Enviado quando o KYC/KYB da subconta de stablecoin é recusado. reason e rejectionLabels só vêm quando preenchidos.',
+    docsPath: '/docs/stablecoin/stablecoin-webhooks',
+    payload: {
+      event: 'STABLECOIN_SUBACCOUNT_REJECTED',
+      stableSubAccount: {
+        id: '6650abc1234def567890aaaa',
+        status: 'REJECTED',
+        subAccountId: 'sub-0000-exemplo',
+        accountRegisterId: '6650def1234abc567890bbbb',
+        rejectedAt: '2026-09-30T12:00:00.000Z',
+      },
+      company: {
+        id: '6650aaa1234bbb567890cccc',
+        name: 'Empresa Exemplo Ltda',
+        taxID: '00000000000191',
+      },
+      reason: 'Document mismatch',
+      rejectionLabels: ['ID_MISMATCH'],
+    },
+  },
+  {
+    id: 'ted-out-confirmed',
+    event: 'TED_OUT_CONFIRMED',
+    category: 'TED',
+    description: 'Enviado quando uma TED que você enviou é liquidada no BACEN.',
+    docsPath: '/docs/ted/ted-webhooks',
+    payload: {
+      event: 'TED_OUT_CONFIRMED',
+      ted: {
+        correlationID: 'payout-20260930-1',
+        nuop: '1111111120260930000001',
+        status: 'COMPLETED',
+        type: 'TED_OUT',
+        value: 150050,
+        moveDate: '2026-09-30',
+        debitParty: {
+          account: {
+            branch: '1',
+            account: '98765',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '11111111',
+          },
+          holder: {
+            name: 'Empresa Exemplo Ltda',
+            taxID: {
+              taxID: '00000000000191',
+              type: 'BR:CNPJ',
+            },
+          },
+        },
+        creditParty: {
+          account: {
+            branch: '4321',
+            account: '123456',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '87654321',
+          },
+          holder: {
+            name: 'Fulano de Tal',
+            taxID: {
+              taxID: '00000000000',
+              type: 'BR:CPF',
+            },
+          },
+        },
+        errorCode: null,
+        reason: null,
+        createdAt: '2026-09-30T14:30:00.000Z',
+        updatedAt: '2026-09-30T14:31:02.000Z',
+      },
+    },
+  },
+  {
+    id: 'ted-out-rejected',
+    event: 'TED_OUT_REJECTED',
+    category: 'TED',
+    description:
+      'Enviado quando uma TED que você enviou não é liquidada. O débito é estornado; errorCode e reason trazem o motivo.',
+    docsPath: '/docs/ted/ted-webhooks',
+    payload: {
+      event: 'TED_OUT_REJECTED',
+      ted: {
+        correlationID: 'payout-20260930-2',
+        nuop: '1111111120260930000002',
+        status: 'FAILED',
+        type: 'TED_OUT',
+        value: 150050,
+        moveDate: '2026-09-30',
+        debitParty: {
+          account: {
+            branch: '1',
+            account: '98765',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '11111111',
+          },
+          holder: {
+            name: 'Empresa Exemplo Ltda',
+            taxID: {
+              taxID: '00000000000191',
+              type: 'BR:CNPJ',
+            },
+          },
+        },
+        creditParty: {
+          account: {
+            branch: '4321',
+            account: '123456',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '87654321',
+          },
+          holder: {
+            name: 'Fulano de Tal',
+            taxID: {
+              taxID: '00000000000',
+              type: 'BR:CPF',
+            },
+          },
+        },
+        errorCode: 'STR_REJECTED',
+        reason: 'Rejeitada pelo Banco Central',
+        createdAt: '2026-09-30T14:30:00.000Z',
+        updatedAt: '2026-09-30T14:31:02.000Z',
+      },
+    },
+  },
+  {
+    id: 'ted-in-confirmed',
+    event: 'TED_IN_CONFIRMED',
+    category: 'TED',
+    description: 'Enviado quando uma TED chega e é creditada na sua conta.',
+    docsPath: '/docs/ted/ted-webhooks',
+    payload: {
+      event: 'TED_IN_CONFIRMED',
+      ted: {
+        correlationID: '8765432120260930000123',
+        nuop: '8765432120260930000123',
+        status: 'COMPLETED',
+        type: 'TED_IN',
+        value: 250000,
+        moveDate: '2026-09-30',
+        debitParty: {
+          account: {
+            branch: '4321',
+            account: '123456',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '87654321',
+          },
+          holder: {
+            name: 'Fulano de Tal',
+            taxID: {
+              taxID: '00000000000',
+              type: 'BR:CPF',
+            },
+          },
+        },
+        creditParty: {
+          account: {
+            branch: '1',
+            account: '98765',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '11111111',
+          },
+          holder: {
+            name: 'Empresa Exemplo Ltda',
+            taxID: {
+              taxID: '00000000000191',
+              type: 'BR:CNPJ',
+            },
+          },
+        },
+        errorCode: null,
+        reason: null,
+        createdAt: '2026-09-30T14:30:00.000Z',
+        updatedAt: '2026-09-30T14:31:02.000Z',
+      },
+    },
+  },
+  {
+    id: 'ted-in-rejected',
+    event: 'TED_IN_REJECTED',
+    category: 'TED',
+    description:
+      'Enviado quando uma TED para você é recusada na chegada (conta encerrada, bloqueada ou sem limite) e devolvida ao remetente.',
+    docsPath: '/docs/ted/ted-webhooks',
+    payload: {
+      event: 'TED_IN_REJECTED',
+      ted: {
+        correlationID: '8765432120260930000124',
+        nuop: '8765432120260930000124',
+        status: 'REFUNDED',
+        type: 'TED_IN',
+        value: 250000,
+        moveDate: '2026-09-30',
+        debitParty: {
+          account: {
+            branch: '4321',
+            account: '123456',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '87654321',
+          },
+          holder: {
+            name: 'Fulano de Tal',
+            taxID: {
+              taxID: '00000000000',
+              type: 'BR:CPF',
+            },
+          },
+        },
+        creditParty: {
+          account: {
+            branch: '1',
+            account: '98765',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '11111111',
+          },
+          holder: {
+            name: 'Empresa Exemplo Ltda',
+            taxID: {
+              taxID: '00000000000191',
+              type: 'BR:CNPJ',
+            },
+          },
+        },
+        errorCode: 'RECEIVER_LIMIT_EXCEEDED',
+        reason: 'Conta recebedora sem limite para receber esta TED',
+        createdAt: '2026-09-30T14:30:00.000Z',
+        updatedAt: '2026-09-30T14:31:02.000Z',
+      },
+    },
+  },
+  {
+    id: 'ted-refund-sent-confirmed',
+    event: 'TED_REFUND_SENT_CONFIRMED',
+    category: 'TED',
+    description:
+      'Enviado quando o BACEN confirma a devolução de uma TED que você recebeu. O correlationID é o da devolução, não o da TED original.',
+    docsPath: '/docs/ted/ted-webhooks',
+    payload: {
+      event: 'TED_REFUND_SENT_CONFIRMED',
+      ted: {
+        correlationID: 'RFD20260930000301',
+        nuop: '1111111120260930000301',
+        status: 'COMPLETED',
+        type: 'TED_REFUND_SENT',
+        value: 250000,
+        moveDate: '2026-09-30',
+        debitParty: {
+          account: {
+            branch: '1',
+            account: '98765',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '11111111',
+          },
+          holder: {
+            name: 'Empresa Exemplo Ltda',
+            taxID: {
+              taxID: '00000000000191',
+              type: 'BR:CNPJ',
+            },
+          },
+        },
+        creditParty: {
+          account: {
+            branch: '4321',
+            account: '123456',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '87654321',
+          },
+          holder: {
+            name: 'Fulano de Tal',
+            taxID: {
+              taxID: '00000000000',
+              type: 'BR:CPF',
+            },
+          },
+        },
+        errorCode: null,
+        reason: null,
+        createdAt: '2026-09-30T14:30:00.000Z',
+        updatedAt: '2026-09-30T14:31:02.000Z',
+      },
+    },
+  },
+  {
+    id: 'ted-refund-sent-rejected',
+    event: 'TED_REFUND_SENT_REJECTED',
+    category: 'TED',
+    description:
+      'Enviado quando a devolução de uma TED que você recebeu falha. O débito da devolução é estornado.',
+    docsPath: '/docs/ted/ted-webhooks',
+    payload: {
+      event: 'TED_REFUND_SENT_REJECTED',
+      ted: {
+        correlationID: 'RFD20260930000302',
+        nuop: '1111111120260930000302',
+        status: 'FAILED',
+        type: 'TED_REFUND_SENT',
+        value: 250000,
+        moveDate: '2026-09-30',
+        debitParty: {
+          account: {
+            branch: '1',
+            account: '98765',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '11111111',
+          },
+          holder: {
+            name: 'Empresa Exemplo Ltda',
+            taxID: {
+              taxID: '00000000000191',
+              type: 'BR:CNPJ',
+            },
+          },
+        },
+        creditParty: {
+          account: {
+            branch: '4321',
+            account: '123456',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '87654321',
+          },
+          holder: {
+            name: 'Fulano de Tal',
+            taxID: {
+              taxID: '00000000000',
+              type: 'BR:CPF',
+            },
+          },
+        },
+        errorCode: 'STR_REJECTED',
+        reason: 'Rejeitada pelo Banco Central',
+        createdAt: '2026-09-30T14:30:00.000Z',
+        updatedAt: '2026-09-30T14:31:02.000Z',
+      },
+    },
+  },
+  {
+    id: 'ted-refund-received-confirmed',
+    event: 'TED_REFUND_RECEIVED_CONFIRMED',
+    category: 'TED',
+    description:
+      'Enviado quando uma TED que você enviou é devolvida pela instituição de destino e o valor volta para a sua conta.',
+    docsPath: '/docs/ted/ted-webhooks',
+    payload: {
+      event: 'TED_REFUND_RECEIVED_CONFIRMED',
+      ted: {
+        correlationID: '8765432120260930000401',
+        nuop: '8765432120260930000401',
+        status: 'COMPLETED',
+        type: 'TED_REFUND_RECEIVED',
+        value: 150050,
+        moveDate: '2026-09-30',
+        debitParty: {
+          account: {
+            branch: '4321',
+            account: '123456',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '87654321',
+          },
+          holder: {
+            name: 'Fulano de Tal',
+            taxID: {
+              taxID: '00000000000',
+              type: 'BR:CPF',
+            },
+          },
+        },
+        creditParty: {
+          account: {
+            branch: '1',
+            account: '98765',
+            accountType: 'CACC',
+          },
+          psp: {
+            id: '11111111',
+          },
+          holder: {
+            name: 'Empresa Exemplo Ltda',
+            taxID: {
+              taxID: '00000000000191',
+              type: 'BR:CNPJ',
+            },
+          },
+        },
+        errorCode: null,
+        reason: null,
+        createdAt: '2026-09-30T14:30:00.000Z',
+        updatedAt: '2026-09-30T14:31:02.000Z',
+      },
+    },
+  },
+  {
+    id: 'kyc-validation-completed',
+    event: 'KYC_VALIDATION_COMPLETED',
+    category: 'Validação de KYC',
+    description:
+      'Enviado quando a validação de KYC de um CPF/CNPJ termina com veredito.',
+    docsPath: '/docs/flows/kyc-validation',
+    payload: {
+      event: 'KYC_VALIDATION_COMPLETED',
+      kycValidation: {
+        correlationID: 'kyc-validation-001',
+        taxId: '00000000000191',
+        status: 'COMPLETED',
+        result: 'REJECTED',
+        riskLevel: 'HIGH',
+        reasons: ['FRAUD_HISTORY', 'DISPUTE_HISTORY'],
+        createdAt: '2026-08-24T14:00:06.386Z',
+        completedAt: '2026-08-24T14:00:06.462Z',
+      },
+    },
+  },
+  {
+    id: 'kyc-validation-failed',
+    event: 'KYC_VALIDATION_FAILED',
+    category: 'Validação de KYC',
+    description:
+      'Enviado quando a validação de KYC não consegue ser concluída porque nenhuma fonte respondeu.',
+    docsPath: '/docs/flows/kyc-validation',
+    payload: {
+      event: 'KYC_VALIDATION_FAILED',
+      kycValidation: {
+        correlationID: 'kyc-validation-002',
+        taxId: '00000000000191',
+        status: 'FAILED',
+        result: null,
+        riskLevel: null,
+        reasons: [],
+        createdAt: '2026-08-24T14:00:06.386Z',
+        completedAt: '2026-08-24T14:00:06.462Z',
+      },
     },
   },
 ];
