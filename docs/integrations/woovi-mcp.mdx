@@ -1,0 +1,132 @@
+---
+id: woovi-mcp
+title: Conectando a Woovi ao Claude Code, Cursor, Codex e VS Code com o MCP
+tags:
+  - integration
+  - mcp
+  - ai
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+O [MCP (Model Context Protocol)](https://modelcontextprotocol.io) permite que assistentes de IA consultem e operem a sua conta Woovi com a sua autorização explícita. Você escolhe qual conta e quais permissões o assistente pode acessar, e pode revogar esse acesso a qualquer momento.
+
+Com o MCP da Woovi conectado, você pode pedir ao assistente coisas como:
+
+- "Liste as cobranças pagas hoje"
+- "Crie uma cobrança de R$ 50,00 para o cliente João"
+- "Quais webhooks estão configurados na minha conta?"
+
+## Endereço do servidor
+
+Todos os clientes utilizam o mesmo servidor:
+
+```
+https://mcp.woovi.com/mcp
+```
+
+- **Transporte:** HTTP
+- **Autenticação:** OAuth
+
+:::info
+Não é necessário gerar um AppID. O login é feito no navegador na primeira vez que o assistente se conecta.
+:::
+
+## Instalação
+
+<Tabs
+  defaultValue="claude-code"
+  values={[
+    { label: 'Claude Code', value: 'claude-code' },
+    { label: 'Cursor', value: 'cursor' },
+    { label: 'Codex', value: 'codex' },
+    { label: 'VS Code', value: 'vscode' },
+  ]}>
+  <TabItem value="claude-code">
+
+Execute no terminal:
+
+```bash
+claude mcp add --transport http --client-id claude-code woovi https://mcp.woovi.com/mcp
+```
+
+Para habilitar o MCP da Woovi em todos os seus projetos, adicione `--scope user`:
+
+```bash
+claude mcp add --transport http --client-id claude-code --scope user woovi https://mcp.woovi.com/mcp
+```
+
+  </TabItem>
+  <TabItem value="cursor">
+
+Edite o arquivo `~/.cursor/mcp.json` (global) ou `.cursor/mcp.json` (apenas no projeto):
+
+```json
+{
+  "mcpServers": {
+    "woovi": {
+      "url": "https://mcp.woovi.com/mcp",
+      "auth": {
+        "CLIENT_ID": "cursor"
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="codex">
+
+Execute no terminal:
+
+```bash
+codex mcp add woovi --url https://mcp.woovi.com/mcp --oauth-client-id codex
+codex mcp login woovi
+```
+
+  </TabItem>
+  <TabItem value="vscode">
+
+Crie o arquivo `.vscode/mcp.json` no seu projeto:
+
+```json
+{
+  "servers": {
+    "woovi": {
+      "type": "http",
+      "url": "https://mcp.woovi.com/mcp",
+      "oauth": {
+        "clientId": "vscode"
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Autorização
+
+Na primeira conexão, o navegador será aberto para você:
+
+1. Fazer login na Woovi
+2. Selecionar a conta que o assistente vai acessar
+3. Revisar as permissões na tela de autorização
+4. Conceder o acesso
+
+As permissões cobrem operações de leitura e de escrita sobre dados da empresa, cobranças, transações, clientes, webhooks, disputas e assinaturas. Conceda apenas as permissões que o assistente realmente precisa.
+
+## Limites de uso
+
+| Tipo de operação | Limite |
+|------------------|--------|
+| Leitura | 60 chamadas por minuto |
+| Escrita | 20 chamadas por minuto |
+
+## Gerenciando o acesso
+
+Você pode ver e revogar os assistentes conectados em:
+
+- [app.woovi.com/home/applications/tab/mcp](https://app.woovi.com/home/applications/tab/mcp)
+- [auth.woovi.com/mcp/connections](https://auth.woovi.com/mcp/connections)
