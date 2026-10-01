@@ -4,10 +4,9 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 import styles from './Hero.module.css';
 
 // The shader lives in its own async chunk so it never touches the initial payload.
-// To swap the look, point this import at another threeui background component and
-// update the module declaration in `src/global.d.ts`. Other WebGL-only options
-// (no extra `three` chunk): LiquidFormBackground, DotMatrixBackground,
-// CondensationBackground, CrtBackground.
+// To swap the look, point this import at another threeui background component.
+// Other WebGL-only options (no extra `three` chunk): LiquidFormBackground,
+// DotMatrixBackground, CondensationBackground, CrtBackground.
 const RibbonField = lazy(() =>
   import('@designcodeio/threeui/components/RibbonFieldBackground').then(
     (mod) => ({ default: mod.RibbonFieldBackground }),

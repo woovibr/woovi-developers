@@ -1,0 +1,10 @@
+overrides:
+  cheerio: 1.0.0-rc.9
+
+allowBuilds:
+  '@scarf/scarf': false
+  '@swc/core': false
+  core-js: false
+  puppeteer: false
+  unrs-resolver: false
+  vue-demi: false
