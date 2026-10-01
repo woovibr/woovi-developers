@@ -1,7 +1,11 @@
+// Node build config: logging to the console and importing .mjs plugins are intended here.
+/* eslint-disable no-console, import/extensions */
 import fs from 'node:fs';
 import path from 'node:path';
+
 import { themes } from 'prism-react-renderer';
 import mdxMermaid from 'mdx-mermaid';
+
 import remarkApiRefLinks from './plugins/remarkApiRefLinks.mjs';
 
 const lightCodeTheme = themes.github;
@@ -411,6 +415,13 @@ module.exports = {
           to: 'docs/webhook/webhook-events-explorer',
           label: 'Webhook Explorer',
           position: 'left',
+        },
+        {
+          to: 'docs/playground',
+          label: 'Playgrounds',
+          position: 'left',
+          // stays highlighted on every playground page, not just the hub
+          activeBaseRegex: '/docs/playground(/|$)',
         },
         {
           to: 'docs/plugin',
