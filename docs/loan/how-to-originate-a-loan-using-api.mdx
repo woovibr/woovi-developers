@@ -1,0 +1,128 @@
+---
+id: how-to-originate-a-loan-using-api
+title: Como originar um empréstimo via API?
+sidebar_label: Originar empréstimo
+sidebar_position: 3
+tags:
+  - api
+  - loan
+  - emprestimo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Para contratar um empréstimo para o tomador, use o _endpoint_
+`POST /api/v1/loan/operation`. Requer o escopo `LOAN_OPERATION_POST`.
+
+A chamada registra a operação e instrui o Pix que paga o empréstimo. A empresa
+que origina é a do seu `app_id`, nunca um campo do corpo.
+
+## Campos do corpo
+
+| Campo | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `taxID` | string | Sim | CPF ou CNPJ do tomador, com ou sem máscara. |
+| `amount` | integer | Sim | Valor do empréstimo, em centavos, entre `10000` e `250000`. |
+| `installmentNumber` | integer | Sim | Número de parcelas, de 1 a 8. |
+| `pixKey` | string | Não | Chave Pix que recebe o dinheiro. Omitida, usa a chave que o tomador cadastrou na Woovi. |
+| `correlationID` | string | Sim | Seu identificador, único por empresa. |
+
+## Idempotência
+
+O `correlationID` é a chave de idempotência. Se a sua aplicação repetir a
+chamada com o mesmo `correlationID`, a API devolve a mesma operação com `200`
+em vez de originar um segundo empréstimo. Em caso de `503`, repita com o mesmo
+`correlationID`.
+
+## Recusas por regra de produto
+
+Além da validação do corpo (`400`), a API recusa com `422` e um `error` que
+sua integração precisa tratar desde o primeiro dia:
+
+| `error` | Significado |
+| --- | --- |
+| `ALREADY_ACTIVE` | O tomador já tem um empréstimo em aberto. |
+| `CARRIER_REGISTERED` | O tomador é beneficiário de Antecipação em uma transportadora e usa aquele produto. |
+| `ORIGINATION_CLOSED` | A originação está fechada no momento. |
+| `TAXID_TYPE_NOT_ELIGIBLE` | O tipo de documento não está habilitado para crédito. |
+| `TAXID_NOT_FOUND` | O documento não foi encontrado na base consultada. |
+| `FRAUD_MARKED` | O documento tem marcador de fraude. |
+| `FUND_INACTIVE` | O fundo que financia está inativo. |
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl 'https://api.woovi.com/api/v1/loan/operation' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{
+      "taxID": "12345678909",
+      "amount": 150000,
+      "installmentNumber": 4,
+      "pixKey": "+5511999999999",
+      "correlationID": "erp-loan-42"
+    }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/loan/operation', {
+  method: 'POST',
+  headers: {
+    Authorization: '{SEU_APP_ID}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    taxID: '12345678909',
+    amount: 150000,
+    installmentNumber: 4,
+    pixKey: '+5511999999999',
+    correlationID: 'erp-loan-42',
+  }),
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+### Exemplo de resposta (`201`)
+
+```json
+{
+  "operation": {
+    "operationId": "6abd072eccca077d96ad9e20",
+    "correlationID": "erp-loan-42",
+    "taxID": { "taxID": "12345678909", "type": "BR:CPF" },
+    "status": "ACTIVE",
+    "principal": 150000,
+    "totalDue": 189000,
+    "outstanding": 189000,
+    "installmentNumber": 4,
+    "dueDate": "2027-02-01",
+    "disbursedAt": "2026-10-01T18:00:00.000Z",
+    "settledAt": null,
+    "disbursement": { "status": "PENDING", "endToEndId": null },
+    "installments": [
+      { "seq": 1, "dueDate": "2026-11-01", "amount": 47250, "paid": false, "payoff": null },
+      { "seq": 2, "dueDate": "2026-12-01", "amount": 47250, "paid": false, "payoff": null },
+      { "seq": 3, "dueDate": "2027-01-01", "amount": 47250, "paid": false, "payoff": null },
+      { "seq": 4, "dueDate": "2027-02-01", "amount": 47250, "paid": false, "payoff": null }
+    ],
+    "payoff": null,
+    "repayments": [],
+    "createdAt": "2026-10-01T17:59:40.000Z"
+  }
+}
+```
+
+:::note
+`disbursement.status` nasce `PENDING`, vai a `SENT` quando o Pix é instruído e a
+`CONFIRMED` quando ele é confirmado, com o `endToEndId` preenchido. Se o Pix falhar, a operação vai para
+`CANCELLED` com `outstanding` zero: nada é devido.
+:::
