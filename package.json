@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "2.0.1",
-    "@designcodeio/threeui": "^0.3.0",
+    "@designcodeio/threeui": "^1.2.0",
     "@docusaurus/core": "3.10.2",
     "@docusaurus/faster": "3.10.2",
     "@docusaurus/plugin-client-redirects": "3.10.2",
@@ -13,15 +13,15 @@
     "@docusaurus/theme-mermaid": "3.10.2",
     "@gracefullight/docusaurus-plugin-microsoft-clarity": "^1.0.0",
     "@mdx-js/react": "^3.1.1",
-    "@scalar/api-reference-react": "^0.9.65",
-    "@stoplight/elements": "^9.0.24",
-    "baseline-browser-mapping": "^2.11.18",
-    "chalk": "^6.0.0",
+    "@scalar/api-reference-react": "^0.9.76",
+    "@stoplight/elements": "^9.0.27",
+    "baseline-browser-mapping": "^2.11.26",
+    "chalk": "^6.0.1",
     "clsx": "^2.1.1",
     "core-js": "^3.50.0",
-    "docusaurus-plugin-mcp-server": "^1.0.0",
+    "docusaurus-plugin-mcp-server": "^2.1.0",
     "mdx-mermaid": "^2.0.4",
-    "mermaid": "^11.17.0",
+    "mermaid": "^12.0.0",
     "mobx": "^6.16.1",
     "prism-react-renderer": "^2.4.1",
     "prismjs": "^1.30.0",
@@ -29,16 +29,16 @@
     "react-dom": "18.3.1",
     "react-embed": "^3.7.0",
     "react-icons": "5.7.0",
-    "redoc": "2.5.3",
+    "redoc": "2.5.4",
     "redocusaurus": "2.5.2",
     "snippet-enricher-cli": "^0.0.8",
     "styled-components": "^6.5.3",
-    "three": "^0.185.1",
+    "three": "^0.186.1",
     "url": "^0.11.4"
   },
   "devDependencies": {
-    "@eslint/compat": "^2.1.0",
-    "@eslint/eslintrc": "^3.3.6",
+    "@eslint/compat": "^2.1.1",
+    "@eslint/eslintrc": "^3.3.7",
     "@eslint/js": "^9.39.5",
     "@types/core-js": "~2.5.8",
     "@types/eslint": "~9.6.1",
@@ -46,9 +46,9 @@
     "@types/path-browserify": "~1.0.3",
     "@types/react": "~18.3.31",
     "@types/react-dom": "~18.3.7",
-    "@typescript-eslint/eslint-plugin": "^8.67.0",
-    "@typescript-eslint/parser": "^8.67.0",
-    "docusaurus-plugin-llms": "^0.5.1",
+    "@typescript-eslint/eslint-plugin": "^8.71.0",
+    "@typescript-eslint/parser": "^8.71.0",
+    "docusaurus-plugin-llms": "^0.6.0",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
@@ -57,17 +57,17 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "globals": "^17.11.0",
+    "globals": "^17.12.0",
     "https-browserify": "^1.0.0",
     "husky": "^9.1.7",
-    "lint-staged": "^17.3.0",
+    "lint-staged": "^17.6.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.9",
     "process": "0.11.10",
     "stream-http": "^3.2.0",
     "tty-browserify": "^0.0.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "scripts": {
     "build": "docusaurus build",
@@ -96,8 +96,5 @@
       "prettier --write"
     ]
   },
-  "resolutions": {
-    "cheerio": "1.0.0-rc.9"
-  },
-  "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
+  "packageManager": "pnpm@12.8.1+sha512.f64ba907507f5ceafe06c8d38e6052d0179444580ec1279ddd5bfc11cb48aa8a2644b66598e07e761da84872a9fc57d5f902b87fa49d024198d558612aabbe45"
 }
