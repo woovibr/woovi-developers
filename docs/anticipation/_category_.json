@@ -4,9 +4,7 @@
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Antecipação visão geral"
-  },
-  "customProps": {
-    "description": "Documentação da API REST de Antecipação (integração ERP/folha de pagamento)"
+    "title": "Antecipação visão geral",
+    "description": "API REST de Antecipação da Woovi: cadastre e ative beneficiários, sincronize saldos e aprove ou rejeite antecipações a partir do seu ERP."
   }
 }

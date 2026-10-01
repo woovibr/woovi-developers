@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Splits visão geral"
-  },
-  "customProps": {
-    "description": "Splits documentação"
+    "title": "Splits visão geral",
+    "description": "Split de cobranças Pix na Woovi: introdução, cálculo de divisão por porcentagem e split de transferência entre contas."
   }
 }

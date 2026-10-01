@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "VTEX visão geral"
-  },
-  "customProps": {
-    "description": "VTEX documentação"
+    "title": "VTEX visão geral",
+    "description": "Como integrar a sua loja VTEX com a Woovi para receber pagamentos via Pix."
   }
 }

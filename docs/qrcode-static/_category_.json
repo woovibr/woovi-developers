@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "QRCode Estático visão geral"
-  },
-  "customProps": {
-    "description": "QRCode Estático documentação"
+    "title": "QRCode Estático visão geral",
+    "description": "QR Code Pix estático na Woovi: o que é, como criar via API e como exportar os QR Codes estáticos da sua conta."
   }
 }

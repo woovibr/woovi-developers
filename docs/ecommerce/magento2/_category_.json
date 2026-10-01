@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Magento2 visão geral"
-  },
-  "customProps": {
-    "description": "Magento2 documentação"
+    "title": "Magento2 visão geral",
+    "description": "Como integrar a Woovi com o Magento 2: plugin Pix, integração em um clique, Woovi Parcelado, reembolso de pedidos e FAQ."
   }
 }

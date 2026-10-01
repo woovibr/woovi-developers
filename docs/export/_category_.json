@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Expotrações/Relatórios visão geral"
-  },
-  "customProps": {
-    "description": "Expotrações/Relatórios documentação"
+    "title": "Expotrações/Relatórios visão geral",
+    "description": "Como acessar e baixar os relatórios e exportações disponíveis na plataforma Woovi a partir da sua conta."
   }
 }

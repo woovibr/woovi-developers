@@ -2,6 +2,7 @@
 id: cashback-fidelity-how-to-build-customer-fidelity
 sidebar_position: 0
 title: Como dar Cashback pra fidelizar o seu cliente pela plataforma?
+description: Passo a passo para gerar um Cashback Fidelidade pela plataforma Woovi e fidelizar os seus clientes.
 tags:
   - cashback
   - cashback-fidelidade

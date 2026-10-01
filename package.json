@@ -10,7 +10,9 @@
     "@docusaurus/plugin-google-analytics": "3.10.2",
     "@docusaurus/plugin-google-gtag": "3.10.2",
     "@docusaurus/preset-classic": "3.10.2",
+    "@docusaurus/theme-common": "3.10.2",
     "@docusaurus/theme-mermaid": "3.10.2",
+    "@docusaurus/utils-common": "3.10.2",
     "@gracefullight/docusaurus-plugin-microsoft-clarity": "^1.0.0",
     "@mdx-js/react": "^3.1.1",
     "@scalar/api-reference-react": "^0.9.76",
@@ -34,6 +36,7 @@
     "snippet-enricher-cli": "^0.0.8",
     "styled-components": "^6.5.3",
     "three": "^0.186.1",
+    "unist-util-visit": "^5.1.0",
     "url": "^0.11.4"
   },
   "devDependencies": {
@@ -85,7 +88,8 @@
     "swizzle": "docusaurus swizzle",
     "version": "docusaurus-version",
     "write-translations": "docusaurus write-translations",
-    "prepare": "husky"
+    "prepare": "husky",
+    "indexnow": "node scripts/indexnow-ping.mjs"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
@@ -96,5 +100,17 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@12.8.1+sha512.f64ba907507f5ceafe06c8d38e6052d0179444580ec1279ddd5bfc11cb48aa8a2644b66598e07e761da84872a9fc57d5f902b87fa49d024198d558612aabbe45"
+  "packageManager": "pnpm@12.8.1+sha512.f64ba907507f5ceafe06c8d38e6052d0179444580ec1279ddd5bfc11cb48aa8a2644b66598e07e761da84872a9fc57d5f902b87fa49d024198d558612aabbe45",
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  }
 }

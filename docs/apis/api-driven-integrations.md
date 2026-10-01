@@ -1,6 +1,7 @@
 ---
 id: api-driven-integrations
 title: Como construir integrações 100% via API com a Woovi
+description: 'Padrões para integrar com a Woovi 100% via API: AppID com escopos mínimos, upload de arquivos com fileId, webhooks e idempotência.'
 tags:
   - api
   - getting-started

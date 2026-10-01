@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Exemplos"
-  },
-  "customProps": {
-    "description": "Exemplos de Payload Webhook"
+    "title": "Exemplos de payload de webhook",
+    "description": "Exemplos de payload dos webhooks da Woovi para eventos de cobrança Pix, disputa e registro de conta."
   }
 }

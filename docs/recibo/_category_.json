@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Recibos visão geral"
-  },
-  "customProps": {
-    "description": "Recibos documentação"
+    "title": "Recibos visão geral",
+    "description": "O que é um recibo de pagamento na Woovi e como obter recibos de transações Pix via API."
   }
 }

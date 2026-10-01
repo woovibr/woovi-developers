@@ -2,6 +2,7 @@
 id: faq-users
 title: Usuários
 sidebar_label: Usuários
+description: Perguntas frequentes sobre usuários na Woovi, incluindo como gerenciar permissões individuais e grupos de permissões na plataforma.
 tags:
 - faq
 - user

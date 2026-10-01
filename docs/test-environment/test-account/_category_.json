@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Conta de Teste visão geral"
-  },
-  "customProps": {
-    "description": "Conta de Teste documentação"
+    "title": "Conta de Teste visão geral",
+    "description": "Conta de teste da Woovi: adicione saldo e pague cobranças, QR Codes e chaves Pix de teste sem usar dinheiro real."
   }
 }

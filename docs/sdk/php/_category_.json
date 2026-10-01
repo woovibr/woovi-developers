@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "SDK de PHP"
-  },
-  "customProps": {
-    "description": "SDK de PHP da woovi"
+    "title": "SDK de PHP",
+    "description": "SDK de PHP da Woovi: como começar, recursos, tratamento de erros, requisições HTTP customizadas e exemplos de integração."
   }
 }

@@ -1,7 +1,8 @@
 ---
 id: charge
 sidebar_position: 0
-title: Cobrança
+title: O que é uma cobrança Pix?
+sidebar_label: Cobrança
 tags:
   - qrcode
   - charge

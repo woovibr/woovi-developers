@@ -1,6 +1,7 @@
 ---
 id: click-pix-starting
 title: Começando com o ClickPix
+description: 'Como começar com o ClickPix da Woovi: ativação da feature, AppID do tipo plugin e inclusão do script do plugin no seu site.'
 tags:
   - plugin
   - clickpix

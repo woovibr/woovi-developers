@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Clientes visão geral"
-  },
-  "customProps": {
-    "description": "Clientes documentação"
+    "title": "Clientes visão geral",
+    "description": "Como criar e gerenciar clientes na Woovi: cadastro via API, criação em lote e atualização dos dados de um cliente."
   }
 }

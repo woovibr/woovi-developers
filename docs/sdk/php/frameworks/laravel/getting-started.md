@@ -1,6 +1,7 @@
 ---
 id: sdk-php-laravel-getting-started
 title: Começando sua integração woovi com Laravel
+description: Como instalar e configurar o SDK de PHP da Woovi em um projeto Laravel para começar a receber pagamentos via Pix.
 tags:
   - php
   - api

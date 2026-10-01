@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Bancos visão geral"
-  },
-  "customProps": {
-    "description": "Bancos documentação"
+    "title": "Bancos visão geral",
+    "description": "Como cobrar Pix com a Woovi usando a sua conta corrente em bancos como Banco do Brasil, Bradesco, Itaú, Santander e Sicoob."
   }
 }

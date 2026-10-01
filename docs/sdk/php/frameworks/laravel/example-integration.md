@@ -1,6 +1,6 @@
 ---
 id: sdk-php-laravel-getting-started-example
-title: Começando sua integração woovi com Laravel
+title: Exemplo de integração da Woovi com Laravel
 tags:
   - php
   - api

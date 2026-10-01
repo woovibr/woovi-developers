@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Assinaturas/Recorrência visão geral"
-  },
-  "customProps": {
-    "description": "Assinaturas/Recorrência documentação"
+    "title": "Assinaturas/Recorrência visão geral",
+    "description": "Assinaturas e recorrência na Woovi: como criar e consultar assinaturas via API, com boleto, juros e multa ou carnê."
   }
 }

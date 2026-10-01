@@ -1,7 +1,8 @@
 ---
 id: charge
 sidebar_position: 0
-title: Charge
+title: What is a Pix charge?
+sidebar_label: Charge
 tags:
   - qrcode
   - charge

@@ -1,5 +1,9 @@
 overrides:
   cheerio: 1.0.0-rc.9
+  # node-fetch@2 (via @redocly/openapi-core) only falls back to whatwg-url when
+  # Node has no global URL; v5 pulls tr46@0.0.3, which loads the deprecated
+  # `punycode` builtin (DEP0040 on every start).
+  whatwg-url@5: ^14.2.0
 
 allowBuilds:
   '@scarf/scarf': false

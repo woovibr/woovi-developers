@@ -1,6 +1,7 @@
 ---
 id: upload-de-arquivo
 title: Como fazer upload de um arquivo?
+description: Como enviar um arquivo para a Woovi via API e usá-lo em evidências de disputa, pedidos de aumento de limite e documentos de KYC.
 tags:
   - api
   - arquivos

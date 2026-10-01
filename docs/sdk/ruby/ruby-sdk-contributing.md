@@ -1,6 +1,7 @@
 ---
 id: ruby-sdk-contributing
-title: Como contribuir com o SDK
+title: Como contribuir com o SDK Ruby
+sidebar_label: Como contribuir com o SDK
 sidebar_position: 3
 tags:
 - api

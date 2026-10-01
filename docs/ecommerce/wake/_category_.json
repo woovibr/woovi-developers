@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Wake visão geral"
-  },
-  "customProps": {
-    "description": "Wake documentação"
+    "title": "Wake visão geral",
+    "description": "Como integrar a sua loja Wake com a Woovi para receber pagamentos via Pix."
   }
 }

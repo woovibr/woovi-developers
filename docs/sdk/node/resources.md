@@ -1,6 +1,7 @@
 ---
 id: sdk-node-resources
-title: Recursos
+title: Recursos do SDK Node.js
+sidebar_label: Recursos
 sidebar_position: 2
 tags:
   - api

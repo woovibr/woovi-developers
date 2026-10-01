@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Recuperação de fundos (MED) visão geral"
-  },
-  "customProps": {
-    "description": "Recuperação de fundos (MED) documentação"
+    "title": "Recuperação de fundos (MED) visão geral",
+    "description": "Recuperação de fundos (MED) na Woovi: o que é e como abrir, consultar e cancelar um MED, com disputas, infrações e devoluções via API."
   }
 }

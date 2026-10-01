@@ -69,6 +69,50 @@ const sitemapPriority = (url) => {
   return 0.7;
 };
 
+const flattenRoutes = (routes) => routes.flatMap((route) => [route, ...flattenRoutes(route.routes ?? [])]);
+
+// Under /en/, a doc with no translated file is built from the Portuguese source
+// (its sourceFilePath stays under docs/) and a generated category index lists
+// Portuguese titles. Their canonical is the Portuguese page (src/theme/SiteMetadata),
+// so they stay out of the English sitemap.
+const untranslatedDocUrls = ({ routes, siteConfig }) => {
+  if (siteConfig.baseUrl === '/') return new Set();
+  const isUntranslated = (route) =>
+    route.path.startsWith(`${siteConfig.baseUrl}docs/`) &&
+    !route.metadata?.sourceFilePath?.startsWith('i18n/');
+  return new Set(
+    flattenRoutes(routes)
+      .filter(isUntranslated)
+      .map((route) => `${siteConfig.url}${route.path}`),
+  );
+};
+
+// docusaurus-plugin-llms reads docs/ (Portuguese) whatever the locale, so the en
+// build would only write a second copy of the same twins and llms-full.txt, and
+// DocItem/Metadata points /en/ pages at the root twins anyway. Skipping it there
+// saves ~20s of postBuild.
+const llmsPlugins =
+  process.env.DOCUSAURUS_CURRENT_LOCALE !== 'en'
+    ? [
+        [
+          'docusaurus-plugin-llms',
+          {
+            // llms.txt is curated by hand in static/; generating it here would overwrite it
+            generateLLMsTxt: false,
+            generateLLMsFullTxt: true,
+            // a Markdown twin next to every doc (/docs/x -> /docs/x.md) that answer engines
+            // read for a fraction of the HTML's tokens; DocItem/Metadata links it
+            generateMarkdownFiles: true,
+            excludeImports: true,
+            docsDir: 'docs',
+            title: 'Woovi Developers',
+            description:
+              'Documentação da API, webhooks, SDKs e plugins da Woovi, Instituição de Pagamento regulada pelo Banco Central e participante direta do Pix. Índice curado: https://developers.woovi.com/llms.txt',
+          },
+        ],
+      ]
+    : [];
+
 // Ties the docs to the same entity woovi.com describes (same @id), so answer
 // engines attribute developers.woovi.com to the regulated Payment Institution.
 // Only facts woovi.com itself publishes.
@@ -135,7 +179,12 @@ module.exports = {
       rspackPersistentCache: true,
       mdxCrossCompilerCache: true,
       ssgWorkerThreads: true,
+      // read the git history once instead of one `git log` per doc for the
+      // last-update dates (showLastUpdateTime, sitemap lastmod): the en build
+      // spent ~200s here
+      gitEagerVcs: true,
     },
+    experimental_vcs: true,
   },
   i18n: {
     defaultLocale: 'pt-BR',
@@ -153,22 +202,7 @@ module.exports = {
   onBrokenLinks: 'throw',
   trailingSlash: false,
   plugins: [
-    [
-      'docusaurus-plugin-llms',
-      {
-        // llms.txt is curated by hand in static/; generating it here would overwrite it
-        generateLLMsTxt: false,
-        generateLLMsFullTxt: true,
-        // a Markdown twin next to every doc (/docs/x -> /docs/x.md) that answer engines
-        // read for a fraction of the HTML's tokens; DocItem/Metadata links it
-        generateMarkdownFiles: true,
-        excludeImports: true,
-        docsDir: 'docs',
-        title: 'Woovi Developers',
-        description:
-          'Documentação da API, webhooks, SDKs e plugins da Woovi, Instituição de Pagamento regulada pelo Banco Central e participante direta do Pix. Índice curado: https://developers.woovi.com/llms.txt',
-      },
-    ],
+    ...llmsPlugins,
     // [
     //   'docusaurus-plugin-mcp-server',
     //   {
@@ -185,6 +219,7 @@ module.exports = {
       { projectId: 'j6ihzvjzvu' },
     ],
     require.resolve('./webpack/sitePlugin'),
+    require.resolve('./plugins/translatedDocs'),
     [
       require.resolve('@cmfcmf/docusaurus-search-local'),
       {
@@ -196,6 +231,30 @@ module.exports = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
+          {
+            from: '/docs/test/adding-funds-in-test-account',
+            to: '/docs/test-environment/test-account/adding-funds-in-test-account',
+          },
+          {
+            from: '/docs/test/flow-company-bank-test',
+            to: '/docs/test-environment/test-account/flow-company-bank-test',
+          },
+          {
+            from: '/docs/test/introduction-to-test-account',
+            to: '/docs/test-environment/test-account/introduction-to-test-account',
+          },
+          {
+            from: '/docs/test/test-pay-pix-qrcode',
+            to: '/docs/test-environment/test-account/test-pay-pix-qrcode',
+          },
+          {
+            from: '/docs/test/test-pay-pix',
+            to: '/docs/test-environment/test-account/test-pay-pix',
+          },
+          {
+            from: '/docs/test/paying-a-pix-key-with-test-account',
+            to: '/docs/test-environment/test-account/paying-a-pix-key-with-test-account',
+          },
           {
             from: '/docs/flows/api-pix-key-campaign',
             to: '/docs/apis/api-pix-key-campaign',
@@ -432,7 +491,10 @@ module.exports = {
           ignorePatterns: sitemapIgnorePatterns,
           createSitemapItems: async ({ defaultCreateSitemapItems, ...params }) => {
             const items = await defaultCreateSitemapItems(params);
-            return items.map((item) => ({ ...item, priority: sitemapPriority(item.url) }));
+            const untranslated = untranslatedDocUrls(params);
+            return items
+              .filter((item) => !untranslated.has(item.url))
+              .map((item) => ({ ...item, priority: sitemapPriority(item.url) }));
           },
         },
         googleAnalytics: {

@@ -30,7 +30,7 @@ https://app.woovi.com/register?partner=Q29tcGFue23AdDLOK2NhZGVjZTZkMzQ4MTQ3MzEyZ
 
 - Nova Empresa  
 Onde você pode criar um pré-registro para alguma empresa que deseja se tornar sua afiliada  
-Você pode fazer a criação da nova empresa através da nossa API, para saber mais bastar seguir a seção [como criar um afiliado via API](#como-criar-um-afiliado-via-api)
+Você pode fazer a criação da nova empresa através da nossa API, para saber mais bastar seguir a seção [como criar um afiliado via API](#como-criar-uma-empresa-afiliada-via-api)
 
 
 ![](./__assets__/how-to-integrate-as-woovi-partner/afilliate-link-and-new-company.png)
