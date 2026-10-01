@@ -99,7 +99,7 @@ Woovi has an official MCP (Model Context Protocol) server that connects a Woovi 
 - [Funds recovery: create](https://developers.woovi.com/docs/funds-recovery/funds-recovery-create-api) · [get](https://developers.woovi.com/docs/funds-recovery/funds-recovery-get-api) · [cancel](https://developers.woovi.com/docs/funds-recovery/funds-recovery-cancel-api)
 
 ## Webhooks
-- [Create a webhook (flow)](https://developers.woovi.com/docs/flows/webhook/flow-create-webhook)
+- [Create a webhook (platform API)](https://developers.woovi.com/docs/webhook/platform/webhook-platform-api)
 - [Webhook events reference](https://developers.woovi.com/webhook-events)
 - [Charge webhooks](https://developers.woovi.com/docs/charge/webhook/charge-webhook-example-charge-completed) · [Dispute webhook](https://developers.woovi.com/docs/disputa/webhook-dispute) · [Boleto webhook](https://developers.woovi.com/docs/boleto/boleto-webhook) · [Pix Automático webhooks](https://developers.woovi.com/docs/pix-automatic/webhooks/pix-automatic-webhooks) · [Stablecoin webhooks](https://developers.woovi.com/docs/stablecoin/stablecoin-webhooks)
 
@@ -112,7 +112,7 @@ Woovi has an official MCP (Model Context Protocol) server that connects a Woovi 
 
 ## Pix Keys & DICT
 - [Create a new Pix key](https://developers.woovi.com/docs/pix-keys/how-to-create-new-pix-key)
-- [Pix key campaign](https://developers.woovi.com/docs/flows/api-pix-key-campaign)
+- [Pix key campaign](https://developers.woovi.com/docs/apis/api-pix-key-campaign)
 - [Validate bank data](https://developers.woovi.com/docs/flows/validate-bank-data) · [manual](https://developers.woovi.com/docs/flows/validate-bank-data-manual)
 
 ## Pix Automático (recurring)
@@ -155,7 +155,7 @@ Woovi has an official MCP (Model Context Protocol) server that connects a Woovi 
 - [Account duplicates](https://developers.woovi.com/docs/account/account-duplicates)
 
 ## BaaS & KYC
-- [BaaS concepts](https://developers.woovi.com/docs/baas/conceitos-baas) · [Basic BaaS flow](https://developers.woovi.com/docs/baas/basic-flux-baas) · [BaaS API master](https://developers.woovi.com/docs/baas/baas-api-master) · [Split](https://developers.woovi.com/docs/baas/baas-split) · [MED](https://developers.woovi.com/docs/baas/med-baas) · [Compliance](https://developers.woovi.com/docs/baas/baas-compliance) · [Necessary documents](https://developers.woovi.com/docs/baas/documents-nescessary) · [Support](https://developers.woovi.com/docs/baas/suporte-baas)
+- [BaaS concepts](https://developers.woovi.com/docs/baas/conceitos-baas) · [Basic BaaS flow](https://developers.woovi.com/docs/baas/basic-flux-baas) · [BaaS API master](https://developers.woovi.com/docs/baas/baas-api-master) · [Split](https://developers.woovi.com/docs/baas/baas-split) · [MED](https://developers.woovi.com/docs/baas/med-baas) · [KYC documents](https://developers.woovi.com/docs/baas/documentos-kyc) · [Support](https://developers.woovi.com/docs/baas/suporte-baas)
 - [KYC getting started](https://developers.woovi.com/docs/baas/kyc/kyc-api-getting-started) · [Onboarding create](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-create) · [Embed](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-embed) · [White-label](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-white-label) · [Account register get](https://developers.woovi.com/docs/baas/kyc/kyc-api-account-register-get) · [React SDK](https://developers.woovi.com/docs/baas/kyc/kyc-woovi-kyc-react)
 
 ## Stablecoin
@@ -172,7 +172,7 @@ Woovi has an official MCP (Model Context Protocol) server that connects a Woovi 
 - [Ruby](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-what-is): [installation](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-installation) · [resources](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-resources)
 
 ## Frontend Plugin
-- [Plugin concept](https://developers.woovi.com/docs/plugin/plugin-concept) · [App ID](https://developers.woovi.com/docs/plugin/app-id) · [Order](https://developers.woovi.com/docs/plugin/plugin-order) · [Static QR Code](https://developers.woovi.com/docs/plugin/plugin-qrcode-static) · [React](https://developers.woovi.com/docs/plugin/plugin-react) · [Render without modal](https://developers.woovi.com/docs/plugin/how-to/how-to-render-plugin-without-modal) · [Samples](https://developers.woovi.com/docs/plugin/plugin-samples) · [FAQ](https://developers.woovi.com/docs/plugin/plugin-faq)
+- [Plugin concept](https://developers.woovi.com/docs/plugin/plugin-concept) · [App ID](https://developers.woovi.com/docs/plugin/app-id) · [Order](https://developers.woovi.com/docs/plugin/plugin-order) · [Static QR Code](https://developers.woovi.com/docs/plugin/plugin-qrcode-static) · [React](https://developers.woovi.com/docs/plugin/plugin-react) · [Render without modal](https://developers.woovi.com/docs/plugin/how-to-render-plugin-without-modal) · [Samples](https://developers.woovi.com/docs/plugin/plugin-samples) · [FAQ](https://developers.woovi.com/docs/plugin/plugin-faq)
 
 ## E-commerce Plugins
 - [WooCommerce](https://developers.woovi.com/docs/ecommerce/woocommerce/woocommerce-plugin) (crediary, subscriptions, one-click, refund, redirect, permalink)
@@ -207,5 +207,5 @@ Woovi has an official MCP (Model Context Protocol) server that connects a Woovi 
 
 ## Optional
 - [FAQ index](https://developers.woovi.com/docs/category/faq): [charge](https://developers.woovi.com/docs/faq/faq-charge) · [transactions](https://developers.woovi.com/docs/faq/faq-transactions) · [banks](https://developers.woovi.com/docs/faq/faq-banks) · [users](https://developers.woovi.com/docs/faq/faq-users) · [withdraw](https://developers.woovi.com/docs/faq/faq-withdraw) · [plans](https://developers.woovi.com/docs/faq/faq-plans) · [SSL](https://developers.woovi.com/docs/faq/faq-ssl) · [Cloudflare](https://developers.woovi.com/docs/faq/faq-cloudflare) · [virtual account](https://developers.woovi.com/docs/faq/faq-virtual-account)
-- [Tags index](https://developers.woovi.com/docs/tags) · [Blog](https://developers.woovi.com/blog) · [COBV simulator](https://developers.woovi.com/cobv-simulator)
+- [Tags index](https://developers.woovi.com/docs/tags) · [COBV simulator](https://developers.woovi.com/cobv-simulator)
 - Alternate API renderers: [Scalar](https://developers.woovi.com/api-scalar) · [Redoc](https://developers.woovi.com/api-redoc) · [Elements](https://developers.woovi.com/api-elements)

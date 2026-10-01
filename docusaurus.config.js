@@ -189,6 +189,7 @@ module.exports = {
       require.resolve('@cmfcmf/docusaurus-search-local'),
       {
         language: ['pt', 'en'],
+        indexBlog: false,
       },
     ],
     [
@@ -418,9 +419,8 @@ module.exports = {
             ],
           ],
         },
-        // "blog": {
-        //   "path": "blog"
-        // },
+        // there is no blog/ directory: the default plugin only published an empty /blog
+        blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
