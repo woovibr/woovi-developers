@@ -231,6 +231,12 @@
   max-height: 460px;
 }
 
+/* the prompt is prose: wrap instead of scrolling sideways */
+.prompt pre code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 /* ---------- react flow canvases ---------- */
 .flow {
   height: 520px;

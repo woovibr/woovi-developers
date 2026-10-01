@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import Link from '@docusaurus/Link';
 
@@ -6,6 +6,8 @@ import type { PlaygroundConfig } from './types';
 import Sequence from './Sequence';
 import StateMachine from './StateMachine';
 import Lab from './Lab';
+import PromptPanel from './PromptPanel';
+import type { Selection } from './prompt';
 import { playgrounds } from './configs';
 import styles from './Playground.module.css';
 
@@ -35,6 +37,8 @@ function Section({
 export function PlaygroundView({ config }: { config: PlaygroundConfig }) {
   const c = config;
   const Widget = c.widget;
+  const [scenario, setScenario] = useState(c.scenarios[0].id);
+  const [selection, setSelection] = useState<Selection | null>(null);
   let n = 0;
   const next = (label: string) => `${String(++n).padStart(2, '0')} · ${label}`;
   return (
@@ -65,7 +69,12 @@ export function PlaygroundView({ config }: { config: PlaygroundConfig }) {
         title='Quem fala com quem, e quando'
         lede='Avance passo a passo (ou use ← → no teclado com o mouse sobre o diagrama) e troque de cenário para ver o que muda.'
       >
-        <Sequence actors={c.actors} scenarios={c.scenarios} />
+        <Sequence
+          actors={c.actors}
+          scenarios={c.scenarios}
+          scenario={scenario}
+          onScenario={setScenario}
+        />
       </Section>
 
       {c.lab ? (
@@ -74,7 +83,12 @@ export function PlaygroundView({ config }: { config: PlaygroundConfig }) {
           title={c.statesTitle ?? 'Faça a requisição e acompanhe os eventos'}
           lede={c.statesLede}
         >
-          <Lab lab={c.lab} states={c.states} transitions={c.transitions} />
+          <Lab
+            lab={c.lab}
+            states={c.states}
+            transitions={c.transitions}
+            onSelection={setSelection}
+          />
         </Section>
       ) : c.states && c.transitions ? (
         <Section
@@ -89,6 +103,14 @@ export function PlaygroundView({ config }: { config: PlaygroundConfig }) {
           />
         </Section>
       ) : null}
+
+      <Section
+        eyebrow={next('Prompt')}
+        title='Leve para o seu agente de IA'
+        lede='Um prompt único com o fluxo, os estados, os eventos e os valores que você escolheu aqui, no formato do Woovi Prompts.'
+      >
+        <PromptPanel config={c} scenario={scenario} selection={selection} />
+      </Section>
     </div>
   );
 }
