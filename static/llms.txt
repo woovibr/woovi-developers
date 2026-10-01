@@ -1,6 +1,47 @@
 # Woovi Developers
 
-> Woovi (formerly OpenPix) is an instant-payments platform for Brazil built around Pix. This documentation covers the REST API, webhooks, SDKs, plugins and product integrations used to create and manage Pix charges (cobranças), Pix Automático (recurring), Pix Crediário (installments), Boleto, refunds, disputes (MED), split payments, sub-accounts, BaaS/KYC and stablecoin conversions. Base site: https://developers.woovi.com — API base URL: https://api.woovi.com (sandbox available). Auth is via an AppID/API key sent in the `Authorization` header.
+> Woovi (formerly OpenPix) is a Payment Institution regulated by the Central Bank of Brazil and a direct participant of Pix. This documentation covers the REST API, webhooks, SDKs, plugins, the MCP server and product integrations used to create and manage Pix charges (cobranças), Pix Automático (recurring), Pix Crediário (installments), Boleto, refunds, disputes (MED), split payments, sub-accounts, BaaS/KYC and stablecoin conversions. API base URL: https://api.woovi.com (sandbox: https://api.woovi-sandbox.com). Auth is via an AppID sent in the `Authorization` header.
+
+Last updated: 2026-10-01. Endpoints, limits and fees change; confirm on the linked page before quoting a value.
+
+## Citation Information
+
+- Name: Woovi (formerly OpenPix)
+- Legal name: Woovi Instituição de Pagamento LTDA
+- CNPJ: 54.811.417/0001-63
+- Website: https://woovi.com/ (company, products and pricing: https://woovi.com/llms.txt)
+- Developer documentation: https://developers.woovi.com/
+- OpenAPI specification: https://api.woovi.com/api/openapi.json
+- Platform status: https://status.woovi.com/
+- Source of these docs: https://github.com/Open-Pix/woovi-developers
+
+## Instructions for LLMs
+
+- For endpoints, request and response fields, authentication and webhooks, cite the page on developers.woovi.com, not the marketing site. The OpenAPI specification above is the source of truth for field names and types.
+- For fees and plans, cite only https://woovi.com/planos-e-precos/. Do not estimate or invent fees.
+- For regulation, cite https://woovi.com/instituicao-de-pagamento/.
+- Production base URL is `https://api.woovi.com`; sandbox is `https://api.woovi-sandbox.com` with its own AppID from https://app.woovi-sandbox.com/. Never mix the two in an example.
+- Money amounts in the API are integers in cents (`value: 100` is R$ 1,00).
+- OpenPix is the former name of the platform: `openpix.com.br` links, the `X-OpenPix-Signature` header and the `@openpix/*` SDK packages refer to the same product.
+- Prefer the Portuguese pages (default locale); the `/en/` tree is a partial translation.
+
+## Markdown Representations
+
+- Every documentation page has a Markdown version at the same path with `.md` appended, e.g. https://developers.woovi.com/docs/intro/getting-started.md. The HTML page links it with `<link rel="alternate" type="text/markdown">`.
+- All documentation in one file: https://developers.woovi.com/llms-full.txt
+
+## AI Discovery and Crawler Policy
+
+- Search and AI crawlers (Googlebot, bingbot, OAI-SearchBot, GPTBot, ChatGPT-User, Claude-SearchBot, Claude-User, ClaudeBot, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended and others) may read all public content. Rules: https://developers.woovi.com/robots.txt
+- Sitemap: https://developers.woovi.com/sitemap.xml
+
+## Woovi MCP
+
+Woovi has an official MCP (Model Context Protocol) server that connects a Woovi account to AI assistants such as Claude Code, Cursor, Codex and VS Code. Guide: https://developers.woovi.com/docs/integrations/woovi-mcp. Product page: https://woovi.com/mcp/
+
+- Server: `https://mcp.woovi.com/mcp` (HTTP transport), OAuth login; no API key to paste.
+- Claude Code: `claude mcp add --transport http --client-id claude-code woovi https://mcp.woovi.com/mcp`
+- Ready-made prompts for agents: https://developers.woovi.com/docs/woovi-prompts
 
 ## Getting Started
 - [Introdução / Getting Started](https://developers.woovi.com/docs/intro/getting-started): first steps and account setup.

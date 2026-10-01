@@ -45,7 +45,76 @@ const resolveAcrossLocales = ({ sourceFilePath, url }) => {
   return `/docs/${route}${anchor ? `#${anchor}` : ''}`;
 };
 
+const siteUrl = 'https://developers.woovi.com';
+
+// Thin or duplicate routes: tag listings, the search page and the alternate
+// renderers of the same OpenAPI spec that /api already serves.
+const sitemapIgnorePatterns = [
+  '/docs/tags/**',
+  '/en/docs/tags/**',
+  '/search',
+  '/en/search',
+  ...['api-elements', 'api-redoc', 'api-scalar', 'pix-scalar', 'dict-scalar', 'indirect-scalar'].flatMap(
+    (page) => [`/${page}`, `/en/${page}`],
+  ),
+];
+
+const sitemapPriority = (url) => {
+  const { pathname } = new URL(url);
+  const route = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  if (route === '/') return 1.0;
+  if (['/api', '/docs/intro/getting-started', '/docs/apis/api-getting-started'].includes(route)) return 0.9;
+  if (route.startsWith('/docs/supported-banks/')) return 0.3;
+  if (route.startsWith('/docs/category/')) return 0.5;
+  return 0.7;
+};
+
+// Ties the docs to the same entity woovi.com describes (same @id), so answer
+// engines attribute developers.woovi.com to the regulated Payment Institution.
+// Only facts woovi.com itself publishes.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['Organization', 'FinancialService'],
+      '@id': 'https://woovi.com/#organization',
+      name: 'Woovi',
+      legalName: 'Woovi Instituição de Pagamento LTDA',
+      taxID: '54.811.417/0001-63',
+      url: 'https://woovi.com/',
+      logo: 'https://woovi.com/logo.png',
+      sameAs: [
+        'https://twitter.com/woovibr',
+        'https://www.instagram.com/woovibr/',
+        'https://www.linkedin.com/company/sejawoovi/',
+        'https://www.youtube.com/@woovibr',
+        'https://github.com/woovibr',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: `${siteUrl}/`,
+      name: 'Woovi Developers',
+      description: 'Documentação da API Pix, webhooks, SDKs e plugins da Woovi.',
+      inLanguage: ['pt-BR', 'en'],
+      publisher: { '@id': 'https://woovi.com/#organization' },
+    },
+  ],
+};
+
 module.exports = {
+  headTags: [
+    {
+      tagName: 'script',
+      attributes: { type: 'application/ld+json' },
+      innerHTML: JSON.stringify(jsonLd),
+    },
+    {
+      tagName: 'link',
+      attributes: { rel: 'describedby', type: 'text/plain', href: '/llms.txt' },
+    },
+  ],
   markdown: {
     mermaid: true,
     hooks: {
@@ -75,7 +144,7 @@ module.exports = {
   },
   title: 'Woovi Developers',
   tagline: 'Instant payments Docs, APIs, SDKs',
-  url: 'https://developers.woovi.com',
+  url: siteUrl,
   baseUrl: '/',
   organizationName: 'woovi',
   projectName: 'developer-portal',
@@ -87,11 +156,17 @@ module.exports = {
     [
       'docusaurus-plugin-llms',
       {
-        generateLLMsTxt: true,
+        // llms.txt is curated by hand in static/; generating it here would overwrite it
+        generateLLMsTxt: false,
         generateLLMsFullTxt: true,
+        // a Markdown twin next to every doc (/docs/x -> /docs/x.md) that answer engines
+        // read for a fraction of the HTML's tokens; DocItem/Metadata links it
+        generateMarkdownFiles: true,
+        excludeImports: true,
         docsDir: 'docs',
         title: 'Woovi Developers',
-        description: 'Instant payments Docs, APIs, SDKs',
+        description:
+          'Documentação da API, webhooks, SDKs e plugins da Woovi, Instituição de Pagamento regulada pelo Banco Central e participante direta do Pix. Índice curado: https://developers.woovi.com/llms.txt',
       },
     ],
     // [
@@ -233,6 +308,8 @@ module.exports = {
     ],
   ],
   themeConfig: {
+    // default social card; twitter:card is already summary_large_image
+    image: 'img/og-card.png',
     mermaid: {
       options: {
         securityLevel: 'loose',
@@ -346,6 +423,17 @@ module.exports = {
         // },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
+        },
+        sitemap: {
+          // the date of the last commit that touched the doc (showLastUpdateTime), never the build date
+          lastmod: 'date',
+          changefreq: null,
+          priority: null,
+          ignorePatterns: sitemapIgnorePatterns,
+          createSitemapItems: async ({ defaultCreateSitemapItems, ...params }) => {
+            const items = await defaultCreateSitemapItems(params);
+            return items.map((item) => ({ ...item, priority: sitemapPriority(item.url) }));
+          },
         },
         googleAnalytics: {
           trackingID: 'G-DFFLN19210',
