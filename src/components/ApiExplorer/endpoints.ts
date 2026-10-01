@@ -2680,6 +2680,59 @@ const endpoints: ApiEndpoint[] = [
     ],
   },
   {
+    'id': 'get-api-v1-pix-auth-id',
+    'method': 'GET',
+    'path': '/api/v1/pix-auth/{id}',
+    'tag': 'pixAuth',
+    'category': 'pixAuth',
+    'summary': 'Get a Pix authentication',
+    'description': "`id` is the Pix authentication `id` or your `correlationID`. Switch on\n`result`: `MATCHED` means the payer holds the declared document. On\n`MISMATCH` the payer's identity is never returned.\n",
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pixAuth': {
+            'id': '6abd253902a0cbc48013f01e',
+            'correlationID': 'signup-8f2c1',
+            'status': 'COMPLETED',
+            'result': 'MATCHED',
+            'taxID': {
+              'taxID': '52998224725',
+              'type': 'BR:CPF',
+            },
+            'amount': 1,
+            'dueDate': '2026-09-30T16:05:28.049Z',
+            'completedAt': '2026-09-30T15:52:10.120Z',
+            'createdAt': '2026-09-30T15:50:28.049Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-pix-auth',
+    'method': 'POST',
+    'path': '/api/v1/pix-auth',
+    'tag': 'pixAuth',
+    'category': 'pixAuth',
+    'summary': 'Create a Pix authentication for a CPF or CNPJ',
+    'description': 'Mints the R$ 0,01 Pix the payer must pay from a bank account under the\ndeclared document, and charges `PIX_AUTH_FEE`.\n\n**Idempotent by `correlationID`.** Posting the same `correlationID` and\n`taxID` while it is open answers `200` with the same Pix authentication,\n`brCode` and `hostedUrl`, and charges nothing again. A `correlationID`\nnames one validation forever: reusing it for another document, or after it\nfinished, answers `409`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'signup-8f2c1',
+          'taxID': '529.982.247-25',
+          'name': 'Maria Silva',
+          'expiresIn': 900,
+          'returnUrl': 'https://example.com/signup/done',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
     'id': 'get-api-v1-pix-keys-tokens-logs',
     'method': 'GET',
     'path': '/api/v1/pix-keys/tokens/logs',
@@ -3917,30 +3970,45 @@ const endpoints: ApiEndpoint[] = [
             'correlationID': 'payout-20260203-1',
             'nuop': '1234567820260203000001',
             'status': 'COMPLETED',
-            'type': 'PAYMENT',
-            'direction': 'OUT',
+            'type': 'TED_OUT',
             'value': 150050,
             'moveDate': '2026-02-03',
-            'accountId': '6290ccfd42831958a405debc',
-            'sender': {
-              'name': 'Empresa LTDA',
-              'document': '12345678000199',
-              'ispb': '12345678',
-              'agency': 1234,
-              'account': 567890,
-              'accountType': 'CACC',
+            'debitParty': {
+              'account': {
+                'branch': '1234',
+                'account': '567890',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '12345678',
+              },
+              'holder': {
+                'name': 'Empresa LTDA',
+                'taxID': {
+                  'taxID': '12345678000199',
+                  'type': 'BR:CNPJ',
+                },
+              },
             },
-            'receiver': {
-              'name': 'Joao da Silva',
-              'document': '12345678901',
-              'ispb': '87654321',
-              'agency': 4321,
-              'account': 98765,
-              'accountType': 'CACC',
+            'creditParty': {
+              'account': {
+                'branch': '4321',
+                'account': '98765',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '87654321',
+              },
+              'holder': {
+                'name': 'Joao da Silva',
+                'taxID': {
+                  'taxID': '12345678901',
+                  'type': 'BR:CPF',
+                },
+              },
             },
             'errorCode': null,
             'reason': null,
-            'bcbCode': null,
             'createdAt': '2026-02-03T14:30:00.000Z',
             'updatedAt': '2026-02-03T14:31:02.000Z',
           },
@@ -3955,7 +4023,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'ted',
     'category': 'ted',
     'summary': 'Get a list of TEDs',
-    'description': 'TEDs of your company, newest first. Incoming and outgoing TEDs are in the\nsame list; `direction` tells them apart.\n',
+    'description': 'TEDs of your company, newest first. Incoming and outgoing TEDs are in the\nsame list; `type` tells them apart.\n',
     'requestExamples': [],
     'responseExamples': [
       {
@@ -3966,14 +4034,11 @@ const endpoints: ApiEndpoint[] = [
               'correlationID': 'payout-20260203-1',
               'nuop': '1234567820260203000001',
               'status': 'COMPLETED',
-              'type': 'PAYMENT',
-              'direction': 'OUT',
+              'type': 'TED_OUT',
               'value': 150050,
               'moveDate': '2026-02-03',
-              'accountId': '6290ccfd42831958a405debc',
               'errorCode': null,
               'reason': null,
-              'bcbCode': null,
               'createdAt': '2026-02-03T14:30:00.000Z',
               'updatedAt': '2026-02-03T14:31:02.000Z',
             },
@@ -3996,22 +4061,29 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'ted',
     'category': 'ted',
     'summary': 'Send a TED',
-    'description': 'Sends a TED from one of your accounts. The response means the TED was\naccepted for processing — it settles when the BACEN answers, and the\n`TED_OUT_CONFIRMED` / `TED_OUT_REJECTED` webhooks say which way it went.\n\nRetrying with the same `correlationID` is safe: it returns the TED that\nalready exists, without a second debit and without a second STR request.\n',
+    'description': "Sends a TED from the account of the application behind the AppID or, when\nthe application has none, from the company's default account: the same\naccount a Pix out is paid from. The body cannot choose it. The response means the TED was\naccepted for processing — it settles when the BACEN answers, and the\n`TED_OUT_CONFIRMED` / `TED_OUT_REJECTED` webhooks say which way it went.\n\nRetrying with the same `correlationID` is safe: it returns the TED that\nalready exists, without a second debit and without a second STR request.\n\nThe TED settles on the day it is sent (Brasília time). It cannot be\nscheduled: while the STR is closed it is refused with `422`\n`OUTSIDE_STR_SESSION`.\n",
     'requestExamples': [
       {
         'name': 'default',
         'value': {
           'correlationID': 'payout-20260203-1',
           'value': 150050,
-          'moveDate': '2026-02-03',
-          'accountId': '6290ccfd42831958a405debc',
-          'receiver': {
-            'name': 'Joao da Silva',
-            'document': '12345678901',
-            'ispb': '87654321',
-            'agency': 4321,
-            'account': 98765,
-            'accountType': 'CACC',
+          'creditParty': {
+            'account': {
+              'branch': '4321',
+              'account': '98765',
+              'accountType': 'CACC',
+            },
+            'psp': {
+              'id': '87654321',
+            },
+            'holder': {
+              'name': 'Joao da Silva',
+              'taxID': {
+                'taxID': '12345678901',
+                'type': 'BR:CPF',
+              },
+            },
           },
           'clientFinality': 10,
           'description': 'Payment for services',
@@ -4026,30 +4098,45 @@ const endpoints: ApiEndpoint[] = [
             'correlationID': 'payout-20260203-1',
             'nuop': '1234567820260203000001',
             'status': 'PROCESSING',
-            'type': 'PAYMENT',
-            'direction': 'OUT',
+            'type': 'TED_OUT',
             'value': 150050,
             'moveDate': '2026-02-03',
-            'accountId': '6290ccfd42831958a405debc',
-            'sender': {
-              'name': 'Empresa LTDA',
-              'document': '12345678000199',
-              'ispb': '12345678',
-              'agency': 1234,
-              'account': 567890,
-              'accountType': 'CACC',
+            'debitParty': {
+              'account': {
+                'branch': '1234',
+                'account': '567890',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '12345678',
+              },
+              'holder': {
+                'name': 'Empresa LTDA',
+                'taxID': {
+                  'taxID': '12345678000199',
+                  'type': 'BR:CNPJ',
+                },
+              },
             },
-            'receiver': {
-              'name': 'Joao da Silva',
-              'document': '12345678901',
-              'ispb': '87654321',
-              'agency': 4321,
-              'account': 98765,
-              'accountType': 'CACC',
+            'creditParty': {
+              'account': {
+                'branch': '4321',
+                'account': '98765',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '87654321',
+              },
+              'holder': {
+                'name': 'Joao da Silva',
+                'taxID': {
+                  'taxID': '12345678901',
+                  'type': 'BR:CPF',
+                },
+              },
             },
             'errorCode': null,
             'reason': null,
-            'bcbCode': null,
             'createdAt': '2026-02-03T14:30:00.000Z',
             'updatedAt': '2026-02-03T14:30:00.000Z',
           },
@@ -4064,7 +4151,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'ted',
     'category': 'ted',
     'summary': 'Refund a received TED',
-    'description': 'Returns a TED your company received to its sender, for the full value.\nThe response is the refund TED (`type: REFUND_SENT`, `direction: OUT`)\naccepted for processing — it settles when the BACEN answers, and the\n`TED_REFUND_SENT_CONFIRMED` webhook says it did. The received TED is\n`REFUNDED` from then on.\n\nOnly an incoming `PAYMENT` can be refunded: not a TED you sent, and not a\nrefund you received. Retrying while the refund is still in flight is safe:\nit returns the same refund, without a second debit.\n',
+    'description': 'Returns a TED your company received to its sender, for the full value.\nThe response is the refund TED (`type: TED_REFUND_SENT`)\naccepted for processing — it settles when the BACEN answers, and the\n`TED_REFUND_SENT_CONFIRMED` webhook says it did. The received TED is\n`REFUNDED` from then on. If the BACEN rejects it, `TED_REFUND_SENT_REJECTED`\nsays so and the received TED stays `COMPLETED`, so it can be refunded again.\n\nOnly a `TED_IN` can be refunded: not a TED you sent, and not a\nrefund you received. Retrying while the refund is still in flight is safe:\nit returns the same refund, without a second debit.\n',
     'requestExamples': [],
     'responseExamples': [
       {
@@ -4074,30 +4161,45 @@ const endpoints: ApiEndpoint[] = [
             'correlationID': 'RFD20260203000001',
             'nuop': '1234567820260203000001',
             'status': 'PROCESSING',
-            'type': 'REFUND_SENT',
-            'direction': 'OUT',
+            'type': 'TED_REFUND_SENT',
             'value': 150050,
             'moveDate': '2026-02-03',
-            'accountId': '6290ccfd42831958a405debc',
-            'sender': {
-              'name': 'Empresa LTDA',
-              'document': '12345678000199',
-              'ispb': '12345678',
-              'agency': 1234,
-              'account': 567890,
-              'accountType': 'CACC',
+            'debitParty': {
+              'account': {
+                'branch': '1234',
+                'account': '567890',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '12345678',
+              },
+              'holder': {
+                'name': 'Empresa LTDA',
+                'taxID': {
+                  'taxID': '12345678000199',
+                  'type': 'BR:CNPJ',
+                },
+              },
             },
-            'receiver': {
-              'name': 'Joao da Silva',
-              'document': '12345678901',
-              'ispb': '87654321',
-              'agency': 4321,
-              'account': 98765,
-              'accountType': 'CACC',
+            'creditParty': {
+              'account': {
+                'branch': '4321',
+                'account': '98765',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '87654321',
+              },
+              'holder': {
+                'name': 'Joao da Silva',
+                'taxID': {
+                  'taxID': '12345678901',
+                  'type': 'BR:CPF',
+                },
+              },
             },
             'errorCode': null,
             'reason': null,
-            'bcbCode': null,
             'createdAt': '2026-02-03T14:30:00.000Z',
             'updatedAt': '2026-02-03T14:30:00.000Z',
           },
