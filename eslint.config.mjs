@@ -150,4 +150,12 @@ export default [{
 
         "no-multiple-empty-lines": 2,
     },
+}, {
+    // the core rule reports parameter names inside TypeScript function types;
+    // @typescript-eslint/no-unused-vars (enabled above) covers TS files instead
+    files: ["**/*.ts", "**/*.tsx"],
+
+    rules: {
+        "no-unused-vars": "off",
+    },
 }];

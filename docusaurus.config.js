@@ -256,6 +256,11 @@ module.exports = {
             to: '/docs/test-environment/test-account/paying-a-pix-key-with-test-account',
           },
           {
+            // the standalone prototype became the Cobrança Pix playground
+            from: '/pix-na-pratica',
+            to: '/docs/playground/playground-cobranca-pix',
+          },
+          {
             from: '/docs/flows/api-pix-key-campaign',
             to: '/docs/apis/api-pix-key-campaign',
           },
