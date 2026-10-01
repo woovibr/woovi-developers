@@ -50,5 +50,17 @@
   "sidebar.docs.category.FAQ": {
     "message": "FAQ",
     "description": "The label for category FAQ in sidebar docs"
+  },
+  "sidebar.docs.category.Pix Auth": {
+    "message": "Pix Auth",
+    "description": "The label for category Pix Auth in sidebar docs"
+  },
+  "sidebar.docs.category.Pix Auth.link.generated-index.title": {
+    "message": "Pix Auth - overview",
+    "description": "The generated-index page title for category Pix Auth in sidebar docs"
+  },
+  "sidebar.docs.category.Pix Auth.link.generated-index.description": {
+    "message": "Woovi Pix Auth: confirm that a CPF or CNPJ belongs to who claims it with a R$ 0.01 Pix and receive the result by webhook.",
+    "description": "The generated-index page description for category Pix Auth in sidebar docs"
   }
 }
