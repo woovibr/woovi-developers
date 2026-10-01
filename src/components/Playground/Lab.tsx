@@ -11,6 +11,7 @@ import type {
   Values,
 } from './types';
 import StateMachine from './StateMachine';
+import type { Selection } from './prompt';
 import { Code, CodeTabs } from './Code';
 import { brl, fakeSignature, json, qrSvg, snippets, uuid } from './utils';
 import styles from './Playground.module.css';
@@ -114,10 +115,13 @@ export default function Lab({
   lab,
   states,
   transitions,
+  onSelection,
 }: {
   lab: LabConfig;
   states?: State[];
   transitions?: Transition[];
+  /** reports what the viewer picked (feeds the one-shot prompt) */
+  onSelection?: (s: Selection) => void;
 }) {
   const [values, setValues] = useState<Values>(() => initialValues(lab.fields));
   const [res, setRes] = useState<Resource | null>(null);
@@ -138,6 +142,10 @@ export default function Lab({
     () => snippets(lab.method, path, body),
     [lab, path, body],
   );
+
+  useEffect(() => {
+    onSelection?.({ values, body, path, resource: res });
+  }, [onSelection, values, body, path, res]);
 
   const stamp = () => {
     const s = Math.round((Date.now() - t0.current) / 1000);
