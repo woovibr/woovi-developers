@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import styles from './Hero.module.css';
@@ -105,9 +105,31 @@ const snippets: Snippet[] = [
   },
 ];
 
+const STEP_MS = 4200;
+
 const CodeCard = () => {
   const [activeId, setActiveId] = useState(snippets[0].id);
   const [copied, setCopied] = useState(false);
+  // plays charge → response → webhook until the visitor takes over
+  const [autoplay, setAutoplay] = useState(false);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    setAutoplay(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }, []);
+
+  useEffect(() => {
+    if (!autoplay || paused) {
+      return undefined;
+    }
+
+    const t = window.setTimeout(() => {
+      const i = snippets.findIndex((snippet) => snippet.id === activeId);
+      setActiveId(snippets[(i + 1) % snippets.length].id);
+    }, STEP_MS);
+
+    return () => window.clearTimeout(t);
+  }, [autoplay, paused, activeId]);
 
   const active = snippets.find((snippet) => snippet.id === activeId) as Snippet;
 
@@ -122,7 +144,13 @@ const CodeCard = () => {
   };
 
   return (
-    <div className={styles['code-card']}>
+    <div
+      className={styles['code-card']}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
       <div className={styles['code-card--tabs']} role='tablist'>
         {snippets.map((snippet) => (
           <button
@@ -135,12 +163,28 @@ const CodeCard = () => {
               styles['code-card--tab'],
               snippet.id === activeId && styles['code-card--tab-active'],
             )}
-            onClick={() => setActiveId(snippet.id)}
+            onClick={() => {
+              setAutoplay(false);
+              setActiveId(snippet.id);
+            }}
           >
             {snippet.label}
           </button>
         ))}
       </div>
+
+      {autoplay ? (
+        <div className={styles['code-card--progress']} aria-hidden='true'>
+          <span
+            key={activeId}
+            className={styles['code-card--progress-fill']}
+            style={{
+              animationDuration: `${STEP_MS}ms`,
+              animationPlayState: paused ? 'paused' : 'running',
+            }}
+          />
+        </div>
+      ) : null}
 
       <div className={styles['code-card--bar']}>
         <span className={styles['code-card--file']}>{active.file}</span>
@@ -160,8 +204,17 @@ const CodeCard = () => {
         aria-label={active.label}
         className={styles['code-card--pre']}
       >
-        <code>{highlight(active.code, active.language)}</code>
+        <code key={activeId} className={styles['code-card--reveal']}>
+          {highlight(active.code, active.language)}
+        </code>
       </pre>
+
+      {activeId === 'webhook' ? (
+        <div className={styles['code-card--toast']} role='status'>
+          <span className={styles['eyebrow--dot']} />
+          Pix pago · OPENPIX:CHARGE_COMPLETED
+        </div>
+      ) : null}
     </div>
   );
 };

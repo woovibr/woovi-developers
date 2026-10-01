@@ -34,6 +34,12 @@ const links = [
     href: '/docs/intro/getting-started',
   },
   {
+    title: 'Playgrounds',
+    description:
+      'Documentação interativa: diagramas de sequência, máquinas de estado e requisições simuladas de cada produto',
+    href: '/docs/playground',
+  },
+  {
     title: 'Ambiente de teste',
     description:
       'Para você que quer testar os produtos OpenPix fornecemos nosso ambiente de teste.',

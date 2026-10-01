@@ -302,6 +302,8 @@
 }
 
 .code-card--pre {
+  /* fixed height: the card does not jump while the snippets cycle */
+  height: 20rem;
   max-height: 20rem;
   margin: 0;
   padding: 1.1rem 1.15rem 1.35rem;
@@ -374,6 +376,130 @@
 
 @media (prefers-reduced-motion: reduce) {
   .button:hover {
+    transform: none;
+  }
+}
+
+/* ---------- motion ---------- */
+.code-card {
+  position: relative;
+}
+
+.code-card--progress {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.code-card--progress-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  background: var(--hero-brand);
+  animation-name: hero-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.code-card--toast {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(3, 214, 157, 0.4);
+  background: rgba(4, 20, 16, 0.92);
+  color: #9df3d9;
+  font-size: 0.78rem;
+  font-weight: 600;
+  box-shadow: 0 12px 30px -12px rgba(3, 214, 157, 0.45);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--rise, 0) * 90ms + 60ms);
+  }
+
+  .eyebrow--dot {
+    animation: hero-ping 2.4s ease-out infinite;
+  }
+
+  .title--accent {
+    background-size: 220% 100%;
+    animation: hero-shimmer 7s ease-in-out infinite alternate;
+  }
+
+  .code-card--reveal {
+    display: block;
+    animation: hero-type 0.65s steps(14, end) both;
+  }
+
+  .code-card--toast {
+    animation: hero-toast 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3) 0.55s both;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba(3, 214, 157, 0.55);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 9px rgba(3, 214, 157, 0);
+  }
+}
+
+@keyframes hero-shimmer {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+/* reveals the snippet top-down, like it is being typed */
+@keyframes hero-type {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hero-toast {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
     transform: none;
   }
 }
