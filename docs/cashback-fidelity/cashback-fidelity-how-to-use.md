@@ -1,7 +1,8 @@
 ---
 id: cashback-fidelity-how-to-use
 sidebar_position: 1
-title: Como usar?
+title: Como usar o Cashback Fidelidade?
+sidebar_label: Como usar?
 tags:
   - cashback-fidelity
   - concept

@@ -7,9 +7,7 @@
   "link": {
     "type": "generated-index",
     "title": "Webhook visão geral",
+    "description": "Webhooks da Woovi: crie webhooks via API ou plataforma, tipos de eventos, cabeçalhos, retentativas, timeout, reenvio e segurança.",
     "slug": "/category/webhook"
-  },
-  "customProps": {
-    "description": "Webhook documentação"
   }
 }

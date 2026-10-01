@@ -1,6 +1,7 @@
 ---
 id: partner-custom-fee-what-is
 title: O que é a taxa customizada do parceiro?
+description: O que é a taxa customizada do parceiro na Woovi, que permite negociar com afiliados uma taxa diferente da taxa geral do parceiro.
 tags:
   - partnership
   - partner

@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Cashback Fidelidade visão geral"
-  },
-  "customProps": {
-    "description": "Cashback Fidelidade documentação"
+    "title": "Cashback Fidelidade visão geral",
+    "description": "O que é o Cashback Fidelidade da Woovi, como configurá-lo e usá-lo para fidelizar clientes, e as APIs disponíveis."
   }
 }

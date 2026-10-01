@@ -1,5 +1,4 @@
 ---
-id: what-is-receipt?
 title: O que é um recibo?
 tags:
   - recibo

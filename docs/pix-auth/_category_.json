@@ -4,9 +4,7 @@
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Pix Auth - visão geral"
-  },
-  "customProps": {
-    "description": "Confirme que um CPF ou CNPJ é de quem diz ser, com um Pix de R$ 0,01"
+    "title": "Pix Auth - visão geral",
+    "description": "Pix Auth da Woovi: confirme que um CPF ou CNPJ é de quem diz ser com um Pix de R$ 0,01 e receba o resultado por webhook."
   }
 }

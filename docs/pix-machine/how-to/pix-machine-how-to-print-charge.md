@@ -1,5 +1,5 @@
 ---
-title: Como imprimir o recibo de um QR code estático na Maquininha Pix?
+title: Como imprimir cobranças e recibos de pagamento na Maquininha Pix?
 tags:
   - pix-machine
   - how-to

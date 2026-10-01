@@ -7,9 +7,7 @@
   "link": {
     "type": "generated-index",
     "title": "Reembolso de cobrança visão geral",
+    "description": "Como criar um reembolso de uma cobrança Pix e consultar todos os reembolsos de uma cobrança usando a API da Woovi.",
     "slug": "/category/refund"
-  },
-  "customProps": {
-    "description": "Reembolso de cobrança documentação"
   }
 }

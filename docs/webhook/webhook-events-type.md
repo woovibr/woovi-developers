@@ -21,25 +21,25 @@ Consulte o endpoint [GET /api/v1/webhook/events](/api#tag/webhook/GET/api/v1/web
 
 Os eventos de cobrança são enviados quando uma cobrança é paga.
 
-### OPENPIX:CHARGE_COMPLETED
+### OPENPIX\:CHARGE_COMPLETED
 
 Esse evento é enviado quando uma cobrança é paga.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-charge-payload)
 
-### OPENPIX:CHARGE_EXPIRED
+### OPENPIX\:CHARGE_EXPIRED
 
 Esse evento é enviado quando uma cobrança expira.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-charge-expired)
 
-### OPENPIX:CHARGE_CREATED
+### OPENPIX\:CHARGE_CREATED
 
 Esse evento é enviado quando uma cobrança é criada.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-charge-created)
 
-### OPENPIX:CHARGE_COMPLETED_NOT_SAME_CUSTOMER_PAYER
+### OPENPIX\:CHARGE_COMPLETED_NOT_SAME_CUSTOMER_PAYER
 
 Esse evento é enviado quando uma cobrança é paga com um `payer` diferente do `customer`.
 
@@ -49,13 +49,13 @@ Esse evento é enviado quando uma cobrança é paga com um `payer` diferente do 
 
 Os eventos de transação são enviados quando uma transação é recebida.
 
-### OPENPIX:TRANSACTION_RECEIVED
+### OPENPIX\:TRANSACTION_RECEIVED
 
 Esse evento é enviado quando uma transação é recebida, seja ela de uma cobrança ou de um QR code estático.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-transaction-received)
 
-### OPENPIX:TRANSACTION_REFUND_RECEIVED (DEPRECATED)
+### OPENPIX\:TRANSACTION_REFUND_RECEIVED (DEPRECATED)
 
 Esse evento é enviado quando é realizado o reembolso de uma transação.
 
@@ -87,19 +87,19 @@ Esse evento é enviado quando uma transação de reembolso é enviada mas é rej
 
 ## Eventos de Pagamento Instantâneo
 
-### OPENPIX:MOVEMENT_CONFIRMED
+### OPENPIX\:MOVEMENT_CONFIRMED
 
 Esse evento é enviado quando um pagamento é confirmado.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-payment-payload#pagamento-confirmado)
 
-### OPENPIX:MOVEMENT_FAILED
+### OPENPIX\:MOVEMENT_FAILED
 
 Esse evento é enviado quando um pagamento confirmado falha.
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-payment-payload#falha-no-pagamento)
 
-### OPENPIX:MOVEMENT_REMOVED
+### OPENPIX\:MOVEMENT_REMOVED
 
 Esse evento é enviado quando um pagamento é removido.
 
@@ -107,22 +107,22 @@ Esse evento é enviado quando um pagamento é removido.
 
 ## Eventos de Movimentos
 
-### OPENPIX:DISPUTE_CREATED
+### OPENPIX\:DISPUTE_CREATED
 Esse evento é enviado quando uma disputa é criada
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-created-payload)
 
-### OPENPIX:DISPUTE_ACCEPTED
+### OPENPIX\:DISPUTE_ACCEPTED
 Esse evento é enviado quando uma disputa é aceita 
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-accepted-payload)
 
-### OPENPIX:DISPUTE_REJECTED
+### OPENPIX\:DISPUTE_REJECTED
 Esse evento é enviado quando uma disputa é rejeitada
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-rejected-payload)
 
-### OPENPIX:DISPUTE_CANCELED
+### OPENPIX\:DISPUTE_CANCELED
 Esse evento é enviado quando uma disputa é cancelada
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-canceled-payload)

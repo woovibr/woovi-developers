@@ -2,6 +2,7 @@
 id: pix-automatic-how-to-choose-journey
 sidebar_position: 2
 title: Qual jornada do Pix Automático devo escolher?
+description: 'Qual jornada do Pix Automático escolher na Woovi para cada cenário: autorização com pagamento, só recorrência, push ou migração.'
 tags:
   - pix-automatic
   - api

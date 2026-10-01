@@ -1,6 +1,7 @@
 ---
 id: how-add-new-evidence-in-dispute
 title: Como adicionar uma nova evidência em uma disputa?
+description: Como enviar documentos como evidência em uma disputa Pix na Woovi, a partir do id da disputa recebido pelo webhook.
 tags:
   - disputa
 ---

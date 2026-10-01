@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "SDK de Ruby"
-  },
-  "customProps": {
-    "description": "Ruby SDK da woovi"
+    "title": "SDK de Ruby",
+    "description": "SDK de Ruby da Woovi: o que é, como começar, recursos disponíveis e como contribuir com o projeto."
   }
 }

@@ -1,6 +1,7 @@
 ---
 id: java-sdk-contributing
-title: Como contribuir com o SDK
+title: Como contribuir com o SDK Java
+sidebar_label: Como contribuir com o SDK
 sidebar_position: 3
 tags:
 - api

@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "E-commerce visão geral"
-  },
-  "customProps": {
-    "description": "E-commerce documentação"
+    "title": "E-commerce visão geral",
+    "description": "Como integrar o Pix da Woovi à sua loja virtual com plugins para WooCommerce, Magento, VTEX, Nuvemshop, OpenCart, Wake e outras plataformas."
   }
 }

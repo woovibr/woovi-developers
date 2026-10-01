@@ -1,6 +1,7 @@
 ---
 id: baas-invoice-integration
 title: Configurando a emissão de nota fiscal via API
+description: Como configurar via API a emissão de nota fiscal de serviço (NFS-e) de uma conta, do cadastro da integração até a nota de teste.
 tags:
   - baas
   - api

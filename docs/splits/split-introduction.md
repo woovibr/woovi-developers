@@ -1,6 +1,7 @@
 ---
 id: split-introduction
 title: Introdução
+description: O que é o split de cobranças da Woovi, como ele divide o recebimento entre contas e quando usar cada tipo de split.
 tags:
   - split
 ---

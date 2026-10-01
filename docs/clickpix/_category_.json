@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Visão geral"
-  },
-  "customProps": {
-    "description": "Documentações relacionadas ao produto ClickPix"
+    "title": "ClickPix: visão geral",
+    "description": "Como começar a usar o ClickPix da Woovi e customizar o seu próprio botão ClickPix para receber pagamentos via Pix."
   }
 }

@@ -1,6 +1,7 @@
 ---
 id: charge
-title: Cobrança
+title: Conceito de cobrança na API
+sidebar_label: Cobrança
 tags:
   - api
   - conceito

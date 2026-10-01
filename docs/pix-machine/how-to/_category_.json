@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Maquininha Pix Tutoriais"
-  },
-  "customProps": {
-    "description": "Maquininha Pix Tutoriais"
+    "title": "Maquininha Pix Tutoriais",
+    "description": "Tutoriais da Maquininha Pix da Woovi para imprimir cobranças e recibos de pagamentos de QR Code estático."
   }
 }

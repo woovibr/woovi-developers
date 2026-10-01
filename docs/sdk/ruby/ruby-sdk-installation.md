@@ -1,6 +1,7 @@
 ---
 id: ruby-sdk-installation
-title: Como começar?
+title: Como começar com o SDK Ruby?
+sidebar_label: Como começar?
 sidebar_position: 1
 tags:
 - api

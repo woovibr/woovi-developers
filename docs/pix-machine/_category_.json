@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Maquininha Pix visão geral"
-  },
-  "customProps": {
-    "description": "Maquininha Pix documentação"
+    "title": "Maquininha Pix visão geral",
+    "description": "Maquininha Pix da Woovi: instalação e configuração no Windows, impressão de cobranças, cashback, casos de uso e perguntas frequentes."
   }
 }

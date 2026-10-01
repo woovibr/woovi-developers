@@ -1,6 +1,7 @@
 ---
 id: correlation-id
 title: Correlation ID
+description: O que é o correlationID na Woovi, o formato recomendado e por que ele funciona como chave de idempotência de cobranças e pagamentos.
 tags:
   - api
   - conceito

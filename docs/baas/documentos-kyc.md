@@ -1,6 +1,7 @@
 ---
 id: documentos-kyc
 title: Documentos e compliance (KYC)
+description: 'Como funciona o compliance (KYC) para abrir contas no BaaS da Woovi: documentação, análise e registro, com o link de KYC Onboarding.'
 tags:
   - baas
   - kyc

@@ -1,6 +1,7 @@
 ---
 id: how-to-calculate-split-with-percentage
 title: Como calcular divisão com porcentagem
+description: Como calcular o valor de um split por porcentagem ao criar uma cobrança Pix na Woovi, com exemplo de código em TypeScript.
 tags:
   - split
 ---

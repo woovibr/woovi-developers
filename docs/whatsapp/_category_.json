@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "WhatsApp visão geral"
-  },
-  "customProps": {
-    "description": "WhatsApp documentação"
+    "title": "WhatsApp visão geral",
+    "description": "Como ativar o WhatsApp na Woovi e enviar cobranças Pix e recibos de pagamento aos seus clientes pelo WhatsApp."
   }
 }

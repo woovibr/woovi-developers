@@ -2,6 +2,7 @@
 id: test-environment
 title: Acessando o Ambiente de teste woovi
 sidebar_label: Ambiente de teste
+description: Como acessar o ambiente de teste (sandbox) da Woovi e testar cobranças Pix e demais funcionalidades sem usar dados de produção.
 tags:
 - flow
 - getting-started

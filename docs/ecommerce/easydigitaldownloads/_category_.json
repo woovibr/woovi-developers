@@ -1,13 +1,11 @@
 {
-    "label": "EasyDigitalDownloads",
-    "collapsible": true,
-    "collapsed": true,
-    "className": "red",
-    "link": {
-      "type": "generated-index",
-      "title": "EasyDigitalDownloads visão geral"
-    },
-    "customProps": {
-      "description": "EasyDigitalDownloads documentação"
-    }
+  "label": "EasyDigitalDownloads",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "EasyDigitalDownloads visão geral",
+    "description": "Como instalar e configurar o plugin da Woovi para receber pagamentos via Pix na sua loja EasyDigitalDownloads."
   }
+}

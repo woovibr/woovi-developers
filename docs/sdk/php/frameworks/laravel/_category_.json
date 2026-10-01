@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Laravel"
-  },
-  "customProps": {
-    "description": "Integração Woovi com Laravel"
+    "title": "Laravel",
+    "description": "Integração da Woovi com Laravel: configuração do SDK de PHP, QR Code de cobranças Pix, recebimento de webhooks e solução de problemas."
   }
 }

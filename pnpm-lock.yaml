@@ -164,6 +164,7 @@ settings:
 
 overrides:
   cheerio: 1.0.0-rc.9
+  whatwg-url@5: ^14.2.0
 
 importers:
 
@@ -193,9 +194,15 @@ importers:
       '@docusaurus/preset-classic':
         specifier: 3.10.2
         version: 3.10.2(@algolia/client-search@5.59.0)(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5))(@swc/helpers@0.5.23)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(postcss@8.5.28)(svgo@3.3.5))(@mdx-js/react@3.1.1(@types/react@18.3.31)(react@18.3.1))(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(@types/react@18.3.31)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(debug@4.4.3(supports-color@8.1.1))(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(supports-color@8.1.1)(svgo@3.3.5)(typescript@6.0.3)
+      '@docusaurus/theme-common':
+        specifier: 3.10.2
+        version: 3.10.2(5172adcab9f69340db930a79f98b35f4)
       '@docusaurus/theme-mermaid':
         specifier: 3.10.2
         version: 3.10.2(3249b01b8d7a9c3218496d74f1d3ebe9)
+      '@docusaurus/utils-common':
+        specifier: 3.10.2
+        version: 3.10.2(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5)
       '@gracefullight/docusaurus-plugin-microsoft-clarity':
         specifier: ^1.0.0
         version: 1.0.0(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5)
@@ -225,7 +232,7 @@ importers:
         version: 2.1.0(5837e1b0046a75ed858c0431bec79378)
       mdx-mermaid:
         specifier: ^2.0.4
-        version: 2.0.4(mermaid@12.0.0)(react@18.3.1)(supports-color@8.1.1)(typescript@6.0.3)(unist-util-visit@4.1.2)
+        version: 2.0.4(mermaid@12.0.0)(react@18.3.1)(supports-color@8.1.1)(typescript@6.0.3)(unist-util-visit@5.1.0)
       mermaid:
         specifier: ^12.0.0
         version: 12.0.0
@@ -265,6 +272,9 @@ importers:
       three:
         specifier: ^0.186.1
         version: 0.186.1
+      unist-util-visit:
+        specifier: ^5.1.0
+        version: 5.1.0
       url:
         specifier: ^0.11.4
         version: 0.11.4
@@ -9436,8 +9446,9 @@ packages:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
     engines: {node: '>=6'}
 
-  tr46@0.0.3:
-    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+  tr46@5.1.1:
+    resolution: {integrity: sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw==}
+    engines: {node: '>=18'}
 
   tree-dump@1.1.0:
     resolution: {integrity: sha512-rMuvhU4MCDbcbnleZTFezWsaZXRFemSqAM+7jPnzUl1fo9w3YEKOxAeui0fz3OI4EU4hf23iyA7uQRVko+UaBA==}
@@ -9836,8 +9847,9 @@ packages:
     resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}
     engines: {node: '>= 14'}
 
-  webidl-conversions@3.0.1:
-    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+  webidl-conversions@7.0.0:
+    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
+    engines: {node: '>=12'}
 
   webpack-bundle-analyzer@4.10.2:
     resolution: {integrity: sha512-vJptkMm9pk5si4Bv922ZbKLV8UTT4zib4FPgXMhgzUny0bfDDkLXAVQs3ly3fS4/TN9ROFtb0NFrm04UXFE/Vw==}
@@ -9911,8 +9923,9 @@ packages:
   whatwg-fetch@3.6.20:
     resolution: {integrity: sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==}
 
-  whatwg-url@5.0.0:
-    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
+  whatwg-url@14.2.0:
+    resolution: {integrity: sha512-De72GdQZzNTUBBChsXueQUnPKDkg/5A5zp7pFDuQAj5UFoENpiACU0wlCvzpAGnTkj++ihpKwKyYewn/XNUbKw==}
+    engines: {node: '>=18'}
 
   which-boxed-primitive@1.1.1:
     resolution: {integrity: sha512-TbX3mj8n0odCBFVlY8AxkqcHASw3L60jIuF8jFP78az3C2YhmGvqbHBpAjTRH2/xqYunrJ9g1jSyjCjpoWzIAA==}
@@ -11912,7 +11925,7 @@ snapshots:
     dependencies:
       '@docusaurus/types': 3.10.2(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5)
       '@types/history': 4.7.11
-      '@types/react': 19.3.0
+      '@types/react': 18.3.31
       '@types/react-router-config': 5.0.11
       '@types/react-router-dom': 5.3.3
       react: 18.3.1
@@ -12438,7 +12451,7 @@ snapshots:
 
   '@docusaurus/react-loadable@6.0.0(react@18.3.1)':
     dependencies:
-      '@types/react': 19.3.0
+      '@types/react': 18.3.31
       react: 18.3.1
 
   '@docusaurus/theme-classic@3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5))(@swc/helpers@0.5.23)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(postcss@8.5.28)(svgo@3.3.5))(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(@types/react@18.3.31)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(debug@4.4.3(supports-color@8.1.1))(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5)(typescript@6.0.3)':
@@ -12506,7 +12519,7 @@ snapshots:
       '@docusaurus/utils': 3.10.2(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5)
       '@docusaurus/utils-common': 3.10.2(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5)
       '@types/history': 4.7.11
-      '@types/react': 19.3.0
+      '@types/react': 18.3.31
       '@types/react-router-config': 5.0.11
       clsx: 2.1.1
       parse-numeric-range: 1.3.0
@@ -15036,19 +15049,19 @@ snapshots:
   '@types/react-router-config@5.0.11':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.3.0
+      '@types/react': 18.3.31
       '@types/react-router': 5.1.20
 
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.3.0
+      '@types/react': 18.3.31
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.3.0
+      '@types/react': 18.3.31
 
   '@types/react@17.0.93':
     dependencies:
@@ -19347,11 +19360,11 @@ snapshots:
 
   mdurl@1.0.1: {}
 
-  mdx-mermaid@2.0.4(mermaid@12.0.0)(react@18.3.1)(supports-color@8.1.1)(typescript@6.0.3)(unist-util-visit@4.1.2):
+  mdx-mermaid@2.0.4(mermaid@12.0.0)(react@18.3.1)(supports-color@8.1.1)(typescript@6.0.3)(unist-util-visit@5.1.0):
     dependencies:
       mermaid: 12.0.0
       react: 18.3.1
-      unist-util-visit: 4.1.2
+      unist-util-visit: 5.1.0
     optionalDependencies:
       estree-util-to-js: 1.2.0
       estree-util-visit: 1.2.1
@@ -20195,7 +20208,7 @@ snapshots:
 
   node-fetch@2.7.0:
     dependencies:
-      whatwg-url: 5.0.0
+      whatwg-url: 14.2.0
 
   node-readfiles@0.2.0:
     dependencies:
@@ -22594,7 +22607,9 @@ snapshots:
 
   totalist@3.0.1: {}
 
-  tr46@0.0.3: {}
+  tr46@5.1.1:
+    dependencies:
+      punycode: 2.3.1
 
   tree-dump@1.1.0(tslib@2.8.1):
     dependencies:
@@ -23076,7 +23091,7 @@ snapshots:
 
   web-streams-polyfill@4.0.0-beta.3: {}
 
-  webidl-conversions@3.0.1: {}
+  webidl-conversions@7.0.0: {}
 
   webpack-bundle-analyzer@4.10.2:
     dependencies:
@@ -23216,10 +23231,10 @@ snapshots:
 
   whatwg-fetch@3.6.20: {}
 
-  whatwg-url@5.0.0:
+  whatwg-url@14.2.0:
     dependencies:
-      tr46: 0.0.3
-      webidl-conversions: 3.0.1
+      tr46: 5.1.1
+      webidl-conversions: 7.0.0
 
   which-boxed-primitive@1.1.1:
     dependencies:

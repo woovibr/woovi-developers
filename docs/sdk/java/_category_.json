@@ -5,9 +5,7 @@
   "className": "orange",
   "link": {
     "type": "generated-index",
-    "title": "SDK de Java"
-  },
-  "customProps": {
-    "description": "Java SDK da woovi"
+    "title": "SDK de Java",
+    "description": "SDK de Java da Woovi: o que é, como começar, recursos disponíveis e como contribuir com o projeto."
   }
 }
