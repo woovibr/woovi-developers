@@ -30044,7 +30044,7 @@
                           "value": "application/json"
                         }
                       ],
-                      "body": "{\n  \"status\": \"<string>\",\n  \"transactions\": [\n    {\n      \"charge\": {\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"customer\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"brCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"status\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkUrl\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"globalID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"transactionID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"identifier\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"qrCodeImage\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"additionalInfo\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pixKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expiresIn\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expiresDate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dueDate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"subscription\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentMethods\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"phone\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"address\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"time\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"endToEndID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"transactionID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"infoPagador\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"endToEndId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"payer\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"payer\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"phone\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"address\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"brCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkUrl\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pixKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"qrCodeImage\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_0\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_1\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_2\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_3\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"isRetry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_0\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ]\n    },\n    {\n      \"charge\": {\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"customer\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"brCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"status\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkUrl\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"globalID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"transactionID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"identifier\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"qrCodeImage\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"additionalInfo\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pixKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expiresIn\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expiresDate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dueDate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"subscription\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentMethods\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"phone\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"address\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"time\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"endToEndID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"transactionID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"infoPagador\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"endToEndId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"payer\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"payer\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"phone\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"address\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"brCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkUrl\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pixKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"qrCodeImage\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_0\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"isRetry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_0\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"pageInfo\": {\n    \"errors\": [\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      },\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      }\n    ],\n    \"skip\": \"<number>\",\n    \"limit\": \"<number>\",\n    \"hasPreviousPage\": \"<boolean>\",\n    \"hasNextPage\": \"<boolean>\"\n  }\n}",
+                      "body": "{\n  \"status\": \"<string>\",\n  \"transactions\": [\n    {\n      \"charge\": {\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"customer\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"brCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"status\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkUrl\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"globalID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"transactionID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"identifier\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"qrCodeImage\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"additionalInfo\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pixKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expiresIn\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expiresDate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dueDate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"subscription\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentMethods\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"phone\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"address\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"time\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"endToEndID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"transactionID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"infoPagador\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"endToEndId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"payer\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"payer\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"phone\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"address\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"brCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkUrl\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pixKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"qrCodeImage\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_0\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_1\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"isRetry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_0\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_1\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ]\n    },\n    {\n      \"charge\": {\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"customer\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"brCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"status\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkUrl\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"globalID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"transactionID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"identifier\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"qrCodeImage\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"additionalInfo\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pixKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expiresIn\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expiresDate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dueDate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"subscription\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentMethods\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"customer\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"phone\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"address\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"withdraw\": {\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"time\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"endToEndID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"transactionID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"infoPagador\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"endToEndId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"payer\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"payer\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"email\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"phone\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"address\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"status\": \"<string>\",\n      \"globalID\": {},\n      \"pixQrCode\": {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"brCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"correlationID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"paymentLinkUrl\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pixKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"qrCodeImage\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"webhookSent\": [\n        {\n          \"isRetry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_0\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"key_1\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"isRetry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"pageInfo\": {\n    \"errors\": [\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      },\n      {\n        \"message\": \"<string>\",\n        \"data\": {\n          \"skip\": \"<number>\",\n          \"limit\": \"<number>\"\n        }\n      }\n    ],\n    \"skip\": \"<number>\",\n    \"limit\": \"<number>\",\n    \"hasPreviousPage\": \"<boolean>\",\n    \"hasNextPage\": \"<boolean>\"\n  }\n}",
                       "cookie": [],
                       "_postman_previewlanguage": "json"
                     },
@@ -30247,7 +30247,7 @@
                           "value": "application/json"
                         }
                       ],
-                      "body": "{\n  \"transaction\": {\n    \"charge\": {\n      \"value\": \"<number>\",\n      \"customer\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"globalID\": {},\n      \"transactionID\": {},\n      \"identifier\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"additionalInfo\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"pixKey\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"expiresIn\": \"<string>\",\n      \"expiresDate\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"subscription\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"paymentMethods\": {\n        \"pix\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"value\": \"<number>\",\n    \"time\": \"<string>\",\n    \"endToEndID\": \"<string>\",\n    \"transactionID\": \"<string>\",\n    \"infoPagador\": \"<string>\",\n    \"endToEndId\": \"<string>\",\n    \"customer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"street\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"number\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"neighborhood\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"complement\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"withdraw\": {\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"payer\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": \"<string>\"\n    },\n    \"payer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"street\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"number\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"neighborhood\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"complement\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"globalID\": {},\n    \"pixQrCode\": {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"pixKey\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\"\n    },\n    \"webhookSent\": [\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_2\": {\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_3\": {\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    ]\n  }\n}",
+                      "body": "{\n  \"transaction\": {\n    \"charge\": {\n      \"value\": \"<number>\",\n      \"customer\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"globalID\": {},\n      \"transactionID\": {},\n      \"identifier\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"additionalInfo\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"pixKey\": \"<string>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"expiresIn\": \"<string>\",\n      \"expiresDate\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"subscription\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"paymentMethods\": {\n        \"pix\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"value\": \"<number>\",\n    \"time\": \"<string>\",\n    \"endToEndID\": \"<string>\",\n    \"transactionID\": \"<string>\",\n    \"infoPagador\": \"<string>\",\n    \"endToEndId\": \"<string>\",\n    \"customer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"street\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"number\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"neighborhood\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"complement\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"withdraw\": {\n      \"value\": \"<number>\",\n      \"time\": \"<string>\",\n      \"endToEndID\": \"<string>\",\n      \"transactionID\": \"<string>\",\n      \"infoPagador\": \"<string>\",\n      \"endToEndId\": \"<string>\",\n      \"payer\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": \"<string>\"\n    },\n    \"payer\": {\n      \"name\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"taxID\": {\n        \"taxID\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"correlationID\": \"<string>\",\n      \"address\": {\n        \"zipcode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"street\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"number\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"neighborhood\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"complement\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"globalID\": {},\n    \"pixQrCode\": {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"comment\": \"<string>\",\n      \"brCode\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"paymentLinkID\": \"<string>\",\n      \"paymentLinkUrl\": {},\n      \"pixKey\": \"<string>\",\n      \"qrCodeImage\": {},\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\"\n    },\n    \"webhookSent\": [\n      {\n        \"isRetry\": \"<boolean>\"\n      },\n      {\n        \"isRetry\": \"<boolean>\",\n        \"key_0\": {\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    ]\n  }\n}",
                       "cookie": [],
                       "_postman_previewlanguage": "json"
                     },
@@ -30359,6 +30359,183 @@
                       },
                       "status": "Forbidden",
                       "code": 403,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                },
+                {
+                  "id": "10363a95-33b9-d4c9-165b-e374c48b9e4c",
+                  "name": "Get the refunds of a transaction",
+                  "request": {
+                    "name": "Get the refunds of a transaction",
+                    "description": {
+                      "content": "Returns the refunds of the transaction with the given endToEndId. When the transaction does not exist or was not refunded, returns an empty list.",
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "api",
+                        "v1",
+                        "transaction",
+                        ":endToEndId",
+                        "refund"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "type": "any",
+                          "value": "<string>",
+                          "key": "endToEndId",
+                          "description": "(Required) endToEndId of the original transaction that was refunded"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_LIMITS_GET ACCOUNT_LIMITS_REQUEST_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE ANTICIPATION_REQUEST_READ ANTICIPATION_REQUEST_APPROVE ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST APPLICATION_POST APPLICATION_DELETE BOLETO_TRANSACTION_GET BOLETO_TRANSACTION_GET_LIST BOLETO_VALIDATE_POST CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST FUNDS_RECOVERY_GET FUNDS_RECOVERY_POST FUNDS_RECOVERY_DELETE PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT SUBSCRIPTION_PAYMENT_BOOK_GET TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.woovi.com"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://api.woovi.com"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "53289687-df63-ccdc-aa28-b2d76e5c60c6",
+                      "name": "The refunds of the transaction",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "transaction",
+                            ":endToEndId",
+                            "refund"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "endToEndId",
+                              "description": "(Required) endToEndId of the original transaction that was refunded"
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"refunds\": [\n    {\n      \"value\": \"<number>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"refundId\": \"<string>\",\n      \"time\": \"<string>\",\n      \"comment\": \"<string>\"\n    },\n    {\n      \"value\": \"<number>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"refundId\": \"<string>\",\n      \"time\": \"<string>\",\n      \"comment\": \"<string>\"\n    }\n  ]\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    },
+                    {
+                      "id": "c27058ea-f0bc-564a-1a17-d79193e5ca70",
+                      "name": "An error message",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "v1",
+                            "transaction",
+                            ":endToEndId",
+                            "refund"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "type": "any",
+                              "value": "<string>",
+                              "key": "endToEndId",
+                              "description": "(Required) endToEndId of the original transaction that was refunded"
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: oauth2",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "<token>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
                       "header": [
                         {
                           "key": "Content-Type",
@@ -30835,183 +31012,6 @@
                               "value": "<string>",
                               "key": "id",
                               "description": "(Required) refund ID or correlation ID"
-                            }
-                          ]
-                        },
-                        "header": [
-                          {
-                            "description": {
-                              "content": "Added as a part of security scheme: oauth2",
-                              "type": "text/plain"
-                            },
-                            "key": "Authorization",
-                            "value": "<token>"
-                          },
-                          {
-                            "key": "Accept",
-                            "value": "application/json"
-                          }
-                        ],
-                        "method": "GET",
-                        "body": {}
-                      },
-                      "status": "Bad Request",
-                      "code": 400,
-                      "header": [
-                        {
-                          "key": "Content-Type",
-                          "value": "application/json"
-                        }
-                      ],
-                      "body": "{\n  \"error\": \"<string>\"\n}",
-                      "cookie": [],
-                      "_postman_previewlanguage": "json"
-                    }
-                  ],
-                  "event": [],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
-                  }
-                },
-                {
-                  "id": "a7c44105-8fcb-0732-96de-5ab8ee75c874",
-                  "name": "Get the refunds of a transaction",
-                  "request": {
-                    "name": "Get the refunds of a transaction",
-                    "description": {
-                      "content": "Returns the refunds of the transaction with the given endToEndId. When the transaction does not exist or was not refunded, returns an empty list.",
-                      "type": "text/plain"
-                    },
-                    "url": {
-                      "path": [
-                        "api",
-                        "v1",
-                        "refund",
-                        "transaction",
-                        ":endToEndId"
-                      ],
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "query": [],
-                      "variable": [
-                        {
-                          "disabled": false,
-                          "type": "any",
-                          "value": "<string>",
-                          "key": "endToEndId",
-                          "description": "(Required) endToEndId of the original transaction that was refunded"
-                        }
-                      ]
-                    },
-                    "header": [
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "method": "GET",
-                    "auth": {
-                      "type": "oauth2",
-                      "oauth2": [
-                        {
-                          "key": "scope",
-                          "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_LIMITS_GET ACCOUNT_LIMITS_REQUEST_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE ANTICIPATION_REQUEST_READ ANTICIPATION_REQUEST_APPROVE ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST APPLICATION_POST APPLICATION_DELETE BOLETO_TRANSACTION_GET BOLETO_TRANSACTION_GET_LIST BOLETO_VALIDATE_POST CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST FUNDS_RECOVERY_GET FUNDS_RECOVERY_POST FUNDS_RECOVERY_DELETE PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT SUBSCRIPTION_PAYMENT_BOOK_GET TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET"
-                        },
-                        {
-                          "key": "accessTokenUrl",
-                          "value": "https://api.woovi.com"
-                        },
-                        {
-                          "key": "authUrl",
-                          "value": "https://api.woovi.com"
-                        },
-                        {
-                          "key": "grant_type",
-                          "value": "authorization_code"
-                        }
-                      ]
-                    }
-                  },
-                  "response": [
-                    {
-                      "id": "bc0f2729-8f43-21ea-e39d-c4e0d17c569b",
-                      "name": "The refunds of the transaction",
-                      "originalRequest": {
-                        "url": {
-                          "path": [
-                            "api",
-                            "v1",
-                            "refund",
-                            "transaction",
-                            ":endToEndId"
-                          ],
-                          "host": [
-                            "{{baseUrl}}"
-                          ],
-                          "query": [],
-                          "variable": [
-                            {
-                              "disabled": false,
-                              "type": "any",
-                              "value": "<string>",
-                              "key": "endToEndId",
-                              "description": "(Required) endToEndId of the original transaction that was refunded"
-                            }
-                          ]
-                        },
-                        "header": [
-                          {
-                            "description": {
-                              "content": "Added as a part of security scheme: oauth2",
-                              "type": "text/plain"
-                            },
-                            "key": "Authorization",
-                            "value": "<token>"
-                          },
-                          {
-                            "key": "Accept",
-                            "value": "application/json"
-                          }
-                        ],
-                        "method": "GET",
-                        "body": {}
-                      },
-                      "status": "OK",
-                      "code": 200,
-                      "header": [
-                        {
-                          "key": "Content-Type",
-                          "value": "application/json"
-                        }
-                      ],
-                      "body": "{\n  \"refunds\": [\n    {\n      \"value\": \"<number>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"refundId\": \"<string>\",\n      \"time\": \"<string>\",\n      \"comment\": \"<string>\"\n    },\n    {\n      \"value\": \"<number>\",\n      \"status\": \"<string>\",\n      \"correlationID\": \"<string>\",\n      \"refundId\": \"<string>\",\n      \"time\": \"<string>\",\n      \"comment\": \"<string>\"\n    }\n  ]\n}",
-                      "cookie": [],
-                      "_postman_previewlanguage": "json"
-                    },
-                    {
-                      "id": "7fd93562-d83e-ba9d-e644-e8af8155e890",
-                      "name": "An error message",
-                      "originalRequest": {
-                        "url": {
-                          "path": [
-                            "api",
-                            "v1",
-                            "refund",
-                            "transaction",
-                            ":endToEndId"
-                          ],
-                          "host": [
-                            "{{baseUrl}}"
-                          ],
-                          "query": [],
-                          "variable": [
-                            {
-                              "disabled": false,
-                              "type": "any",
-                              "value": "<string>",
-                              "key": "endToEndId",
-                              "description": "(Required) endToEndId of the original transaction that was refunded"
                             }
                           ]
                         },
