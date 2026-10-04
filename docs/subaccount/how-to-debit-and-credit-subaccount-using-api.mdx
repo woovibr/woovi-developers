@@ -1,0 +1,119 @@
+---
+id: how-to-debit-and-credit-subaccount-using-api
+title: Como debitar e creditar o saldo de uma Subconta via API?
+tags:
+  - api
+  - subaccount
+  - debit
+  - credit
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::info
+Para a utilização desta funcionalidade é necessário possuir a funcionalidade Subconta
+:::
+
+O saldo de uma subconta é uma reserva dentro do saldo da conta principal. Você pode mover valores entre a subconta e a conta principal, sem sair da Woovi, com dois _endpoints_:
+
+- **`POST /api/v1/subaccount/{id}/debit`**: tira o valor da subconta e devolve para a conta principal.
+- **`POST /api/v1/subaccount/{id}/credit`**: tira o valor do saldo disponível da conta principal e coloca na subconta.
+
+Você pode acessar a documentação de cada _endpoint_ em [debit](/api#tag/subaccount/POST/api/v1/subaccount/{id}/debit) e [credit](/api#tag/subaccount/POST/api/v1/subaccount/{id}/credit).
+
+Um caso comum de uso do débito: em uma cobrança com split para subconta, o estorno parcial é descontado da conta principal. O `/debit` permite retirar da subconta a parte correspondente.
+
+A chave Pix registrada na subconta deve ser passada na url da requisição como parâmetro (`{id}`).
+
+Os campos da requisição são os mesmos nos dois _endpoints_:
+
+- **`value`** (obrigatório): O valor em centavos a ser movimentado.
+- **`description`** (opcional): Uma descrição da movimentação, que aparece no extrato da subconta.
+
+### Permissões
+
+A sua aplicação (AppID) precisa ter o escopo correspondente:
+
+- `/debit`: **`SUBACCOUNT_DEBIT_POST`**
+- `/credit`: **`SUBACCOUNT_CREDIT_POST`**
+
+No `/debit`, a aplicação também pode precisar ter IPs permitidos cadastrados. Quando essa exigência está ativa para a sua conta, uma aplicação sem IP permitido recebe `401`.
+
+### Exemplo
+
+O body da sua requisição será semelhante a este exemplo:
+
+```js
+{
+  value: 500,
+  description: 'Estorno parcial pedido 1234',
+}
+```
+
+Se tudo ocorreu bem, o _status code_ será `200` e a resposta terá este formato:
+
+```json
+{
+  "pixKey": "subconta@exemplo.com",
+  "value": 500,
+  "description": "Estorno parcial pedido 1234",
+  "success": "Sub-account withdrawal has been successfully debited, 500"
+}
+```
+
+### Erros
+
+| Status | Erro                                                              | Quando acontece                                                        |
+| ------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `400`  | `Subaccount not found: {id}`                                      | Não existe subconta ativa com essa chave Pix na sua empresa            |
+| `400`  | `Transfer just work with subaccount with balance`                 | `/debit` em uma subconta com saldo zero                                |
+| `400`  | `Account does not have enough balance to complete the operation`  | `/debit` com valor maior que o saldo da subconta                       |
+| `400`  | `Not enough balance`                                              | `/credit` com valor maior que o saldo disponível da conta principal    |
+| `400`  | `Value must be positive`                                          | `value` zero ou negativo                                               |
+| `401`  | `An allowed IP is required on this application to move money out` | `/debit` com aplicação sem IP permitido, quando a exigência está ativa |
+| `403`  | `This feature is not enabled for your company`                    | A empresa não tem a funcionalidade Subconta                            |
+
+:::warning
+Estes _endpoints_ **não possuem chave de idempotência**. Não há `correlationID`: cada requisição aceita gera uma nova movimentação. Se a requisição der _timeout_ e você reenviar, o valor pode ser movimentado duas vezes.
+
+Para evitar duplicidade, coloque um identificador único no campo `description` e, antes de tentar de novo, consulte o extrato da subconta em `GET /api/v1/subaccount/{id}/statement`. Se já existir um lançamento com esse `description`, a movimentação anterior foi feita e não deve ser repetida.
+:::
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+  curl 'https://api.woovi.com/api/v1/subaccount/subconta@exemplo.com/debit' -X POST \
+      -H "Accept: application/json" \
+      -H "Content-Type: application/json" \
+      -H "Authorization: AUTHORIZATION" \
+      --data-binary '{
+        "value": 500,
+        "description": "Estorno parcial pedido 1234"
+      }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch">
+
+```js
+fetch('https://api.woovi.com/api/v1/subaccount/subconta@exemplo.com/debit', {
+  method: 'POST',
+  body: JSON.stringify({
+    value: 500,
+    description: 'Estorno parcial pedido 1234',
+  }),
+  headers: {
+    Authorization: 'AUTHORIZATION',
+    'Content-Type': 'application/json',
+  },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+Para creditar a subconta, use a mesma requisição trocando `/debit` por `/credit`.
