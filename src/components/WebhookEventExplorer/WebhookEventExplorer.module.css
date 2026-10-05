@@ -147,6 +147,23 @@
   margin-top: 4px;
 }
 
+.copyLink {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  color: var(--ifm-color-primary);
+  background: transparent;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.copyLink:hover {
+  border-color: var(--ifm-color-primary);
+}
+
 .tabs {
   display: flex;
   flex-wrap: wrap;
