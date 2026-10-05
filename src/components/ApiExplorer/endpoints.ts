@@ -2235,7 +2235,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'loan',
     'category': 'loan',
     'summary': 'Originate a loan',
-    'description': 'Contracts a loan for the borrower and instructs the Pix that pays it out. The company originating is the one resolved from the app_id, never a field in the body. `correlationID` is required and unique per company: a repeat returns the same operation with 200 instead of originating a second loan. Product rules the API enforces: at most R$ 2.500,00 per loan, one active loan per borrower, and a borrower registered as an anticipation beneficiary by any carrier cannot borrow (they use anticipation instead).\n',
+    'description': "Contracts a loan for the borrower and instructs the Pix that pays it out. The company originating is the one resolved from the app_id, never a field in the body. `correlationID` is required and unique per company: a repeat returns the same operation with 200 instead of originating a second loan. Product rules the API enforces: at most R$ 2.500,00 per loan and one active loan per borrower. The rule that keeps a carrier's registered beneficiary out of the loan (they use anticipation) is not enforced yet; it has its own RFC.\n",
     'requestExamples': [
       {
         'name': 'operation',
@@ -2318,6 +2318,59 @@ const endpoints: ApiEndpoint[] = [
               },
             ],
             'createdAt': '2026-10-01T17:59:40.000Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-loan-operation-id-payoff',
+    'method': 'POST',
+    'path': '/api/v1/loan/operation/{id}/payoff',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Issue a Pix charge to pay a loan',
+    'description': 'Issues one dynamic Pix charge for the next unpaid installment, for a contiguous range of installments starting at the first unpaid one, or for the whole outstanding balance. The partner shows the code to the borrower or pays it from its own account. No endpoint marks an installment paid: settlement follows the money, and the loan is updated when the Pix is paid, oldest installment first. Only one live charge may exist per installment; a request whose installments overlap an open charge is refused with `CHARGE_OVERLAPS` until that charge is paid or expires. Only operations originated by the company resolved from the app_id are reachable.\n',
+    'requestExamples': [
+      {
+        'name': 'next',
+        'value': {
+          'scope': 'NEXT',
+        },
+        'summary': 'Next unpaid installment',
+      },
+      {
+        'name': 'installments',
+        'value': {
+          'scope': 'INSTALLMENTS',
+          'seqs': [
+            1,
+            2,
+          ],
+        },
+        'summary': 'A contiguous range of installments',
+      },
+      {
+        'name': 'all',
+        'value': {
+          'scope': 'ALL',
+        },
+        'summary': 'The whole outstanding balance',
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'payoff': {
+            'amount': 94500,
+            'brCode': '00020126580014br.gov.bcb.pix...6304EF01',
+            'txid': '199b55fa022346fa8ca3681da3c5d5fc',
+            'expiresAt': '2026-11-02T23:59:59.000Z',
+            'installments': [
+              1,
+              2,
+            ],
           },
         },
       },

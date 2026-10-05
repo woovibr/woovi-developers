@@ -98,3 +98,10 @@ fetch('https://api.woovi.com/api/v1/loan/simulation', {
 Os valores do exemplo são ilustrativos. A tabela Price do serviço é a fonte do
 cálculo, e a taxa mensal vigente aparece em `monthlyInterestRate`.
 :::
+
+## Recusas
+
+| Status | `error` | Significado |
+| --- | --- | --- |
+| `400` | `INVALID_REQUEST` | Corpo inválido: valor fora de `10000` a `250000`, mais de 8 parcelas, `period` desconhecido ou documento malformado. `message` diz qual campo. |
+| `422` | `TAXID_TYPE_NOT_ELIGIBLE` | O tipo de documento (CPF ou CNPJ) não está habilitado para crédito. É regra de produto, não erro do corpo. |

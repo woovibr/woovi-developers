@@ -25,15 +25,17 @@ que origina é a do seu `app_id`, nunca um campo do corpo.
 | `taxID` | string | Sim | CPF ou CNPJ do tomador, com ou sem máscara. |
 | `amount` | integer | Sim | Valor do empréstimo, em centavos, entre `10000` e `250000`. |
 | `installmentNumber` | integer | Sim | Número de parcelas, de 1 a 8. |
-| `pixKey` | string | Não | Chave Pix que recebe o dinheiro. Omitida, usa a chave que o tomador cadastrou na Woovi. |
+| `pixKey` | string | Não | Chave Pix que recebe o dinheiro. Omitida, o Pix sai para o próprio documento do tomador (o CPF ou CNPJ em `taxID`) como chave Pix. |
 | `correlationID` | string | Sim | Seu identificador, único por empresa. |
 
 ## Idempotência
 
 O `correlationID` é a chave de idempotência. Se a sua aplicação repetir a
 chamada com o mesmo `correlationID`, a API devolve a mesma operação com `200`
-em vez de originar um segundo empréstimo. Em caso de `503`, repita com o mesmo
-`correlationID`.
+em vez de originar um segundo empréstimo, mesmo que o corpo seja diferente. Uma
+operação `CANCELLED` (o Pix de desembolso falhou) também é devolvida: a chave
+fica consumida e um novo empréstimo precisa de outro `correlationID`. Em caso
+de `503`, repita com o mesmo `correlationID`.
 
 ## Recusas por regra de produto
 
@@ -43,12 +45,11 @@ sua integração precisa tratar desde o primeiro dia:
 | `error` | Significado |
 | --- | --- |
 | `ALREADY_ACTIVE` | O tomador já tem um empréstimo em aberto. |
-| `CARRIER_REGISTERED` | O tomador é beneficiário de Antecipação em uma transportadora e usa aquele produto. |
 | `ORIGINATION_CLOSED` | A originação está fechada no momento. |
 | `TAXID_TYPE_NOT_ELIGIBLE` | O tipo de documento não está habilitado para crédito. |
-| `TAXID_NOT_FOUND` | O documento não foi encontrado na base consultada. |
-| `FRAUD_MARKED` | O documento tem marcador de fraude. |
-| `FUND_INACTIVE` | O fundo que financia está inativo. |
+| `SCREENING_REFUSED` | A análise do documento recusou. Um código só, de propósito: a API não diz se foi cadastro ou marcador de fraude. |
+| `FUND_INACTIVE` | O fundo que financia não comporta a operação. |
+| `FUND_CLOSED` | Não há fundo ativo no momento. |
 
 ### Exemplos em código
 

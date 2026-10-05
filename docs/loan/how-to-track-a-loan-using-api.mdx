@@ -22,13 +22,14 @@ Dois _endpoints_ leem o estado dos empréstimos. Ambos exigem o escopo
 
 Em `{id}` vai o `operationId` devolvido na originação.
 
-## Como o tomador paga
+## Como o empréstimo é pago
 
-O parceiro não liquida parcela pela API. Cada parcela em aberto traz um
-`payoff` com `brCode` (Pix copia e cola), `amount` e `expiresAt`: mostre o
-código para o tomador e consulte a operação de novo para ver `paid` virar
-`true` e `outstanding` cair. `payoff` na raiz é o código para quitar tudo o que
-falta.
+Nenhum endpoint marca parcela como paga. Peça uma cobrança Pix em
+[Pagar empréstimo](./how-to-pay-a-loan-using-api) e consulte a operação de novo
+para ver `paid` virar `true`, `outstanding` cair e o pagamento aparecer em
+`repayments[]`. Cada parcela em aberto que já tenha cobrança traz o `payoff`
+dela, com `brCode`, `amount` e `expiresAt`; `payoff` na raiz é o código para
+quitar tudo o que falta.
 
 ### Exemplos em código
 

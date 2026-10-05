@@ -3,15 +3,15 @@ id: loan-api-overview
 title: Visão geral da API de Empréstimo
 sidebar_label: Visão geral
 sidebar_position: 1
-description: Como autenticar e integrar a API REST de Empréstimo da Woovi para simular, originar e acompanhar empréstimos a partir do seu sistema.
+description: Como autenticar e integrar a API REST de Empréstimo da Woovi para simular, originar, acompanhar e pagar empréstimos a partir do seu sistema.
 tags:
   - api
   - loan
   - emprestimo
 ---
 
-A **API de Empréstimo** permite que um parceiro simule, origine e acompanhe
-empréstimos concedidos pela Woovi a uma pessoa ou empresa. A Woovi financia; o
+A **API de Empréstimo** permite que um parceiro simule, origine, acompanhe e
+pague empréstimos concedidos pela Woovi a uma pessoa ou empresa. A Woovi financia; o
 parceiro informa quem está pedindo, quanto e em quantas parcelas, e acompanha
 o pagamento.
 
@@ -61,9 +61,9 @@ Elas simplificam a integração: o parceiro não tem alavancas de preço.
 
 - **De R$ 100,00 a R$ 2.500,00 por empréstimo** (`10000` a `250000` centavos), para qualquer tomador.
 - **Um empréstimo ativo por vez.** Um segundo pedido é recusado com `ALREADY_ACTIVE`.
-- **Quem é beneficiário de Antecipação em alguma transportadora não pode pedir empréstimo.** A recusa é `CARRIER_REGISTERED`; essa pessoa usa a Antecipação.
-- **O pagamento é ato do tomador.** O parceiro nunca liquida parcela pela API: ele lê o `payoff` e mostra o código Pix para a pessoa pagar.
-- **Onde a pessoa recebe não importa.** O desembolso vai para a chave Pix informada, ou para a chave que o tomador cadastrou na Woovi.
+- **Nenhum endpoint marca parcela como paga.** O parceiro pede uma cobrança Pix (próxima parcela, um intervalo ou tudo) e a baixa acontece quando o Pix é pago. Vale **uma cobrança viva por parcela**: pedido que cubra parcela com cobrança em aberto é recusado com `CHARGE_OVERLAPS`.
+- **Onde a pessoa recebe não importa.** O desembolso vai para a chave Pix informada ou, sem ela, para o próprio documento do tomador como chave Pix.
+- A regra que impede beneficiário de Antecipação de pedir empréstimo ainda não é aplicada pela API.
 
 ## Convenções
 
@@ -81,6 +81,7 @@ Elas simplificam a integração: o parceiro não tem alavancas de preço.
 | `POST` | `/api/v1/loan/operation` | `LOAN_OPERATION_POST` |
 | `GET` | `/api/v1/loan/operation?taxID=` | `LOAN_OPERATION_GET` |
 | `GET` | `/api/v1/loan/operation/{id}` | `LOAN_OPERATION_GET` |
+| `POST` | `/api/v1/loan/operation/{id}/payoff` | `LOAN_OPERATION_POST` |
 
 Consulte a referência completa na página [API](/api-redoc/) (tag **loan**).
 
@@ -92,5 +93,5 @@ Consulte a referência completa na página [API](/api-redoc/) (tag **loan**).
 | `401` | `app_id` inválido ou IP não autorizado. Formato: `{ "data": null, "errors": [{ "message": "Invalid appID" }] }` |
 | `403` | Escopo ausente ou Empréstimo não habilitado para a empresa. |
 | `404` | Operação não encontrada para a empresa. |
-| `422` | Recusa por regra de produto em `POST /operation`: `ALREADY_ACTIVE`, `CARRIER_REGISTERED`, `ORIGINATION_CLOSED`, `TAXID_TYPE_NOT_ELIGIBLE`, `TAXID_NOT_FOUND`, `FRAUD_MARKED`, `FUND_INACTIVE`. |
-| `503` | Dependência indisponível. Repita com o mesmo `correlationID`. |
+| `422` | Recusa por regra de produto. Em `POST /simulation`: `TAXID_TYPE_NOT_ELIGIBLE`. Em `POST /operation`: `ALREADY_ACTIVE`, `ORIGINATION_CLOSED`, `TAXID_TYPE_NOT_ELIGIBLE`, `SCREENING_REFUSED`, `FUND_INACTIVE`, `FUND_CLOSED`. Em `POST /operation/{id}/payoff`: veja [Pagar empréstimo](./how-to-pay-a-loan-using-api). |
+| `503` | Dependência indisponível (`UNAVAILABLE`), em qualquer endpoint, porque vem da validação da credencial. Repita mais tarde, com o mesmo `correlationID` quando houver. |
