@@ -2203,8 +2203,8 @@ const endpoints: ApiEndpoint[] = [
               'operationId': '6abd072eccca077d96ad9e20',
               'correlationID': 'erp-loan-42',
               'taxID': {
-                'taxID': '12345678909',
-                'type': 'BR:CPF',
+                'taxID': '11222333000181',
+                'type': 'BR:CNPJ',
               },
               'status': 'ACTIVE',
               'principal': 150000,
@@ -2240,7 +2240,7 @@ const endpoints: ApiEndpoint[] = [
       {
         'name': 'operation',
         'value': {
-          'taxID': '12345678909',
+          'taxID': '11222333000181',
           'amount': 150000,
           'installmentNumber': 4,
           'pixKey': '+5511999999999',
@@ -2267,8 +2267,8 @@ const endpoints: ApiEndpoint[] = [
             'operationId': '6abd072eccca077d96ad9e20',
             'correlationID': 'erp-loan-42',
             'taxID': {
-              'taxID': '12345678909',
-              'type': 'BR:CPF',
+              'taxID': '11222333000181',
+              'type': 'BR:CNPJ',
             },
             'status': 'ACTIVE',
             'principal': 150000,
@@ -2388,7 +2388,7 @@ const endpoints: ApiEndpoint[] = [
       {
         'name': 'simulation',
         'value': {
-          'taxID': '12345678909',
+          'taxID': '11222333000181',
           'amount': 150000,
           'installmentNumber': 4,
           'period': 'MONTHLY',
