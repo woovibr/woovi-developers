@@ -104,7 +104,7 @@ sequenceDiagram
 | `GET /api/v1/kyc/documents` | `KYC_DOCUMENTS_GET` |
 | `POST /api/v1/kyc/documents` | `KYC_DOCUMENTS_POST` |
 | `GET /api/v1/kyc/representatives` | `KYC_REPRESENTATIVES_GET` |
-| `POST /api/v1/kyc/representatives` e `/representatives/documents` | `KYC_REPRESENTATIVES_POST` |
+| `POST /api/v1/kyc/representatives`, `/representatives/documents` e `/representatives/phone-code` | `KYC_REPRESENTATIVES_POST` |
 | `POST /api/v1/kyc/pix-authentication` | `KYC_PIX_AUTHENTICATION_POST` |
 | `GET /api/v1/kyc/pix-authentication/{id}` | `KYC_PIX_AUTHENTICATION_GET` |
 | `GET /api/v1/kyc/bc-protection` | `KYC_BC_PROTECTION_GET` |
@@ -367,6 +367,7 @@ curl -X POST https://api.woovi.com/api/v1/kyc/onboarding/submit \
 | `MISSING_PIX_AUTHENTICATION` | Um ADMIN ativo sem cerimônia `MATCHED` (só com `PIX_AUTHENTICATION_KYC`) | [Passo 5](#5-autenticação-pix-dos-administradores) |
 | `BC_PROTECTION_NOT_AUTHORIZED` | CNPJ ou ADMIN com BC Protege+ ativo | [Passo 6](#6-bc-protege) |
 | `MISSING_REPRESENTATIVE_DOCUMENTS` | ADMIN sem selfie ou sem identidade válida | [Passo 4](#4-sócios-e-representantes) |
+| `MISSING_REPRESENTATIVE_PHONE_VERIFICATION` | ADMIN exigido sem o celular confirmado no WhatsApp (só com `KYC_REPRESENTATIVE_PHONE_OTP`) | [Como confirmar o celular de um sócio administrador via API?](./api-representative-phone-code.mdx) |
 | `PENDING_REQUESTED_DOCUMENTS` | A análise pediu documentos que não foram enviados | [Passo 3](#3-documentos-da-empresa) / [RFI](#9-rfi-pedido-de-informações) |
 | `PENDING_BC_PROTEGE` | A única pendência é o BC Protege+ | [Passo 6](#6-bc-protege) |
 | `STATUS_NOT_SUBMITTABLE` | O cadastro não está em `DRAFT`/`PENDING` | Consulte o status; não há o que reenviar |
