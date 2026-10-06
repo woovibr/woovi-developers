@@ -68,7 +68,7 @@ Elas simplificam a integração: o parceiro não tem alavancas de preço.
 ## Convenções
 
 - **Valores monetários** são inteiros **em centavos** (`150000` = R$ 1.500,00).
-- **`taxID`** é o CNPJ do tomador, com ou sem máscara. Por enquanto CPF não é aceito e volta `422 TAXID_TYPE_NOT_ELIGIBLE`.
+- **`taxID`** pode ser CPF ou CNPJ, com ou sem máscara.
 - **Taxas** são decimais (`0.1` = 10% ao mês). A taxa por período sai por equivalência, nunca por divisão.
 - Datas de vencimento são `YYYY-MM-DD`; instantes são **ISO 8601**.
 - **`correlationID`** é seu identificador. Em `POST /operation` ele é obrigatório e único por empresa: repetir devolve a mesma operação, nunca origina duas.

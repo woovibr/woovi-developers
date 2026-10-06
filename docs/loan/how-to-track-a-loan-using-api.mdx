@@ -38,7 +38,7 @@ quitar tudo o que falta.
 
 ```sh
 # Listar
-curl 'https://api.woovi.com/api/v1/loan/operation?taxID=11222333000181&status=ACTIVE' \
+curl 'https://api.woovi.com/api/v1/loan/operation?taxID=12345678909&status=ACTIVE' \
     -H "Authorization: {SEU_APP_ID}"
 
 # Consultar
@@ -67,7 +67,7 @@ fetch(`https://api.woovi.com/api/v1/loan/operation/${id}`, {
   "operation": {
     "operationId": "6abd072eccca077d96ad9e20",
     "correlationID": "erp-loan-42",
-    "taxID": { "taxID": "11222333000181", "type": "BR:CNPJ" },
+    "taxID": { "taxID": "12345678909", "type": "BR:CPF" },
     "status": "ACTIVE",
     "principal": 150000,
     "totalDue": 189000,

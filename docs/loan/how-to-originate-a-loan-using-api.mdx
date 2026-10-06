@@ -22,10 +22,10 @@ que origina é a do seu `app_id`, nunca um campo do corpo.
 
 | Campo | Tipo | Obrigatório | Descrição |
 | --- | --- | --- | --- |
-| `taxID` | string | Sim | CNPJ do tomador, com ou sem máscara. CPF é recusado com `TAXID_TYPE_NOT_ELIGIBLE`. |
+| `taxID` | string | Sim | CPF ou CNPJ do tomador, com ou sem máscara. |
 | `amount` | integer | Sim | Valor do empréstimo, em centavos, entre `10000` e `250000`. |
 | `installmentNumber` | integer | Sim | Número de parcelas, de 1 a 8. |
-| `pixKey` | string | Não | Chave Pix que recebe o dinheiro. Omitida, o Pix sai para o próprio documento do tomador (o CNPJ em `taxID`) como chave Pix. |
+| `pixKey` | string | Não | Chave Pix que recebe o dinheiro. Omitida, o Pix sai para o próprio documento do tomador (o CPF ou CNPJ em `taxID`) como chave Pix. |
 | `correlationID` | string | Sim | Seu identificador, único por empresa. |
 
 ## Idempotência
@@ -61,7 +61,7 @@ curl 'https://api.woovi.com/api/v1/loan/operation' -X POST \
     -H "Content-Type: application/json" \
     -H "Authorization: {SEU_APP_ID}" \
     -d '{
-      "taxID": "11222333000181",
+      "taxID": "12345678909",
       "amount": 150000,
       "installmentNumber": 4,
       "pixKey": "+5511999999999",
@@ -80,7 +80,7 @@ fetch('https://api.woovi.com/api/v1/loan/operation', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    taxID: '11222333000181',
+    taxID: '12345678909',
     amount: 150000,
     installmentNumber: 4,
     pixKey: '+5511999999999',
@@ -99,7 +99,7 @@ fetch('https://api.woovi.com/api/v1/loan/operation', {
   "operation": {
     "operationId": "6abd072eccca077d96ad9e20",
     "correlationID": "erp-loan-42",
-    "taxID": { "taxID": "11222333000181", "type": "BR:CNPJ" },
+    "taxID": { "taxID": "12345678909", "type": "BR:CPF" },
     "status": "ACTIVE",
     "principal": 150000,
     "totalDue": 189000,
