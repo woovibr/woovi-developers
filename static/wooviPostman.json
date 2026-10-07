@@ -21217,6 +21217,843 @@
                       "protocolProfileBehavior": {
                         "disableBodyPruning": true
                       }
+                    },
+                    {
+                      "id": "249fdb18-70da-b546-737a-fe421beaa9e8",
+                      "name": "phone-code",
+                      "item": [
+                        {
+                          "id": "722f5a84-67b1-9de4-7477-b89a61450be9",
+                          "name": "Send the WhatsApp phone code to a ceremony admin",
+                          "request": {
+                            "name": "Send the WhatsApp phone code to a ceremony admin",
+                            "description": {
+                              "content": "Sends a 6-digit code on WhatsApp to the phone stored on the\nrepresentative, the one sent in `phone` to\n`POST /api/v1/kyc/representatives` or on the onboarding. Confirming it\nthrough `POST /api/v1/kyc/representatives/phone-code/verify` proves the\nadmin holds that number.\n\nRequired only when the company that owns the register has the feature\n`KYC_REPRESENTATIVE_PHONE_OTP`, and only for the administrators the Pix\nauthentication also requires (the target administrators, when the\nregister has any). Until each of them confirms, the submit answers `409`\nwith `MISSING_REPRESENTATIVE_PHONE_VERIFICATION`. Changing the phone\nafter the confirmation asks for a new one.\n\nA code lives 10 minutes. Calling this again while it is live sends the\nsame code again instead of a new one. Between two calls there is a\n30-second cooldown; each admin gets 3 codes an hour, each register 10,\nand one number 6 a day. Every refusal of that kind is a `200` with an\n`outcome`, not an error:\n\n| outcome | Meaning |\n|---|---|\n| `CODE_SENT` | The code went out on WhatsApp: a new one, or the live one again |\n| `ALREADY_SENT` | Nothing new was spent: the code went out less than 30 seconds ago, or a code WhatsApp did not take was delivered again |\n| `ALREADY_VERIFIED` | The current phone is already confirmed |\n| `SAME_AS_ACCOUNT_USER` | The phone is the one the account user already confirmed; nothing to do |\n| `COOLDOWN` | Wait 30 seconds since the last code |\n| `SEND_LIMIT_REACHED` | No codes left for now |\n| `BLOCKED` | 3 wrong codes; no new code for 24 hours after the last one |\n| `TRY_AGAIN` | A concurrent call won, or the send limiter is unavailable; call again |\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n",
+                              "type": "text/plain"
+                            },
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "kyc",
+                                "representatives",
+                                "phone-code"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "POST",
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_LIMITS_GET ACCOUNT_LIMITS_REQUEST_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE ANTICIPATION_REQUEST_READ ANTICIPATION_REQUEST_APPROVE ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST APPLICATION_POST APPLICATION_DELETE BOLETO_TRANSACTION_GET BOLETO_TRANSACTION_GET_LIST BOLETO_VALIDATE_POST CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST FUNDS_RECOVERY_GET FUNDS_RECOVERY_POST FUNDS_RECOVERY_DELETE PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT SUBSCRIPTION_PAYMENT_BOOK_GET TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code"
+                                }
+                              ]
+                            },
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "language": "json"
+                                }
+                              }
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "c00f5ddb-9e93-b587-7950-9ddafbe8a3ab",
+                              "name": "The outcome of the request",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"outcome\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "0a08c689-86a6-c9fd-c55a-7e8a28d9f10e",
+                              "name": "Validation failure, or `code` is `REPRESENTATIVE_NOT_FOUND`,\n`REPRESENTATIVE_NOT_IN_SCOPE` (not an administrator this register\nasks to confirm), `PHONE_INVALID` (not a Brazilian mobile number) or\n`PHONE_PLACEHOLDER` (a filler number such as (99) 99999-9999).\n",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"error\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "ebdcab8a-c711-34da-35f8-0e756e91bf35",
+                              "name": "Invalid appID",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            },
+                            {
+                              "id": "585ed5af-6a59-e80d-98ea-1b52fce354f3",
+                              "name": "The company lacks BAAS, the application lacks the\n`KYC_REPRESENTATIVES_POST` scope, or `code` is\n`FEATURE_NOT_ENABLED`: the company of the register lacks\n`KYC_REPRESENTATIVE_PHONE_OTP`.\n",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            },
+                            {
+                              "id": "ec3ef8f9-0b2e-9ecf-9d2c-e504a0f9f06a",
+                              "name": "No account register matches this correlationID on this company",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            },
+                            {
+                              "id": "3e763c44-bf83-2d97-af1b-593b6b58a507",
+                              "name": "The register left PENDING (`REGISTER_CLOSED`)",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Conflict",
+                              "code": 409,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            },
+                            {
+                              "id": "755a0b69-0c04-8478-fe2b-19fddac897f3",
+                              "name": "WhatsApp did not take the code (`DELIVERY_FAILED`). Calling again\nafter 30 seconds resends the same code, at most twice for one code.\n",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Bad Gateway",
+                              "code": 502,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            }
+                          ],
+                          "event": [],
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          }
+                        },
+                        {
+                          "id": "1a537ec5-58c8-3e91-7e6b-144a9efa5264",
+                          "name": "Confirm the WhatsApp phone code a ceremony admin received",
+                          "request": {
+                            "name": "Confirm the WhatsApp phone code a ceremony admin received",
+                            "description": {
+                              "content": "Checks the code the administrator typed. A wrong code counts against the\nadministrator: the third wrong code blocks new codes and checks for 24\nhours after it, and the right code clears the count. Like the send,\nevery answer about the code is a `200` with an `outcome`:\n\n| outcome | Meaning |\n|---|---|\n| `VERIFIED` | The phone is confirmed |\n| `ALREADY_VERIFIED` | It was already confirmed |\n| `SAME_AS_ACCOUNT_USER` | Nothing to confirm: the account user already confirmed this phone |\n| `WRONG_CODE` | The code does not match |\n| `CODE_EXPIRED` | The code is older than 10 minutes; send a new one |\n| `NO_ACTIVE_CODE` | No code was sent to the current phone |\n| `BLOCKED` | 3 wrong codes; try again 24 hours after the last one |\n| `TRY_AGAIN` | A concurrent call won; call again |\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n",
+                              "type": "text/plain"
+                            },
+                            "url": {
+                              "path": [
+                                "api",
+                                "v1",
+                                "kyc",
+                                "representatives",
+                                "phone-code",
+                                "verify"
+                              ],
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "query": [],
+                              "variable": []
+                            },
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "method": "POST",
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "ACCOUNT_GET ACCOUNT_GET_LIST ACCOUNT_POST ACCOUNT_DELETE ACCOUNT_WITHDRAW_POST ACCOUNT_LIMITS_GET ACCOUNT_LIMITS_REQUEST_POST ACCOUNT_REGISTER_POST ACCOUNT_REGISTER_PATCH ACCOUNT_REGISTER_GET ACCOUNT_REGISTER_DELETE ANTICIPATION_REQUEST_READ ANTICIPATION_REQUEST_APPROVE ANTICIPATION_BENEFICIARY_POST ANTICIPATION_BALANCE_POST APPLICATION_POST APPLICATION_DELETE BOLETO_TRANSACTION_GET BOLETO_TRANSACTION_GET_LIST BOLETO_VALIDATE_POST CASHBACK_FIDELITY_BALANCE_GET CASHBACK_FIDELITY_POST CHARGE_GET CHARGE_GET_LIST CHARGE_POST CHARGE_PATCH CHARGE_DELETE CHARGE_BRCODE_IMAGE_GET CHARGE_IMAGE_GET CHARGE_REFUND_GET_LIST CHARGE_REFUND_POST COMPANY_GET CUSTOMER_GET CUSTOMER_GET_LIST CUSTOMER_POST CUSTOMER_PATCH DECODE_EMV_POST DISPUTE_POST DISPUTE_GET DISPUTE_GET_LIST FILE_POST FUNDS_RECOVERY_GET FUNDS_RECOVERY_POST FUNDS_RECOVERY_DELETE PARTNER_COMPANY_POST PARTNER_COMPANY_GET PARTNER_COMPANY_GET_LIST PARTNER_APPLICATION_POST PAYMENT_GET PAYMENT_GET_LIST PAYMENT_POST PAYMENT_APPROVE_POST PIX_QRCODE_GET PIX_QRCODE_GET_LIST PIX_QRCODE_POST PIX_QRCODE_DELETE PSP_GET_LIST REFUND_GET REFUND_GET_LIST REFUND_POST STATEMENT_GET SUBACCOUNT_GET SUBACCOUNT_GET_LIST SUBACCOUNT_POST SUBACCOUNT_WITHDRAW_POST SUBACCOUNT_TRANSFER_POST SUBACCOUNT_DELETE SUBACCOUNT_DEBIT_POST SUBACCOUNT_CREDIT_POST SUBSCRIPTION_GET SUBSCRIPTION_GET_LIST SUBSCRIPTION_POST SUBSCRIPTION_INSTALLMENT_GET_LIST SUBSCRIPTION_INSTALLMENT_GET SUBSCRIPTION_INSTALLMENT_COBR_POST SUBSCRIPTION_INSTALLMENT_COBR_RETRY_POST SUBSCRIPTION_VALUE_PUT SUBSCRIPTION_CANCEL_PUT SUBSCRIPTION_PAYMENT_BOOK_GET TRANSACTION_GET TRANSACTION_GET_LIST TRANSFER_POST WEBHOOK_GET WEBHOOK_GET_LIST WEBHOOK_EVENTS_GET_LIST WEBHOOK_POST WEBHOOK_DELETE WEBHOOK_IPS_GET"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://api.woovi.com"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code"
+                                }
+                              ]
+                            },
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "language": "json"
+                                }
+                              }
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "3a7691dc-c426-49c9-b7ed-794aeacbb902",
+                              "name": "The outcome of the check",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code",
+                                    "verify"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"outcome\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "0390243e-05a2-137b-ece0-2f2adc56b964",
+                              "name": "Validation failure, or `code` is `INVALID_CODE_FORMAT` (not 6\ndigits; no attempt is spent), `REPRESENTATIVE_NOT_FOUND` or\n`REPRESENTATIVE_NOT_IN_SCOPE`.\n",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code",
+                                    "verify"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": "{\n  \"error\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                              "cookie": [],
+                              "_postman_previewlanguage": "json"
+                            },
+                            {
+                              "id": "1a4a5c47-f522-20f7-023f-fe738d942d65",
+                              "name": "Invalid appID",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code",
+                                    "verify"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            },
+                            {
+                              "id": "2b2e0228-07c6-c594-0cb3-45e385717fff",
+                              "name": "The company lacks BAAS, the application lacks the\n`KYC_REPRESENTATIVES_POST` scope, or `code` is\n`FEATURE_NOT_ENABLED`.\n",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code",
+                                    "verify"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            },
+                            {
+                              "id": "dc503025-e369-e00d-c736-d69bf9bb02cd",
+                              "name": "No account register matches this correlationID on this company",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code",
+                                    "verify"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            },
+                            {
+                              "id": "58e79b32-9a2a-8ee2-3115-6b7d972d8555",
+                              "name": "The register left PENDING (`REGISTER_CLOSED`)",
+                              "originalRequest": {
+                                "url": {
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "kyc",
+                                    "representatives",
+                                    "phone-code",
+                                    "verify"
+                                  ],
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                                },
+                                "header": [
+                                  {
+                                    "description": {
+                                      "content": "Added as a part of security scheme: oauth2",
+                                      "type": "text/plain"
+                                    },
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"correlationID\": \"<string>\",\n  \"representativeId\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "language": "json"
+                                    }
+                                  }
+                                }
+                              },
+                              "status": "Conflict",
+                              "code": 409,
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                                }
+                              ],
+                              "body": "",
+                              "cookie": [],
+                              "_postman_previewlanguage": "text"
+                            }
+                          ],
+                          "event": [],
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          }
+                        }
+                      ],
+                      "event": []
                     }
                   ],
                   "event": []
