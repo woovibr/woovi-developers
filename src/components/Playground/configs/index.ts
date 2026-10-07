@@ -11,6 +11,7 @@ import { invoice } from './invoice';
 import { qrcodeStatic } from './qrcodeStatic';
 import { transfer } from './transfer';
 import { campaign } from './campaign';
+import { loan } from './loan';
 import { embedBaas, qrcodePix, split, webhook } from './more';
 
 export type PlaygroundGroup = {
@@ -37,6 +38,7 @@ export const playgrounds: Record<string, PlaygroundConfig> = Object.fromEntries(
     refund,
     webhook,
     invoice,
+    loan,
   ].map((c) => [c.id, c]),
 );
 
@@ -65,6 +67,12 @@ export const groups: PlaygroundGroup[] = [
     label: 'Operar e conciliar',
     hint: 'webhooks, reembolsos, QR, notas',
     items: ['webhook', 'refund', 'qrcode-pix', 'invoice'],
+  },
+  {
+    id: 'credit',
+    label: 'Crédito',
+    hint: 'empréstimo para os seus clientes',
+    items: ['emprestimo'],
   },
 ];
 

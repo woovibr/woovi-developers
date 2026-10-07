@@ -207,13 +207,13 @@ export default function Lab({
       push(refused);
       return;
     }
-    // an empty `to` keeps the status (reads, repeated payments, settings)
-    const next = {
-      ...(a.apply ? a.apply(res) : res),
-      status: a.to || res.status,
-    };
+    // an empty `to` keeps the status `apply` returns (reads, partial payments, settings)
+    const applied = a.apply ? a.apply(res) : res;
+    const next = { ...applied, status: a.to || applied.status };
+    const transition =
+      typeof a.transition === 'function' ? a.transition(next) : a.transition;
     setRes(next);
-    if (a.transition) setLast(a.transition);
+    if (transition) setLast(transition);
     push(a.log(next));
   };
 
