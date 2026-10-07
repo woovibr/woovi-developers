@@ -2219,6 +2219,265 @@ const endpoints: ApiEndpoint[] = [
     ],
   },
   {
+    'id': 'get-api-v1-loan-operation',
+    'method': 'GET',
+    'path': '/api/v1/loan/operation',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'List the loans of a borrower',
+    'description': 'Returns the operations of a document originated by the company resolved from the app_id, newest first.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pageInfo': {
+            'skip': 0,
+            'limit': 20,
+            'totalCount': 1,
+            'hasNextPage': false,
+          },
+          'operations': [
+            {
+              'operationId': '6abd072eccca077d96ad9e20',
+              'correlationID': 'erp-loan-42',
+              'taxID': {
+                'taxID': '12345678909',
+                'type': 'BR:CPF',
+              },
+              'status': 'ACTIVE',
+              'principal': 150000,
+              'totalDue': 189000,
+              'outstanding': 141750,
+              'installmentNumber': 4,
+              'dueDate': '2027-02-01',
+              'disbursedAt': '2026-10-01T18:00:00.000Z',
+              'settledAt': null,
+              'disbursement': {
+                'status': 'CONFIRMED',
+                'endToEndId': 'E54811417202610011800abcdef12345',
+              },
+              'installments': [],
+              'payoff': null,
+              'repayments': [],
+              'createdAt': '2026-10-01T17:59:40.000Z',
+            },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-loan-operation',
+    'method': 'POST',
+    'path': '/api/v1/loan/operation',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Originate a loan',
+    'description': "Contracts a loan for the borrower and instructs the Pix that pays it out. The company originating is the one resolved from the app_id, never a field in the body. `correlationID` is required and unique per company: a repeat returns the same operation with 200 instead of originating a second loan. Product rules the API enforces: at most R$ 2.500,00 per loan and one active loan per borrower. The rule that keeps a carrier's registered beneficiary out of the loan (they use anticipation) is not enforced yet; it has its own RFC.\n",
+    'requestExamples': [
+      {
+        'name': 'operation',
+        'value': {
+          'taxID': '12345678909',
+          'amount': 150000,
+          'installmentNumber': 4,
+          'pixKey': '+5511999999999',
+          'correlationID': 'erp-loan-42',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-loan-operation-id',
+    'method': 'GET',
+    'path': '/api/v1/loan/operation/{id}',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Get a loan',
+    'description': 'State of one operation: outstanding balance, installments with their payoff codes, repayments and the disbursement Pix. Only operations originated by the company resolved from the app_id are visible.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'operation': {
+            'operationId': '6abd072eccca077d96ad9e20',
+            'correlationID': 'erp-loan-42',
+            'taxID': {
+              'taxID': '12345678909',
+              'type': 'BR:CPF',
+            },
+            'status': 'ACTIVE',
+            'principal': 150000,
+            'totalDue': 189000,
+            'outstanding': 141750,
+            'installmentNumber': 4,
+            'dueDate': '2027-02-01',
+            'disbursedAt': '2026-10-01T18:00:00.000Z',
+            'settledAt': null,
+            'disbursement': {
+              'status': 'CONFIRMED',
+              'endToEndId': 'E54811417202610011800abcdef12345',
+            },
+            'installments': [
+              {
+                'seq': 1,
+                'dueDate': '2026-11-01',
+                'amount': 47250,
+                'paid': true,
+                'payoff': null,
+              },
+              {
+                'seq': 2,
+                'dueDate': '2026-12-01',
+                'amount': 47250,
+                'paid': false,
+                'payoff': {
+                  'amount': 47250,
+                  'brCode': '00020126580014br.gov.bcb.pix...6304ABCD',
+                  'txid': 'd98b4cd74b4b4aee87097a90871f8ef7',
+                  'expiresAt': '2026-12-01T23:59:59.000Z',
+                },
+              },
+            ],
+            'payoff': {
+              'amount': 141750,
+              'brCode': '00020126580014br.gov.bcb.pix...6304EF01',
+              'txid': '199b55fa022346fa8ca3681da3c5d5fc',
+              'expiresAt': null,
+            },
+            'repayments': [
+              {
+                'id': '6abec6f167f6bc21483ef34e',
+                'amount': 47250,
+                'channel': 'PIX_MANUAL',
+                'createdAt': '2026-10-30T12:00:00.000Z',
+              },
+            ],
+            'createdAt': '2026-10-01T17:59:40.000Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-loan-operation-id-payoff',
+    'method': 'POST',
+    'path': '/api/v1/loan/operation/{id}/payoff',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Issue a Pix charge to pay a loan',
+    'description': 'Issues one dynamic Pix charge for the next unpaid installment, for a contiguous range of installments starting at the first unpaid one, or for the whole outstanding balance. The partner shows the code to the borrower or pays it from its own account. No endpoint marks an installment paid: settlement follows the money, and the loan is updated when the Pix is paid, oldest installment first. Only one live charge may exist per installment; a request whose installments overlap an open charge is refused with `CHARGE_OVERLAPS` until that charge is paid or expires. Only operations originated by the company resolved from the app_id are reachable.\n',
+    'requestExamples': [
+      {
+        'name': 'next',
+        'value': {
+          'scope': 'NEXT',
+        },
+        'summary': 'Next unpaid installment',
+      },
+      {
+        'name': 'installments',
+        'value': {
+          'scope': 'INSTALLMENTS',
+          'seqs': [
+            1,
+            2,
+          ],
+        },
+        'summary': 'A contiguous range of installments',
+      },
+      {
+        'name': 'all',
+        'value': {
+          'scope': 'ALL',
+        },
+        'summary': 'The whole outstanding balance',
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'payoff': {
+            'amount': 94500,
+            'brCode': '00020126580014br.gov.bcb.pix...6304EF01',
+            'txid': '199b55fa022346fa8ca3681da3c5d5fc',
+            'expiresAt': '2026-11-02T23:59:59.000Z',
+            'installments': [
+              1,
+              2,
+            ],
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-loan-simulation',
+    'method': 'POST',
+    'path': '/api/v1/loan/simulation',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Simulate a loan',
+    'description': 'Prices a plan for a borrower: principal, term and period in, installment plan and total cost out. Nothing is persisted on the borrower; the simulation is stored until `expirationDate` so it can be contracted. The company is the one resolved from the app_id.\n',
+    'requestExamples': [
+      {
+        'name': 'simulation',
+        'value': {
+          'taxID': '12345678909',
+          'amount': 150000,
+          'installmentNumber': 4,
+          'period': 'MONTHLY',
+          'correlationID': 'erp-sim-42',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'simulation': {
+            'simulationId': '6abeadd43f02bc8c8675c0ad',
+            'correlationID': 'erp-sim-42',
+            'status': 'ACTIVE',
+            'expirationDate': '2026-10-02',
+            'amount': 150000,
+            'installmentNumber': 4,
+            'period': 'MONTHLY',
+            'monthlyInterestRate': 0.1,
+            'periodInterestRate': 0.1,
+            'totalAmount': 189000,
+            'installmentPlan': [
+              {
+                'seq': 1,
+                'dueDate': '2026-11-01',
+                'amount': 47250,
+              },
+              {
+                'seq': 2,
+                'dueDate': '2026-12-01',
+                'amount': 47250,
+              },
+              {
+                'seq': 3,
+                'dueDate': '2027-01-01',
+                'amount': 47250,
+              },
+              {
+                'seq': 4,
+                'dueDate': '2027-02-01',
+                'amount': 47250,
+              },
+            ],
+          },
+        },
+      },
+    ],
+  },
+  {
     'id': 'get-api-v1-partner-affiliate',
     'method': 'GET',
     'path': '/api/v1/partner/affiliate',

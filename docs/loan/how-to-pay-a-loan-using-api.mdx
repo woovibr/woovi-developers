@@ -1,0 +1,118 @@
+---
+id: how-to-pay-a-loan-using-api
+title: Como pagar um empréstimo via API?
+sidebar_label: Pagar empréstimo
+sidebar_position: 5
+tags:
+  - api
+  - loan
+  - emprestimo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Para pagar uma parcela, um conjunto de parcelas ou o empréstimo inteiro, use o
+_endpoint_ `POST /api/v1/loan/operation/{id}/payoff`. Requer o escopo
+`LOAN_OPERATION_POST`. Em `{id}` vai o `operationId` devolvido na originação.
+
+A chamada emite **uma** cobrança Pix dinâmica pelo valor pedido e devolve o
+código copia e cola. Quem paga pode ser o tomador, ou a sua própria empresa, da
+conta dela. **Nenhum endpoint marca parcela como paga**: a baixa acontece quando
+o Pix é pago, da parcela mais antiga para a mais nova. Consulte a operação depois
+para ver `paid` virar `true` e `outstanding` cair.
+
+## Campos do corpo
+
+| Campo | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `scope` | string | Sim | `NEXT` cobra a próxima parcela em aberto, `INSTALLMENTS` cobra as parcelas em `seqs`, `ALL` cobra todo o saldo devedor. |
+| `seqs` | integer[] | Só em `INSTALLMENTS` | Números das parcelas (`seq`). Precisam ser contíguas e começar na primeira parcela não paga. |
+
+## Regras
+
+- **Uma cobrança viva por parcela.** Enquanto houver uma cobrança em aberto que cubra uma parcela, um novo pedido que a inclua é recusado com `CHARGE_OVERLAPS`. Pague ou espere a cobrança expirar.
+- **Da mais antiga para a mais nova.** Pedir as parcelas 2 e 3 com a 1 em aberto é recusado com `PREVIOUS_INSTALLMENT_UNPAID`.
+- **O valor é o que falta.** Uma parcela paga em parte entra pelo restante.
+- **Só depois do dinheiro sair.** Antes de `disbursement.status` chegar a `CONFIRMED`, a recusa é `DISBURSEMENT_NOT_CONFIRMED`.
+- Repetir o pedido com a mesma cobrança ainda aberta devolve a mesma cobrança, com o mesmo `txid`.
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+# Próxima parcela
+curl 'https://api.woovi.com/api/v1/loan/operation/6abd072eccca077d96ad9e20/payoff' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{ "scope": "NEXT" }'
+
+# Parcelas 1 e 2
+curl 'https://api.woovi.com/api/v1/loan/operation/6abd072eccca077d96ad9e20/payoff' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{ "scope": "INSTALLMENTS", "seqs": [1, 2] }'
+
+# Tudo o que falta
+curl 'https://api.woovi.com/api/v1/loan/operation/6abd072eccca077d96ad9e20/payoff' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{ "scope": "ALL" }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+const id = '6abd072eccca077d96ad9e20';
+
+const payoff = (body) =>
+  fetch(`https://api.woovi.com/api/v1/loan/operation/${id}/payoff`, {
+    method: 'POST',
+    headers: {
+      Authorization: '{SEU_APP_ID}',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  }).then((res) => res.json());
+
+payoff({ scope: 'NEXT' });
+payoff({ scope: 'INSTALLMENTS', seqs: [1, 2] });
+payoff({ scope: 'ALL' });
+```
+
+  </TabItem>
+</Tabs>
+
+### Exemplo de resposta (`200`)
+
+```json
+{
+  "payoff": {
+    "amount": 94500,
+    "brCode": "00020126580014br.gov.bcb.pix...6304EF01",
+    "txid": "199b55fa022346fa8ca3681da3c5d5fc",
+    "expiresAt": "2026-11-02T23:59:59.000Z",
+    "installments": [1, 2]
+  }
+}
+```
+
+`installments` lista as parcelas que a cobrança cobre. `txid` é como a baixa é
+conciliada: ele aparece em `repayments[]` da operação depois do pagamento.
+
+## Recusas
+
+Além da validação do corpo (`400`, por exemplo `seqs` não contíguas), a API
+recusa com `422` e um `error`:
+
+| `error` | Significado |
+| --- | --- |
+| `DISBURSEMENT_NOT_CONFIRMED` | O Pix de desembolso ainda não foi confirmado. |
+| `INSTALLMENT_PAID` | Nada é devido para o que foi pedido. |
+| `PREVIOUS_INSTALLMENT_UNPAID` | O intervalo não começa na primeira parcela em aberto. |
+| `CHARGE_OVERLAPS` | Já existe uma cobrança em aberto cobrindo uma dessas parcelas. |
+| `CHARGE_AMOUNT_CHANGED` | Já existe uma cobrança em aberto para as mesmas parcelas com outro valor. |
+| `CHARGE_NOT_CONFIGURED`, `FUND_ACCOUNT_UNAVAILABLE`, `CHARGE_UNAVAILABLE` | A emissão da cobrança está indisponível no momento. Tente de novo mais tarde. |
