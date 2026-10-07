@@ -1769,6 +1769,45 @@ const endpoints: ApiEndpoint[] = [
     ],
   },
   {
+    'id': 'post-api-v1-kyc-representatives-phone-code',
+    'method': 'POST',
+    'path': '/api/v1/kyc/representatives/phone-code',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Send the WhatsApp phone code to a ceremony admin',
+    'description': 'Sends a 6-digit code on WhatsApp to the phone stored on the\nrepresentative, the one sent in `phone` to\n`POST /api/v1/kyc/representatives` or on the onboarding. Confirming it\nthrough `POST /api/v1/kyc/representatives/phone-code/verify` proves the\nadmin holds that number.\n\nRequired only when the company that owns the register has the feature\n`KYC_REPRESENTATIVE_PHONE_OTP`, and only for the administrators the Pix\nauthentication also requires (the target administrators, when the\nregister has any). Until each of them confirms, the submit answers `409`\nwith `MISSING_REPRESENTATIVE_PHONE_VERIFICATION`. Changing the phone\nafter the confirmation asks for a new one.\n\nA code lives 10 minutes. Calling this again while it is live sends the\nsame code again instead of a new one. Between two calls there is a\n30-second cooldown; each admin gets 3 codes an hour, each register 10,\nand one number 6 a day. Every refusal of that kind is a `200` with an\n`outcome`, not an error:\n\n| outcome | Meaning |\n|---|---|\n| `CODE_SENT` | The code went out on WhatsApp: a new one, or the live one again |\n| `ALREADY_SENT` | Nothing new was spent: the code went out less than 30 seconds ago, or a code WhatsApp did not take was delivered again |\n| `ALREADY_VERIFIED` | The current phone is already confirmed |\n| `SAME_AS_ACCOUNT_USER` | The phone is the one the account user already confirmed; nothing to do |\n| `COOLDOWN` | Wait 30 seconds since the last code |\n| `SEND_LIMIT_REACHED` | No codes left for now |\n| `BLOCKED` | 3 wrong codes; no new code for 24 hours after the last one |\n| `TRY_AGAIN` | A concurrent call won, or the send limiter is unavailable; call again |\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'representativeId': '6650e0f1a2b3c4d5e6f70809',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-kyc-representatives-phone-code-verify',
+    'method': 'POST',
+    'path': '/api/v1/kyc/representatives/phone-code/verify',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Confirm the WhatsApp phone code a ceremony admin received',
+    'description': 'Checks the code the administrator typed. A wrong code counts against the\nadministrator: the third wrong code blocks new codes and checks for 24\nhours after it, and the right code clears the count. Like the send,\nevery answer about the code is a `200` with an `outcome`:\n\n| outcome | Meaning |\n|---|---|\n| `VERIFIED` | The phone is confirmed |\n| `ALREADY_VERIFIED` | It was already confirmed |\n| `SAME_AS_ACCOUNT_USER` | Nothing to confirm: the account user already confirmed this phone |\n| `WRONG_CODE` | The code does not match |\n| `CODE_EXPIRED` | The code is older than 10 minutes; send a new one |\n| `NO_ACTIVE_CODE` | No code was sent to the current phone |\n| `BLOCKED` | 3 wrong codes; try again 24 hours after the last one |\n| `TRY_AGAIN` | A concurrent call won; call again |\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'representativeId': '6650e0f1a2b3c4d5e6f70809',
+          'code': '123456',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
     'id': 'get-api-v1-kyc-representatives',
     'method': 'GET',
     'path': '/api/v1/kyc/representatives',
