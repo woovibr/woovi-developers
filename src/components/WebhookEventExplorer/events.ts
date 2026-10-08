@@ -687,6 +687,9 @@ const events: WebhookEvent[] = [
     docsPath: '/docs/webhook/examples/webhook-payment-payload',
     payload: {
       event: 'OPENPIX:MOVEMENT_CONFIRMED',
+      account: {
+        accountId: '6823414a524ed520d3518dd6',
+      },
       payment: {
         value: 30,
         status: 'CONFIRMED',
@@ -695,9 +698,20 @@ const events: WebhookEvent[] = [
         correlationID: '222a1750-de17-406c-bd0c-25af9a5a5d08',
       },
       transaction: {
+        correlationID: '9134e286-6f71-427a-bf00-241681624586',
         value: 30,
         endToEndId: 'E23114447202303161242u80lZNR7nQZ',
         time: '2023-03-16T12:42:47.526Z',
+      },
+      destination: {
+        name: 'Fulano de Tal',
+        taxID: { taxID: '06882328684', type: 'BR:CPF' },
+        pixKey: '06882328684',
+        bankName: 'NU PAGAMENTOS - IP',
+        account: '12345678',
+        branch: '0001',
+        accountType: 'TRAN',
+        ispb: '18236120',
       },
     },
   },
@@ -720,6 +734,9 @@ const events: WebhookEvent[] = [
         value: 30,
         endToEndId: 'E23114447202303161242u80lZNR7nQZ',
         time: '2023-03-16T12:42:47.526Z',
+        providerRejectedReason: 'AC03 - Pagamento rejeitado pelo PSP do recebedor',
+        ispb: '18236120',
+        providerErrorCode: 'PAY_PIX_KEY_ERROR',
       },
       error: {
         code: 'PAY_PIX_KEY_ERROR',
