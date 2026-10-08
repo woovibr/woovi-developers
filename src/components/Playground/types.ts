@@ -80,8 +80,8 @@ export type Action = {
   /** statuses where the action is allowed */
   from: string[];
   /** transition id to animate in the state machine ('' for none) */
-  transition: string;
-  /** next status ('' keeps the current one) */
+  transition: string | ((r: Resource) => string);
+  /** next status ('' keeps the one `apply` returns) */
   to: string;
   primary?: boolean;
   apply?: (r: Resource) => Resource;
