@@ -118,6 +118,16 @@ Redirecione o pagador para o `checkoutUrl`. Os dados do cartão também são dig
 | `400`         | A cobrança não aceita cartão (`type` diferente de `PIX_CREDIT` ou `CREDIT_CARD`). |
 | `400`         | O cliente não tem nome e CPF/CNPJ válidos (`errorCode: INVALID_CUSTOMER`).        |
 
+#### Erros enquanto a conta não está pronta
+
+| Quando acontece                                   | Resposta                                                                               |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| O cartão não está habilitado na sua conta         | A criação da cobrança com `type` `CREDIT_CARD` é recusada.                             |
+| As suas taxas de cartão ainda não foram definidas | A página de pagamento com cartão é recusada com o `errorCode` `FEE_NOT_CONFIGURED`.    |
+| O cadastro ainda não está **Ativo**               | A página de pagamento com cartão é recusada com o `errorCode` `SELLER_NOT_REGISTERED`. |
+
+Veja como acompanhar o cadastro em [Primeiros passos com cartão de crédito](./card-first-steps.md).
+
 ## Confirmando o pagamento
 
 Quando o pagamento com cartão é aprovado, a cobrança fica com o status `COMPLETED`. Você pode consultar o status com o _endpoint_ `GET /api/v1/charge/{id}`.
