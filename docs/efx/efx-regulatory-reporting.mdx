@@ -1,0 +1,29 @@
+---
+id: efx-regulatory-reporting
+title: Reporte ao Banco Central
+description: 'Como as operações eFX recebidas pela Woovi são informadas ao Banco Central (ACAM225) e quais dados a sua plataforma precisa enviar corretamente.'
+sidebar_position: 6
+tags:
+  - efx
+  - compliance
+---
+
+A Woovi informa **cada operação eFX** ao Banco Central do Brasil, no documento **ACAM225**. Você não precisa enviar nenhum arquivo nem chamar nenhuma rota a mais: o reporte é feito pela Woovi a partir dos dados do pagamento.
+
+## O que é sua responsabilidade
+
+O reporte usa os dados que você envia ao criar o pagamento. Eles precisam ser **exatos e verdadeiros**:
+
+| Dado | Campo |
+| --- | --- |
+| Finalidade da operação (bens ou serviços) | `purpose` |
+| Pagador no Brasil | `payer.name`, `payer.taxID` |
+| Beneficiário e a CNR | `beneficiary` |
+| Fatura da operação | `invoice.number`, `invoice.issuedAt`, `invoice.url` |
+| Valor | `value` |
+
+Escolha o `purpose` pelo que de fato está sendo pago: `GOODS_PURCHASE` para compra de bens e `SERVICE_PURCHASE` para compra de serviços.
+
+:::warning
+Não reaproveite faturas nem informe dados genéricos. Cada pagamento deve corresponder a uma operação real entre o pagador e a sua plataforma, com a fatura correspondente.
+:::

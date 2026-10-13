@@ -1,0 +1,10 @@
+{
+  "label": "eFX",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "eFX - visão geral",
+    "description": "eFX da Woovi: plataformas eFX estrangeiras recebem pagamentos de pagadores no Brasil por Pix, com liquidação em reais na conta em reais de não residente (CNR)."
+  }
+}

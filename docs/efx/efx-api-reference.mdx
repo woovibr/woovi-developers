@@ -1,0 +1,185 @@
+---
+id: efx-api-reference
+title: Referência da API de eFX
+description: 'Rotas da API de eFX da Woovi: cotação, criação, consulta e listagem de pagamentos, com campos, escopos, limites e erros.'
+sidebar_position: 4
+tags:
+  - efx
+  - api
+---
+
+Todas as rotas ficam sob `/api/v1/efx/` e usam o cabeçalho `Authorization: <AppID>`. A URL base de produção é `https://api.woovi.com`.
+
+| Rota | Escopo |
+| --- | --- |
+| `GET /api/v1/efx/quote` | `EFX_PAYMENT_CREATE` |
+| `POST /api/v1/efx/payment-in` | `EFX_PAYMENT_CREATE` |
+| `GET /api/v1/efx/payment-in/{id}` | `EFX_PAYMENT_LIST` |
+| `GET /api/v1/efx/payment-in` | `EFX_PAYMENT_LIST` |
+
+Valores monetários são inteiros **em centavos de real**. Datas seguem a ISO 8601. Erros respondem com `{ "error": "<mensagem>" }`.
+
+## Cotação
+
+GET `/api/v1/efx/quote`
+
+Calcula o total a pagar sem criar nada.
+
+| Query param | Obrigatório | Descrição |
+| --- | --- | --- |
+| `value` | sim | Valor da operação em centavos de real, inteiro maior que zero. |
+| `currency` | sim | `BRL`. |
+| `purpose` | sim | `GOODS_PURCHASE` (compra de bens) ou `SERVICE_PURCHASE` (compra de serviços). |
+
+Resposta `200`: `{ "quote": { ... } }`
+
+| Campo | Descrição |
+| --- | --- |
+| `purpose` | Finalidade informada. |
+| `value` | Valor da operação, em centavos. É o que chega na sua CNR. |
+| `currency` | `BRL`. |
+| `iof.rate` | Alíquota de IOF, em fração (`0.035` = 3,5%). |
+| `iof.value` | IOF em centavos. |
+| `fee.value` | Tarifa da Woovi em centavos. |
+| `totalValue` | `value + iof.value + fee.value`, em centavos. É o que o pagador paga. |
+| `expiresAt` | Até quando a cotação vale como referência. |
+
+## Criar um pagamento
+
+POST `/api/v1/efx/payment-in`
+
+O corpo tem que ser JSON (`Content-Type: application/json`), com até 256 KB.
+
+| Campo | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `correlationID` | string | sim | Seu identificador único do pagamento, com até 200 caracteres. Garante a idempotência. |
+| `value` | integer | sim | Valor da operação em centavos de real, maior que zero. É o valor liquidado na sua CNR. |
+| `currency` | string | sim | `BRL`. |
+| `purpose` | string | sim | `GOODS_PURCHASE` ou `SERVICE_PURCHASE`. |
+| `expectedTotalValue` | integer | não | O `totalValue` que você mostrou ao pagador. Se o calculado na criação for outro, a resposta é `409` e nada é criado. |
+| `description` | string | não | Descrição da operação, com até 140 caracteres. |
+| `expiresIn` | integer | não | Segundos que o Pix fica pagável, de `300` a `3600`. Padrão: `900`. |
+| `ecommerceIntegrated` | boolean | não | Só para empresas habilitadas pela Woovi como e-commerce integrado. Enviar `true` sem essa habilitação responde `400`. |
+| `payer` | object | sim | O seu cliente no Brasil, que paga o Pix. |
+| `payer.name` | string | sim | Nome do pagador. |
+| `payer.taxID` | string | sim | CPF ou CNPJ válido do pagador, com ou sem pontuação. O Pix tem que sair de uma conta com esse mesmo documento. |
+| `payer.email` | string | não | E-mail do pagador. |
+| `payer.phone` | string | não | Telefone do pagador. |
+| `beneficiary` | object | sim | Quem recebe o valor: o titular da CNR. |
+| `beneficiary.name` | string | sim | Nome do beneficiário. |
+| `beneficiary.country` | string | sim | País do beneficiário, código ISO 3166-1 alfa-2 em maiúsculas (ex.: `US`). |
+| `beneficiary.type` | string | sim | `INDIVIDUAL` ou `COMPANY`. |
+| `beneficiary.taxID` | string | sim | CPF ou CNPJ de não residente do beneficiário (11 ou 14 dígitos, com ou sem pontuação). |
+| `beneficiary.bankAccount.ispb` | string | sim | ISPB da instituição da CNR. |
+| `beneficiary.bankAccount.branch` | string | sim | Agência da CNR. |
+| `beneficiary.bankAccount.accountNumber` | string | sim | Número da CNR. |
+| `beneficiary.bankAccount.accountType` | string | não | `CHECKING` ou `PAYMENT`. |
+| `invoice` | object | sim | A fatura da operação. |
+| `invoice.number` | string | sim | Número da fatura. |
+| `invoice.issuedAt` | string | sim | Data de emissão, ISO 8601. |
+| `invoice.url` | string | não | Link `http(s)` da fatura. |
+
+Respostas:
+
+- `201 { "paymentIn": { ... } }`: pagamento criado, já com o Pix.
+- `200 { "paymentIn": { ... } }`: o mesmo `correlationID` já tinha sido criado com o mesmo corpo. Devolve o pagamento existente.
+
+### Limite por operação
+
+Sem a habilitação de e-commerce integrado, o `value` convertido pela PTAX de venda do Banco Central (sem margem) não pode passar de **US$ 10.000**. Acima disso: `400 value exceeds the US$ 10,000 limit per operation for non e-commerce payments`.
+
+## Consultar um pagamento
+
+GET `/api/v1/efx/payment-in/{id}`
+
+O `{id}` aceita o `id` do pagamento ou o seu `correlationID`. Só os pagamentos da sua empresa são encontrados; os demais respondem `404 paymentIn not found`.
+
+Resposta `200`: `{ "paymentIn": { ... } }`
+
+## Listar pagamentos
+
+GET `/api/v1/efx/payment-in`
+
+Mais recentes primeiro.
+
+| Query param | Descrição |
+| --- | --- |
+| `start` | Criados a partir desta data (ISO 8601). |
+| `end` | Criados até esta data (ISO 8601). |
+| `status` | Filtra por status (veja abaixo). |
+| `purpose` | `GOODS_PURCHASE` ou `SERVICE_PURCHASE`. |
+| `skip` | Quantos pular. Padrão: `0`. |
+| `limit` | Quantos devolver, de `1` a `100`. Padrão: `20`. |
+
+```bash
+curl --request GET \
+  --url 'https://api.woovi.com/api/v1/efx/payment-in?status=REFUND_PENDING&limit=50' \
+  --header 'Authorization: <SEU_APPID>'
+```
+
+Resposta `200`:
+
+```json
+{
+  "pageInfo": {
+    "skip": 0,
+    "limit": 50,
+    "totalCount": 1,
+    "hasPreviousPage": false,
+    "hasNextPage": false
+  },
+  "paymentIns": [{ "id": "6a0c3f2e9b1d4c0012ab34cd", "status": "REFUND_PENDING", "...": "..." }]
+}
+```
+
+## O objeto `paymentIn`
+
+| Campo | Descrição |
+| --- | --- |
+| `id` | Id do pagamento na Woovi. |
+| `correlationID` | O seu identificador. |
+| `status` | Status atual (veja abaixo). |
+| `purpose` | Finalidade. |
+| `value` | Valor da operação, em centavos. É o que é liquidado na sua CNR. |
+| `currency` | `BRL`. |
+| `iof` | `{ rate, value }`, travados na criação. |
+| `fee` | `{ value }`, tarifa da Woovi travada na criação. |
+| `totalValue` | Total do Pix, em centavos. |
+| `payer` | `{ name, taxID }` do pagador (só dígitos). |
+| `beneficiary` | `{ name, country }` do beneficiário. |
+| `pix.brCode` | Pix copia e cola, também usado para gerar o QR Code. |
+| `pix.qrCodeImage` | Imagem do QR Code. |
+| `pix.paymentLinkUrl` | Página de pagamento. |
+| `paidAt` | Quando o Pix foi pago. |
+| `endToEndId` | Identificador do Pix recebido. |
+| `settledAt` | Quando o `value` foi liquidado na CNR. |
+| `refund` | Presente quando há valor a devolver: `{ value, reason }`, e também `endToEndId` quando `REFUNDED`. Veja [Devoluções](./efx-refunds.mdx). |
+| `expiresAt` | Fim do prazo para pagar o Pix. |
+| `createdAt` | Criação do pagamento. |
+
+### Status
+
+| Status | Significado |
+| --- | --- |
+| `CREATED` | Pix criado, aguardando o pagamento. |
+| `PAID` | Pix recebido e conferido. A liquidação vai começar. |
+| `SETTLING` | Transferência para a CNR em andamento. |
+| `COMPLETED` | Liquidado na CNR. |
+| `EXPIRED` | Não pago no prazo. |
+| `REFUND_PENDING` | Recebido, mas tem que ser devolvido ao pagador. Não é liquidado. |
+| `REFUNDED` | Devolução concluída. |
+| `FAILED` | O Pix não pôde ser criado. Use um `correlationID` novo. |
+
+## Erros
+
+| HTTP | Quando |
+| --- | --- |
+| `400` | Corpo ou parâmetro inválido (a mensagem diz qual campo), conteúdo com HTML ou script, CNR não cadastrada, limite de US$ 10.000 ultrapassado ou `ecommerceIntegrated` sem habilitação. |
+| `401` | `Authorization` ausente ou inválido. |
+| `403` | Aplicação sem escopos (`application must use scopes`), sem o escopo da rota ou empresa sem eFX habilitado (`eFX is not enabled for this company`). |
+| `404` | (`GET`) Nenhum pagamento com esse `id` ou `correlationID` na sua empresa. |
+| `409` | `correlationID already used with a different body`, ou `quote changed: totalValue is now <valor>` quando o `expectedTotalValue` não bate. |
+| `413` | Corpo acima de 256 KB. |
+| `415` | `Content-Type` diferente de `application/json`. |
+| `502` | O Pix não pôde ser criado. Com `retry with the same correlationID`, repita o mesmo `POST`; com `use a new correlationID to try again`, o pagamento ficou `FAILED` e você deve criar outro. |
+| `503` | Cotação indisponível no momento (`quote unavailable for <moeda>`). Tente de novo mais tarde. |

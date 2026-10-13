@@ -1,0 +1,62 @@
+---
+id: efx-refunds
+title: eFX refunds
+description: 'What happens to an eFX payment when the Pix comes from someone else, arrives after the deadline, has a different amount or is paid twice.'
+sidebar_position: 5
+tags:
+  - efx
+  - api
+  - pix
+---
+
+Woovi only settles into your CNR a Pix that follows the operation rules. When a Pix arrives outside them, the money is **not settled**: it must go back to the payer. The payment moves to `REFUND_PENDING`, and the `refund` field shows the amount and the reason:
+
+```json
+{
+  "paymentIn": {
+    "id": "6a0c3f2e9b1d4c0012ab34cd",
+    "correlationID": "order-7f3a91",
+    "status": "REFUND_PENDING",
+    "refund": { "value": 50500, "reason": "PAYER_MISMATCH" },
+    "...": "..."
+  }
+}
+```
+
+## Reasons
+
+| `refund.reason` | When it happens | `refund.value` |
+| --- | --- | --- |
+| `PAYER_MISMATCH` | The CPF or CNPJ of the paying account differs from `payer.taxID`. | Everything received. |
+| `PAYER_UNKNOWN` | The payer could not be identified. | Everything received. |
+| `AMOUNT_MISMATCH` | The amount paid differs from `totalValue`. | Everything received. |
+| `PAID_AFTER_EXPIRY` | The Pix was paid after `expiresAt`, including when the payment was already `EXPIRED`. | Everything received. |
+| `DUPLICATE_PAYMENT` | More than one Pix was paid for the same payment. | The sum of the extra Pix payments. |
+| `TRANSFER_REJECTED` | The transfer to your CNR was rejected. | Everything received. |
+
+## Pix from someone else
+
+The Pix must come from an account **in the payer's own name**, with the same CPF or CNPJ sent in `payer.taxID`. If a relative, partner or anyone else pays on their behalf, the payment moves to `REFUND_PENDING` with `PAYER_MISMATCH` and is not settled. For your customer to pay, create a new payment (with another `correlationID`) and ask them to pay from their own account.
+
+## Pix after the deadline
+
+A payment not paid by `expiresAt` moves to `EXPIRED`. If the payer still pays the Pix after the deadline, the payment moves from `EXPIRED` to `REFUND_PENDING` with `PAID_AFTER_EXPIRY`. To charge again, create a new payment.
+
+## Duplicate Pix
+
+If the payer pays the same Pix more than once, the extra Pix payments are always refunded, and `refund` shows `DUPLICATE_PAYMENT` with their summed amount.
+
+- If the duplicate is detected **before** settlement, the payment moves to `REFUND_PENDING` and is not settled automatically.
+- If the payment was already `SETTLING` or `COMPLETED`, the status **does not change**: the original amount still goes to your CNR, and only the extra Pix payments show up in `refund`.
+
+## How the refund happens
+
+Refunds are currently **not automatic**: payments in `REFUND_PENDING` are handled by Woovi support. Once the refund is done, the payment moves to `REFUNDED` and `refund.endToEndId` identifies the refund Pix.
+
+To follow open cases, list payments with `status=REFUND_PENDING`:
+
+```bash
+curl --request GET \
+  --url 'https://api.woovi.com/api/v1/efx/payment-in?status=REFUND_PENDING' \
+  --header 'Authorization: <YOUR_APPID>'
+```

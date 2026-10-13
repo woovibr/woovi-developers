@@ -1,0 +1,62 @@
+---
+id: efx-refunds
+title: Devoluções no eFX
+description: 'O que acontece com um pagamento eFX quando o Pix vem de outra pessoa, chega depois do prazo, tem valor diferente ou é pago em duplicidade.'
+sidebar_position: 5
+tags:
+  - efx
+  - api
+  - pix
+---
+
+A Woovi só liquida na sua CNR um Pix que cumpre as regras da operação. Quando um Pix chega fora delas, o dinheiro **não é liquidado**: ele tem que voltar ao pagador. O pagamento passa a `REFUND_PENDING`, e o campo `refund` mostra o valor e o motivo:
+
+```json
+{
+  "paymentIn": {
+    "id": "6a0c3f2e9b1d4c0012ab34cd",
+    "correlationID": "order-7f3a91",
+    "status": "REFUND_PENDING",
+    "refund": { "value": 50500, "reason": "PAYER_MISMATCH" },
+    "...": "..."
+  }
+}
+```
+
+## Motivos
+
+| `refund.reason` | Quando acontece | `refund.value` |
+| --- | --- | --- |
+| `PAYER_MISMATCH` | O CPF ou CNPJ da conta que pagou é diferente do `payer.taxID`. | Tudo o que foi recebido. |
+| `PAYER_UNKNOWN` | Não foi possível identificar quem pagou. | Tudo o que foi recebido. |
+| `AMOUNT_MISMATCH` | O valor pago é diferente do `totalValue`. | Tudo o que foi recebido. |
+| `PAID_AFTER_EXPIRY` | O Pix foi pago depois do `expiresAt`, inclusive quando o pagamento já estava `EXPIRED`. | Tudo o que foi recebido. |
+| `DUPLICATE_PAYMENT` | Mais de um Pix foi pago para o mesmo pagamento. | A soma dos Pix a mais. |
+| `TRANSFER_REJECTED` | A transferência para a sua CNR foi recusada. | Tudo o que foi recebido. |
+
+## Pix de outra pessoa
+
+O Pix tem que sair de uma conta **no nome do próprio pagador**, com o mesmo CPF ou CNPJ informado em `payer.taxID`. Se um parente, sócio ou outra pessoa paga no lugar dele, o pagamento vai para `REFUND_PENDING` com `PAYER_MISMATCH` e não é liquidado. Para que o seu cliente pague, crie um pagamento novo (com outro `correlationID`) e peça que ele pague da própria conta.
+
+## Pix depois do prazo
+
+Um pagamento não pago até o `expiresAt` passa a `EXPIRED`. Se mesmo assim o pagador pagar o Pix depois do prazo, o pagamento passa de `EXPIRED` para `REFUND_PENDING` com `PAID_AFTER_EXPIRY`. Para cobrar de novo, crie um pagamento novo.
+
+## Pix em duplicidade
+
+Se o pagador paga o mesmo Pix mais de uma vez, os Pix a mais são sempre devolvidos, e o `refund` aparece com `DUPLICATE_PAYMENT` e o valor somado deles.
+
+- Se a duplicidade é identificada **antes** da liquidação, o pagamento passa a `REFUND_PENDING` e não é liquidado automaticamente.
+- Se o pagamento já estava em `SETTLING` ou `COMPLETED`, o status **não muda**: o valor original segue para a sua CNR, e só os Pix a mais aparecem em `refund`.
+
+## Como a devolução acontece
+
+Hoje a devolução **não é automática**: os pagamentos em `REFUND_PENDING` são tratados pelo suporte da Woovi. Quando a devolução é concluída, o pagamento passa a `REFUNDED` e `refund.endToEndId` identifica o Pix de devolução.
+
+Para acompanhar os casos em aberto, liste os pagamentos com `status=REFUND_PENDING`:
+
+```bash
+curl --request GET \
+  --url 'https://api.woovi.com/api/v1/efx/payment-in?status=REFUND_PENDING' \
+  --header 'Authorization: <SEU_APPID>'
+```

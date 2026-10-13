@@ -1,0 +1,185 @@
+---
+id: efx-api-reference
+title: eFX API reference
+description: 'Woovi eFX API routes: quote, create, get and list payments, with fields, scopes, limits and errors.'
+sidebar_position: 4
+tags:
+  - efx
+  - api
+---
+
+All routes live under `/api/v1/efx/` and use the `Authorization: <AppID>` header. The production base URL is `https://api.woovi.com`.
+
+| Route | Scope |
+| --- | --- |
+| `GET /api/v1/efx/quote` | `EFX_PAYMENT_CREATE` |
+| `POST /api/v1/efx/payment-in` | `EFX_PAYMENT_CREATE` |
+| `GET /api/v1/efx/payment-in/{id}` | `EFX_PAYMENT_LIST` |
+| `GET /api/v1/efx/payment-in` | `EFX_PAYMENT_LIST` |
+
+Money amounts are integers **in centavos of real**. Dates follow ISO 8601. Errors answer with `{ "error": "<message>" }`.
+
+## Quote
+
+GET `/api/v1/efx/quote`
+
+Calculates the total to pay without creating anything.
+
+| Query param | Required | Description |
+| --- | --- | --- |
+| `value` | yes | Operation amount in centavos of real, integer greater than zero. |
+| `currency` | yes | `BRL`. |
+| `purpose` | yes | `GOODS_PURCHASE` (purchase of goods) or `SERVICE_PURCHASE` (purchase of services). |
+
+Response `200`: `{ "quote": { ... } }`
+
+| Field | Description |
+| --- | --- |
+| `purpose` | The purpose sent. |
+| `value` | Operation amount, in centavos. This is what reaches your CNR. |
+| `currency` | `BRL`. |
+| `iof.rate` | IOF rate, as a fraction (`0.035` = 3.5%). |
+| `iof.value` | IOF in centavos. |
+| `fee.value` | Woovi fee in centavos. |
+| `totalValue` | `value + iof.value + fee.value`, in centavos. This is what the payer pays. |
+| `expiresAt` | Until when the quote is valid as a reference. |
+
+## Create a payment
+
+POST `/api/v1/efx/payment-in`
+
+The body must be JSON (`Content-Type: application/json`), up to 256 KB.
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `correlationID` | string | yes | Your unique identifier for the payment, up to 200 characters. Guarantees idempotency. |
+| `value` | integer | yes | Operation amount in centavos of real, greater than zero. This is the amount settled into your CNR. |
+| `currency` | string | yes | `BRL`. |
+| `purpose` | string | yes | `GOODS_PURCHASE` or `SERVICE_PURCHASE`. |
+| `expectedTotalValue` | integer | no | The `totalValue` you showed the payer. If the one calculated at creation differs, the response is `409` and nothing is created. |
+| `description` | string | no | Description of the operation, up to 140 characters. |
+| `expiresIn` | integer | no | Seconds the Pix stays payable, from `300` to `3600`. Default: `900`. |
+| `ecommerceIntegrated` | boolean | no | Only for companies enabled by Woovi as integrated e-commerce. Sending `true` without that enablement answers `400`. |
+| `payer` | object | yes | Your customer in Brazil, who pays the Pix. |
+| `payer.name` | string | yes | Payer name. |
+| `payer.taxID` | string | yes | Valid CPF or CNPJ of the payer, with or without punctuation. The Pix must come from an account under this same document. |
+| `payer.email` | string | no | Payer email. |
+| `payer.phone` | string | no | Payer phone. |
+| `beneficiary` | object | yes | Who receives the amount: the CNR holder. |
+| `beneficiary.name` | string | yes | Beneficiary name. |
+| `beneficiary.country` | string | yes | Beneficiary country, uppercase ISO 3166-1 alpha-2 code (e.g. `US`). |
+| `beneficiary.type` | string | yes | `INDIVIDUAL` or `COMPANY`. |
+| `beneficiary.taxID` | string | yes | Non-resident CPF or CNPJ of the beneficiary (11 or 14 digits, with or without punctuation). |
+| `beneficiary.bankAccount.ispb` | string | yes | ISPB of the CNR's institution. |
+| `beneficiary.bankAccount.branch` | string | yes | CNR branch. |
+| `beneficiary.bankAccount.accountNumber` | string | yes | CNR account number. |
+| `beneficiary.bankAccount.accountType` | string | no | `CHECKING` or `PAYMENT`. |
+| `invoice` | object | yes | The operation's invoice. |
+| `invoice.number` | string | yes | Invoice number. |
+| `invoice.issuedAt` | string | yes | Issue date, ISO 8601. |
+| `invoice.url` | string | no | `http(s)` link to the invoice. |
+
+Responses:
+
+- `201 { "paymentIn": { ... } }`: payment created, with its Pix.
+- `200 { "paymentIn": { ... } }`: the same `correlationID` had already been created with the same body. Returns the existing payment.
+
+### Limit per operation
+
+Without the integrated e-commerce enablement, the `value` converted by the Central Bank's PTAX selling rate (no margin) cannot exceed **US$ 10,000**. Above that: `400 value exceeds the US$ 10,000 limit per operation for non e-commerce payments`.
+
+## Get a payment
+
+GET `/api/v1/efx/payment-in/{id}`
+
+`{id}` accepts the payment `id` or your `correlationID`. Only your company's payments are found; any other answers `404 paymentIn not found`.
+
+Response `200`: `{ "paymentIn": { ... } }`
+
+## List payments
+
+GET `/api/v1/efx/payment-in`
+
+Most recent first.
+
+| Query param | Description |
+| --- | --- |
+| `start` | Created from this date on (ISO 8601). |
+| `end` | Created up to this date (ISO 8601). |
+| `status` | Filter by status (see below). |
+| `purpose` | `GOODS_PURCHASE` or `SERVICE_PURCHASE`. |
+| `skip` | How many to skip. Default: `0`. |
+| `limit` | How many to return, from `1` to `100`. Default: `20`. |
+
+```bash
+curl --request GET \
+  --url 'https://api.woovi.com/api/v1/efx/payment-in?status=REFUND_PENDING&limit=50' \
+  --header 'Authorization: <YOUR_APPID>'
+```
+
+Response `200`:
+
+```json
+{
+  "pageInfo": {
+    "skip": 0,
+    "limit": 50,
+    "totalCount": 1,
+    "hasPreviousPage": false,
+    "hasNextPage": false
+  },
+  "paymentIns": [{ "id": "6a0c3f2e9b1d4c0012ab34cd", "status": "REFUND_PENDING", "...": "..." }]
+}
+```
+
+## The `paymentIn` object
+
+| Field | Description |
+| --- | --- |
+| `id` | Payment id at Woovi. |
+| `correlationID` | Your identifier. |
+| `status` | Current status (see below). |
+| `purpose` | Purpose. |
+| `value` | Operation amount, in centavos. This is what is settled into your CNR. |
+| `currency` | `BRL`. |
+| `iof` | `{ rate, value }`, locked at creation. |
+| `fee` | `{ value }`, Woovi fee locked at creation. |
+| `totalValue` | Pix amount, in centavos. |
+| `payer` | Payer `{ name, taxID }` (digits only). |
+| `beneficiary` | Beneficiary `{ name, country }`. |
+| `pix.brCode` | Pix copy-and-paste code, also used to render the QR Code. |
+| `pix.qrCodeImage` | QR Code image. |
+| `pix.paymentLinkUrl` | Payment page. |
+| `paidAt` | When the Pix was paid. |
+| `endToEndId` | Identifier of the received Pix. |
+| `settledAt` | When `value` was settled into the CNR. |
+| `refund` | Present when there is an amount to refund: `{ value, reason }`, plus `endToEndId` when `REFUNDED`. See [Refunds](./efx-refunds.mdx). |
+| `expiresAt` | Deadline to pay the Pix. |
+| `createdAt` | Payment creation. |
+
+### Statuses
+
+| Status | Meaning |
+| --- | --- |
+| `CREATED` | Pix created, waiting for payment. |
+| `PAID` | Pix received and checked. Settlement is about to start. |
+| `SETTLING` | Transfer to the CNR in progress. |
+| `COMPLETED` | Settled into the CNR. |
+| `EXPIRED` | Not paid in time. |
+| `REFUND_PENDING` | Received, but must be refunded to the payer. Not settled. |
+| `REFUNDED` | Refund completed. |
+| `FAILED` | The Pix could not be created. Use a new `correlationID`. |
+
+## Errors
+
+| HTTP | When |
+| --- | --- |
+| `400` | Invalid body or parameter (the message names the field), content with HTML or script, CNR not registered, US$ 10,000 limit exceeded or `ecommerceIntegrated` without enablement. |
+| `401` | Missing or invalid `Authorization`. |
+| `403` | Application without scopes (`application must use scopes`), missing the route's scope, or company without eFX enabled (`eFX is not enabled for this company`). |
+| `404` | (`GET`) No payment with that `id` or `correlationID` in your company. |
+| `409` | `correlationID already used with a different body`, or `quote changed: totalValue is now <value>` when `expectedTotalValue` does not match. |
+| `413` | Body above 256 KB. |
+| `415` | `Content-Type` other than `application/json`. |
+| `502` | The Pix could not be created. With `retry with the same correlationID`, repeat the same `POST`; with `use a new correlationID to try again`, the payment is `FAILED` and you must create another one. |
+| `503` | Quote unavailable right now (`quote unavailable for <currency>`). Try again later. |
