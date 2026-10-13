@@ -1,0 +1,127 @@
+---
+id: card-how-to-create-charge-using-api
+sidebar_position: 2
+title: Como criar uma cobrança com cartão de crédito pela API?
+sidebar_label: Criar cobrança com cartão pela API
+tags:
+  - card
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A cobrança com cartão de crédito usa o mesmo _endpoint_ da cobrança Pix: `POST /api/v1/charge`. O que muda é o campo `type`, que define quais formas de pagamento o pagador pode usar.
+
+Você pode acessar [aqui](/api#tag/charge/POST/api/v1/charge) a documentação referente a esse _endpoint_.
+
+## Antes de começar
+
+- A sua conta precisa estar com o **cartão de crédito habilitado**. Para habilitar, fale com o nosso suporte.
+- A cobrança precisa de um **cliente com nome e CPF/CNPJ válidos**. Sem eles, o pagamento com cartão é recusado.
+
+## Formas de pagamento
+
+| `type`        | O pagador pode pagar com  |
+| ------------- | ------------------------- |
+| `PIX_CREDIT`  | Pix ou cartão de crédito  |
+| `CREDIT_CARD` | Somente cartão de crédito |
+
+Se você não enviar o campo `type`, a cobrança aceita somente Pix.
+
+## Exemplo
+
+O body da sua requisição será semelhante a este exemplo:
+
+```json
+{
+  "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a",
+  "value": 15000,
+  "type": "PIX_CREDIT",
+  "customer": {
+    "name": "Dan Silva",
+    "taxID": "31324227036",
+    "email": "dan@woovi.com"
+  }
+}
+```
+
+- **`value`**: o valor em centavos da cobrança.
+- **`correlationID`**: um identificador único para a cobrança. [CorrelationID](../concepts/correlation-id)
+- **`type`**: `PIX_CREDIT` ou `CREDIT_CARD`.
+- **`customer`**: o cliente da cobrança, com nome e CPF/CNPJ válidos.
+
+Após efetuar a requisição, se tudo ocorreu bem, o _status code_ será `2xx` e no `body` da resposta retornaremos a cobrança criada, igual a uma cobrança Pix:
+
+```json
+{
+  "charge": {
+    "value": 15000,
+    "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a",
+    "status": "ACTIVE",
+    "paymentLinkID": "86f574fb-73...",
+    "paymentLinkUrl": "https://woovi.com/pay/...",
+    "globalID": "Q2hhcmdlOjYzZjkxOTZhNjA3ODg1..."
+  },
+  "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a"
+}
+```
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl 'https://api.woovi.com/api/v1/charge' -X POST \
+    -H "Authorization: {APP_ID}" \
+    -H "Content-Type: application/json" \
+    --data-binary '{"correlationID":"c782e0ac-833d-4a89-9e73-9b60b2b41d3a","value":15000,"type":"PIX_CREDIT","customer":{"name":"Dan Silva","taxID":"31324227036","email":"dan@woovi.com"}}'
+```
+
+  </TabItem>
+</Tabs>
+
+## Como o pagador paga
+
+### Pelo link de pagamento
+
+Envie o `paymentLinkUrl` para o pagador. No link, ele escolhe entre Pix e cartão (quando o `type` é `PIX_CREDIT`) e digita os dados do cartão numa página da Woovi.
+
+Os dados do cartão nunca passam pelo seu sistema, então você não precisa de certificação PCI.
+
+### Pelo seu próprio checkout
+
+Se você tem um checkout próprio, gere a página de pagamento com cartão da cobrança com o _endpoint_ `POST /api/v1/charge/{id}/card/smartform`, onde `{id}` é o `correlationID` da cobrança.
+
+```sh
+curl 'https://api.woovi.com/api/v1/charge/c782e0ac-833d-4a89-9e73-9b60b2b41d3a/card/smartform' -X POST \
+    -H "Authorization: {APP_ID}"
+```
+
+A resposta traz o endereço da página de pagamento:
+
+```json
+{
+  "checkoutUrl": "https://..."
+}
+```
+
+Redirecione o pagador para o `checkoutUrl`. Os dados do cartão também são digitados numa página da Woovi.
+
+#### Erros
+
+| _status code_ | Quando acontece                                                                   |
+| ------------- | --------------------------------------------------------------------------------- |
+| `404`         | A cobrança não foi encontrada.                                                    |
+| `400`         | A cobrança não está `ACTIVE`.                                                     |
+| `400`         | A cobrança não aceita cartão (`type` diferente de `PIX_CREDIT` ou `CREDIT_CARD`). |
+| `400`         | O cliente não tem nome e CPF/CNPJ válidos (`errorCode: INVALID_CUSTOMER`).        |
+
+## Confirmando o pagamento
+
+Quando o pagamento com cartão é aprovado, a cobrança fica com o status `COMPLETED`. Você pode consultar o status com o _endpoint_ `GET /api/v1/charge/{id}`.
+
+:::info Parcelamento
+Hoje, a cobrança criada pela API é paga à vista. O parcelamento é configurado na criação da cobrança pela plataforma. Saiba mais em [Parcelamento no cartão](./card-installments.md).
+:::
