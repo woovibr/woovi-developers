@@ -1,6 +1,7 @@
 ---
 id: split-internal-transfer
 title: Como utilizar o split de transferência entre contas
+description: Como usar o split SPLIT_INTERNAL_TRANSFER via API da Woovi para dividir uma cobrança com contas da sua própria empresa.
 tags:
   - split
 ---

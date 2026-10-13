@@ -1,6 +1,7 @@
 ---
 id: ruby-sdk-resources
-title: Recursos
+title: Recursos do SDK Ruby
+sidebar_label: Recursos
 sidebar_position: 2
 tags:
 - api

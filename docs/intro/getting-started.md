@@ -2,6 +2,7 @@
 id: getting-started
 title: Configure a plataforma Woovi
 sidebar_label: Começando
+description: 'Como configurar a plataforma Woovi: convite de usuários, Single Sign-On com Google, Azure ou SAML, APIs e domínios para liberar no firewall.'
 tags:
 - flow
 - getting-started

@@ -3,6 +3,7 @@ id: pix-key-token-bucket
 sidebar_position: 4
 title: "Token Bucket: limite de consultas de chave Pix"
 sidebar_label: Token Bucket (limite de consultas)
+description: Como funciona o token bucket da Woovi que limita as consultas de chave Pix no DICT, quanto custa cada consulta e como ler o saldo.
 tags:
   - payment
   - api

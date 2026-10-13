@@ -1,6 +1,7 @@
 ---
 id: what-is-dispute
 title: O que é uma disputa?
+description: O que é uma disputa na Woovi e como usá-la para denunciar casos de fraude, golpe ou serviço não entregue em transações Pix.
 tags:
   - disputa
 ---

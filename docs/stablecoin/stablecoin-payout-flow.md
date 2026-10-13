@@ -2,6 +2,7 @@
 id: stablecoin-payout-flow
 sidebar_position: 4
 title: Fluxo de payout (off-ramp)
+description: 'Fluxo de payout (off-ramp) do Stablecoin da Woovi: converta USDT, USDC ou BRLA em BRL e envie o valor via Pix.'
 tags:
   - stablecoin
   - api

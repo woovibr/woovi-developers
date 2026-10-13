@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Split de Pagamentos"
-  },
-  "customProps": {
-    "description": "Documentação para split de pagamentos"
+    "title": "Split de Pagamentos",
+    "description": "Split Partner da Woovi: como funciona o split de pagamentos para parceiros, cadastro de empresas parceiras e configuração de taxas."
   }
 }

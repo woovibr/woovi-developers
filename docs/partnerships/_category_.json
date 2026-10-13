@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Parcerias visão geral"
-  },
-  "customProps": {
-    "description": "Parcerias documentação"
+    "title": "Parcerias visão geral",
+    "description": "Programa de parceiros da Woovi: integração como parceiro, criação de empresas afiliadas via API, acesso à API e webhooks de afiliadas."
   }
 }

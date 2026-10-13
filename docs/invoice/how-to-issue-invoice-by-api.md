@@ -1,6 +1,7 @@
 ---
 title: Criar Nota Fiscal de serviço via API
 sidebar_label: Emissão de NFSe por API
+description: Como emitir uma nota fiscal de serviço (NFS-e) pelo endpoint POST /api/v1/invoice da Woovi, com os formatos de payload aceitos.
 tags:
   - invoice
   - integration

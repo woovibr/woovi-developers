@@ -4,9 +4,7 @@
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "API Account Limits"
-  },
-  "customProps": {
-    "description": "Documentação da API pública de Account Limits para BaaS"
+    "title": "API Account Limits",
+    "description": "Primeiros passos e consulta dos limites de uma conta pela API pública de Account Limits da Woovi, voltada a operações BaaS."
   }
 }

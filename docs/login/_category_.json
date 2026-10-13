@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Login visão geral"
-  },
-  "customProps": {
-    "description": "Login documentação"
+    "title": "Login visão geral",
+    "description": "Como acessar a sua conta Woovi, configurar Single Sign On e restringir o acesso por domínio de e-mail."
   }
 }

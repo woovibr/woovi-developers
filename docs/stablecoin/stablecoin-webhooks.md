@@ -1,7 +1,8 @@
 ---
 id: stablecoin-webhooks
 sidebar_position: 5
-title: Webhooks
+title: Webhooks de Stablecoin
+sidebar_label: Webhooks
 tags:
   - stablecoin
   - api

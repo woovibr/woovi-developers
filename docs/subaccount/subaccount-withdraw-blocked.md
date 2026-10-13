@@ -1,6 +1,7 @@
 ---
 id: subaccount-withdraw-blocked
 title: Por que o saque da subconta foi bloqueado?
+description: Por que o saque de uma subconta é bloqueado quando a chave Pix não existe no DICT ou está restrita, e como verificar o bloqueio.
 tags:
   - api
   - subaccount

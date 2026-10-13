@@ -1,6 +1,7 @@
 ---
 id: adding-funds-in-test-account
 title: Adicionando saldo na conta de teste
+description: Como adicionar saldo na conta de teste da Woovi criando uma cobrança de teste e simulando o seu pagamento.
 tags:
   - test
 ---

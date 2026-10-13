@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Nuvemshop visão geral"
-  },
-  "customProps": {
-    "description": "Nuvemshop documentação"
+    "title": "Nuvemshop visão geral",
+    "description": "Como integrar a sua loja Nuvemshop com a Woovi para receber pagamentos via Pix."
   }
 }

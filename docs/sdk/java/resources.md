@@ -1,6 +1,7 @@
 ---
 id: java-sdk-resources
-title: Recursos
+title: Recursos do SDK Java
+sidebar_label: Recursos
 sidebar_position: 2
 tags:
   - api

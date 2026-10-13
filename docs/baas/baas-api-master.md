@@ -1,6 +1,7 @@
 ---
 id: baas-api-master
 title: Controlando as contas no modo BAAS
+description: Como usar uma API MASTER no modo BaaS da Woovi para criar AppIDs por conta e ler extrato e transações de outras contas da empresa.
 tags:
   - api
   - baas

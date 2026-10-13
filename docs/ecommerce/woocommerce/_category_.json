@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "WooCommerce visão geral"
-  },
-  "customProps": {
-    "description": "WooCommerce documentação"
+    "title": "WooCommerce visão geral",
+    "description": "Plugin da Woovi para WooCommerce: instalação, Pix Crediário e Parcelado, descontos, assinaturas, reembolsos e ambientes de teste."
   }
 }

@@ -2,6 +2,7 @@
 id: is-it-necessary-to-install-any-driver-to-print-a-charge
 sidebar_position: 3
 title: É necessário instalar algum driver para imprimir uma cobrança?
+description: Quando é preciso instalar drivers para imprimir cobranças na Maquininha Pix da Woovi no macOS e no Windows, com links de drivers.
 tags:
   - pix
   - pix-machine

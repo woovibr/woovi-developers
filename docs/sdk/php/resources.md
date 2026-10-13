@@ -1,6 +1,7 @@
 ---
 id: sdk-php-resources
-title: Recursos
+title: Recursos do SDK PHP
+sidebar_label: Recursos
 sidebar_position: 2
 tags:
   - api

@@ -63,5 +63,11 @@ export default function ApiLink({ method, path, webhook, children }: Props) {
     ? `#tag/${tag}/webhook/POST/${slugify(webhook)}`
     : `#tag/${tag}/${method.toUpperCase()}${path}`;
 
-  return <Link to={useBaseUrl(`/api${anchor}`)}>{children}</Link>;
+  // Scalar renders /api in the browser, so the anchor never exists in the static
+  // HTML; the spec lookup above is the check that matters.
+  return (
+    <Link to={useBaseUrl(`/api${anchor}`)} data-noBrokenLinkCheck>
+      {children}
+    </Link>
+  );
 }

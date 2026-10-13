@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "SDK de Node"
-  },
-  "customProps": {
-    "description": "SDK de Node da woovi"
+    "title": "SDK de Node",
+    "description": "SDK de Node.js da Woovi: o que é, como começar, recursos, tratamento de erros e configuração para o ambiente sandbox."
   }
 }

@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Cobrança visão geral"
-  },
-  "customProps": {
-    "description": "Cobrança documentação"
+    "title": "Cobrança visão geral",
+    "description": "Como criar e gerenciar cobranças Pix na Woovi: API, expiração, compartilhamento, informações adicionais, bloqueio de pagamentos e webhooks."
   }
 }

@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Woovi Apps visão geral"
-  },
-  "customProps": {
-    "description": "Woovi Apps documentação"
+    "title": "Woovi Apps visão geral",
+    "description": "WooviApps: como criar um app na loja da Woovi e como funciona o fluxo de autorização OAuth com contas de outras empresas."
   }
 }

@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Plugin visão geral"
-  },
-  "customProps": {
-    "description": "Plugin documentação"
+    "title": "Plugin visão geral",
+    "description": "Plugin JS da Woovi para exibir cobranças Pix no seu site: App ID, renderização com ou sem modal, React, QR Code estático e exemplos."
   }
 }

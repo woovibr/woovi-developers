@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "FAQ visão geral"
-  },
-  "customProps": {
-    "description": "FAQ documentação"
+    "title": "FAQ visão geral",
+    "description": "Perguntas frequentes sobre a Woovi: cobranças, transações, QR Code Pix estático, bancos, planos, usuários, SSL e políticas gerais."
   }
 }

@@ -143,9 +143,9 @@ curl --location 'https://api.woovi.com/api/v1/payment/approve' \
 
 ### O que é retornado ?
 
-Os dados do titular da conta vêm no campo `destination`. Como o Pix é enviado de forma assíncrona, esse campo **não** está na resposta imediata do `autoApprove` nem nos webhooks — o webhook [`OPENPIX:MOVEMENT_CONFIRMED`](#3-webhooks) avisa apenas que o pagamento foi confirmado, sem trazer os dados do titular.
+Os dados do titular da conta vêm no campo `destination`. Como o Pix é enviado de forma assíncrona, esse campo **não** está na resposta imediata do `autoApprove` — ele chega no webhook [`OPENPIX:MOVEMENT_CONFIRMED`](#3-webhooks), com nome, CPF/CNPJ, banco, ISPB, agência, conta e tipo de conta de quem recebeu.
 
-Para obter o `destination`, consulte o endpoint <ApiLink method="GET" path="/api/v1/transaction">`GET /api/v1/transaction`</ApiLink> após a confirmação do pagamento, filtrando pela transação correspondente (por exemplo, pelo `endToEndId` recebido no webhook).
+Se preferir consultar, o endpoint <ApiLink method="GET" path="/api/v1/transaction">`GET /api/v1/transaction`</ApiLink> também retorna o `destination` após a confirmação do pagamento, filtrando pela transação correspondente (por exemplo, pelo `endToEndId` recebido no webhook):
 
 ```json
 {
@@ -196,21 +196,37 @@ Após a criação e confirmação do pagamento, você receberá webhooks com o s
 ```json
 {
   "event": "OPENPIX:MOVEMENT_CONFIRMED",
+  "account": {
+    "accountId": "6823414a524ed520d3518dd6"
+  },
   "payment": {
-    "status": "APPROVED",
     "value": 1,
-    "correlationID": "manual-payment-0009",
-    "sourceAccountId": "6823414a524ed520d3518dd6"
+    "status": "CONFIRMED",
+    "comment": "",
+    "correlationID": "manual-payment-0009"
   },
   "transaction": {
+    "correlationID": "0f0b6a8e-7d4c-4b8e-9a3f-2c1d5e6f7a8b",
     "value": 1,
-    "time": "2025-07-08T15:27:19.687Z",
-    "endToEndId": "E54811417202507081527dYr4Cp2gfAp"
+    "endToEndId": "E54811417202507081527dYr4Cp2gfAp",
+    "time": "2025-07-08T15:27:19.687Z"
+  },
+  "destination": {
+    "name": "Fulano de Tal",
+    "taxID": {
+      "taxID": "06882328684",
+      "type": "BR:CPF"
+    },
+    "bankName": "NU PAGAMENTOS - IP",
+    "account": "12345678",
+    "branch": "0001",
+    "accountType": "TRAN",
+    "ispb": "18236120"
   }
 }
 ```
 
-> Este webhook **não** traz os dados do titular da conta (`destination`). Para obtê-los, consulte o endpoint <ApiLink method="GET" path="/api/v1/transaction">`GET /api/v1/transaction`</ApiLink> — veja [O que é retornado](#o-que-é-retornado-).
+> O `destination` traz os dados do titular da conta confirmados pelo Pix. Veja todos os campos em [Payload de Pagamentos](/docs/webhook/examples/webhook-payment-payload#pagamento-confirmado).
 
 Se não souber como configurar o webhook, acesse: [Criando um webhook para interceptar um Pix e chamar uma API](/docs/webhook/platform/webhook-platform-api).
 
@@ -243,9 +259,9 @@ Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra
 > }
 > ```
 >
-> **Resposta de sucesso (200)**: confirma que o pagamento foi criado/aprovado, mas **não** traz os dados do titular (`destination`) — nem os webhooks trazem. Para obtê-los, consulte `GET /api/v1/transaction` após a confirmação, filtrando pela transação correspondente.
+> **Resposta de sucesso (200)**: confirma que o pagamento foi criado/aprovado, mas **não** traz os dados do titular (`destination`) — o Pix é assíncrono. Eles chegam no webhook `OPENPIX:MOVEMENT_CONFIRMED`, no objeto `destination` (`name`, `taxID.taxID`, `taxID.type`, `bankName`, `ispb`, `branch`, `account`, `accountType`).
 >
 > **Detalhes importantes**:
 > - `autoApprove: true` exige permissão especial na conta; sem ela, crie o pagamento e aprove depois com `POST /api/v1/payment/approve` enviando o `correlationID`.
 > - O `psp.id` é o código ISPB (8 dígitos) do banco — consulte `GET /api/v1/psp` para descobrir.
-> - Trate os webhooks `OPENPIX:MOVEMENT_CONFIRMED` (aprovado) e `OPENPIX:MOVEMENT_FAILED` (rejeitado) para o status final da validação — os dados do titular (`destination`) vêm de `GET /api/v1/transaction`, não do webhook.
+> - Trate os webhooks `OPENPIX:MOVEMENT_CONFIRMED` (aprovado) e `OPENPIX:MOVEMENT_FAILED` (rejeitado) para o status final da validação — os dados do titular vêm em `destination` no `MOVEMENT_CONFIRMED`.

@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Cashback visão geral"
-  },
-  "customProps": {
-    "description": "Cashback documentação"
+    "title": "Cashback visão geral",
+    "description": "O que é o cashback da Woovi, como configurar e usar o cashback nas cobranças Pix, e as APIs de cashback disponíveis."
   }
 }

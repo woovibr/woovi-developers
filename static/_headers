@@ -50,5 +50,11 @@
 
 /*
   Cache-Control: public, max-age=0, must-revalidate
+  Link: </llms.txt>; rel="describedby"; type="text/plain"
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: noindex

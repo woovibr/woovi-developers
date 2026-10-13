@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Apis visão geral"
-  },
-  "customProps": {
-    "description": "Apis documentação"
+    "title": "Apis visão geral",
+    "description": "Comece a usar a API da Woovi: autenticação, escopos do AppID, filtro de IP, Postman, explorador de API, exemplos e changelog."
   }
 }

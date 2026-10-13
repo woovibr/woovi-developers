@@ -2,6 +2,7 @@
 id: stablecoin-flow
 sidebar_position: 3
 title: Fluxo de depósito (on-ramp)
+description: 'Fluxo de depósito (on-ramp) do Stablecoin da Woovi: crie e aprove um depósito para converter saldo em BRL em USDT na carteira de destino.'
 tags:
   - stablecoin
   - api

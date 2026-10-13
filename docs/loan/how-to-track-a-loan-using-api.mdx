@@ -1,0 +1,122 @@
+---
+id: how-to-track-a-loan-using-api
+title: Como acompanhar um empréstimo via API?
+sidebar_label: Acompanhar empréstimo
+sidebar_position: 4
+tags:
+  - api
+  - loan
+  - emprestimo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Dois _endpoints_ leem o estado dos empréstimos. Ambos exigem o escopo
+`LOAN_OPERATION_GET` e só enxergam operações originadas pela sua empresa.
+
+| Ação | Endpoint |
+| --- | --- |
+| Listar os empréstimos de um documento | `GET /api/v1/loan/operation?taxID={taxID}` |
+| Consultar um empréstimo | `GET /api/v1/loan/operation/{id}` |
+
+Em `{id}` vai o `operationId` devolvido na originação.
+
+## Como o empréstimo é pago
+
+Nenhum endpoint marca parcela como paga. Peça uma cobrança Pix em
+[Pagar empréstimo](./how-to-pay-a-loan-using-api) e consulte a operação de novo
+para ver `paid` virar `true`, `outstanding` cair e o pagamento aparecer em
+`repayments[]`. Cada parcela em aberto que já tenha cobrança traz o `payoff`
+dela, com `brCode`, `amount` e `expiresAt`; `payoff` na raiz é o código para
+quitar tudo o que falta.
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+# Listar
+curl 'https://api.woovi.com/api/v1/loan/operation?taxID=12345678909&status=ACTIVE' \
+    -H "Authorization: {SEU_APP_ID}"
+
+# Consultar
+curl 'https://api.woovi.com/api/v1/loan/operation/6abd072eccca077d96ad9e20' \
+    -H "Authorization: {SEU_APP_ID}"
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+const id = '6abd072eccca077d96ad9e20';
+
+fetch(`https://api.woovi.com/api/v1/loan/operation/${id}`, {
+  headers: { Authorization: '{SEU_APP_ID}' },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+### Exemplo de resposta
+
+```json
+{
+  "operation": {
+    "operationId": "6abd072eccca077d96ad9e20",
+    "correlationID": "erp-loan-42",
+    "taxID": { "taxID": "12345678909", "type": "BR:CPF" },
+    "status": "ACTIVE",
+    "principal": 150000,
+    "totalDue": 189000,
+    "outstanding": 141750,
+    "installmentNumber": 4,
+    "dueDate": "2027-02-01",
+    "disbursedAt": "2026-10-01T18:00:00.000Z",
+    "settledAt": null,
+    "disbursement": {
+      "status": "CONFIRMED",
+      "endToEndId": "E54811417202610011800abcdef12345"
+    },
+    "installments": [
+      { "seq": 1, "dueDate": "2026-11-01", "amount": 47250, "paid": true, "payoff": null },
+      {
+        "seq": 2,
+        "dueDate": "2026-12-01",
+        "amount": 47250,
+        "paid": false,
+        "payoff": {
+          "amount": 47250,
+          "brCode": "00020126580014br.gov.bcb.pix...6304ABCD",
+          "txid": "d98b4cd74b4b4aee87097a90871f8ef7",
+          "expiresAt": "2026-12-01T23:59:59.000Z"
+        }
+      }
+    ],
+    "payoff": {
+      "amount": 141750,
+      "brCode": "00020126580014br.gov.bcb.pix...6304EF01",
+      "txid": "199b55fa022346fa8ca3681da3c5d5fc",
+      "expiresAt": null
+    },
+    "repayments": [
+      {
+        "id": "6abec6f167f6bc21483ef34e",
+        "amount": 47250,
+        "channel": "PIX_MANUAL",
+        "createdAt": "2026-10-30T12:00:00.000Z"
+      }
+    ],
+    "createdAt": "2026-10-01T17:59:40.000Z"
+  }
+}
+```
+
+| `status` | Significado |
+| --- | --- |
+| `ACTIVE` | Em aberto, há saldo devedor. |
+| `SETTLED` | Quitado. `settledAt` preenchido. |
+| `WRITTEN_OFF` | Baixado como perda; ainda pode receber pagamento de recuperação. |
+| `CANCELLED` | O desembolso falhou; nada é devido. |

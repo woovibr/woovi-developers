@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Conceitos visão geral"
-  },
-  "customProps": {
-    "description": "Conceitos documentação"
+    "title": "Conceitos visão geral",
+    "description": "Conceitos fundamentais da API da Woovi: cobrança, cliente, transação, reembolso, correlation ID, idempotência, basis points e estados."
   }
 }

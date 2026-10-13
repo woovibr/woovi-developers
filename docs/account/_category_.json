@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Conta visão geral"
-  },
-  "customProps": {
-    "description": "Contas documentação"
+    "title": "Conta visão geral",
+    "description": "Como gerenciar contas na Woovi via API, incluindo a criação de uma nova conta duplicando uma conta existente com o seu AppID."
   }
 }

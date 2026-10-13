@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Chave Pix visão geral"
-  },
-  "customProps": {
-    "description": "Chave Pix documentação"
+    "title": "Chave Pix visão geral",
+    "description": "Como criar e gerenciar as chaves Pix da sua conta Woovi para receber pagamentos."
   }
 }

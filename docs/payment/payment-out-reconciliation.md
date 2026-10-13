@@ -63,6 +63,10 @@ Assim que o pagamento é confirmado, a Woovi dispara o webhook
 }
 ```
 
+O mesmo payload também traz `destination`, com nome, CPF/CNPJ, banco, ISPB,
+agência e conta de quem recebeu — o exemplo completo está em
+**[Payload de Pagamentos](/docs/webhook/examples/webhook-payment-payload#pagamento-confirmado)**.
+
 Salvando esse mapeamento assim que o webhook chega, você deixa de precisar
 consultar a API depois para descobrir o `endToEndId` de um pagamento — ele já
 fica disponível no seu sistema desde a confirmação.

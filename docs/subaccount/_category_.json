@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Subconta visão geral"
-  },
-  "customProps": {
-    "description": "Subcontas documentação"
+    "title": "Subconta visão geral",
+    "description": "Subcontas na Woovi: como criar, consultar saldo, transferir, sacar e dividir cobranças Pix com split para subcontas via API ou plugin."
   }
 }

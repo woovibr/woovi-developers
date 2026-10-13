@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Disputas visão geral"
-  },
-  "customProps": {
-    "description": "Disputas documentação"
+    "title": "Disputas visão geral",
+    "description": "Disputas na Woovi: o que são, como criar uma disputa, adicionar evidências, consultar o payload e receber os webhooks de disputa."
   }
 }

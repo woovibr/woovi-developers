@@ -577,7 +577,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'charge',
     'category': 'Cobrança',
     'summary': 'Create a new Charge',
-    'description': 'Endpoint to create a new Charge for a customer.\n\n## Split\n\nYou can split the value of a charge across other accounts by sending the\n`splits` array in the request body. Each item accepts:\n\n  - `value`: amount in cents that will be split to the destination.\n  - `pixKey`: Pix key of the account that will receive this split.\n  - `splitType`: how the split is processed — one of `SPLIT_INTERNAL_TRANSFER`,\n    `SPLIT_SUB_ACCOUNT` or `SPLIT_PARTNER`.\n    [See how each split type is processed](https://developers.openpix.com.br/docs/splits/split-introduction).\n\nSee the *Charge with Split Internal Transfer* and *Charge with Split Subaccounts*\nrequest body examples below for the full payload shape.\n',
+    'description': "Endpoint to create a new Charge for a customer.\n\n## Split\n\nYou can split the value of a charge across other accounts by sending the\n`splits` array in the request body. Each item accepts:\n\n  - `value`: amount in cents that will be split to the destination.\n  - `pixKey`: Pix key of the account that will receive this split.\n  - `splitType`: how the split is processed — one of `SPLIT_INTERNAL_TRANSFER`,\n    `SPLIT_SUB_ACCOUNT` or `SPLIT_PARTNER`.\n    [See how each split type is processed](https://developers.openpix.com.br/docs/splits/split-introduction).\n\nSee the *Charge with Split Internal Transfer* and *Charge with Split Subaccounts*\nrequest body examples below for the full payload shape.\n\n## Credit card\n\nSend `type: PIX_CREDIT` to let the payer choose between Pix and credit card,\nor `type: CREDIT_CARD` to accept only credit card. Credit card needs to be\nenabled on your account, and the charge needs a customer with a valid name\nand CPF/CNPJ.\n\nThe payer pays the card on the charge's `paymentLinkUrl`. To render the\ncard form from your own checkout, call\n`POST /api/v1/charge/{id}/card/smartform` and redirect the payer to the\nreturned `checkoutUrl`.\n\nA charge created through the API is paid in one installment.\n\nSee the *Charge with Credit Card* request body example below.\n",
     'requestExamples': [
       {
         'name': 'Charge',
@@ -741,6 +741,21 @@ const endpoints: ApiEndpoint[] = [
           'fines': {
             'value': 200,
             'type': 'PERCENTAGE',
+          },
+        },
+      },
+      {
+        'name': 'Charge with Credit Card',
+        'value': {
+          'type': 'PIX_CREDIT',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624587',
+          'value': 15000,
+          'comment': 'good',
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
           },
         },
       },
@@ -1769,6 +1784,84 @@ const endpoints: ApiEndpoint[] = [
     ],
   },
   {
+    'id': 'post-api-v1-kyc-representatives-email-code',
+    'method': 'POST',
+    'path': '/api/v1/kyc/representatives/email-code',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Send the email code to a ceremony admin',
+    'description': 'Sends a 6-digit code to the email stored on the representative, the one\nsent in `email` to `POST /api/v1/kyc/representatives` or on the\nonboarding. Confirming it through\n`POST /api/v1/kyc/representatives/email-code/verify` proves the admin\nholds that address.\n\nRequired only when the company that owns the register has the feature\n`KYC_REPRESENTATIVE_EMAIL_OTP`, and only for the administrators the Pix\nauthentication also requires (the target administrators, when the\nregister has any). Until each of them confirms, the submit answers `409`\nwith `MISSING_REPRESENTATIVE_EMAIL_VERIFICATION`. Changing the email\nafter the confirmation asks for a new one.\n\nA code lives 10 minutes. Calling this again while it is live sends the\nsame code again instead of a new one. Between two calls there is a\n30-second cooldown; each admin gets 3 codes an hour, each register 10,\nand one address 6 a day. Every refusal of that kind is a `200` with an\n`outcome`, not an error:\n\n| outcome | Meaning |\n|---|---|\n| `CODE_SENT` | The code went out by email: a new one, or the live one again |\n| `ALREADY_SENT` | Nothing new was spent: the code went out less than 30 seconds ago, or a code the mailer did not take was delivered again |\n| `ALREADY_VERIFIED` | The current email is already confirmed |\n| `SAME_AS_ACCOUNT_USER` | The email is the one the account user already confirmed; nothing to do |\n| `COOLDOWN` | Wait 30 seconds since the last code |\n| `SEND_LIMIT_REACHED` | No codes left for now |\n| `BLOCKED` | 3 wrong codes; no new code for 24 hours after the last one |\n| `TRY_AGAIN` | A concurrent call won, or the send limiter is unavailable; call again |\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'representativeId': '6650e0f1a2b3c4d5e6f70809',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-kyc-representatives-email-code-verify',
+    'method': 'POST',
+    'path': '/api/v1/kyc/representatives/email-code/verify',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Confirm the email code a ceremony admin received',
+    'description': 'Checks the code the administrator typed. A wrong code counts against the\nadministrator: the third wrong code blocks new codes and checks for 24\nhours after it, and the right code clears the count. Like the send,\nevery answer about the code is a `200` with an `outcome`:\n\n| outcome | Meaning |\n|---|---|\n| `VERIFIED` | The email is confirmed |\n| `ALREADY_VERIFIED` | It was already confirmed |\n| `SAME_AS_ACCOUNT_USER` | Nothing to confirm: the account user already confirmed this email |\n| `WRONG_CODE` | The code does not match |\n| `CODE_EXPIRED` | The code is older than 10 minutes; send a new one |\n| `NO_ACTIVE_CODE` | No code was sent to the current email |\n| `BLOCKED` | 3 wrong codes; try again 24 hours after the last one |\n| `TRY_AGAIN` | A concurrent call won; call again |\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'representativeId': '6650e0f1a2b3c4d5e6f70809',
+          'code': '123456',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-kyc-representatives-phone-code',
+    'method': 'POST',
+    'path': '/api/v1/kyc/representatives/phone-code',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Send the WhatsApp phone code to a ceremony admin',
+    'description': 'Sends a 6-digit code on WhatsApp to the phone stored on the\nrepresentative, the one sent in `phone` to\n`POST /api/v1/kyc/representatives` or on the onboarding. Confirming it\nthrough `POST /api/v1/kyc/representatives/phone-code/verify` proves the\nadmin holds that number.\n\nRequired only when the company that owns the register has the feature\n`KYC_REPRESENTATIVE_PHONE_OTP`, and only for the administrators the Pix\nauthentication also requires (the target administrators, when the\nregister has any). Until each of them confirms, the submit answers `409`\nwith `MISSING_REPRESENTATIVE_PHONE_VERIFICATION`. Changing the phone\nafter the confirmation asks for a new one.\n\nA code lives 10 minutes. Calling this again while it is live sends the\nsame code again instead of a new one. Between two calls there is a\n30-second cooldown; each admin gets 3 codes an hour, each register 10,\nand one number 6 a day. Every refusal of that kind is a `200` with an\n`outcome`, not an error:\n\n| outcome | Meaning |\n|---|---|\n| `CODE_SENT` | The code went out on WhatsApp: a new one, or the live one again |\n| `ALREADY_SENT` | Nothing new was spent: the code went out less than 30 seconds ago, or a code WhatsApp did not take was delivered again |\n| `ALREADY_VERIFIED` | The current phone is already confirmed |\n| `SAME_AS_ACCOUNT_USER` | The phone is the one the account user already confirmed; nothing to do |\n| `COOLDOWN` | Wait 30 seconds since the last code |\n| `SEND_LIMIT_REACHED` | No codes left for now |\n| `BLOCKED` | 3 wrong codes; no new code for 24 hours after the last one |\n| `TRY_AGAIN` | A concurrent call won, or the send limiter is unavailable; call again |\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'representativeId': '6650e0f1a2b3c4d5e6f70809',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'post-api-v1-kyc-representatives-phone-code-verify',
+    'method': 'POST',
+    'path': '/api/v1/kyc/representatives/phone-code/verify',
+    'tag': 'kyc',
+    'category': 'KYC',
+    'summary': 'Confirm the WhatsApp phone code a ceremony admin received',
+    'description': 'Checks the code the administrator typed. A wrong code counts against the\nadministrator: the third wrong code blocks new codes and checks for 24\nhours after it, and the right code clears the count. Like the send,\nevery answer about the code is a `200` with an `outcome`:\n\n| outcome | Meaning |\n|---|---|\n| `VERIFIED` | The phone is confirmed |\n| `ALREADY_VERIFIED` | It was already confirmed |\n| `SAME_AS_ACCOUNT_USER` | Nothing to confirm: the account user already confirmed this phone |\n| `WRONG_CODE` | The code does not match |\n| `CODE_EXPIRED` | The code is older than 10 minutes; send a new one |\n| `NO_ACTIVE_CODE` | No code was sent to the current phone |\n| `BLOCKED` | 3 wrong codes; try again 24 hours after the last one |\n| `TRY_AGAIN` | A concurrent call won; call again |\n\nRequired scope: `KYC_REPRESENTATIVES_POST`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'merchant-4417',
+          'representativeId': '6650e0f1a2b3c4d5e6f70809',
+          'code': '123456',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
     'id': 'get-api-v1-kyc-representatives',
     'method': 'GET',
     'path': '/api/v1/kyc/representatives',
@@ -2174,6 +2267,265 @@ const endpoints: ApiEndpoint[] = [
             ],
             'createdAt': '2026-09-03T17:49:59.204Z',
             'updatedAt': '2026-09-03T19:12:03.881Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'get-api-v1-loan-operation',
+    'method': 'GET',
+    'path': '/api/v1/loan/operation',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'List the loans of a borrower',
+    'description': 'Returns the operations of a document originated by the company resolved from the app_id, newest first.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pageInfo': {
+            'skip': 0,
+            'limit': 20,
+            'totalCount': 1,
+            'hasNextPage': false,
+          },
+          'operations': [
+            {
+              'operationId': '6abd072eccca077d96ad9e20',
+              'correlationID': 'erp-loan-42',
+              'taxID': {
+                'taxID': '12345678909',
+                'type': 'BR:CPF',
+              },
+              'status': 'ACTIVE',
+              'principal': 150000,
+              'totalDue': 189000,
+              'outstanding': 141750,
+              'installmentNumber': 4,
+              'dueDate': '2027-02-01',
+              'disbursedAt': '2026-10-01T18:00:00.000Z',
+              'settledAt': null,
+              'disbursement': {
+                'status': 'CONFIRMED',
+                'endToEndId': 'E54811417202610011800abcdef12345',
+              },
+              'installments': [],
+              'payoff': null,
+              'repayments': [],
+              'createdAt': '2026-10-01T17:59:40.000Z',
+            },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-loan-operation',
+    'method': 'POST',
+    'path': '/api/v1/loan/operation',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Originate a loan',
+    'description': "Contracts a loan for the borrower and instructs the Pix that pays it out. The company originating is the one resolved from the app_id, never a field in the body. `correlationID` is required and unique per company: a repeat returns the same operation with 200 instead of originating a second loan. Product rules the API enforces: at most R$ 2.500,00 per loan and one active loan per borrower. The rule that keeps a carrier's registered beneficiary out of the loan (they use anticipation) is not enforced yet; it has its own RFC.\n",
+    'requestExamples': [
+      {
+        'name': 'operation',
+        'value': {
+          'taxID': '12345678909',
+          'amount': 150000,
+          'installmentNumber': 4,
+          'pixKey': '+5511999999999',
+          'correlationID': 'erp-loan-42',
+        },
+      },
+    ],
+    'responseExamples': [],
+  },
+  {
+    'id': 'get-api-v1-loan-operation-id',
+    'method': 'GET',
+    'path': '/api/v1/loan/operation/{id}',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Get a loan',
+    'description': 'State of one operation: outstanding balance, installments with their payoff codes, repayments and the disbursement Pix. Only operations originated by the company resolved from the app_id are visible.\n',
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'operation': {
+            'operationId': '6abd072eccca077d96ad9e20',
+            'correlationID': 'erp-loan-42',
+            'taxID': {
+              'taxID': '12345678909',
+              'type': 'BR:CPF',
+            },
+            'status': 'ACTIVE',
+            'principal': 150000,
+            'totalDue': 189000,
+            'outstanding': 141750,
+            'installmentNumber': 4,
+            'dueDate': '2027-02-01',
+            'disbursedAt': '2026-10-01T18:00:00.000Z',
+            'settledAt': null,
+            'disbursement': {
+              'status': 'CONFIRMED',
+              'endToEndId': 'E54811417202610011800abcdef12345',
+            },
+            'installments': [
+              {
+                'seq': 1,
+                'dueDate': '2026-11-01',
+                'amount': 47250,
+                'paid': true,
+                'payoff': null,
+              },
+              {
+                'seq': 2,
+                'dueDate': '2026-12-01',
+                'amount': 47250,
+                'paid': false,
+                'payoff': {
+                  'amount': 47250,
+                  'brCode': '00020126580014br.gov.bcb.pix...6304ABCD',
+                  'txid': 'd98b4cd74b4b4aee87097a90871f8ef7',
+                  'expiresAt': '2026-12-01T23:59:59.000Z',
+                },
+              },
+            ],
+            'payoff': {
+              'amount': 141750,
+              'brCode': '00020126580014br.gov.bcb.pix...6304EF01',
+              'txid': '199b55fa022346fa8ca3681da3c5d5fc',
+              'expiresAt': null,
+            },
+            'repayments': [
+              {
+                'id': '6abec6f167f6bc21483ef34e',
+                'amount': 47250,
+                'channel': 'PIX_MANUAL',
+                'createdAt': '2026-10-30T12:00:00.000Z',
+              },
+            ],
+            'createdAt': '2026-10-01T17:59:40.000Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-loan-operation-id-payoff',
+    'method': 'POST',
+    'path': '/api/v1/loan/operation/{id}/payoff',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Issue a Pix charge to pay a loan',
+    'description': 'Issues one dynamic Pix charge for the next unpaid installment, for a contiguous range of installments starting at the first unpaid one, or for the whole outstanding balance. The partner shows the code to the borrower or pays it from its own account. No endpoint marks an installment paid: settlement follows the money, and the loan is updated when the Pix is paid, oldest installment first. Only one live charge may exist per installment; a request whose installments overlap an open charge is refused with `CHARGE_OVERLAPS` until that charge is paid or expires. Only operations originated by the company resolved from the app_id are reachable.\n',
+    'requestExamples': [
+      {
+        'name': 'next',
+        'value': {
+          'scope': 'NEXT',
+        },
+        'summary': 'Next unpaid installment',
+      },
+      {
+        'name': 'installments',
+        'value': {
+          'scope': 'INSTALLMENTS',
+          'seqs': [
+            1,
+            2,
+          ],
+        },
+        'summary': 'A contiguous range of installments',
+      },
+      {
+        'name': 'all',
+        'value': {
+          'scope': 'ALL',
+        },
+        'summary': 'The whole outstanding balance',
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'payoff': {
+            'amount': 94500,
+            'brCode': '00020126580014br.gov.bcb.pix...6304EF01',
+            'txid': '199b55fa022346fa8ca3681da3c5d5fc',
+            'expiresAt': '2026-11-02T23:59:59.000Z',
+            'installments': [
+              1,
+              2,
+            ],
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-loan-simulation',
+    'method': 'POST',
+    'path': '/api/v1/loan/simulation',
+    'tag': 'loan',
+    'category': 'loan',
+    'summary': 'Simulate a loan',
+    'description': 'Prices a plan for a borrower: principal, term and period in, installment plan and total cost out. Nothing is persisted on the borrower; the simulation is stored until `expirationDate` so it can be contracted. The company is the one resolved from the app_id.\n',
+    'requestExamples': [
+      {
+        'name': 'simulation',
+        'value': {
+          'taxID': '12345678909',
+          'amount': 150000,
+          'installmentNumber': 4,
+          'period': 'MONTHLY',
+          'correlationID': 'erp-sim-42',
+        },
+      },
+    ],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'simulation': {
+            'simulationId': '6abeadd43f02bc8c8675c0ad',
+            'correlationID': 'erp-sim-42',
+            'status': 'ACTIVE',
+            'expirationDate': '2026-10-02',
+            'amount': 150000,
+            'installmentNumber': 4,
+            'period': 'MONTHLY',
+            'monthlyInterestRate': 0.1,
+            'periodInterestRate': 0.1,
+            'totalAmount': 189000,
+            'installmentPlan': [
+              {
+                'seq': 1,
+                'dueDate': '2026-11-01',
+                'amount': 47250,
+              },
+              {
+                'seq': 2,
+                'dueDate': '2026-12-01',
+                'amount': 47250,
+              },
+              {
+                'seq': 3,
+                'dueDate': '2027-01-01',
+                'amount': 47250,
+              },
+              {
+                'seq': 4,
+                'dueDate': '2027-02-01',
+                'amount': 47250,
+              },
+            ],
           },
         },
       },
@@ -2678,6 +3030,59 @@ const endpoints: ApiEndpoint[] = [
         'summary': 'Auto-approved payment response (autoApprove true)',
       },
     ],
+  },
+  {
+    'id': 'get-api-v1-pix-auth-id',
+    'method': 'GET',
+    'path': '/api/v1/pix-auth/{id}',
+    'tag': 'pixAuth',
+    'category': 'pixAuth',
+    'summary': 'Get a Pix authentication',
+    'description': "`id` is the Pix authentication `id` or your `correlationID`. Switch on\n`result`: `MATCHED` means the payer holds the declared document. On\n`MISMATCH` the payer's identity is never returned.\n",
+    'requestExamples': [],
+    'responseExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'pixAuth': {
+            'id': '6abd253902a0cbc48013f01e',
+            'correlationID': 'signup-8f2c1',
+            'status': 'COMPLETED',
+            'result': 'MATCHED',
+            'taxID': {
+              'taxID': '52998224725',
+              'type': 'BR:CPF',
+            },
+            'amount': 1,
+            'dueDate': '2026-09-30T16:05:28.049Z',
+            'completedAt': '2026-09-30T15:52:10.120Z',
+            'createdAt': '2026-09-30T15:50:28.049Z',
+          },
+        },
+      },
+    ],
+  },
+  {
+    'id': 'post-api-v1-pix-auth',
+    'method': 'POST',
+    'path': '/api/v1/pix-auth',
+    'tag': 'pixAuth',
+    'category': 'pixAuth',
+    'summary': 'Create a Pix authentication for a CPF or CNPJ',
+    'description': 'Mints the R$ 0,01 Pix the payer must pay from a bank account under the\ndeclared document, and charges `PIX_AUTH_FEE`.\n\n**Idempotent by `correlationID`.** Posting the same `correlationID` and\n`taxID` while it is open answers `200` with the same Pix authentication,\n`brCode` and `hostedUrl`, and charges nothing again. A `correlationID`\nnames one validation forever: reusing it for another document, or after it\nfinished, answers `409`.\n',
+    'requestExamples': [
+      {
+        'name': 'default',
+        'value': {
+          'correlationID': 'signup-8f2c1',
+          'taxID': '529.982.247-25',
+          'name': 'Maria Silva',
+          'expiresIn': 900,
+          'returnUrl': 'https://example.com/signup/done',
+        },
+      },
+    ],
+    'responseExamples': [],
   },
   {
     'id': 'get-api-v1-pix-keys-tokens-logs',
@@ -3917,30 +4322,45 @@ const endpoints: ApiEndpoint[] = [
             'correlationID': 'payout-20260203-1',
             'nuop': '1234567820260203000001',
             'status': 'COMPLETED',
-            'type': 'PAYMENT',
-            'direction': 'OUT',
+            'type': 'TED_OUT',
             'value': 150050,
             'moveDate': '2026-02-03',
-            'accountId': '6290ccfd42831958a405debc',
-            'sender': {
-              'name': 'Empresa LTDA',
-              'document': '12345678000199',
-              'ispb': '12345678',
-              'agency': 1234,
-              'account': 567890,
-              'accountType': 'CACC',
+            'debitParty': {
+              'account': {
+                'branch': '1234',
+                'account': '567890',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '12345678',
+              },
+              'holder': {
+                'name': 'Empresa LTDA',
+                'taxID': {
+                  'taxID': '12345678000199',
+                  'type': 'BR:CNPJ',
+                },
+              },
             },
-            'receiver': {
-              'name': 'Joao da Silva',
-              'document': '12345678901',
-              'ispb': '87654321',
-              'agency': 4321,
-              'account': 98765,
-              'accountType': 'CACC',
+            'creditParty': {
+              'account': {
+                'branch': '4321',
+                'account': '98765',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '87654321',
+              },
+              'holder': {
+                'name': 'Joao da Silva',
+                'taxID': {
+                  'taxID': '12345678901',
+                  'type': 'BR:CPF',
+                },
+              },
             },
             'errorCode': null,
             'reason': null,
-            'bcbCode': null,
             'createdAt': '2026-02-03T14:30:00.000Z',
             'updatedAt': '2026-02-03T14:31:02.000Z',
           },
@@ -3955,7 +4375,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'ted',
     'category': 'ted',
     'summary': 'Get a list of TEDs',
-    'description': 'TEDs of your company, newest first. Incoming and outgoing TEDs are in the\nsame list; `direction` tells them apart.\n',
+    'description': 'TEDs of your company, newest first. Incoming and outgoing TEDs are in the\nsame list; `type` tells them apart.\n',
     'requestExamples': [],
     'responseExamples': [
       {
@@ -3966,14 +4386,11 @@ const endpoints: ApiEndpoint[] = [
               'correlationID': 'payout-20260203-1',
               'nuop': '1234567820260203000001',
               'status': 'COMPLETED',
-              'type': 'PAYMENT',
-              'direction': 'OUT',
+              'type': 'TED_OUT',
               'value': 150050,
               'moveDate': '2026-02-03',
-              'accountId': '6290ccfd42831958a405debc',
               'errorCode': null,
               'reason': null,
-              'bcbCode': null,
               'createdAt': '2026-02-03T14:30:00.000Z',
               'updatedAt': '2026-02-03T14:31:02.000Z',
             },
@@ -3996,22 +4413,29 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'ted',
     'category': 'ted',
     'summary': 'Send a TED',
-    'description': 'Sends a TED from one of your accounts. The response means the TED was\naccepted for processing — it settles when the BACEN answers, and the\n`TED_OUT_CONFIRMED` / `TED_OUT_REJECTED` webhooks say which way it went.\n\nRetrying with the same `correlationID` is safe: it returns the TED that\nalready exists, without a second debit and without a second STR request.\n',
+    'description': "Sends a TED from the account of the application behind the AppID or, when\nthe application has none, from the company's default account: the same\naccount a Pix out is paid from. The body cannot choose it. The response means the TED was\naccepted for processing — it settles when the BACEN answers, and the\n`TED_OUT_CONFIRMED` / `TED_OUT_REJECTED` webhooks say which way it went.\n\nRetrying with the same `correlationID` is safe: it returns the TED that\nalready exists, without a second debit and without a second STR request.\n\nThe TED settles on the day it is sent (Brasília time). It cannot be\nscheduled: while the STR is closed it is refused with `422`\n`OUTSIDE_STR_SESSION`.\n",
     'requestExamples': [
       {
         'name': 'default',
         'value': {
           'correlationID': 'payout-20260203-1',
           'value': 150050,
-          'moveDate': '2026-02-03',
-          'accountId': '6290ccfd42831958a405debc',
-          'receiver': {
-            'name': 'Joao da Silva',
-            'document': '12345678901',
-            'ispb': '87654321',
-            'agency': 4321,
-            'account': 98765,
-            'accountType': 'CACC',
+          'creditParty': {
+            'account': {
+              'branch': '4321',
+              'account': '98765',
+              'accountType': 'CACC',
+            },
+            'psp': {
+              'id': '87654321',
+            },
+            'holder': {
+              'name': 'Joao da Silva',
+              'taxID': {
+                'taxID': '12345678901',
+                'type': 'BR:CPF',
+              },
+            },
           },
           'clientFinality': 10,
           'description': 'Payment for services',
@@ -4026,30 +4450,45 @@ const endpoints: ApiEndpoint[] = [
             'correlationID': 'payout-20260203-1',
             'nuop': '1234567820260203000001',
             'status': 'PROCESSING',
-            'type': 'PAYMENT',
-            'direction': 'OUT',
+            'type': 'TED_OUT',
             'value': 150050,
             'moveDate': '2026-02-03',
-            'accountId': '6290ccfd42831958a405debc',
-            'sender': {
-              'name': 'Empresa LTDA',
-              'document': '12345678000199',
-              'ispb': '12345678',
-              'agency': 1234,
-              'account': 567890,
-              'accountType': 'CACC',
+            'debitParty': {
+              'account': {
+                'branch': '1234',
+                'account': '567890',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '12345678',
+              },
+              'holder': {
+                'name': 'Empresa LTDA',
+                'taxID': {
+                  'taxID': '12345678000199',
+                  'type': 'BR:CNPJ',
+                },
+              },
             },
-            'receiver': {
-              'name': 'Joao da Silva',
-              'document': '12345678901',
-              'ispb': '87654321',
-              'agency': 4321,
-              'account': 98765,
-              'accountType': 'CACC',
+            'creditParty': {
+              'account': {
+                'branch': '4321',
+                'account': '98765',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '87654321',
+              },
+              'holder': {
+                'name': 'Joao da Silva',
+                'taxID': {
+                  'taxID': '12345678901',
+                  'type': 'BR:CPF',
+                },
+              },
             },
             'errorCode': null,
             'reason': null,
-            'bcbCode': null,
             'createdAt': '2026-02-03T14:30:00.000Z',
             'updatedAt': '2026-02-03T14:30:00.000Z',
           },
@@ -4064,7 +4503,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'ted',
     'category': 'ted',
     'summary': 'Refund a received TED',
-    'description': 'Returns a TED your company received to its sender, for the full value.\nThe response is the refund TED (`type: REFUND_SENT`, `direction: OUT`)\naccepted for processing — it settles when the BACEN answers, and the\n`TED_REFUND_SENT_CONFIRMED` webhook says it did. The received TED is\n`REFUNDED` from then on.\n\nOnly an incoming `PAYMENT` can be refunded: not a TED you sent, and not a\nrefund you received. Retrying while the refund is still in flight is safe:\nit returns the same refund, without a second debit.\n',
+    'description': 'Returns a TED your company received to its sender, for the full value.\nThe response is the refund TED (`type: TED_REFUND_SENT`)\naccepted for processing — it settles when the BACEN answers, and the\n`TED_REFUND_SENT_CONFIRMED` webhook says it did. The received TED is\n`REFUNDED` from then on. If the BACEN rejects it, `TED_REFUND_SENT_REJECTED`\nsays so and the received TED stays `COMPLETED`, so it can be refunded again.\n\nOnly a `TED_IN` can be refunded: not a TED you sent, and not a\nrefund you received. Retrying while the refund is still in flight is safe:\nit returns the same refund, without a second debit.\n',
     'requestExamples': [],
     'responseExamples': [
       {
@@ -4074,30 +4513,45 @@ const endpoints: ApiEndpoint[] = [
             'correlationID': 'RFD20260203000001',
             'nuop': '1234567820260203000001',
             'status': 'PROCESSING',
-            'type': 'REFUND_SENT',
-            'direction': 'OUT',
+            'type': 'TED_REFUND_SENT',
             'value': 150050,
             'moveDate': '2026-02-03',
-            'accountId': '6290ccfd42831958a405debc',
-            'sender': {
-              'name': 'Empresa LTDA',
-              'document': '12345678000199',
-              'ispb': '12345678',
-              'agency': 1234,
-              'account': 567890,
-              'accountType': 'CACC',
+            'debitParty': {
+              'account': {
+                'branch': '1234',
+                'account': '567890',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '12345678',
+              },
+              'holder': {
+                'name': 'Empresa LTDA',
+                'taxID': {
+                  'taxID': '12345678000199',
+                  'type': 'BR:CNPJ',
+                },
+              },
             },
-            'receiver': {
-              'name': 'Joao da Silva',
-              'document': '12345678901',
-              'ispb': '87654321',
-              'agency': 4321,
-              'account': 98765,
-              'accountType': 'CACC',
+            'creditParty': {
+              'account': {
+                'branch': '4321',
+                'account': '98765',
+                'accountType': 'CACC',
+              },
+              'psp': {
+                'id': '87654321',
+              },
+              'holder': {
+                'name': 'Joao da Silva',
+                'taxID': {
+                  'taxID': '12345678901',
+                  'type': 'BR:CPF',
+                },
+              },
             },
             'errorCode': null,
             'reason': null,
-            'bcbCode': null,
             'createdAt': '2026-02-03T14:30:00.000Z',
             'updatedAt': '2026-02-03T14:30:00.000Z',
           },

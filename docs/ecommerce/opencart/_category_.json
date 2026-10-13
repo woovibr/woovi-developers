@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "OpenCart"
-  },
-  "customProps": {
-    "description": "Veja como integrar o Pix em sua loja OpenCart"
+    "title": "OpenCart",
+    "description": "Como instalar a extensão da Woovi e receber pagamentos via Pix na sua loja OpenCart 3 ou OpenCart 4."
   }
 }

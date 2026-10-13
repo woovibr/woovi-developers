@@ -1,6 +1,7 @@
 ---
 id: sdk-php-usage
-title: Como começar
+title: Como começar com o SDK PHP
+sidebar_label: Como começar
 sidebar_position: 1
 tags:
   - api

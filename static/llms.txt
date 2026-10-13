@@ -1,6 +1,47 @@
 # Woovi Developers
 
-> Woovi (formerly OpenPix) is an instant-payments platform for Brazil built around Pix. This documentation covers the REST API, webhooks, SDKs, plugins and product integrations used to create and manage Pix charges (cobranças), Pix Automático (recurring), Pix Crediário (installments), Boleto, refunds, disputes (MED), split payments, sub-accounts, BaaS/KYC and stablecoin conversions. Base site: https://developers.woovi.com — API base URL: https://api.woovi.com (sandbox available). Auth is via an AppID/API key sent in the `Authorization` header.
+> Woovi (formerly OpenPix) is a Payment Institution regulated by the Central Bank of Brazil and a direct participant of Pix. This documentation covers the REST API, webhooks, SDKs, plugins, the MCP server and product integrations used to create and manage Pix charges (cobranças), Pix Automático (recurring), Pix Crediário (installments), Boleto, refunds, disputes (MED), split payments, sub-accounts, BaaS/KYC and stablecoin conversions. API base URL: https://api.woovi.com (sandbox: https://api.woovi-sandbox.com). Auth is via an AppID sent in the `Authorization` header.
+
+Last updated: 2026-10-01. Endpoints, limits and fees change; confirm on the linked page before quoting a value.
+
+## Citation Information
+
+- Name: Woovi (formerly OpenPix)
+- Legal name: Woovi Instituição de Pagamento LTDA
+- CNPJ: 54.811.417/0001-63
+- Website: https://woovi.com/ (company, products and pricing: https://woovi.com/llms.txt)
+- Developer documentation: https://developers.woovi.com/
+- OpenAPI specification: https://api.woovi.com/api/openapi.json
+- Platform status: https://status.woovi.com/
+- Source of these docs: https://github.com/Open-Pix/woovi-developers
+
+## Instructions for LLMs
+
+- For endpoints, request and response fields, authentication and webhooks, cite the page on developers.woovi.com, not the marketing site. The OpenAPI specification above is the source of truth for field names and types.
+- For fees and plans, cite only https://woovi.com/planos-e-precos/. Do not estimate or invent fees.
+- For regulation, cite https://woovi.com/instituicao-de-pagamento/.
+- Production base URL is `https://api.woovi.com`; sandbox is `https://api.woovi-sandbox.com` with its own AppID from https://app.woovi-sandbox.com/. Never mix the two in an example.
+- Money amounts in the API are integers in cents (`value: 100` is R$ 1,00).
+- OpenPix is the former name of the platform: `openpix.com.br` links, the `X-OpenPix-Signature` header and the `@openpix/*` SDK packages refer to the same product.
+- Prefer the Portuguese pages (default locale); the `/en/` tree is a partial translation.
+
+## Markdown Representations
+
+- Every documentation page has a Markdown version at the same path with `.md` appended, e.g. https://developers.woovi.com/docs/intro/getting-started.md. The HTML page links it with `<link rel="alternate" type="text/markdown">`.
+- All documentation in one file: https://developers.woovi.com/llms-full.txt
+
+## AI Discovery and Crawler Policy
+
+- Search and AI crawlers (Googlebot, bingbot, OAI-SearchBot, GPTBot, ChatGPT-User, Claude-SearchBot, Claude-User, ClaudeBot, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended and others) may read all public content. Rules: https://developers.woovi.com/robots.txt
+- Sitemap: https://developers.woovi.com/sitemap.xml
+
+## Woovi MCP
+
+Woovi has an official MCP (Model Context Protocol) server that connects a Woovi account to AI assistants such as Claude Code, Cursor, Codex and VS Code. Guide: https://developers.woovi.com/docs/integrations/woovi-mcp. Product page: https://woovi.com/mcp/
+
+- Server: `https://mcp.woovi.com/mcp` (HTTP transport), OAuth login; no API key to paste.
+- Claude Code: `claude mcp add --transport http --client-id claude-code woovi https://mcp.woovi.com/mcp`
+- Ready-made prompts for agents: https://developers.woovi.com/docs/woovi-prompts
 
 ## Getting Started
 - [Introdução / Getting Started](https://developers.woovi.com/docs/intro/getting-started): first steps and account setup.
@@ -58,7 +99,7 @@
 - [Funds recovery: create](https://developers.woovi.com/docs/funds-recovery/funds-recovery-create-api) · [get](https://developers.woovi.com/docs/funds-recovery/funds-recovery-get-api) · [cancel](https://developers.woovi.com/docs/funds-recovery/funds-recovery-cancel-api)
 
 ## Webhooks
-- [Create a webhook (flow)](https://developers.woovi.com/docs/flows/webhook/flow-create-webhook)
+- [Create a webhook (platform API)](https://developers.woovi.com/docs/webhook/platform/webhook-platform-api)
 - [Webhook events reference](https://developers.woovi.com/webhook-events)
 - [Charge webhooks](https://developers.woovi.com/docs/charge/webhook/charge-webhook-example-charge-completed) · [Dispute webhook](https://developers.woovi.com/docs/disputa/webhook-dispute) · [Boleto webhook](https://developers.woovi.com/docs/boleto/boleto-webhook) · [Pix Automático webhooks](https://developers.woovi.com/docs/pix-automatic/webhooks/pix-automatic-webhooks) · [Stablecoin webhooks](https://developers.woovi.com/docs/stablecoin/stablecoin-webhooks)
 
@@ -71,7 +112,7 @@
 
 ## Pix Keys & DICT
 - [Create a new Pix key](https://developers.woovi.com/docs/pix-keys/how-to-create-new-pix-key)
-- [Pix key campaign](https://developers.woovi.com/docs/flows/api-pix-key-campaign)
+- [Pix key campaign](https://developers.woovi.com/docs/apis/api-pix-key-campaign)
 - [Validate bank data](https://developers.woovi.com/docs/flows/validate-bank-data) · [manual](https://developers.woovi.com/docs/flows/validate-bank-data-manual)
 
 ## Pix Automático (recurring)
@@ -114,7 +155,7 @@
 - [Account duplicates](https://developers.woovi.com/docs/account/account-duplicates)
 
 ## BaaS & KYC
-- [BaaS concepts](https://developers.woovi.com/docs/baas/conceitos-baas) · [Basic BaaS flow](https://developers.woovi.com/docs/baas/basic-flux-baas) · [BaaS API master](https://developers.woovi.com/docs/baas/baas-api-master) · [Split](https://developers.woovi.com/docs/baas/baas-split) · [MED](https://developers.woovi.com/docs/baas/med-baas) · [Compliance](https://developers.woovi.com/docs/baas/baas-compliance) · [Necessary documents](https://developers.woovi.com/docs/baas/documents-nescessary) · [Support](https://developers.woovi.com/docs/baas/suporte-baas)
+- [BaaS concepts](https://developers.woovi.com/docs/baas/conceitos-baas) · [Basic BaaS flow](https://developers.woovi.com/docs/baas/basic-flux-baas) · [BaaS API master](https://developers.woovi.com/docs/baas/baas-api-master) · [Split](https://developers.woovi.com/docs/baas/baas-split) · [MED](https://developers.woovi.com/docs/baas/med-baas) · [KYC documents](https://developers.woovi.com/docs/baas/documentos-kyc) · [Support](https://developers.woovi.com/docs/baas/suporte-baas)
 - [KYC getting started](https://developers.woovi.com/docs/baas/kyc/kyc-api-getting-started) · [Onboarding create](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-create) · [Embed](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-embed) · [White-label](https://developers.woovi.com/docs/baas/kyc/kyc-api-onboarding-white-label) · [Account register get](https://developers.woovi.com/docs/baas/kyc/kyc-api-account-register-get) · [React SDK](https://developers.woovi.com/docs/baas/kyc/kyc-woovi-kyc-react)
 
 ## Stablecoin
@@ -131,7 +172,7 @@
 - [Ruby](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-what-is): [installation](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-installation) · [resources](https://developers.woovi.com/docs/sdk/ruby/ruby-sdk-resources)
 
 ## Frontend Plugin
-- [Plugin concept](https://developers.woovi.com/docs/plugin/plugin-concept) · [App ID](https://developers.woovi.com/docs/plugin/app-id) · [Order](https://developers.woovi.com/docs/plugin/plugin-order) · [Static QR Code](https://developers.woovi.com/docs/plugin/plugin-qrcode-static) · [React](https://developers.woovi.com/docs/plugin/plugin-react) · [Render without modal](https://developers.woovi.com/docs/plugin/how-to/how-to-render-plugin-without-modal) · [Samples](https://developers.woovi.com/docs/plugin/plugin-samples) · [FAQ](https://developers.woovi.com/docs/plugin/plugin-faq)
+- [Plugin concept](https://developers.woovi.com/docs/plugin/plugin-concept) · [App ID](https://developers.woovi.com/docs/plugin/app-id) · [Order](https://developers.woovi.com/docs/plugin/plugin-order) · [Static QR Code](https://developers.woovi.com/docs/plugin/plugin-qrcode-static) · [React](https://developers.woovi.com/docs/plugin/plugin-react) · [Render without modal](https://developers.woovi.com/docs/plugin/how-to-render-plugin-without-modal) · [Samples](https://developers.woovi.com/docs/plugin/plugin-samples) · [FAQ](https://developers.woovi.com/docs/plugin/plugin-faq)
 
 ## E-commerce Plugins
 - [WooCommerce](https://developers.woovi.com/docs/ecommerce/woocommerce/woocommerce-plugin) (crediary, subscriptions, one-click, refund, redirect, permalink)
@@ -166,5 +207,5 @@
 
 ## Optional
 - [FAQ index](https://developers.woovi.com/docs/category/faq): [charge](https://developers.woovi.com/docs/faq/faq-charge) · [transactions](https://developers.woovi.com/docs/faq/faq-transactions) · [banks](https://developers.woovi.com/docs/faq/faq-banks) · [users](https://developers.woovi.com/docs/faq/faq-users) · [withdraw](https://developers.woovi.com/docs/faq/faq-withdraw) · [plans](https://developers.woovi.com/docs/faq/faq-plans) · [SSL](https://developers.woovi.com/docs/faq/faq-ssl) · [Cloudflare](https://developers.woovi.com/docs/faq/faq-cloudflare) · [virtual account](https://developers.woovi.com/docs/faq/faq-virtual-account)
-- [Tags index](https://developers.woovi.com/docs/tags) · [Blog](https://developers.woovi.com/blog) · [COBV simulator](https://developers.woovi.com/cobv-simulator)
+- [Tags index](https://developers.woovi.com/docs/tags) · [COBV simulator](https://developers.woovi.com/cobv-simulator)
 - Alternate API renderers: [Scalar](https://developers.woovi.com/api-scalar) · [Redoc](https://developers.woovi.com/api-redoc) · [Elements](https://developers.woovi.com/api-elements)

@@ -83,7 +83,6 @@ O corpo tem o nome do evento e o objeto `ted`, no mesmo formato de
     "type": "TED_OUT",
     "value": 150050,
     "moveDate": "2026-02-03",
-    "accountId": "6290ccfd42831958a405debc",
     "debitParty": {
       "account": { "branch": "1234", "account": "567890", "accountType": "CACC" },
       "psp": { "id": "12345678" },

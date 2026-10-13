@@ -6,10 +6,8 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Webhooks",
+    "title": "Webhooks do Pix Automático",
+    "description": "Listagem e fluxograma dos webhooks do Pix Automático da Woovi, para acompanhar autorizações e cobranças recorrentes.",
     "slug": "/category/pix-automatic-webhooks"
-  },
-  "customProps": {
-    "description": "Webhooks do Pix Automático"
   }
 }

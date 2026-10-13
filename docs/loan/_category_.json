@@ -1,0 +1,10 @@
+{
+  "label": "Empréstimo",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Empréstimo visão geral",
+    "description": "Documentação da API REST de Empréstimo (originação e acompanhamento por parceiros)"
+  }
+}

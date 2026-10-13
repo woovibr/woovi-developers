@@ -1,6 +1,7 @@
 ---
 id: introduction-to-test-account
 title: Introdução a conta de teste
+description: O que é a conta de teste da Woovi e quais funcionalidades podem ser testadas nela sem usar uma conta bancária real.
 sidebar_position: 1
 tags:
   - test

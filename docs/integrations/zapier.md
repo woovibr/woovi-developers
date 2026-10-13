@@ -1,6 +1,7 @@
 ---
 id: zapier-with-woovi
 title: Integração Zapier com Woovi
+description: Como usar o app oficial da Woovi na Zapier para automatizar fluxos com cobranças e clientes Pix, com as ações e gatilhos disponíveis.
 tags:
   - integration
   - zapier

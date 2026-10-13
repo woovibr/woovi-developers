@@ -2,6 +2,7 @@
 id: what-is-the-fee-charged-by-woovi
 sidebar_position: 7
 title: Qual a taxa cobrada pela woovi?
+description: Qual a taxa cobrada pela Woovi nas transações com a Maquininha Pix, com os valores mínimo e máximo e exemplos de cálculo.
 tags:
   - pix
   - pix-machine

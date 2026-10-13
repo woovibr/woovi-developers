@@ -7,9 +7,7 @@
   "link": {
     "type": "generated-index",
     "title": "Segurança do webhook",
+    "description": "Como validar os webhooks da Woovi com x-webhook-signature ou HMAC, buscar a chave pública e liberar os IPs dos webhooks.",
     "slug": "/category/webhook-security"
-  },
-  "customProps": {
-    "description": "Segurança documentação"
   }
 }

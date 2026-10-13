@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Arquivos visão geral"
-  },
-  "customProps": {
-    "description": "Arquivos documentação"
+    "title": "Arquivos visão geral",
+    "description": "Como enviar arquivos para a Woovi via API, usados em evidências de disputa, pedidos de aumento de limite e documentos de KYC."
   }
 }

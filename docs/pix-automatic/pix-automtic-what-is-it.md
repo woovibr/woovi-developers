@@ -2,6 +2,7 @@
 id: pix-automatic-what-is-it
 sidebar_position: 1
 title: O que é o Pix Automático?
+description: O que é o Pix Automático, como funcionam a criação e a autorização da assinatura e quais são as jornadas definidas pelo Banco Central.
 tags:
   - pix-automatic
   - api

@@ -1,0 +1,107 @@
+---
+id: how-to-simulate-a-loan-using-api
+title: Como simular um empréstimo via API?
+sidebar_label: Simular empréstimo
+sidebar_position: 2
+tags:
+  - api
+  - loan
+  - emprestimo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Para precificar um empréstimo antes de originar, use o _endpoint_
+`POST /api/v1/loan/simulation`. Requer o escopo `LOAN_SIMULATION_POST`.
+
+A simulação não cria nada para o tomador. Ela fica guardada até a
+`expirationDate` e pode ser repetida à vontade.
+
+## Campos do corpo
+
+| Campo | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `taxID` | string | Sim | CPF ou CNPJ do tomador, com ou sem máscara. |
+| `amount` | integer | Sim | Valor do empréstimo, em centavos, entre `10000` e `250000`. |
+| `installmentNumber` | integer | Sim | Número de parcelas, de 1 a 8. |
+| `period` | string | Não | `WEEKLY` ou `MONTHLY`. Padrão `MONTHLY`. |
+| `correlationID` | string | Não | Seu identificador. Repetir devolve a simulação guardada. |
+
+### Exemplos em código
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl 'https://api.woovi.com/api/v1/loan/simulation' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{
+      "taxID": "12345678909",
+      "amount": 150000,
+      "installmentNumber": 4,
+      "period": "MONTHLY",
+      "correlationID": "erp-sim-42"
+    }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/loan/simulation', {
+  method: 'POST',
+  headers: {
+    Authorization: '{SEU_APP_ID}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    taxID: '12345678909',
+    amount: 150000,
+    installmentNumber: 4,
+    period: 'MONTHLY',
+    correlationID: 'erp-sim-42',
+  }),
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+### Exemplo de resposta
+
+```json
+{
+  "simulation": {
+    "simulationId": "6abeadd43f02bc8c8675c0ad",
+    "correlationID": "erp-sim-42",
+    "status": "ACTIVE",
+    "expirationDate": "2026-10-02",
+    "amount": 150000,
+    "installmentNumber": 4,
+    "period": "MONTHLY",
+    "monthlyInterestRate": 0.1,
+    "periodInterestRate": 0.1,
+    "totalAmount": 189000,
+    "installmentPlan": [
+      { "seq": 1, "dueDate": "2026-11-01", "amount": 47250 },
+      { "seq": 2, "dueDate": "2026-12-01", "amount": 47250 },
+      { "seq": 3, "dueDate": "2027-01-01", "amount": 47250 },
+      { "seq": 4, "dueDate": "2027-02-01", "amount": 47250 }
+    ]
+  }
+}
+```
+
+:::note
+Os valores do exemplo são ilustrativos. A tabela Price do serviço é a fonte do
+cálculo, e a taxa mensal vigente aparece em `monthlyInterestRate`.
+:::
+
+## Recusas
+
+| Status | `error` | Significado |
+| --- | --- | --- |
+| `400` | `INVALID_REQUEST` | Corpo inválido: valor fora de `10000` a `250000`, mais de 8 parcelas, `period` desconhecido ou documento malformado. `message` diz qual campo. |
+| `422` | `TAXID_TYPE_NOT_ELIGIBLE` | O tipo de documento (CPF ou CNPJ) não está habilitado para crédito. É regra de produto, não erro do corpo. |

@@ -2,6 +2,7 @@
 id: funds-recovery
 sidebar_position: 1
 title: O que é a Recuperação de fundos (MED)?
+description: O que é a Recuperação de fundos da Woovi, implementação do MED do Banco Central para pedir a devolução de um Pix em casos de golpe ou fraude.
 tags:
   - funds-recovery
   - med

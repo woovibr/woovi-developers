@@ -6,9 +6,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Ambiente de Teste visão geral"
-  },
-  "customProps": {
-    "description": "Ambiente de Teste documentação"
+    "title": "Ambiente de Teste visão geral",
+    "description": "Ambiente de teste (sandbox) da Woovi: como acessá-lo, usar a conta de teste e simular o Pix Automático sem dinheiro real."
   }
 }

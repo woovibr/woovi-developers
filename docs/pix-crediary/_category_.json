@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Pix Crediário visão geral"
-  },
-  "customProps": {
-    "description": "Pix Crediário documentação"
+    "title": "Pix Crediário visão geral",
+    "description": "Pix Crediário da Woovi: como funciona o crediário próprio cobrado via Pix, com cobranças automáticas e perguntas frequentes."
   }
 }

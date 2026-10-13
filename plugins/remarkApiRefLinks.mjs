@@ -28,6 +28,8 @@ const slugify = (value) => value.toLowerCase().replace(STRIP, '').replace(/ /g, 
 const METHODS = 'GET|POST|PUT|PATCH|DELETE';
 const REFERENCE = new RegExp(`^(/(?:en/)?api)#tag/[^/]+/(${METHODS})(/.*)$`);
 
+const API_PAGE = /^\/(?:en\/)?api\/?#/;
+
 let pending;
 
 const loadSpec = (specUrl) => {
@@ -48,6 +50,15 @@ export default function remarkApiRefLinks({ specUrl }) {
     visit(tree, 'link', (node) => {
       if (typeof node.url !== 'string') {
         return;
+      }
+      // /api is rendered by Scalar in the browser, so its anchors never exist in
+      // the static HTML and the broken-anchor checker flags every one of them;
+      // operation links are checked against the spec below instead.
+      if (API_PAGE.test(node.url)) {
+        node.data = {
+          ...node.data,
+          hProperties: { ...node.data?.hProperties, 'data-noBrokenLinkCheck': true },
+        };
       }
       if (REFERENCE.test(node.url)) {
         links.push(node);

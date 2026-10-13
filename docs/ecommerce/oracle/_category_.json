@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Oracle Commerce Cloud visão geral"
-  },
-  "customProps": {
-    "description": "Oracle Commerce Cloud documentação"
+    "title": "Oracle Commerce Cloud visão geral",
+    "description": "Como começar e integrar o Oracle Commerce Cloud com a Woovi para receber pagamentos via Pix na sua loja."
   }
 }

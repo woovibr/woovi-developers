@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Plataforma visão geral"
-  },
-  "customProps": {
-    "description": "Plataforma documentação"
+    "title": "Plataforma visão geral",
+    "description": "Como criar e verificar webhooks pela plataforma Woovi e dar acesso de API e webhook a um usuário."
   }
 }

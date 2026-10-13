@@ -1,0 +1,13 @@
+{
+  "label": "Playgrounds",
+  "position": 1.5,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "doc",
+    "id": "playground/playgrounds"
+  },
+  "customProps": {
+    "description": "Documentação interativa: diagramas de sequência, máquinas de estado e requisições simuladas para cada produto."
+  }
+}

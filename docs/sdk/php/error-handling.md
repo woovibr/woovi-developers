@@ -1,6 +1,8 @@
 ---
 id: sdk-php-error-handling
-title: Manipulação de erros
+title: Manipulação de erros no SDK PHP
+sidebar_label: Manipulação de erros
+description: 'Como tratar erros no SDK de PHP da Woovi: ApiErrorException, exceções de transporte PSR-18 e exemplo de captura de erros.'
 tags:
   - php
   - api

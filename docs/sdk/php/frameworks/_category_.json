@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Frameworks"
-  },
-  "customProps": {
-    "description": "Integração Woovi com frameworks PHP"
+    "title": "Frameworks",
+    "description": "Como usar o SDK de PHP da Woovi com frameworks PHP, como o Laravel, para integrar cobranças Pix e webhooks."
   }
 }

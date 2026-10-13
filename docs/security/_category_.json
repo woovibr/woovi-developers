@@ -7,9 +7,7 @@
   "link": {
     "type": "generated-index",
     "title": "Segurança visão geral",
+    "description": "Segurança na Woovi: diretrizes e políticas de segurança e backup, autenticação multi-fator e como agir em caso de credencial vazada.",
     "slug": "/category/security"
-  },
-  "customProps": {
-    "description": "Segurança documentação"
   }
 }

@@ -1,6 +1,7 @@
 ---
 id: sdk-node-usage
-title: Como começar
+title: Como começar com o SDK Node.js
+sidebar_label: Como começar
 sidebar_position: 1
 tags:
   - api
@@ -107,7 +108,7 @@ Os seguintes recursos estão disponíveis no `Client` gerado:
 - `woovi.transfer`: Operações em transferencias.
 - `woovi.webhook`: Operações em webhook.
 
-# Webhook
+## Webhook
 
 O método webhook conta com um recurso especial chamado handle, ótimo para ser usado para validar recursos diretamente na sua api. Veja a seguir como ultiliza-lo:
 

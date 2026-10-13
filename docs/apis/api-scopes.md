@@ -1,5 +1,6 @@
 ---
 title: Adicionando escopos ao seu AppID
+description: Como restringir um AppID da Woovi aos endpoints necessários atribuindo escopos, ao criar uma API/Plugin ou editando uma existente.
 tags:
   - api
   - security

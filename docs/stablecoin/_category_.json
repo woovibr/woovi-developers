@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Stablecoin - visão geral"
-  },
-  "customProps": {
-    "description": "Stablecoin (USDT/USDC) documentação"
+    "title": "Stablecoin - visão geral",
+    "description": "Stablecoin da Woovi: converta reais em USDT ou USDC, com fluxos de depósito e payout, endpoints, taxas, limites e webhooks."
   }
 }

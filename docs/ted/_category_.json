@@ -4,9 +4,7 @@
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "TED visão geral"
-  },
-  "customProps": {
-    "description": "Documentação da API pública de TED"
+    "title": "TED visão geral",
+    "description": "API pública de TED da Woovi: primeiros passos, envio, consulta e devolução de TEDs, ciclo de vida e webhooks."
   }
 }

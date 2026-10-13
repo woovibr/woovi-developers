@@ -1,6 +1,8 @@
 ---
 id: sdk-node-error-handling
-title: Manipulação de erros
+title: Manipulação de erros no SDK Node.js
+sidebar_label: Manipulação de erros
+description: 'Como tratar erros no SDK de Node.js da Woovi: exceptions lançadas pela API, novas tentativas automáticas e exemplo de try/catch.'
 sidebar_position: 3
 tags:
   - api

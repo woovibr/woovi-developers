@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Magento1 visão geral"
-  },
-  "customProps": {
-    "description": "Magento1 documentação"
+    "title": "Magento1 visão geral",
+    "description": "Como integrar a Woovi com o Magento 1 para aceitar pagamentos via Pix, incluindo a integração em um clique."
   }
 }

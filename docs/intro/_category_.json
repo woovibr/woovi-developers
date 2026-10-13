@@ -6,9 +6,7 @@
   "position": 1,
   "link": {
     "type": "generated-index",
-    "title": "Introdução visão geral"
-  },
-  "customProps": {
-    "description": "Introdução documentação"
+    "title": "Introdução visão geral",
+    "description": "Primeiros passos com a Woovi: configure a plataforma, acesse o ambiente de teste e saiba onde encontrar ajuda para a sua integração Pix."
   }
 }

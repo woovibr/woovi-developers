@@ -1,7 +1,11 @@
+// Node build config: logging to the console and importing .mjs plugins are intended here.
+/* eslint-disable no-console, import/extensions */
 import fs from 'node:fs';
 import path from 'node:path';
+
 import { themes } from 'prism-react-renderer';
 import mdxMermaid from 'mdx-mermaid';
+
 import remarkApiRefLinks from './plugins/remarkApiRefLinks.mjs';
 
 const lightCodeTheme = themes.github;
@@ -45,7 +49,120 @@ const resolveAcrossLocales = ({ sourceFilePath, url }) => {
   return `/docs/${route}${anchor ? `#${anchor}` : ''}`;
 };
 
+const siteUrl = 'https://developers.woovi.com';
+
+// Thin or duplicate routes: tag listings, the search page and the alternate
+// renderers of the same OpenAPI spec that /api already serves.
+const sitemapIgnorePatterns = [
+  '/docs/tags/**',
+  '/en/docs/tags/**',
+  '/search',
+  '/en/search',
+  ...['api-elements', 'api-redoc', 'api-scalar', 'pix-scalar', 'dict-scalar', 'indirect-scalar'].flatMap(
+    (page) => [`/${page}`, `/en/${page}`],
+  ),
+];
+
+const sitemapPriority = (url) => {
+  const { pathname } = new URL(url);
+  const route = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  if (route === '/') return 1.0;
+  if (['/api', '/docs/intro/getting-started', '/docs/apis/api-getting-started'].includes(route)) return 0.9;
+  if (route.startsWith('/docs/supported-banks/')) return 0.3;
+  if (route.startsWith('/docs/category/')) return 0.5;
+  return 0.7;
+};
+
+const flattenRoutes = (routes) => routes.flatMap((route) => [route, ...flattenRoutes(route.routes ?? [])]);
+
+// Under /en/, a doc with no translated file is built from the Portuguese source
+// (its sourceFilePath stays under docs/) and a generated category index lists
+// Portuguese titles. Their canonical is the Portuguese page (src/theme/SiteMetadata),
+// so they stay out of the English sitemap.
+const untranslatedDocUrls = ({ routes, siteConfig }) => {
+  if (siteConfig.baseUrl === '/') return new Set();
+  const isUntranslated = (route) =>
+    route.path.startsWith(`${siteConfig.baseUrl}docs/`) &&
+    !route.metadata?.sourceFilePath?.startsWith('i18n/');
+  return new Set(
+    flattenRoutes(routes)
+      .filter(isUntranslated)
+      .map((route) => `${siteConfig.url}${route.path}`),
+  );
+};
+
+// docusaurus-plugin-llms reads docs/ (Portuguese) whatever the locale, so the en
+// build would only write a second copy of the same twins and llms-full.txt, and
+// DocItem/Metadata points /en/ pages at the root twins anyway. Skipping it there
+// saves ~20s of postBuild.
+const llmsPlugins =
+  process.env.DOCUSAURUS_CURRENT_LOCALE !== 'en'
+    ? [
+        [
+          'docusaurus-plugin-llms',
+          {
+            // llms.txt is curated by hand in static/; generating it here would overwrite it
+            generateLLMsTxt: false,
+            generateLLMsFullTxt: true,
+            // a Markdown twin next to every doc (/docs/x -> /docs/x.md) that answer engines
+            // read for a fraction of the HTML's tokens; DocItem/Metadata links it
+            generateMarkdownFiles: true,
+            excludeImports: true,
+            docsDir: 'docs',
+            title: 'Woovi Developers',
+            description:
+              'Documentação da API, webhooks, SDKs e plugins da Woovi, Instituição de Pagamento regulada pelo Banco Central e participante direta do Pix. Índice curado: https://developers.woovi.com/llms.txt',
+          },
+        ],
+      ]
+    : [];
+
+// Ties the docs to the same entity woovi.com describes (same @id), so answer
+// engines attribute developers.woovi.com to the regulated Payment Institution.
+// Only facts woovi.com itself publishes.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['Organization', 'FinancialService'],
+      '@id': 'https://woovi.com/#organization',
+      name: 'Woovi',
+      legalName: 'Woovi Instituição de Pagamento LTDA',
+      taxID: '54.811.417/0001-63',
+      url: 'https://woovi.com/',
+      logo: 'https://woovi.com/logo.png',
+      sameAs: [
+        'https://twitter.com/woovibr',
+        'https://www.instagram.com/woovibr/',
+        'https://www.linkedin.com/company/sejawoovi/',
+        'https://www.youtube.com/@woovibr',
+        'https://github.com/woovibr',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: `${siteUrl}/`,
+      name: 'Woovi Developers',
+      description: 'Documentação da API Pix, webhooks, SDKs e plugins da Woovi.',
+      inLanguage: ['pt-BR', 'en'],
+      publisher: { '@id': 'https://woovi.com/#organization' },
+    },
+  ],
+};
+
 module.exports = {
+  headTags: [
+    {
+      tagName: 'script',
+      attributes: { type: 'application/ld+json' },
+      innerHTML: JSON.stringify(jsonLd),
+    },
+    {
+      tagName: 'link',
+      attributes: { rel: 'describedby', type: 'text/plain', href: '/llms.txt' },
+    },
+  ],
   markdown: {
     mermaid: true,
     hooks: {
@@ -66,7 +183,12 @@ module.exports = {
       rspackPersistentCache: true,
       mdxCrossCompilerCache: true,
       ssgWorkerThreads: true,
+      // read the git history once instead of one `git log` per doc for the
+      // last-update dates (showLastUpdateTime, sitemap lastmod): the en build
+      // spent ~200s here
+      gitEagerVcs: true,
     },
+    experimental_vcs: true,
   },
   i18n: {
     defaultLocale: 'pt-BR',
@@ -75,7 +197,7 @@ module.exports = {
   },
   title: 'Woovi Developers',
   tagline: 'Instant payments Docs, APIs, SDKs',
-  url: 'https://developers.woovi.com',
+  url: siteUrl,
   baseUrl: '/',
   organizationName: 'woovi',
   projectName: 'developer-portal',
@@ -84,16 +206,7 @@ module.exports = {
   onBrokenLinks: 'throw',
   trailingSlash: false,
   plugins: [
-    [
-      'docusaurus-plugin-llms',
-      {
-        generateLLMsTxt: true,
-        generateLLMsFullTxt: true,
-        docsDir: 'docs',
-        title: 'Woovi Developers',
-        description: 'Instant payments Docs, APIs, SDKs',
-      },
-    ],
+    ...llmsPlugins,
     // [
     //   'docusaurus-plugin-mcp-server',
     //   {
@@ -110,16 +223,47 @@ module.exports = {
       { projectId: 'j6ihzvjzvu' },
     ],
     require.resolve('./webpack/sitePlugin'),
+    require.resolve('./plugins/translatedDocs'),
     [
       require.resolve('@cmfcmf/docusaurus-search-local'),
       {
         language: ['pt', 'en'],
+        indexBlog: false,
       },
     ],
     [
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
+          {
+            from: '/docs/test/adding-funds-in-test-account',
+            to: '/docs/test-environment/test-account/adding-funds-in-test-account',
+          },
+          {
+            from: '/docs/test/flow-company-bank-test',
+            to: '/docs/test-environment/test-account/flow-company-bank-test',
+          },
+          {
+            from: '/docs/test/introduction-to-test-account',
+            to: '/docs/test-environment/test-account/introduction-to-test-account',
+          },
+          {
+            from: '/docs/test/test-pay-pix-qrcode',
+            to: '/docs/test-environment/test-account/test-pay-pix-qrcode',
+          },
+          {
+            from: '/docs/test/test-pay-pix',
+            to: '/docs/test-environment/test-account/test-pay-pix',
+          },
+          {
+            from: '/docs/test/paying-a-pix-key-with-test-account',
+            to: '/docs/test-environment/test-account/paying-a-pix-key-with-test-account',
+          },
+          {
+            // the standalone prototype became the Cobrança Pix playground
+            from: '/pix-na-pratica',
+            to: '/docs/playground/playground-cobranca-pix',
+          },
           {
             from: '/docs/flows/api-pix-key-campaign',
             to: '/docs/apis/api-pix-key-campaign',
@@ -233,6 +377,8 @@ module.exports = {
     ],
   ],
   themeConfig: {
+    // default social card; twitter:card is already summary_large_image
+    image: 'img/og-card.png',
     mermaid: {
       options: {
         securityLevel: 'loose',
@@ -269,6 +415,13 @@ module.exports = {
           to: 'docs/webhook/webhook-events-explorer',
           label: 'Webhook Explorer',
           position: 'left',
+        },
+        {
+          to: 'docs/playground',
+          label: 'Playgrounds',
+          position: 'left',
+          // stays highlighted on every playground page, not just the hub
+          activeBaseRegex: '/docs/playground(/|$)',
         },
         {
           to: 'docs/plugin',
@@ -341,11 +494,24 @@ module.exports = {
             ],
           ],
         },
-        // "blog": {
-        //   "path": "blog"
-        // },
+        // there is no blog/ directory: the default plugin only published an empty /blog
+        blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
+        },
+        sitemap: {
+          // the date of the last commit that touched the doc (showLastUpdateTime), never the build date
+          lastmod: 'date',
+          changefreq: null,
+          priority: null,
+          ignorePatterns: sitemapIgnorePatterns,
+          createSitemapItems: async ({ defaultCreateSitemapItems, ...params }) => {
+            const items = await defaultCreateSitemapItems(params);
+            const untranslated = untranslatedDocUrls(params);
+            return items
+              .filter((item) => !untranslated.has(item.url))
+              .map((item) => ({ ...item, priority: sitemapPriority(item.url) }));
+          },
         },
         googleAnalytics: {
           trackingID: 'G-DFFLN19210',

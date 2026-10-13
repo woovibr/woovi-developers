@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Wallet visão geral"
-  },
-  "customProps": {
-    "description": "Wallet documentação"
+    "title": "Wallet visão geral",
+    "description": "Wallets de parceiros na Woovi: o que é a conta Mediator, que recebe as receitas de tarifas e paga as tarifas da plataforma."
   }
 }

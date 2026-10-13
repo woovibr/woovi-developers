@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Taxa customizada do parceiro visão geral"
-  },
-  "customProps": {
-    "description": "Taxa customizada do parceiro documentação"
+    "title": "Taxa customizada do parceiro visão geral",
+    "description": "O que é a taxa customizada do parceiro na Woovi e como customizar a taxa cobrada de uma empresa afiliada."
   }
 }

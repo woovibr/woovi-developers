@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Fluxos visão geral"
-  },
-  "customProps": {
-    "description": "Fluxos documentação"
+    "title": "Fluxos visão geral",
+    "description": "Fluxos de integração com a Woovi: criação de cobranças, máquina de estado, validação de dados bancários, KYC e códigos de erro Pix."
   }
 }

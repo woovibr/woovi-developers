@@ -1,6 +1,7 @@
 ---
 id: creating-a-meta-pixel
 title: Criando um meta pixel
+description: Como criar um Meta Pixel (antigo Facebook Pixel) no Gerenciador de Eventos e obter o ID do Pixel para cadastrar na Woovi.
 tags:
   - meta
   - pixel

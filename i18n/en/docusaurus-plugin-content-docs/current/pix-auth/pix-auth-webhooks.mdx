@@ -1,0 +1,91 @@
+---
+id: pix-auth-webhooks
+title: How to receive the Pix Auth result by webhook?
+sidebar_position: 2
+tags:
+  - api
+  - pix-auth
+  - webhook
+---
+
+Instead of polling [`GET /api/v1/pix-auth/:id`](./pix-auth-getting-started.mdx#3-read-the-result) until the Pix Auth ends, you can be notified by webhook as soon as it ends.
+
+| Event | Fires when | `status` | `result` |
+| --- | --- | --- | --- |
+| `PIX_AUTH_COMPLETED` | the Pix was paid and compared, or the Pix arrangement rejected the payment | `COMPLETED` | `MATCHED` or `MISMATCH` |
+| `PIX_AUTH_EXPIRED` | nobody paid within `expiresIn` | `EXPIRED` | `UNVERIFIED` |
+
+Each Pix Auth emits **at most one** webhook of each event. Events are only emitted for Pix Auths created with `POST /api/v1/pix-auth`.
+
+## Registering the webhooks
+
+```bash
+curl --request POST \
+  --url https://api.woovi.com/api/v1/webhook \
+  --header 'Authorization: <YOUR_APPID>' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "webhook": {
+      "name": "pix auth - completed",
+      "event": "PIX_AUTH_COMPLETED",
+      "url": "https://myurl.example/webhook/pix-auth",
+      "authorization": "my-verification-token",
+      "isActive": true
+    }
+  }'
+```
+
+Repeat with `"event": "PIX_AUTH_EXPIRED"`.
+
+## Envelope and signature
+
+Events arrive with the same signature headers as any Woovi webhook:
+
+| Header | What it is |
+| --- | --- |
+| `x-webhook-signature` | base64 RSA-SHA256 signature made with Woovi's private key. **Use this one** ([how to validate](../webhook/seguranca/webhook-signature-validation.mdx)). |
+| `x-openpix-signature` | base64 HMAC-SHA1 with your webhook's `hmacSecretKey` ([how to validate](../webhook/seguranca/webhook-hmac.mdx)). |
+
+The payload never carries the payer's name or document: on a `MISMATCH`, they belong to someone else. `taxID` is always the document **you** declared.
+
+## `PIX_AUTH_COMPLETED`
+
+```json
+{
+  "event": "PIX_AUTH_COMPLETED",
+  "pixAuth": {
+    "id": "6abd253902a0cbc48013f01e",
+    "correlationID": "signup-8f2c1",
+    "status": "COMPLETED",
+    "result": "MATCHED",
+    "taxID": { "taxID": "52998224725", "type": "BR:CPF" },
+    "completedAt": "2026-09-30T15:52:10.120Z"
+  }
+}
+```
+
+Approve the signup only on `result: "MATCHED"`. `MISMATCH` means the Pix came from an account that does not belong to the declared document, or that the Pix arrangement rejected the payment.
+
+## `PIX_AUTH_EXPIRED`
+
+```json
+{
+  "event": "PIX_AUTH_EXPIRED",
+  "pixAuth": {
+    "id": "6abd253902a0cbc48013f01e",
+    "correlationID": "signup-8f2c1",
+    "status": "EXPIRED",
+    "result": "UNVERIFIED",
+    "taxID": { "taxID": "52998224725", "type": "BR:CPF" },
+    "expiredAt": "2026-09-30T16:05:30.002Z"
+  }
+}
+```
+
+The `correlationID` of an expired Pix Auth cannot be reused. To try again, create another Pix Auth with a new `correlationID`.
+
+## Delivery
+
+- Answer with any `2xx` to acknowledge. Any other response, or a timeout, makes Woovi retry the delivery.
+- Handle the webhook idempotently by `pixAuth.id`. If your system misses a delivery, `GET /api/v1/pix-auth/:id` always has the current state.
+- Deliveries show up in the dashboard's webhook logs, like any other event.

@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Meta pixel visão geral"
-  },
-  "customProps": {
-    "description": "Meta pixel documentação"
+    "title": "Meta pixel visão geral",
+    "description": "Como criar um Meta Pixel e integrá-lo à Woovi para rastrear as ações dos visitantes nos pagamentos feitos pela Woovi."
   }
 }

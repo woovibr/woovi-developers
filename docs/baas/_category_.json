@@ -5,9 +5,7 @@
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "BaaS — visão geral"
-  },
-  "customProps": {
-    "description": "Crie e opere contas digitais para seus clientes"
+    "title": "BaaS — visão geral",
+    "description": "Banking as a Service da Woovi: ative o modo BaaS, crie e controle contas, chaves Pix, cobranças, saldo, split, KYC e MED."
   }
 }

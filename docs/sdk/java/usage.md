@@ -1,6 +1,7 @@
 ---
 id: java-sdk-usage
-title: Como começar
+title: Como começar com o SDK Java
+sidebar_label: Como começar
 sidebar_position: 0
 tags:
   - api

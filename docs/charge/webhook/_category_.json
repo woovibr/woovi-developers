@@ -6,6 +6,7 @@
   "link": {
     "type": "generated-index",
     "title": "Charge Webhook",
+    "description": "Exemplos de payload dos webhooks de cobrança Pix da Woovi para os eventos de cobrança criada, paga e expirada.",
     "slug": "/category/charge-webhook"
   }
 }

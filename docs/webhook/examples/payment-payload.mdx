@@ -11,14 +11,37 @@ tags:
 
 Os webhooks de `Pagamento Externo Confirmado (Pix Out)` enviam objetos com os seguintes campos no seu payload:
 
-- `payment`: Objeto com detalhes do Pagamento
+- `account`: Objeto com o `accountId` da conta Woovi que enviou o Pix
+- `payment`: Objeto com detalhes do Pagamento (inclui `metadata`, quando enviado na criação)
 - `transaction`: Objeto com detalhes da Transação Pix
+- `destination`: Objeto com os dados de **quem recebeu** o Pix, conforme retornado pelo Pix (SPI/DICT)
+
+### Campos de `destination`
+
+| Campo | Descrição |
+| --- | --- |
+| `name` | Nome do titular da conta recebedora |
+| `taxID.taxID` | CPF/CNPJ do titular |
+| `taxID.type` | Tipo do documento (`BR:CPF` ou `BR:CNPJ`) |
+| `pixKey` | Chave Pix usada no pagamento (ausente em pagamentos por agência e conta) |
+| `bankName` | Nome da instituição recebedora |
+| `ispb` | ISPB da instituição recebedora |
+| `branch` | Agência |
+| `account` | Conta |
+| `accountType` | Tipo da conta (`CACC`, `SVGS`, `SLRY` ou `TRAN`) |
+
+:::info
+Campos que a instituição recebedora não informar são omitidos do payload.
+:::
 
 ## Exemplo
 
 ```json
 {
   "event": "OPENPIX:MOVEMENT_CONFIRMED",
+  "account": {
+    "accountId": "6823414a524ed520d3518dd6"
+  },
   "payment": {
     "value": 30,
     "status": "CONFIRMED",
@@ -27,9 +50,23 @@ Os webhooks de `Pagamento Externo Confirmado (Pix Out)` enviam objetos com os se
     "correlationID": "222a1750-de17-406c-bd0c-25af9a5a5d08"
   },
   "transaction": {
+    "correlationID": "9134e286-6f71-427a-bf00-241681624586",
     "value": 30,
     "endToEndId": "E23114447202303161242u80lZNR7nQZ",
     "time": "2023-03-16T12:42:47.526Z"
+  },
+  "destination": {
+    "name": "Fulano de Tal",
+    "taxID": {
+      "taxID": "06882328684",
+      "type": "BR:CPF"
+    },
+    "pixKey": "06882328684",
+    "bankName": "NU PAGAMENTOS - IP",
+    "account": "12345678",
+    "branch": "0001",
+    "accountType": "TRAN",
+    "ispb": "18236120"
   }
 }
 ```
@@ -39,7 +76,7 @@ Os webhooks de `Pagamento Externo Confirmado (Pix Out)` enviam objetos com os se
 Os webhooks de `Pagamento Externo com Falha (Pix Out)` enviam objetos com os seguintes campos no seu payload:
 
 - `payment`: Objeto com detalhes do Pagamento
-- `transaction`: Objeto com detalhes da Transação Pix se ela existir
+- `transaction`: Objeto com detalhes da Transação Pix se ela existir — inclui `providerRejectedReason` (motivo da rejeição), `ispb` da instituição recebedora e `providerErrorCode`
 - `error`:  Objeto com o código e descrição do motivo da falha.
 
 :::info
@@ -61,7 +98,10 @@ Veja mais detalhes sobre erros relacionados a um Pagamento externo na [documenta
   "transaction": {
     "value": 30,
     "endToEndId": "E23114447202303161242u80lZNR7nQZ",
-    "time": "2023-03-16T12:42:47.526Z"
+    "time": "2023-03-16T12:42:47.526Z",
+    "providerRejectedReason": "AC03 - Pagamento rejeitado pelo PSP do recebedor",
+    "ispb": "18236120",
+    "providerErrorCode": "PAY_PIX_KEY_ERROR"
   },
   "error": {
     "code":"PAY_PIX_KEY_ERROR",

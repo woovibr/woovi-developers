@@ -2,6 +2,7 @@
 id: stablecoin-what-is-it
 sidebar_position: 1
 title: O que é o Stablecoin?
+description: 'O que é o Stablecoin da Woovi: converta reais (BRL) em USDT ou USDC e receba na carteira de destino, na rede escolhida.'
 tags:
   - stablecoin
   - api
