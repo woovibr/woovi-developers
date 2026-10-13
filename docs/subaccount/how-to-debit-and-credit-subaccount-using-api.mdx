@@ -28,7 +28,7 @@ A chave Pix registrada na subconta deve ser passada na url da requisição como 
 
 Os campos da requisição são os mesmos nos dois _endpoints_:
 
-- **`value`** (obrigatório): O valor em centavos a ser movimentado.
+- **`value`** (obrigatório): O valor em centavos a ser movimentado. Deve ser um número inteiro maior que zero (`500`, não `"500"` nem `5.00`).
 - **`description`** (opcional): Uma descrição da movimentação, que aparece no extrato da subconta.
 
 ### Permissões
@@ -38,7 +38,7 @@ A sua aplicação (AppID) precisa ter o escopo correspondente:
 - `/debit`: **`SUBACCOUNT_DEBIT_POST`**
 - `/credit`: **`SUBACCOUNT_CREDIT_POST`**
 
-No `/debit`, a aplicação também pode precisar ter IPs permitidos cadastrados. Quando essa exigência está ativa para a sua conta, uma aplicação sem IP permitido recebe `401`.
+Nos dois _endpoints_, a aplicação também pode precisar ter IPs permitidos cadastrados. Quando essa exigência está ativa para a sua conta, uma aplicação sem IP permitido recebe `401`.
 
 ### Exemplo
 
@@ -58,26 +58,30 @@ Se tudo ocorreu bem, o _status code_ será `200` e a resposta terá este formato
   "pixKey": "subconta@exemplo.com",
   "value": 500,
   "description": "Estorno parcial pedido 1234",
-  "success": "Sub-account withdrawal has been successfully debited, 500"
+  "success": "A retirada da subconta foi debitada com sucesso, 500"
 }
 ```
 
 ### Erros
 
-| Status | Erro                                                              | Quando acontece                                                        |
-| ------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `400`  | `Subaccount not found: {id}`                                      | Não existe subconta ativa com essa chave Pix na sua empresa            |
-| `400`  | `Transfer just work with subaccount with balance`                 | `/debit` em uma subconta com saldo zero                                |
-| `400`  | `Account does not have enough balance to complete the operation`  | `/debit` com valor maior que o saldo da subconta                       |
-| `400`  | `Not enough balance`                                              | `/credit` com valor maior que o saldo disponível da conta principal    |
-| `400`  | `Value must be positive`                                          | `value` zero ou negativo                                               |
-| `401`  | `An allowed IP is required on this application to move money out` | `/debit` com aplicação sem IP permitido, quando a exigência está ativa |
-| `403`  | `This feature is not enabled for your company`                    | A empresa não tem a funcionalidade Subconta                            |
+As mensagens de erro e de sucesso vêm no idioma configurado na sua empresa. Na tabela, o texto em português e, entre parênteses, a mensagem em inglês. Algumas mensagens só existem em inglês.
+
+| Status | Erro                                                                                                                                     | Quando acontece                                                            |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `400`  | `value deve ser um integer` (`value must be an integer`)                                                                                 | `value` ausente, em texto ou com casas decimais                            |
+| `400`  | `O valor deve ser maior que 0` (`The value must be greater than 0`)                                                                      | `value` zero ou negativo                                                   |
+| `400`  | `Subconta não encontrada: {id}` (`Subaccount not found: {id}`)                                                                           | Não existe subconta ativa com essa chave Pix na sua empresa                |
+| `400`  | `Transferir apenas trabalhe com a subconta com saldo` (`Transfer just work with subaccount with balance`)                                | `/debit` em uma subconta com saldo zero                                    |
+| `400`  | `Account does not have enough balance to complete the operation`                                                                         | `/debit` com valor maior que o saldo da subconta                           |
+| `400`  | `Saldo insuficiente` (`Not enough balance`)                                                                                              | `/credit` com valor maior que o saldo disponível da conta principal        |
+| `400`  | `Erro ao criar crédito de subconta` (`Error when creating subaccount credit`)                                                            | `/credit` sem conta principal padrão configurada na empresa                |
+| `401`  | `Um IP permitido é obrigatório nesta aplicação para enviar dinheiro` (`An allowed IP is required on this application to move money out`) | Aplicação sem IP permitido, quando a exigência está ativa para a sua conta |
+| `403`  | `This feature is not enabled for your company`                                                                                           | A empresa não tem a funcionalidade Subconta                                |
 
 :::warning
 Estes _endpoints_ **não possuem chave de idempotência**. Não há `correlationID`: cada requisição aceita gera uma nova movimentação. Se a requisição der _timeout_ e você reenviar, o valor pode ser movimentado duas vezes.
 
-Para evitar duplicidade, coloque um identificador único no campo `description` e, antes de tentar de novo, consulte o extrato da subconta em `GET /api/v1/subaccount/{id}/statement`. Se já existir um lançamento com esse `description`, a movimentação anterior foi feita e não deve ser repetida.
+Para evitar duplicidade, coloque um identificador único no campo `description` e, antes de tentar de novo, consulte o extrato da subconta em `GET /api/v1/subaccount/{id}/statement` (escopo `SUBACCOUNT_STATEMENT_GET`). Se já existir um lançamento com esse `description`, a movimentação anterior foi feita e não deve ser repetida.
 :::
 
 ### Exemplos em código
