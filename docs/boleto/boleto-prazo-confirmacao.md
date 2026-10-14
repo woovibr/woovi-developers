@@ -32,6 +32,7 @@ referência:
 
 | Situação | Prazo típico de confirmação |
 | --- | --- |
+| Pago no Itaú | **geralmente no mesmo dia** |
 | Fluxo normal | **1 a 2 dias úteis** |
 | Média geral | **1 a 3 dias úteis** |
 | Pagamento em lotérica | **no mínimo 1 dia útil** |
