@@ -1,0 +1,41 @@
+---
+id: efx-requirements
+title: eFX requirements and rules
+description: 'What your eFX platform needs before integrating with Woovi (CNR, CNPJ, KYC/KYB, Pix key) and the BCB Resolution 561/2026 rules that apply to every operation.'
+sidebar_position: 2
+tags:
+  - efx
+  - api
+  - compliance
+---
+
+## Before you integrate
+
+| Requirement | Detail |
+| --- | --- |
+| Non-resident BRL account (CNR) | Opened at a Brazilian institution authorized to operate in the foreign exchange market (BCB Resolution No. 277, art. 67). Woovi settles payments into it. |
+| Holder allowed to move third-party funds | If the CNR moves third-party funds, the holder must be a financial institution supervised in its home country (BCB Resolution No. 277, art. 68). |
+| Brazilian CNPJ | The foreign entity needs a CNPJ registration. |
+| KYC/KYB with Woovi | Company documents with apostille and sworn translation, identification of the ultimate beneficial owners (UBO) and the license for the activity. |
+| Pix key on the CNR | The CNR must have a registered Pix key. |
+| CNR registered at Woovi | The CNR sent in `beneficiary.bankAccount` must be registered at Woovi for your company. Otherwise, creation answers `400 beneficiary.bankAccount is not a registered CNR account`. |
+| eFX API enabled | Woovi enables eFX for your company at the end of onboarding. Without it, the routes answer `403 eFX is not enabled for this company`. |
+| Application with scopes | The application (AppID) must use scopes and have `EFX_PAYMENT_CREATE` (quote and create) and `EFX_PAYMENT_LIST` (get and list). An application without scopes gets `403 application must use scopes` on every eFX route. |
+
+Calls use the same `Authorization: <AppID>` header as the rest of the Woovi API. If the application has allowed IPs, they apply here too.
+
+## Rules for every operation (BCB Resolution No. 561/2026)
+
+:::warning
+These rules apply to **every** operation. A payment that breaks them is not settled into your CNR.
+:::
+
+- **The payer is your customer.** Each payment belongs to a customer of your platform, identified in `payer`.
+- **The Pix comes from an account in the payer's own name.** The CPF or CNPJ of the paying account must be the same as `payer.taxID`. A Pix paid by someone else is not settled and goes to refund (see [Refunds](./efx-refunds.mdx)).
+- **No netting.** Pay-ins and pay-outs are not netted: each payment is settled for its full amount, without offsetting other amounts.
+- **US$ 10,000 limit per operation.** Each payment's `value`, converted by the Central Bank's PTAX selling rate (no margin), cannot exceed US$ 10,000. Above that, creation answers `400`.
+- **No stablecoins in settlement.** Settlement is in reais, into your CNR. Stablecoins cannot be used to settle the operations.
+
+## Data you send
+
+Each payment carries the purpose (`purpose`), the payer (`payer`), the beneficiary (`beneficiary`) and the invoice (`invoice`). This data goes into the operation's report to the Central Bank, so it must be accurate. See [Central Bank reporting](./efx-regulatory-reporting.mdx).

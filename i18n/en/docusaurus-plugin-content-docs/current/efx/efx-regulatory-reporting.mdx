@@ -1,0 +1,29 @@
+---
+id: efx-regulatory-reporting
+title: Central Bank reporting
+description: 'How eFX operations received by Woovi are reported to the Central Bank of Brazil (ACAM225) and which data your platform must send accurately.'
+sidebar_position: 6
+tags:
+  - efx
+  - compliance
+---
+
+Woovi reports **every eFX operation** to the Central Bank of Brazil, in the **ACAM225** document. You do not need to send any file or call any extra route: Woovi files the report from the payment data.
+
+## Your responsibility
+
+The report uses the data you send when creating the payment. It must be **accurate and truthful**:
+
+| Data | Field |
+| --- | --- |
+| Purpose of the operation (goods or services) | `purpose` |
+| Payer in Brazil | `payer.name`, `payer.taxID` |
+| Beneficiary and the CNR | `beneficiary` |
+| Operation invoice | `invoice.number`, `invoice.issuedAt`, `invoice.url` |
+| Amount | `value` |
+
+Pick `purpose` by what is actually being paid: `GOODS_PURCHASE` for the purchase of goods and `SERVICE_PURCHASE` for the purchase of services.
+
+:::warning
+Do not reuse invoices or send generic data. Each payment must match a real operation between the payer and your platform, with its own invoice.
+:::

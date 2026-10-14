@@ -1,0 +1,41 @@
+---
+id: efx-requirements
+title: Requisitos e regras do eFX
+description: 'O que a sua plataforma eFX precisa antes de integrar com a Woovi (CNR, CNPJ, KYC/KYB, chave Pix) e as regras da Resolução BCB 561/2026 que valem para cada operação.'
+sidebar_position: 2
+tags:
+  - efx
+  - api
+  - compliance
+---
+
+## Antes de integrar
+
+| Requisito | Detalhe |
+| --- | --- |
+| Conta em reais de não residente (CNR) | Aberta em uma instituição brasileira autorizada a operar no mercado de câmbio (Resolução BCB nº 277, art. 67). É nela que a Woovi liquida os pagamentos. |
+| Titular habilitado a movimentar recursos de terceiros | Se a CNR movimenta recursos de terceiros, o titular tem que ser uma instituição financeira supervisionada no país de origem (Resolução BCB nº 277, art. 68). |
+| CNPJ brasileiro | A entidade estrangeira precisa de inscrição no CNPJ. |
+| KYC/KYB com a Woovi | Documentos societários com apostila e tradução juramentada, identificação dos beneficiários finais (UBO) e a licença da atividade. |
+| Chave Pix na CNR | A CNR precisa ter uma chave Pix cadastrada. |
+| CNR cadastrada na Woovi | A CNR informada em `beneficiary.bankAccount` tem que estar cadastrada na Woovi para a sua empresa. Senão, a criação responde `400 beneficiary.bankAccount is not a registered CNR account`. |
+| API de eFX habilitada | A Woovi habilita o eFX para a sua empresa ao fim do onboarding. Sem isso, as rotas respondem `403 eFX is not enabled for this company`. |
+| Aplicação com escopos | A aplicação (AppID) tem que usar escopos e ter `EFX_PAYMENT_CREATE` (cotar e criar) e `EFX_PAYMENT_LIST` (consultar e listar). Uma aplicação sem escopos recebe `403 application must use scopes` em todas as rotas de eFX. |
+
+As chamadas usam o mesmo cabeçalho `Authorization: <AppID>` de toda a API da Woovi. Se a aplicação tem IPs permitidos, eles também valem aqui.
+
+## Regras de cada operação (Resolução BCB nº 561/2026)
+
+:::warning
+Essas regras valem para **toda** operação. Um pagamento fora delas não é liquidado na sua CNR.
+:::
+
+- **O pagador é o seu cliente.** Cada pagamento é de um cliente da sua plataforma, identificado em `payer`.
+- **O Pix sai de uma conta no nome do próprio pagador.** O CPF ou CNPJ da conta que paga tem que ser o mesmo informado em `payer.taxID`. Um Pix pago por outra pessoa não é liquidado e vai para devolução (veja [Devoluções](./efx-refunds.mdx)).
+- **Sem compensação.** Recebimentos e envios não se compensam: cada pagamento é liquidado pelo seu valor integral, sem abater outros valores.
+- **Limite de US$ 10.000 por operação.** O `value` de cada pagamento, convertido pela PTAX de venda do Banco Central (sem margem), não pode passar de US$ 10.000. Acima disso a criação responde `400`.
+- **Sem stablecoins na liquidação.** A liquidação é feita em reais, na sua CNR. Stablecoins não podem ser usadas para liquidar as operações.
+
+## Dados que você informa
+
+Cada pagamento leva a finalidade (`purpose`), o pagador (`payer`), o beneficiário (`beneficiary`) e a fatura (`invoice`). Esses dados vão para o reporte da operação ao Banco Central, então precisam ser exatos. Veja [Reporte ao Banco Central](./efx-regulatory-reporting.mdx).
