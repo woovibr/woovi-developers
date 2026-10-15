@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
+// eslint-disable-next-line import/no-unresolved
 import CodeBlock from '@theme/CodeBlock';
 
 import styles from './WebhookEventExplorer.module.css';
@@ -59,10 +60,72 @@ const groupByCategory = (list: WebhookEvent[]) => {
   return Array.from(map.entries());
 };
 
+// The explorer's state lives in the query string (?event=&q=&format=), so a
+// link copied from the address bar reopens on the same event, search and tab
+// — what support sends a customer to point them at one payload.
+const PARAM = { event: 'event', search: 'q', format: 'format' } as const;
+
+const readParams = () => new URLSearchParams(window.location.search);
+
+// Accepts the slug (charge-completed) or the event name itself
+// (OPENPIX:CHARGE_COMPLETED), so a link can be typed by hand.
+const findEventId = (value: string | null): string | null => {
+  if (!value) return null;
+  const wanted = value.trim().toLowerCase();
+  const found = events.find(
+    (evt) => evt.id === wanted || evt.event.toLowerCase() === wanted,
+  );
+  return found?.id ?? null;
+};
+
+const findFormat = (value: string | null): FormatId | null =>
+  FORMATS.find((f) => f.id === value)?.id ?? null;
+
 const WebhookEventExplorer: React.FC = () => {
-  const [selectedId, setSelectedId] = useState<string>(events[0].id);
-  const [format, setFormat] = useState<FormatId>('json');
-  const [search, setSearch] = useState('');
+  const [selectedId, setSelectedId] = useState<string>(
+    () => findEventId(readParams().get(PARAM.event)) ?? events[0].id,
+  );
+  const [format, setFormat] = useState<FormatId>(
+    () => findFormat(readParams().get(PARAM.format)) ?? 'json',
+  );
+  const [search, setSearch] = useState(
+    () => readParams().get(PARAM.search) ?? '',
+  );
+  const [copied, setCopied] = useState(false);
+  const selectedRef = useRef<HTMLButtonElement | null>(null);
+
+  // replaceState, not pushState: every keystroke in the search would
+  // otherwise become a Back step. Defaults are left out of the URL.
+  useEffect(() => {
+    const params = readParams();
+    // Dropped first so they are re-added in a fixed order: event, q, format.
+    Object.values(PARAM).forEach((key) => params.delete(key));
+    const set = (key: string, value: string, fallback: string) => {
+      if (value && value !== fallback) params.set(key, value);
+      else params.delete(key);
+    };
+    set(PARAM.event, selectedId, events[0].id);
+    set(PARAM.search, search.trim(), '');
+    set(PARAM.format, format, 'json');
+    const query = params.toString();
+    const url = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`;
+    window.history.replaceState(window.history.state, '', url);
+  }, [selectedId, search, format]);
+
+  // A shared link may point at an event far down the list.
+  useEffect(() => {
+    selectedRef.current?.scrollIntoView({ block: 'nearest' });
+  }, []);
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -133,6 +196,7 @@ const WebhookEventExplorer: React.FC = () => {
                       styles.eventItem,
                       evt.id === selectedId && styles.selected,
                     )}
+                    ref={evt.id === selectedId ? selectedRef : undefined}
                     onClick={() => setSelectedId(evt.id)}
                   >
                     {evt.event}
@@ -157,6 +221,14 @@ const WebhookEventExplorer: React.FC = () => {
           >
             Ver documentação completa →
           </a>
+          <button
+            type='button'
+            className={styles.copyLink}
+            onClick={copyLink}
+            title='Copia a URL que abre este evento, com a busca e a aba atuais'
+          >
+            {copied ? 'Link copiado ✓' : 'Copiar link deste evento'}
+          </button>
         </header>
 
         <div className={styles.tabs} role='tablist'>
