@@ -1,6 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import CodeBlock from '@theme/CodeBlock';
+
+import { readQueryOr, writeQuery } from '../../utils/queryState';
 
 import styles from './WebhookEventExplorer.module.css';
 import { events } from './events';
@@ -60,8 +62,21 @@ const groupByCategory = (list: WebhookEvent[]) => {
 };
 
 const WebhookEventExplorer: React.FC = () => {
-  const [selectedId, setSelectedId] = useState<string>(events[0].id);
-  const [format, setFormat] = useState<FormatId>('json');
+  // ?event=charge-completed&format=zod
+  const [selectedId, setSelectedId] = useState<string>(() =>
+    readQueryOr(
+      'event',
+      (v) => events.some((evt) => evt.id === v),
+      events[0].id,
+    ),
+  );
+  const [format, setFormat] = useState<FormatId>(() =>
+    readQueryOr<FormatId>(
+      'format',
+      (v) => FORMATS.some((f) => f.id === v),
+      'json',
+    ),
+  );
   const [search, setSearch] = useState('');
 
   const filtered = useMemo(() => {
@@ -102,6 +117,13 @@ const WebhookEventExplorer: React.FC = () => {
     }
   }, [format, selected, generated]);
 
+  useEffect(() => {
+    writeQuery({
+      event: selectedId === events[0].id ? null : selectedId,
+      format: format === 'json' ? null : format,
+    });
+  }, [selectedId, format]);
+
   const currentFormat = FORMATS.find((f) => f.id === format) ?? FORMATS[0];
   const formatHint = currentFormat.hint;
 
@@ -118,7 +140,9 @@ const WebhookEventExplorer: React.FC = () => {
         />
 
         {grouped.length === 0 && (
-          <p style={{ fontSize: 13, opacity: 0.6 }}>Nenhum evento encontrado.</p>
+          <p style={{ fontSize: 13, opacity: 0.6 }}>
+            Nenhum evento encontrado.
+          </p>
         )}
 
         {grouped.map(([category, list]) => (

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { readQuery, writeQuery } from '../../utils/queryState';
+
 import type { Actor, Scenario, Step } from './types';
 import { Code } from './Code';
 import styles from './Playground.module.css';
@@ -205,14 +207,26 @@ export default function Sequence({
   const setActive = onScenario ?? setOwn;
   const sc = scenarios.find((s) => s.id === active) ?? scenarios[0];
   const steps = sc.steps;
-  const [cur, setCur] = useState(0);
+  // ?passo=3 is 1-based, like the "3 / 8" counter
+  const [cur, setCur] = useState(() => {
+    const n = Number(readQuery('passo'));
+    return Number.isInteger(n) && n > 1 ? Math.min(n, steps.length) - 1 : 0;
+  });
   const [playing, setPlaying] = useState(false);
   const root = useRef<HTMLDivElement>(null);
 
+  const shownScenario = useRef(active);
   useEffect(() => {
+    // keep the step restored from the URL; reset it only on a real change
+    if (shownScenario.current === active) return;
+    shownScenario.current = active;
     setCur(0);
     setPlaying(false);
   }, [active]);
+
+  useEffect(() => {
+    writeQuery({ passo: cur === 0 ? null : String(cur + 1) });
+  }, [cur]);
 
   useEffect(() => {
     if (!playing) return undefined;

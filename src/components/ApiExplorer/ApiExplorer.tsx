@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import CodeBlock from '@theme/CodeBlock';
 
 import { generateAll } from '../WebhookEventExplorer/schemaGenerators';
+import { readQuery, readQueryOr, writeQuery } from '../../utils/queryState';
+
 import styles from './ApiExplorer.module.css';
 import { endpoints } from './endpoints';
 import type { ApiEndpoint, ApiExample } from './endpoints';
@@ -79,10 +81,32 @@ const buildTypeName = (endpoint: ApiEndpoint, side: Side) => {
 };
 
 const ApiExplorer: React.FC = () => {
-  const [selectedId, setSelectedId] = useState<string>(endpoints[0].id);
-  const [side, setSide] = useState<Side>('request');
-  const [format, setFormat] = useState<FormatId>('json');
-  const [exampleIndex, setExampleIndex] = useState(0);
+  // ?endpoint=post-api-v1-ted&side=response&format=zod&example=1
+  const [selectedId, setSelectedId] = useState<string>(() =>
+    readQueryOr(
+      'endpoint',
+      (v) => endpoints.some((e) => e.id === v),
+      endpoints[0].id,
+    ),
+  );
+  const [side, setSide] = useState<Side>(() =>
+    readQueryOr<Side>(
+      'side',
+      (v) => v === 'request' || v === 'response',
+      'request',
+    ),
+  );
+  const [format, setFormat] = useState<FormatId>(() =>
+    readQueryOr<FormatId>(
+      'format',
+      (v) => FORMATS.some((f) => f.id === v),
+      'json',
+    ),
+  );
+  const [exampleIndex, setExampleIndex] = useState(() => {
+    const n = Number(readQuery('example'));
+    return Number.isInteger(n) && n > 0 ? n : 0;
+  });
   const [search, setSearch] = useState('');
 
   const filtered = useMemo(() => {
@@ -108,10 +132,15 @@ const ApiExplorer: React.FC = () => {
   const hasResponse = selected.responseExamples.length > 0;
 
   // Auto-correct side if current selection has no examples for the chosen side
+  const shown = useRef({ selectedId, side });
   useEffect(() => {
     if (side === 'request' && !hasRequest && hasResponse) setSide('response');
     if (side === 'response' && !hasResponse && hasRequest) setSide('request');
-    setExampleIndex(0);
+    // keep the example restored from the URL; reset it only on a real change
+    const prev = shown.current;
+    shown.current = { selectedId, side };
+    if (prev.selectedId !== selectedId || prev.side !== side)
+      setExampleIndex(0);
   }, [selectedId, hasRequest, hasResponse, side]);
 
   const examples: ApiExample[] =
@@ -119,6 +148,15 @@ const ApiExplorer: React.FC = () => {
 
   const safeIndex = Math.min(exampleIndex, Math.max(examples.length - 1, 0));
   const currentExample = examples[safeIndex];
+
+  useEffect(() => {
+    writeQuery({
+      endpoint: selectedId === endpoints[0].id ? null : selectedId,
+      side: side === 'request' ? null : side,
+      format: format === 'json' ? null : format,
+      example: safeIndex === 0 ? null : String(safeIndex),
+    });
+  }, [selectedId, side, format, safeIndex]);
 
   const generated = useMemo(() => {
     if (!currentExample) return null;
@@ -199,9 +237,7 @@ const ApiExplorer: React.FC = () => {
         <header className={styles.endpointHeader}>
           <span className={styles.endpointCategory}>{selected.category}</span>
           <div className={styles.endpointTitleRow}>
-            <span
-              className={clsx(styles.method, methodClass(selected.method))}
-            >
+            <span className={clsx(styles.method, methodClass(selected.method))}>
               {selected.method}
             </span>
             <h2 className={styles.endpointPathFull}>{selected.path}</h2>
