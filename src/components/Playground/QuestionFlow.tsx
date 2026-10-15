@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import clsx from 'clsx';
 import {
   Controls,
@@ -332,4 +338,75 @@ export function answerOn(
     path.slice(0, idx).map((q) => [q.id, answers[q.id]]),
   );
   return { ...kept, [qid]: oid };
+}
+
+export type AnswersCodec = {
+  /** query keys this codec owns (cleared before writing) */
+  keys: string[];
+  toQuery: (answers: Answers) => Record<string, string>;
+  fromQuery: (params: URLSearchParams) => Answers;
+};
+
+/**
+ * answers kept in the query string, so a choice (e.g. TED) is a shareable
+ * link. Default codec: one `?<questionId>=<optionId>` per answered question.
+ * Only keys the codec owns are touched; anything invalid falls back to
+ * `initial`. Uses replaceState so clicking around doesn't flood history.
+ */
+export function useUrlAnswers(
+  questions: Record<string, Question>,
+  root: string,
+  initial: Answers,
+  codec?: AnswersCodec,
+): [Answers, (a: Answers) => void] {
+  const toQuery = codec?.toQuery ?? ((a: Answers) => a);
+  const fromQuery =
+    codec?.fromQuery ??
+    ((p: URLSearchParams) =>
+      Object.fromEntries(
+        Object.keys(questions)
+          .filter((id) => p.has(id))
+          .map((id) => [id, p.get(id)!]),
+      ));
+
+  const [answers, set] = useState<Answers>(() => {
+    if (typeof window === 'undefined') return initial;
+    const parsed = clean(
+      questions,
+      root,
+      fromQuery(new URLSearchParams(window.location.search)),
+    );
+    return Object.keys(parsed).length ? parsed : initial;
+  });
+
+  const setAnswers = useCallback(
+    (next: Answers) => {
+      set(next);
+      const url = new URL(window.location.href);
+      (codec?.keys ?? Object.keys(questions)).forEach((k) =>
+        url.searchParams.delete(k),
+      );
+      Object.entries(toQuery(next)).forEach(([k, v]) =>
+        url.searchParams.set(k, v),
+      );
+      window.history.replaceState(window.history.state, '', url.toString());
+    },
+    [questions, codec],
+  );
+
+  return [answers, setAnswers];
+}
+
+/** keep only answers on a valid path (unknown ids/options are dropped) */
+function clean(
+  questions: Record<string, Question>,
+  root: string,
+  ans: Answers,
+): Answers {
+  const out: Answers = {};
+  for (const q of pathOf(questions, root, ans)) {
+    if (!q.opts.some((o) => o.id === ans[q.id])) break;
+    out[q.id] = ans[q.id];
+  }
+  return out;
 }

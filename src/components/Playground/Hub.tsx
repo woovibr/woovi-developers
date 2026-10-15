@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import Link from '@docusaurus/Link';
@@ -6,7 +6,9 @@ import Link from '@docusaurus/Link';
 import QuestionFlow, {
   QuestionPanel,
   answerOn,
+  useUrlAnswers,
   type Answers,
+  type AnswersCodec,
   type Question,
 } from './QuestionFlow';
 import { docPath, groups, playgrounds } from './configs';
@@ -44,9 +46,35 @@ function useQuestions(): Record<string, Question> {
   }, []);
 }
 
+/**
+ * ?playground=ted (the group is implied) or ?grupo=send while only the
+ * first question is answered — e.g. /docs/playground?playground=ted
+ */
+const hubCodec: AnswersCodec = {
+  keys: ['grupo', 'playground'],
+  toQuery: (a): Record<string, string> => {
+    const pg = a.root ? a['g-' + a.root] : undefined;
+    if (pg) return { playground: pg };
+    return a.root ? { grupo: a.root } : {};
+  },
+  fromQuery: (p): Answers => {
+    const pg = p.get('playground');
+    const g = pg
+      ? groups.find((x) => x.items.includes(pg))
+      : groups.find((x) => x.id === p.get('grupo'));
+    if (!g) return {};
+    return pg ? { root: g.id, ['g-' + g.id]: pg } : { root: g.id };
+  },
+};
+
 function HubView() {
   const Q = useQuestions();
-  const [answers, setAnswers] = useState<Answers>({ root: 'receive' });
+  const [answers, setAnswers] = useUrlAnswers(
+    Q,
+    'root',
+    { root: 'receive' },
+    hubCodec,
+  );
   const picked = answers.root ? answers['g-' + answers.root] : undefined;
   const pg = picked ? playgrounds[picked] : undefined;
   return (
