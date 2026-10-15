@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import Link from '@docusaurus/Link';
+
+import { readQueryOr, writeQuery } from '../../utils/queryState';
 
 import type { PlaygroundConfig } from './types';
 import Sequence from './Sequence';
@@ -37,7 +39,17 @@ function Section({
 export function PlaygroundView({ config }: { config: PlaygroundConfig }) {
   const c = config;
   const Widget = c.widget;
-  const [scenario, setScenario] = useState(c.scenarios[0].id);
+  // ?cenario=rejected (the step lives in Sequence: &passo=3)
+  const [scenario, setScenario] = useState(() =>
+    readQueryOr(
+      'cenario',
+      (v) => c.scenarios.some((s) => s.id === v),
+      c.scenarios[0].id,
+    ),
+  );
+  useEffect(() => {
+    writeQuery({ cenario: scenario === c.scenarios[0].id ? null : scenario });
+  }, [scenario, c.scenarios]);
   const [selection, setSelection] = useState<Selection | null>(null);
   let n = 0;
   const next = (label: string) => `${String(++n).padStart(2, '0')} · ${label}`;
