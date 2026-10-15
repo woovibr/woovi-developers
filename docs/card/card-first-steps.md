@@ -85,8 +85,16 @@ O valor de cada venda com cartão cai na sua conta de recebimento depois do praz
 - **Conta de recebimento**: o banco, a agência e o final da conta que recebem as vendas com cartão. É a mesma conta da sua [chave Pix de saque](../faq/withdraw.md), cadastrada automaticamente quando o cartão é ativado na sua conta.
 
 :::info
-Estas configurações são definidas pela Woovi. Para alterar, fale com o suporte.
+Status, taxas e liquidação são definidos pela Woovi. Para alterar, fale com o suporte.
 :::
+
+### Preferências
+
+![Ajustes do cartão: Preferências](./__assets__/settings/preferences.png)
+
+As configurações que você mesmo pode alterar. Depois de mudar, clique em **Salvar**.
+
+- **Cartão de crédito por padrão nas cobranças via API**: ativada, a cobrança criada pela API sem o campo `type` aceita Pix e cartão de crédito. Saiba mais em [Como aceitar cartão de crédito por padrão nas cobranças via API?](./card-api-charge-card-default.md)
 
 ## Exemplo: da cobrança ao pagamento
 
