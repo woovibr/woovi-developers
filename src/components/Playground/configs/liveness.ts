@@ -4,11 +4,10 @@ import { api, json } from '../utils';
 import LivenessPreview from '../widgets/LivenessPreview';
 
 const LINK =
-  'https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs/liveness?embed=true';
+  'https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness?embed=true';
 
 const onboardingBody = {
-  linkOnboarding:
-    'https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs',
+  linkOnboarding: 'https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...',
   linkLiveness: LINK,
   accountRegister: {
     status: 'PENDING',

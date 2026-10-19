@@ -5,16 +5,10 @@ import { CodeTabs } from '../Code';
 import styles from '../Playground.module.css';
 
 const LINK =
-  'https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs/liveness?embed=true';
+  'https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness?embed=true';
+const STATUSES = ['PENDING', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'NOT_FOUND'];
 
 type Mode = 'redirect' | 'popup' | 'iframe';
-type Demo = 'photo' | 'challenge' | 'fail';
-
-const demoQuery = (demo: Demo): string => {
-  if (demo === 'challenge') return '&liveness=1';
-  if (demo === 'fail') return '&liveness=fail';
-  return '';
-};
 
 const code = (mode: Mode) => {
   if (mode === 'redirect') {
@@ -51,8 +45,8 @@ const code = (mode: Mode) => {
 
 const LivenessPreview = (): React.ReactElement => {
   const [mode, setMode] = useState<Mode>('iframe');
-  const [demo, setDemo] = useState<Demo>('photo');
-  const preview = `https://kyc.woovi.com/onboarding/liveness?embed=true${demoQuery(demo)}`;
+  const [status, setStatus] = useState('PENDING');
+  const preview = `https://kyc.woovi.com/onboarding?status=${status}&embed=true`;
   return (
     <div className={styles.halves}>
       <div className={styles.col}>
@@ -96,14 +90,16 @@ const LivenessPreview = (): React.ReactElement => {
         <div className={styles.headRow}>
           <h3>Pré-visualização</h3>
           <select
-            aria-label='Modo da pré-visualização'
-            value={demo}
-            onChange={(event) => setDemo(event.target.value as Demo)}
+            aria-label='Status da pré-visualização'
+            value={status}
+            onChange={(event) => setStatus(event.target.value)}
             className={styles.btn}
           >
-            <option value='photo'>Foto</option>
-            <option value='challenge'>Desafio</option>
-            <option value='fail'>Desafio recusado</option>
+            {STATUSES.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
           </select>
         </div>
         <iframe
@@ -121,8 +117,9 @@ const LivenessPreview = (): React.ReactElement => {
           allow='camera; clipboard-read; clipboard-write'
         />
         <p className={styles.why}>
-          Página de demonstração, sem cadastro real. O seletor só muda esta
-          prévia: no link da API, o desafio depende da configuração da empresa.
+          Esta prévia carrega kyc.woovi.com/onboarding, a página de demonstração
+          pública, com o status escolhido. O exemplo ao lado corta o id. A API
+          só devolve um link completo para o cadastro que o seu backend criou.
           {mode !== 'iframe'
             ? ' No modo escolhido ela abriria fora da sua página.'
             : ''}

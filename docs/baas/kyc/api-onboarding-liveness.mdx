@@ -29,8 +29,8 @@ O [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx) devolve `linkLive
 
 ```json
 {
-  "linkOnboarding": "https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs",
-  "linkLiveness": "https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs/liveness?embed=true"
+  "linkOnboarding": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...",
+  "linkLiveness": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness?embed=true"
 }
 ```
 
@@ -80,7 +80,7 @@ O `AppID` fica no seu backend. O front recebe só a URL.
 
 ```html
 <iframe
-  src="https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs/liveness?embed=true"
+  src="https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness?embed=true"
   width="100%"
   height="720"
   style="border: 0; max-width: 640px;"
