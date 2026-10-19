@@ -6,7 +6,19 @@ import styles from '../Playground.module.css';
 
 const LINK =
   'https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness?embed=true';
-const STATUSES = ['PENDING', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'NOT_FOUND'];
+const PREVIEW = 'https://kyc.woovi.com/onboarding/liveness?embed=true';
+
+type PreviewMode = {
+  id: string;
+  label: string;
+  query: string;
+};
+
+const MODES: PreviewMode[] = [
+  { id: 'photo', label: 'Foto', query: '' },
+  { id: 'challenge', label: 'Desafio', query: '&liveness=1' },
+  { id: 'rejected', label: 'Desafio recusado', query: '&liveness=fail' },
+];
 
 type Mode = 'redirect' | 'popup' | 'iframe';
 
@@ -45,8 +57,10 @@ const code = (mode: Mode) => {
 
 const LivenessPreview = (): React.ReactElement => {
   const [mode, setMode] = useState<Mode>('iframe');
-  const [status, setStatus] = useState('PENDING');
-  const preview = `https://kyc.woovi.com/onboarding?status=${status}&embed=true`;
+  const [previewMode, setPreviewMode] = useState('photo');
+  const selected =
+    MODES.find((item) => item.id === previewMode) ?? MODES[0];
+  const preview = `${PREVIEW}${selected.query}`;
   return (
     <div className={styles.halves}>
       <div className={styles.col}>
@@ -90,14 +104,14 @@ const LivenessPreview = (): React.ReactElement => {
         <div className={styles.headRow}>
           <h3>Pré-visualização</h3>
           <select
-            aria-label='Status da pré-visualização'
-            value={status}
-            onChange={(event) => setStatus(event.target.value)}
+            aria-label='Modo da pré-visualização'
+            value={previewMode}
+            onChange={(event) => setPreviewMode(event.target.value)}
             className={styles.btn}
           >
-            {STATUSES.map((item) => (
-              <option key={item} value={item}>
-                {item}
+            {MODES.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.label}
               </option>
             ))}
           </select>
@@ -117,9 +131,9 @@ const LivenessPreview = (): React.ReactElement => {
           allow='camera; clipboard-read; clipboard-write'
         />
         <p className={styles.why}>
-          Esta prévia carrega kyc.woovi.com/onboarding, a página de demonstração
-          pública, com o status escolhido. O exemplo ao lado corta o id. A API
-          só devolve um link completo para o cadastro que o seu backend criou.
+          Esta prévia carrega kyc.woovi.com/onboarding/liveness, a selfie pública
+          de demonstração. O exemplo ao lado corta o id. A API só devolve um
+          link completo para o cadastro que o seu backend criou.
           {mode !== 'iframe'
             ? ' No modo escolhido ela abriria fora da sua página.'
             : ''}
