@@ -92,6 +92,8 @@ export const baas: PlaygroundConfig = {
           code: json({
             linkOnboarding:
               'https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5…',
+            linkLiveness:
+              'https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5…/liveness?embed=true',
             accountRegister: {
               status: 'PENDING',
               correlationID: 'my-unique-id',
@@ -103,7 +105,7 @@ export const baas: PlaygroundConfig = {
           to: 'merchant',
           label: 'Envia o link',
           title: 'Seu cliente preenche',
-          text: 'Por redirect, nova aba ou iframe. Veja o playground de Embed BaaS.',
+          text: 'Por redirect, nova aba ou iframe. O cadastro completo está no playground de Embed BaaS; a selfie sozinha, no de Embed Liveness.',
         },
         {
           from: 'woovi',
@@ -280,6 +282,9 @@ export const baas: PlaygroundConfig = {
     createTransition: 'create',
     create: (v) => {
       const done = v.businessDescription ? ['COMPANY_DATA'] : [];
+      const linkOnboarding =
+        'https://kyc.woovi.com/onboarding/' +
+        btoa('AccountRegister:' + hex(24)).replace(/=+$/, '');
       const r: Resource = {
         status: 'PENDING',
         accountRegisterId: hex(24),
@@ -287,9 +292,8 @@ export const baas: PlaygroundConfig = {
         taxID: String(v.taxID).replace(/\D/g, ''),
         completedSteps: done,
         retryCount: 0,
-        linkOnboarding:
-          'https://kyc.woovi.com/onboarding/' +
-          btoa('AccountRegister:' + hex(24)).replace(/=+$/, ''),
+        linkOnboarding,
+        linkLiveness: `${linkOnboarding}/liveness?embed=true`,
       };
       return {
         resource: r,
@@ -298,6 +302,7 @@ export const baas: PlaygroundConfig = {
             'POST /api/v1/kyc/onboarding',
             {
               linkOnboarding: r.linkOnboarding,
+              linkLiveness: r.linkLiveness,
               accountRegister: {
                 status: 'PENDING',
                 taxID: { taxID: r.taxID, type: 'BR:CNPJ' },

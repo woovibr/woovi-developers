@@ -38,7 +38,7 @@ O `?embed=true` remove apenas o **elemento visual de branding** (a logo no cabe�
 
 ## Como aplicar
 
-O `linkOnboarding` retornado pela API [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx) vem **sem** o parâmetro. Para o modo white-label, basta anexá-lo ao link que você recebeu:
+O `linkOnboarding` retornado pela API [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx) vem **sem** o parâmetro. Para o modo white-label, basta anexá-lo ao link que você recebeu. O `linkLiveness` desse mesmo endpoint já chega com `?embed=true` — não acrescente o parâmetro de novo.
 
 ```
 https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...?embed=true

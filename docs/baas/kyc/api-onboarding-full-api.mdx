@@ -422,13 +422,17 @@ curl "https://api.woovi.com/api/v1/kyc/rfi?correlationID=merchant-4417" \
       "name": "MARIA DE SOUZA",
       "pending": [
         { "type": "CNH", "answeredBy": "FILE" },
+        { "type": "PICTURE", "answeredBy": "FILE" },
         { "type": "PIX_AUTHENTICATION", "answeredBy": "PIX_AUTHENTICATION" }
       ]
     }
   ],
-  "link": "https://kyc.woovi.com/rfi/QWNjb3VudFJlZ2lzdGVyOjY5..."
+  "link": "https://kyc.woovi.com/rfi/QWNjb3VudFJlZ2lzdGVyOjY5...",
+  "linkLiveness": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness"
 }
 ```
+
+`link` é a página de documentos. `linkLiveness` é só a selfie, e vem preenchido enquanto algum representante ativo tem `PICTURE` pendente — caso contrário é `null`. No onboarding BaaS o mesmo campo já sai do `POST /api/v1/kyc/onboarding`, com `?embed=true`. Veja [Como usar o link de liveness?](./api-onboarding-liveness.mdx).
 
 `answeredBy` diz como responder cada item:
 

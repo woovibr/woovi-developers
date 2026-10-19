@@ -61,13 +61,14 @@ O body da sua requisição será semelhante a este exemplo:
 }
 ```
 
-Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisição será `201` e no `body` da resposta, retornaremos o link de onboarding e os dados do registro de conta.
+Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisição será `201` e no `body` da resposta, retornaremos o link de onboarding, o link só da selfie (`linkLiveness`) e os dados do registro de conta. A resposta de parceiro (`partner: true`) não traz `linkLiveness`.
 
 Retornaremos a seguinte resposta de exemplo:
 
 ```json
 {
   "linkOnboarding": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...",
+  "linkLiveness": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness?embed=true",
   "accountRegister": {
     "status": "PENDING",
     "officialName": "RAZAO_SOCIAL_DA_EMPRESA",
@@ -207,7 +208,7 @@ console.log(data.linkOnboarding);
 
 ## Fluxo completo
 
-1. **Chamada da API** → Cria o onboarding e retorna o `linkOnboarding`
+1. **Chamada da API** → Cria o onboarding e retorna o `linkOnboarding` e o `linkLiveness`. Para embutir só a selfie, veja [Como usar o link de liveness?](./api-onboarding-liveness.mdx)
 2. **Envie o link ao merchant** → O merchant acessa o formulário e preenche os dados
 3. **Merchant preenche o cadastro** → Dados da empresa, endereço, contrato social, documentos dos sócios
 4. **Merchant submete** → O status muda para `IN_REVIEW`

@@ -60,6 +60,7 @@ Se tudo ocorrer bem, a API responde `201` com o link de onboarding e o registro 
 ```json
 {
   "linkOnboarding": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5...",
+  "linkLiveness": "https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness?embed=true",
   "accountRegister": {
     "status": "PENDING",
     "officialName": "NOME_COMPLETO_DO_TITULAR",
@@ -81,7 +82,7 @@ Se tudo ocorrer bem, a API responde `201` com o link de onboarding e o registro 
 }
 ```
 
-Envie o `linkOnboarding` ao titular. No link, as telas são de pessoa física: não aparecem contrato social, dados da empresa nem BC Protege+ Empresa. O titular informa os dados, o endereço e envia o documento de identidade e a selfie.
+Envie o `linkOnboarding` ao titular. No link, as telas são de pessoa física: não aparecem contrato social, dados da empresa nem BC Protege+ Empresa. O titular informa os dados, o endereço e envia o documento de identidade e a selfie. O `linkLiveness` abre só a selfie, fora desse wizard. Veja [Como usar o link de liveness?](./api-onboarding-liveness.mdx).
 
 Depois disso, acompanhe o andamento da conta pelos [webhooks do ciclo de vida](./webhooks-ciclo-de-vida.mdx) ou pelo [`GET /api/v1/account-register/:id`](./api-account-register-get.mdx), da mesma forma que uma conta de empresa.
 
