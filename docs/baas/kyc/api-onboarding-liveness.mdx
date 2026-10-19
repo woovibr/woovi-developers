@@ -1,0 +1,149 @@
+---
+id: kyc-api-onboarding-liveness
+title: Como usar o link de liveness?
+tags:
+  - api
+  - kyc
+  - onboarding
+  - liveness
+  - embed
+  - iframe
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A API de liveness devolve um link. A selfie e a checagem acontecem quando o cliente abre essa URL — não existe um endpoint que rode a prova de vida no lugar dele.
+
+O link é uma página só da selfie, fora do wizard de onboarding. Use quando o seu produto já coletou o restante do cadastro, ou quando a análise pediu uma foto nova.
+
+:::info Pré-requisitos
+A empresa precisa das features **BAAS** e **KYC_ONBOARDING_LINK**. O aplicativo que cria o onboarding precisa do scope **`KYC_ONBOARDING_POST`**. Para ler o link pela RFI, o scope é **`KYC_RFI_GET`**.
+:::
+
+## Onde o link aparece
+
+### Onboarding BaaS
+
+O [`POST /api/v1/kyc/onboarding`](./api-onboarding-create.mdx) devolve `linkLiveness` ao lado de `linkOnboarding` em toda resposta BaaS (`200` e `201`). A resposta de parceiro (`partner: true`) não traz esse campo.
+
+```json
+{
+  "linkOnboarding": "https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs",
+  "linkLiveness": "https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs/liveness?embed=true"
+}
+```
+
+Nesse fluxo o `?embed=true` já vem na URL. Ele esconde o cabeçalho com a marca Woovi. Sem o parâmetro, a mesma página abre numa aba, com o cabeçalho.
+
+### RFI
+
+O [`GET /api/v1/kyc/rfi`](./api-onboarding-full-api.mdx#9-rfi-pedido-de-informações) devolve `linkLiveness` enquanto algum representante ativo ainda tem `PICTURE` pendente. Quando ninguém tem selfie pendente, o campo é `null`.
+
+O campo `link` continua sendo a página de documentos. `linkLiveness` é só a selfie.
+
+Na RFI, o `?embed=true` entra quando a empresa tem a feature `EMBED_RFI` ou o link salvo é `PLATFORM_EMBED`. Nos outros casos a URL vem sem esse parâmetro — acrescente você se for embutir.
+
+## Formato da URL
+
+Com a feature `KYC_ONBOARDING_LINK_TOKEN`:
+
+```text
+https://kyc.woovi.com/new/onboarding/<token>/liveness?embed=true
+```
+
+Sem essa feature, o caminho usa o id global do `AccountRegister`:
+
+```text
+https://kyc.woovi.com/onboarding/<accountRegisterId>/liveness?embed=true
+```
+
+No staging a base é `https://app.woovi.dev/kyc`.
+
+## O que a página faz
+
+- Pede a selfie de um representante: o `ADMIN` ativo, ou a primeira pessoa ativa se não houver admin.
+- Faz o upload da foto.
+- Se a empresa tem `KYC_LIVENESS_SELFIE`, roda a checagem de prova de vida nessa foto. Sem a feature, a página só envia a selfie.
+- Se o desafio de câmera está ligado nas configurações de onboarding, a captura é o desafio. Caso contrário, é a webcam ou o arquivo.
+- Não mostra o wizard do cadastro.
+- Não envia `postMessage` para a página que a embute.
+
+Uma foto que a checagem não confirma como ao vivo continua pendente. O cliente tira outra no mesmo link.
+
+## Como embutir
+
+O `AppID` fica no seu backend. O front recebe só a URL.
+
+<Tabs>
+  <TabItem value="iframe" label="Iframe" default>
+
+```html
+<iframe
+  src="https://kyc.woovi.com/new/onboarding/wFy5rjmZ4jUJ3cbLZ8qYyOWzOSXRJEHFI5RJFqrPGVs/liveness?embed=true"
+  width="100%"
+  height="720"
+  style="border: 0; max-width: 640px;"
+  title="Prova de vida"
+  allow="camera; clipboard-read; clipboard-write"
+></iframe>
+```
+
+  </TabItem>
+  <TabItem value="redirect" label="Redirect">
+
+```js
+window.location.href = data.linkLiveness;
+```
+
+  </TabItem>
+  <TabItem value="backend" label="Backend (Node.js)">
+
+```js
+app.post('/start-liveness', async (req, res) => {
+  const response = await fetch('https://api.woovi.com/api/v1/kyc/onboarding', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: process.env.WOOVI_APPID,
+    },
+    body: JSON.stringify({
+      taxID: req.body.taxID,
+      correlationID: req.body.correlationID,
+    }),
+  });
+  const data = await response.json();
+  res.json({ linkLiveness: data.linkLiveness });
+});
+```
+
+  </TabItem>
+</Tabs>
+
+| Atributo | Valor sugerido      | Por quê                                                 |
+| -------- | ------------------- | ------------------------------------------------------- |
+| `width`  | `100%` (até ~640px) | A página é estreita, no formato de celular              |
+| `height` | `720` ou mais       | A câmera e o botão de envio precisam caber              |
+| `allow`  | `camera`            | Sem isso o navegador bloqueia a webcam dentro do iframe |
+| `title`  | `Prova de vida`     | Acessibilidade                                          |
+
+A página que hospeda o iframe precisa ser HTTPS.
+
+## Como saber que a selfie foi enviada
+
+A página não avisa a janela pai. Consulte a RFI com o mesmo `correlationID`:
+
+```bash
+curl "https://api.woovi.com/api/v1/kyc/rfi?correlationID=merchant-77" \
+  -H "Authorization: <APP_ID>"
+```
+
+`linkLiveness` volta `null` quando nenhum representante ativo tem `PICTURE` pendente. Enquanto a foto estiver pendente — inclusive depois de uma checagem que não confirmou que ela é ao vivo — o mesmo link continua na resposta.
+
+:::caution Nunca exponha o AppID no frontend
+Gere o link no seu backend. O `AppID` é uma credencial e não deve ir para o navegador.
+:::
+
+:::tip Experimente no playground
+O [playground de Embed Liveness](/docs/playground/playground-embed-liveness) mostra o iframe, o diagrama da chamada e uma resposta simulada do `POST /api/v1/kyc/onboarding`.
+:::

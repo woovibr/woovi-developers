@@ -7,6 +7,7 @@ import { pixAuth } from './pixAuth';
 import { refund } from './refund';
 import { stablecoin } from './stablecoin';
 import { baas } from './baas';
+import { embedLiveness } from './liveness';
 import { invoice } from './invoice';
 import { qrcodeStatic } from './qrcodeStatic';
 import { transfer } from './transfer';
@@ -33,6 +34,7 @@ export const playgrounds: Record<string, PlaygroundConfig> = Object.fromEntries(
     stablecoin,
     baas,
     embedBaas,
+    embedLiveness,
     pixAuth,
     campaign,
     refund,
@@ -60,7 +62,13 @@ export const groups: PlaygroundGroup[] = [
     id: 'accounts',
     label: 'Contas e identidade',
     hint: 'BaaS, KYC, validar documento',
-    items: ['baas', 'embed-baas', 'pix-auth', 'campanha-chave-pix'],
+    items: [
+      'baas',
+      'embed-baas',
+      'embed-liveness',
+      'pix-auth',
+      'campanha-chave-pix',
+    ],
   },
   {
     id: 'operate',
