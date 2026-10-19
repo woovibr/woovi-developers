@@ -82,7 +82,7 @@ Digite o **Valor** e escolha o número de **Parcelas** para ver:
 O valor de cada venda com cartão cai na sua conta de recebimento depois do prazo de liquidação da sua conta, contado a partir da data da venda, já com a taxa descontada.
 
 - **Prazo de liquidação**: em quantos dias após a venda o valor cai na sua conta.
-- **Conta de recebimento**: o banco, a agência e o final da conta que recebem as vendas com cartão. É a mesma conta da sua [chave Pix de saque](../faq/withdraw.md), cadastrada automaticamente quando o cartão é ativado na sua conta.
+- **Conta de recebimento**: o banco, a agência e o final da conta que recebem as vendas com cartão. É a mesma conta da sua [chave Pix de saque](../faq/withdraw.md), cadastrada automaticamente quando o cartão é ativado na sua conta. O banco dessa conta precisa estar na lista de [bancos que podem receber as vendas com cartão](./card-settlement-banks.md).
 
 :::info
 Status, taxas e liquidação são definidos pela Woovi. Para alterar, fale com o suporte.
