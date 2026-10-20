@@ -15,9 +15,9 @@ type PreviewMode = {
 };
 
 const MODES: PreviewMode[] = [
-  { id: 'photo', label: 'Foto', query: '' },
-  { id: 'challenge', label: 'Desafio', query: '&liveness=1' },
+  { id: 'challenge', label: 'Desafio', query: '' },
   { id: 'rejected', label: 'Desafio recusado', query: '&liveness=fail' },
+  { id: 'photo', label: 'Foto', query: '&liveness=photo' },
 ];
 
 type Mode = 'redirect' | 'popup' | 'iframe';
@@ -57,7 +57,7 @@ const code = (mode: Mode) => {
 
 const LivenessPreview = (): React.ReactElement => {
   const [mode, setMode] = useState<Mode>('iframe');
-  const [previewMode, setPreviewMode] = useState('photo');
+  const [previewMode, setPreviewMode] = useState('challenge');
   const selected =
     MODES.find((item) => item.id === previewMode) ?? MODES[0];
   const preview = `${PREVIEW}${selected.query}`;
