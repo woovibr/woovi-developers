@@ -6,10 +6,7 @@ import styles from '../Playground.module.css';
 
 const LINK =
   'https://kyc.woovi.com/onboarding/QWNjb3VudFJlZ2lzdGVyOjY5.../liveness?embed=true';
-// kyc.woovi.com answers a Cloudflare challenge that sets X-Frame-Options,
-// so a docs iframe of that host stays blank. The same public page on
-// kyc.woovi.dev can be framed.
-const PREVIEW = 'https://kyc.woovi.dev/onboarding/liveness?embed=true';
+const PREVIEW = 'https://kyc.woovi.com/onboarding/liveness?embed=true';
 
 type PreviewMode = {
   id: string;
@@ -135,9 +132,10 @@ const LivenessPreview = (): React.ReactElement => {
           allow='camera; clipboard-read; clipboard-write'
         />
         <p className={styles.why}>
-          Esta prévia abre a selfie pública de demonstração, fora do wizard. O
-          exemplo ao lado é o link de produção, com o id cortado. A API só
-          devolve um link completo para o cadastro que o seu backend criou.
+          Esta prévia usa o mock <code>kyc.woovi.com/onboarding/liveness</code>,
+          sem cadastro. O exemplo ao lado é o formato do link de produção, com
+          o id cortado. A API só devolve um link completo para o cadastro que
+          o seu backend criou.
           {mode !== 'iframe'
             ? ' No modo escolhido ela abriria fora da sua página.'
             : ''}
