@@ -15355,7 +15355,7 @@
               },
               "minimumValue": {
                 "type": "number",
-                "description": "Minimum value for each cobr"
+                "description": "Variable-value mandates only, in cents. The floor for the maximum the payer may set when approving the authorization (the BCB `valorMinimoRecebedor`), not the smallest amount you may charge: a charge below it is valid, and only the payer's maximum caps a charge."
               }
             }
           }

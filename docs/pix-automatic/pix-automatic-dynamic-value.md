@@ -9,21 +9,47 @@ tags:
 
 ## Como criar Pix Automático com valor variável
 
-Ao criar um pix automático com valor dinâmico você deverá enviar os dois valores
+Ao criar um Pix Automático com valor variável você deverá enviar dois valores, ambos em centavos:
 
-- `value` que é o valor padrão da assinatura, ele que será cobrado na primeira parcela caso seja do tipo `PAYMENT_ON_APPROVAL`,
-- `minimumValue` que é o valor mínimo que poderá ser cobrado pela assinatura
+- `value`: o valor base da assinatura. As cobranças são geradas com esse valor até você alterá-lo, e ele é cobrado na aprovação quando a jornada é `PAYMENT_ON_APPROVAL`.
+- `pixRecurringOptions.minimumValue`: o piso para o valor máximo que o pagador pode definir ao aprovar a autorização.
 
-Vale lembrar que a assinatura de valor variável não tem um limite para o quanto você poderá cobrar, quem define esse limite é o usuário no aplicativo do banco de destino ao aprovar o QR Code. A única restrição é que o valor máximo definido por ele seja maior que o mínimo que você defininiu.
+## O que o valor mínimo significa
 
-Dessa forma, ao realizar uma cobrança com valor superior ao mínimo ela poderá ser rejeitada a depender das restrições que o usuário definiu.
+O `minimumValue` **não é o menor valor que você pode cobrar**. Ele é enviado ao Banco Central como o valor mínimo do recebedor (`valorMinimoRecebedor`), que a API Pix do Banco Central define assim:
+
+> Se o usuário pagador atribuir um valor máximo para os pagamentos daquela autorização, ele não poderá ser inferior ao piso definido pelo usuário recebedor.
+
+Na prática:
+
+- Ao aprovar o Pix Automático no aplicativo do banco, o pagador pode definir um valor máximo para as cobranças. Esse valor máximo não pode ser menor que o `minimumValue`.
+- Você pode cobrar qualquer valor, inclusive abaixo do `minimumValue`.
+- Quem limita o valor de cada cobrança é o pagador. Uma cobrança acima do valor máximo que ele definiu será rejeitada pelo banco dele.
+
+Por isso o `minimumValue` também pode ser maior que o `value`.
+
+### Exemplo
+
+Uma assinatura com `minimumValue` de R$ 500,00 (`50000`):
+
+| Situação | Resultado |
+| --- | --- |
+| O pagador tenta definir um valor máximo de R$ 300,00 | Não permitido: o máximo precisa ser de pelo menos R$ 500,00 |
+| O pagador define um valor máximo de R$ 600,00 e você cobra R$ 100,00 | Permitido |
+| O pagador define um valor máximo de R$ 600,00 e você cobra R$ 900,00 | Rejeitada pelo banco do pagador |
+
+### Como escolher o valor mínimo
+
+Use o `minimumValue` para garantir uma margem: defina-o como o maior valor que você espera cobrar nessa assinatura. Assim o pagador não consegue aprovar a autorização com um limite que bloquearia as suas cobranças. O pagador vê esse valor ao aprovar a autorização.
 
 ## Atualizar o valor da assinatura
 
-Para atualizar o valor da assinatura você pode utilizar o endpoint PUT `/api/v1/subscriptions/{id}/value`
+Para atualizar o valor da assinatura você pode utilizar o endpoint PUT `/api/v1/subscriptions/{id}/value`. O novo valor, em centavos, vale a partir da próxima cobrança e pode ser menor que o `minimumValue`.
 
 ```json
 {
   "value": 100
 }
 ```
+
+Só é possível alterar o valor de assinaturas criadas com `minimumValue`.
