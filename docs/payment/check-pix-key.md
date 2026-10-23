@@ -39,6 +39,10 @@ curl -X POST "https://api.woovi.com/api/v1/pix-keys/check" \
 
 Você pode acessar [aqui](/api#tag/pixkey-check-request-access/POST/api/v1/pix-keys/check) a documentação referente a esse _endpoint_.
 
+## Formato da chave
+
+Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, com `+55` e o DDD (`+5511912345684`): um número só com dígitos que seja um CPF válido é consultado como CPF, mesmo que também seja um celular. Veja [Formato da chave Pix](./pix-key-format.md).
+
 ## Limitação de Taxa
 
 - O endpoint tem um limitador de taxa, devido às restrições do Bacen, por isso o Woovi tem um limite de taxa nesse endpoint.
