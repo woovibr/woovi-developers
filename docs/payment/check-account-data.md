@@ -84,7 +84,7 @@ A requisição espera até 10 segundos pelo resultado:
 }
 ```
 
-Quando a instituição recusa os dados, `reason` traz o código e a descrição da recusa:
+Quando a instituição recusa os dados, `reason` traz o código e a descrição da recusa. A descrição, assim como o `error`, vem no idioma da sua empresa: no seu código, trate o resultado pelo `status` e pelo `reason.code`, nunca pelo texto.
 
 ```json
 {
@@ -92,7 +92,7 @@ Quando a instituição recusa os dados, `reason` traz o código e a descrição 
     "correlationID": "validacao-2",
     "status": "INVALID",
     "valid": false,
-    "reason": { "code": "AC03", "description": "Invalid creditor account number" },
+    "reason": { "code": "AC03", "description": "Número da conta do recebedor inválido" },
     "endToEndId": "E54811417202610281934RGw6Ky9Qlu3",
     "attempts": 1,
     "fee": 100,
