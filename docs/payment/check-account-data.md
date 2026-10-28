@@ -108,6 +108,8 @@ Quando a instituição recusa os dados, `reason` traz o código e a descrição 
 | `INCONCLUSIVE` | `null` | O Pix foi recusado por um motivo que não diz nada sobre a conta (por exemplo `AB03`, `DS04`, `FRAD`), ou não chegou a sair. A resposta traz também `error`, com a orientação do que fazer. Chame de novo com o mesmo `correlationID` para enviar um novo Pix de R$ 0,01, sem nova taxa. |
 | `PENDING` | `null` | O resultado não chegou a tempo. Chame de novo com o mesmo `correlationID` para consultar. |
 
+Uma chave Pix que não está registrada no DICT não chega a receber o Pix: a resposta é `400` com o `error` explicando, sem `accountDataCheck` e sem taxa.
+
 ## O `correlationID`
 
 - Repetir a chamada com o **mesmo** `correlationID` e o **mesmo** corpo devolve a validação como está, sem enviar um novo Pix e sem cobrar de novo. Só um resultado `INCONCLUSIVE` envia um novo Pix.
@@ -122,6 +124,6 @@ Quando a instituição recusa os dados, `reason` traz o código e a descrição 
 
 Os erros voltam com o campo `error`.
 
-- `400`: dados inválidos; `correlationID` já usado com outros dados; a aplicação não tem conta padrão ou a conta não é uma conta Woovi; saldo insuficiente; limites de Pix out atingidos; Pix out desabilitado na conta.
+- `400`: dados inválidos ou chave Pix não encontrada; `correlationID` já usado com outros dados; a aplicação não tem conta padrão ou a conta não é uma conta Woovi; saldo insuficiente; limites de Pix out atingidos; Pix out desabilitado na conta.
 - `401`: aplicação inválida, ou a empresa exige IP permitido na aplicação para movimentar saída e nenhum foi configurado.
 - `403`: a empresa não tem Pix out ou a validação de dados bancários habilitados, ou a aplicação não tem o escopo `ACCOUNT_DATA_CHECK_POST`.
