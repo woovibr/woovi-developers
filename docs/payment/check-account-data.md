@@ -13,6 +13,8 @@ A validação envia um Pix de **R$ 0,01** para o destino e espera a instituiçã
 
 A funcionalidade precisa ser habilitada para a sua empresa, junto com Pix out, e a aplicação precisa do escopo `ACCOUNT_DATA_CHECK_POST`. Veja [Como solicitar acesso a pagamentos](./payment-how-to-request-access.md).
 
+Para só consultar o titular de uma chave Pix, sem enviar Pix, use a [Verificação de Chave Pix](./check-pix-key.md).
+
 ## Validando uma chave Pix
 
 ```bash
@@ -27,6 +29,8 @@ curl -X POST "https://api.woovi.com/api/v1/account-data-check" \
 ```
 
 Envie sempre o `pixKeyType`. Para CPF e celular ele é importante, porque 11 dígitos podem ser um CPF válido e um celular ao mesmo tempo: envie CPF só com os dígitos e celular no formato internacional (`+5511912345684`). Veja [Formato da chave Pix](./pix-key-format.md).
+
+Valores aceitos em `pixKeyType`: `CPF`, `CNPJ`, `EMAIL`, `PHONE` e `RANDOM` (chave aleatória).
 
 ## Validando agência e conta
 
@@ -80,19 +84,44 @@ A requisição espera até 10 segundos pelo resultado:
 }
 ```
 
+Quando a instituição recusa os dados, `reason` traz o código e a descrição da recusa:
+
+```json
+{
+  "accountDataCheck": {
+    "correlationID": "validacao-2",
+    "status": "INVALID",
+    "valid": false,
+    "reason": { "code": "AC03", "description": "Invalid creditor account number" },
+    "endToEndId": "E54811417202610281934RGw6Ky9Qlu3",
+    "attempts": 1,
+    "fee": 100,
+    "createdAt": "2026-10-28T19:34:37.537Z"
+  }
+}
+```
+
 | `status` | `valid` | O que significa |
 |---|---|---|
 | `VALID` | `true` | A instituição recebedora aceitou o Pix. |
 | `INVALID` | `false` | A instituição recusou os dados da conta (`AC03`, `AC06`, `AC07`, `AC14`, `AG03`, `BE01`, `CH11`). O código e a descrição vêm em `reason`. |
-| `INCONCLUSIVE` | `null` | O Pix foi recusado por um motivo que não diz nada sobre a conta (por exemplo `AB03`, `DS04`, `FRAD`), ou não chegou a sair. Chame de novo com o mesmo `correlationID` para enviar um novo Pix de R$ 0,01, sem nova taxa. |
+| `INCONCLUSIVE` | `null` | O Pix foi recusado por um motivo que não diz nada sobre a conta (por exemplo `AB03`, `DS04`, `FRAD`), ou não chegou a sair. A resposta traz também `error`, com a orientação do que fazer. Chame de novo com o mesmo `correlationID` para enviar um novo Pix de R$ 0,01, sem nova taxa. |
 | `PENDING` | `null` | O resultado não chegou a tempo. Chame de novo com o mesmo `correlationID` para consultar. |
 
 ## O `correlationID`
 
 - Repetir a chamada com o **mesmo** `correlationID` e o **mesmo** corpo devolve a validação como está, sem enviar um novo Pix e sem cobrar de novo. Só um resultado `INCONCLUSIVE` envia um novo Pix.
-- Repetir o `correlationID` com **qualquer dado diferente** (outra chave, outro tipo de chave ou outra conta) devolve `400`. Depois de corrigir os dados, use um `correlationID` novo.
+- Repetir o `correlationID` com **qualquer dado diferente** (outra chave, outro tipo de chave, outra conta ou outro titular) devolve `400`. Depois de corrigir os dados, use um `correlationID` novo.
 
 ## Custo
 
-- O Pix de R$ 0,01 conta para os limites de Pix out da conta. Se a instituição recusar, o R$ 0,01 volta para o seu saldo.
-- A taxa da validação é cobrada uma vez por `correlationID`, quando o primeiro Pix sai, qualquer que seja a resposta da instituição. O valor aparece em `fee`, em centavos.
+- O Pix de R$ 0,01 conta para os limites de Pix out da conta. Se a instituição recusar, o R$ 0,01 volta para o seu saldo; a taxa da validação não volta.
+- A taxa da validação é cobrada uma vez por `correlationID`, quando o primeiro Pix sai, qualquer que seja a resposta da instituição. O valor aparece em `fee`, em centavos (`null` enquanto ainda não foi cobrado).
+
+## Erros possíveis
+
+Os erros voltam com o campo `error`.
+
+- `400`: dados inválidos; `correlationID` já usado com outros dados; a aplicação não tem conta padrão ou a conta não é uma conta Woovi; saldo insuficiente; limites de Pix out atingidos; Pix out desabilitado na conta.
+- `401`: aplicação inválida, ou a empresa exige IP permitido na aplicação para movimentar saída e nenhum foi configurado.
+- `403`: a empresa não tem Pix out ou a validação de dados bancários habilitados, ou a aplicação não tem o escopo `ACCOUNT_DATA_CHECK_POST`.
