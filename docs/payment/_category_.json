@@ -6,6 +6,6 @@
   "link": {
     "type": "generated-index",
     "title": "Pagamento visão geral",
-    "description": "Pagamentos via Pix com a Woovi: criação e aprovação em lote, consulta de chave Pix, pagamento de contas, decodificação de QR Code e erros."
+    "description": "Pagamentos via Pix com a Woovi: criação e aprovação em lote, consulta de chave Pix, validação de dados bancários, pagamento de contas, decodificação de QR Code e erros."
   }
 }
