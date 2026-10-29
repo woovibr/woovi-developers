@@ -28,6 +28,10 @@ para ver `paid` virar `true` e `outstanding` cair.
 | --- | --- | --- | --- |
 | `scope` | string | Sim | `NEXT` cobra a próxima parcela em aberto, `INSTALLMENTS` cobra as parcelas em `seqs`, `ALL` cobra todo o saldo devedor. |
 | `seqs` | integer[] | Só em `INSTALLMENTS` | Números das parcelas (`seq`). Precisam ser contíguas e começar na primeira parcela não paga. |
+| `amount` | integer | Não | Quanto da dívida a cobrança abate, em centavos, de `1` até o que falta nas parcelas pedidas. Omitido, cobra tudo o que falta nelas. |
+| `date` | string | Não | Dia (`YYYY-MM-DD`) para o qual a cobrança é calculada, hoje ou no futuro. Multa e juros de atraso são os desse dia. Omitido, é hoje. |
+| `customer` | object | Não | Quem paga, para aparecer na cobrança: `name` (obrigatório), `email` e `phone`. O documento é sempre o do tomador. |
+| `extras` | object[] | Não | Até 5 valores somados à cobrança e repassados a outras contas Woovi quando ela é paga. Veja [Cobrar outros valores junto](#cobrar-outros-valores-junto). |
 
 ## Regras
 
@@ -92,27 +96,77 @@ payoff({ scope: 'ALL' });
 {
   "payoff": {
     "amount": 94500,
+    "lateFee": 0,
+    "value": 94500,
+    "extras": [],
     "brCode": "00020126580014br.gov.bcb.pix...6304EF01",
     "txid": "199b55fa022346fa8ca3681da3c5d5fc",
     "expiresAt": "2026-11-02T23:59:59.000Z",
-    "installments": [1, 2]
+    "installments": [1, 2],
+    "breakdown": [
+      { "seq": 1, "dueDate": "2026-11-01", "remaining": 47250, "daysLate": 0, "fine": 0, "interest": 0, "amountDue": 47250 },
+      { "seq": 2, "dueDate": "2026-12-01", "remaining": 47250, "daysLate": 0, "fine": 0, "interest": 0, "amountDue": 47250 }
+    ]
   }
 }
 ```
 
-`installments` lista as parcelas que a cobrança cobre. `txid` é como a baixa é
-conciliada: ele aparece em `repayments[]` da operação depois do pagamento.
+| Campo | Significado |
+| --- | --- |
+| `amount` | Quanto a cobrança abate da dívida. |
+| `lateFee` | Multa e juros de atraso somados, em centavos. |
+| `value` | Valor total do Pix: `amount` + `lateFee` + a soma dos `extras`. |
+| `extras` | Os valores repassados a outras contas, como pedidos. |
+| `installments` | As parcelas que a cobrança cobre. |
+| `breakdown` | Por parcela: o que falta (`remaining`), dias de atraso, multa (`fine`), juros (`interest`) e o total devido (`amountDue`). |
+
+`txid` é como a baixa é conciliada: ele aparece em `repayments[]` da operação e
+no [webhook](./loan-webhooks) depois do pagamento.
+
+## Cobrar outros valores junto
+
+Use `extras` para cobrar no mesmo Pix um valor que não é do empréstimo, como o
+aluguel de uma locadora. Cada item tem `value` (centavos) e `pixKey`. Quando o
+Pix é pago, o empréstimo recebe `amount` + `lateFee` e cada `value` é
+transferido para a conta Woovi dona da `pixKey`.
+
+```sh
+curl 'https://api.woovi.com/api/v1/loan/operation/6abd072eccca077d96ad9e20/payoff' -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: {SEU_APP_ID}" \
+    -d '{
+      "scope": "NEXT",
+      "extras": [
+        { "value": 20000, "pixKey": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d" }
+      ]
+    }'
+```
+
+- A `pixKey` precisa ser uma chave Woovi da sua empresa, da empresa parceira
+  que cadastrou a sua ou de uma empresa afiliada à sua. Fora disso, a recusa é
+  `EXTRA_PIX_KEY_NOT_ALLOWED`.
+- Até 5 itens, sem repetir `pixKey`.
+- Os `extras` não abatem a dívida: o webhook e `repayments[]` mostram só o que
+  foi para o empréstimo.
 
 ## Recusas
 
-Além da validação do corpo (`400`, por exemplo `seqs` não contíguas), a API
-recusa com `422` e um `error`:
+Além da validação do corpo (`400`, por exemplo `seqs` não contíguas), toda
+recusa vem com um `error` e um `message` explicando o motivo:
 
-| `error` | Significado |
-| --- | --- |
-| `DISBURSEMENT_NOT_CONFIRMED` | O Pix de desembolso ainda não foi confirmado. |
-| `INSTALLMENT_PAID` | Nada é devido para o que foi pedido. |
-| `PREVIOUS_INSTALLMENT_UNPAID` | O intervalo não começa na primeira parcela em aberto. |
-| `CHARGE_OVERLAPS` | Já existe uma cobrança em aberto cobrindo uma dessas parcelas. |
-| `CHARGE_AMOUNT_CHANGED` | Já existe uma cobrança em aberto para as mesmas parcelas com outro valor. |
-| `CHARGE_NOT_CONFIGURED`, `FUND_ACCOUNT_UNAVAILABLE`, `CHARGE_UNAVAILABLE` | A emissão da cobrança está indisponível no momento. Tente de novo mais tarde. |
+| Status | `error` | Significado |
+| --- | --- | --- |
+| `404` | `OPERATION_NOT_FOUND` | A operação não existe para a sua empresa. |
+| `422` | `DISBURSEMENT_NOT_CONFIRMED` | O Pix de desembolso ainda não foi confirmado. |
+| `422` | `INSTALLMENT_PAID` | Nada é devido para o que foi pedido. |
+| `422` | `INVALID_INSTALLMENT` | As parcelas pedidas não existem neste empréstimo. |
+| `422` | `PREVIOUS_INSTALLMENT_UNPAID` | O intervalo não começa na primeira parcela em aberto. |
+| `422` | `INVALID_AMOUNT` | `amount` é maior do que falta nas parcelas pedidas. |
+| `422` | `INVALID_EXTRAS` | `extras` com mais de 5 itens ou com item inválido. |
+| `422` | `EXTRA_PIX_KEY_NOT_ALLOWED` | Uma `pixKey` de `extras` não é uma chave Woovi permitida. `message` diz qual. |
+| `422` | `EXTRA_PIX_KEY_UNVERIFIABLE` | Não foi possível verificar as chaves de `extras` agora. Tente de novo. |
+| `422` | `CHARGE_OVERLAPS` | Já existe uma cobrança em aberto cobrindo uma dessas parcelas. |
+| `422` | `CHARGE_AMOUNT_CHANGED` | Já existe uma cobrança em aberto para as mesmas parcelas com outro valor. |
+| `422` | `PAYMENT_PROCESSING` | Um pagamento dessas parcelas está sendo aplicado. Consulte a operação em instantes. |
+| `422` | `CHARGE_EXPIRED` | A cobrança dessas parcelas expirou. Peça de novo. |
+| `422` | `CHARGE_PENDING`, `CHARGE_NOT_CONFIGURED`, `FUND_ACCOUNT_UNAVAILABLE`, `CHARGE_UNAVAILABLE` | A emissão da cobrança está indisponível no momento. Tente de novo mais tarde. |
