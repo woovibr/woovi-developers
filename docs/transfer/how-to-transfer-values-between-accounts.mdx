@@ -42,10 +42,15 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
   "transaction": {
     "value": 100,
     "time": "2023-06-22T15:33:27.165Z",
-    "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a"
+    "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a",
+    "endToEndId": "E2387691120230622153327165Abc1234",
+    "status": "CONFIRMED"
   }
 }
 ```
+
+- **`endToEndId`**: o identificador da transferência, o mesmo nas transações de débito e de crédito. Use-o para conciliar a transferência sem uma consulta adicional.
+- **`status`**: a transferência é liquidada antes da resposta, então o status retornado é `CONFIRMED`.
 
 ### Exemplos em código
 
