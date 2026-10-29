@@ -72,10 +72,14 @@ Resposta `200`:
   "transaction": {
     "value": 5000,
     "time": "2026-08-24T15:33:27.165Z",
-    "correlationID": "repasse-2026-08-001"
+    "correlationID": "repasse-2026-08-001",
+    "endToEndId": "E2387691120260824153327165Abc123",
+    "status": "CONFIRMED"
   }
 }
 ```
+
+O `endToEndId` é o mesmo nas transações de débito e de crédito, e o `status` volta `CONFIRMED` porque a transferência já está liquidada quando a resposta chega.
 
 :::info Habilitação
 A transferência entre contas depende de habilitação na sua empresa — e o sentido conta principal → conta de cliente depende de uma habilitação adicional. Solicite ao suporte. Origem e destino precisam ser contas Woovi.
