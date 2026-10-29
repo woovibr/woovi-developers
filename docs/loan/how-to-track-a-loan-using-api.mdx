@@ -31,6 +31,9 @@ para ver `paid` virar `true`, `outstanding` cair e o pagamento aparecer em
 dela, com `brCode`, `amount` e `expiresAt`; `payoff` na raiz é o código para
 quitar tudo o que falta.
 
+Para ser avisado de cada pagamento em vez de consultar, cadastre os
+[Webhooks de Empréstimo](./loan-webhooks).
+
 ### Exemplos em código
 
 <Tabs>
@@ -106,6 +109,7 @@ fetch(`https://api.woovi.com/api/v1/loan/operation/${id}`, {
         "id": "6abec6f167f6bc21483ef34e",
         "amount": 47250,
         "channel": "PIX_MANUAL",
+        "txid": "d98b4cd74b4b4aee87097a90871f8ef7",
         "createdAt": "2026-10-30T12:00:00.000Z"
       }
     ],
