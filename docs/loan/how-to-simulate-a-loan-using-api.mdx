@@ -23,8 +23,8 @@ A simulação não cria nada para o tomador. Ela fica guardada até a
 | Campo | Tipo | Obrigatório | Descrição |
 | --- | --- | --- | --- |
 | `taxID` | string | Sim | CPF ou CNPJ do tomador, com ou sem máscara. |
-| `amount` | integer | Sim | Valor do empréstimo, em centavos, entre `10000` e `250000`. |
-| `installmentNumber` | integer | Sim | Número de parcelas, de 1 a 8. |
+| `amount` | integer | Sim | Valor do empréstimo, em centavos, dentro dos limites do fundo que financia (por padrão de `10000` a `250000`). |
+| `installmentNumber` | integer | Sim | Número de parcelas, de 1 ao máximo do fundo (por padrão 8). |
 | `period` | string | Não | `WEEKLY` ou `MONTHLY`. Padrão `MONTHLY`. |
 | `correlationID` | string | Não | Seu identificador. Repetir devolve a simulação guardada. |
 
@@ -76,13 +76,14 @@ fetch('https://api.woovi.com/api/v1/loan/simulation', {
   "simulation": {
     "simulationId": "6abeadd43f02bc8c8675c0ad",
     "correlationID": "erp-sim-42",
-    "status": "ACTIVE",
+    "status": "APPROVED",
+    "refusalReason": null,
+    "expiresAt": "2026-10-02T15:00:00.000Z",
     "expirationDate": "2026-10-02",
     "amount": 150000,
     "installmentNumber": 4,
     "period": "MONTHLY",
     "monthlyInterestRate": 0.1,
-    "periodInterestRate": 0.1,
     "totalAmount": 189000,
     "installmentPlan": [
       { "seq": 1, "dueDate": "2026-11-01", "amount": 47250 },
@@ -101,7 +102,41 @@ cálculo, e a taxa mensal vigente aparece em `monthlyInterestRate`.
 
 ## Recusas
 
+Uma simulação recusada **não** é erro HTTP: a resposta é `200` com
+`status: "REFUSED"`, `simulationId: null` e o motivo em `refusalReason`.
+
+```json
+{
+  "simulation": {
+    "simulationId": null,
+    "correlationID": "erp-sim-42",
+    "status": "REFUSED",
+    "refusalReason": "ALREADY_ACTIVE"
+  }
+}
+```
+
+| `refusalReason` | Significado |
+| --- | --- |
+| `ALREADY_ACTIVE` | O tomador já tem um empréstimo em aberto. |
+| `TAXID_TYPE_NOT_ELIGIBLE` | O fundo não empresta para este tipo de documento (CPF ou CNPJ). |
+| `CNPJ_REQUIRED` | O fundo só empresta para CNPJ. |
+| `INSTALLMENTS_OUT_OF_RANGE` | O número de parcelas está fora do que o fundo permite. |
+| `BELOW_MINIMUM` | O valor está abaixo do mínimo do fundo. |
+| `ABOVE_CEILING` | O valor está acima do máximo do fundo. |
+| `TICKET_CAP` | O valor está acima do máximo que o fundo empresta num empréstimo só. |
+| `PERSON_CAP` | O tomador chegou ao máximo que o fundo empresta para uma mesma pessoa. |
+| `PERSON_LIMIT` | O valor está acima do que o tomador pode pegar agora. |
+| `NOT_ALLOWED` | O tomador não está elegível para crédito. |
+| `SCREENING_REFUSED` | A análise do documento recusou. Um código só, de propósito: a API não diz se foi cadastro ou marcador de fraude. |
+
+Os erros HTTP são:
+
 | Status | `error` | Significado |
 | --- | --- | --- |
-| `400` | `INVALID_REQUEST` | Corpo inválido: valor fora de `10000` a `250000`, mais de 8 parcelas, `period` desconhecido ou documento malformado. `message` diz qual campo. |
-| `422` | `TAXID_TYPE_NOT_ELIGIBLE` | O tipo de documento (CPF ou CNPJ) não está habilitado para crédito. É regra de produto, não erro do corpo. |
+| `400` | `INVALID_REQUEST` | Corpo inválido: valor ou número de parcelas fora dos limites do fundo, `period` desconhecido ou documento malformado. `message` diz qual campo. |
+| `422` | `FUND_CLOSED` | Nenhum fundo ativo atende a sua empresa. |
+
+O saldo do fundo não é checado na simulação, e sim na
+[originação](./how-to-originate-a-loan-using-api#recusas): uma simulação aprovada
+ainda pode ser recusada com `NO_FUNDS` ao contratar.
