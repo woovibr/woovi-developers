@@ -1,0 +1,163 @@
+---
+id: loan-webhooks
+title: Webhooks de Empréstimo
+sidebar_label: Webhooks
+sidebar_position: 6
+tags:
+  - api
+  - loan
+  - emprestimo
+  - webhook
+---
+
+# Webhooks de Empréstimo
+
+Os webhooks de empréstimo avisam quando um pagamento foi recebido e quando o
+empréstimo foi quitado, sem precisar consultar
+[`GET /api/v1/loan/operation/{id}`](./how-to-track-a-loan-using-api) de tempos
+em tempos.
+
+## Eventos
+
+| Evento | Quando dispara | `operation.status` |
+| --- | --- | --- |
+| `LOAN_PAYMENT_RECEIVED` | Um pagamento foi recebido e abatido do saldo devedor: uma parcela, a quitação ou um pagamento de recuperação | `ACTIVE`, `SETTLED` ou `WRITTEN_OFF` |
+| `LOAN_SETTLED` | O pagamento zerou o saldo devedor e o empréstimo foi quitado. Chega logo depois do `LOAN_PAYMENT_RECEIVED` desse mesmo pagamento | `SETTLED` |
+
+Cada pagamento gera **um** `LOAN_PAYMENT_RECEIVED`. O pagamento que quita o
+empréstimo gera também um `LOAN_SETTLED`, com o mesmo payload.
+
+## Quem recebe
+
+Os eventos só existem para empréstimos originados pela
+[API](./how-to-originate-a-loan-using-api), e vão para:
+
+- a empresa que originou o empréstimo (a dona do `APP_ID` usado em
+  `POST /api/v1/loan/operation`);
+- a empresa parceira dona do fundo que emprestou, quando o empréstimo foi
+  originado por uma empresa afiliada a ela.
+
+Quando o parceiro origina pelo próprio fundo, recebe o evento uma vez só. Cada
+empresa recebe apenas pelos webhooks que ela mesma cadastrou para o evento.
+
+## Como cadastrar o webhook
+
+Cada webhook se inscreve em **um** evento. Para acompanhar pagamentos e
+quitação, cadastre um webhook para `LOAN_PAYMENT_RECEIVED` e outro para
+`LOAN_SETTLED`.
+
+### Pelo aplicativo
+
+1. Acesse a lista de **[API/Plugins → Webhooks](https://app.woovi.com/home/api/list)**.
+2. Clique em **[Adicionar webhook](https://app.woovi.com/home/openpix/webhook-create)**.
+3. Informe a **URL** do seu endpoint.
+4. Selecione o evento de empréstimo.
+5. Salve e mantenha o webhook **ativo**.
+
+### Pela API
+
+```bash
+curl --request POST \
+  --url https://api.woovi.com/api/v1/webhook \
+  --header 'Authorization: {APP_ID}' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "webhook": {
+      "name": "Empréstimo - pagamento recebido",
+      "event": "LOAN_PAYMENT_RECEIVED",
+      "url": "https://seu-dominio.com/webhooks/woovi",
+      "authorization": "opcional-token-que-voce-recebe-de-volta",
+      "isActive": true
+    }
+  }'
+```
+
+Repita com `"event": "LOAN_SETTLED"`. Veja [Webhook API](../webhook/webhook-api.mdx)
+para o restante da API de webhooks.
+
+## Payload
+
+O corpo tem o nome do evento, o objeto `operation`, no mesmo formato de
+[`GET /api/v1/loan/operation/{id}`](./how-to-track-a-loan-using-api#exemplo-de-resposta)
+e já com o pagamento abatido, e o objeto `payment` com o pagamento que gerou o
+evento:
+
+```json
+{
+  "event": "LOAN_PAYMENT_RECEIVED",
+  "operation": {
+    "operationId": "6abd072eccca077d96ad9e20",
+    "correlationID": "erp-loan-42",
+    "taxID": { "taxID": "12345678909", "type": "BR:CPF" },
+    "status": "ACTIVE",
+    "principal": 150000,
+    "totalDue": 189000,
+    "outstanding": 141750,
+    "installmentNumber": 4,
+    "dueDate": "2027-02-01",
+    "disbursedAt": "2026-10-01T18:00:00.000Z",
+    "settledAt": null,
+    "disbursement": {
+      "status": "CONFIRMED",
+      "endToEndId": "E54811417202610011800abcdef12345"
+    },
+    "installments": [
+      { "seq": 1, "dueDate": "2026-11-01", "amount": 47250, "paid": true, "payoff": null },
+      { "seq": 2, "dueDate": "2026-12-01", "amount": 47250, "paid": false, "payoff": null }
+    ],
+    "payoff": {
+      "amount": 141750,
+      "brCode": "00020126580014br.gov.bcb.pix...6304EF01",
+      "txid": "199b55fa022346fa8ca3681da3c5d5fc",
+      "expiresAt": null
+    },
+    "repayments": [
+      {
+        "id": "6abec6f167f6bc21483ef34e",
+        "amount": 47250,
+        "channel": "PIX_MANUAL",
+        "txid": "d98b4cd74b4b4aee87097a90871f8ef7",
+        "createdAt": "2026-10-30T12:00:00.000Z"
+      }
+    ],
+    "createdAt": "2026-10-01T17:59:40.000Z"
+  },
+  "payment": {
+    "id": "6abec6f167f6bc21483ef34e",
+    "amount": 47250,
+    "lateFee": 0,
+    "channel": "PIX_MANUAL",
+    "endToEndId": "E18236120202610301200s0123456789",
+    "txid": "d98b4cd74b4b4aee87097a90871f8ef7",
+    "paidAt": "2026-10-30T12:00:00.000Z"
+  }
+}
+```
+
+| Campo de `payment` | Significado |
+| --- | --- |
+| `id` | Identificador do pagamento; é o mesmo `id` em `operation.repayments[]`. |
+| `amount` | Valor abatido da dívida, em centavos. |
+| `lateFee` | Multa e juros de atraso cobrados junto, em centavos. |
+| `channel` | `PIX_MANUAL` (cobrança Pix), `PIX_AUTOMATICO` (Pix Automático) ou `RECOVERY` (recuperação de empréstimo baixado). |
+| `endToEndId` | Identificador do Pix recebido. |
+| `txid` | `txid` da cobrança paga, o mesmo devolvido em [Pagar empréstimo](./how-to-pay-a-loan-using-api). Use para dar baixa no seu sistema. `null` quando o pagamento não veio de uma cobrança. |
+| `paidAt` | Quando o pagamento foi recebido. |
+
+## Validando e respondendo
+
+- **Assinatura**: valide o header `x-webhook-signature` (RSA-SHA256) com a chave
+  pública da Woovi. Veja [Validação de assinatura](../webhook/seguranca/webhook-signature-validation.mdx).
+  Se o webhook tiver uma HMAC secret key, o header `x-openpix-signature` também
+  é enviado, por compatibilidade ([HMAC](../webhook/seguranca/webhook-hmac.mdx)).
+- **Resposta**: qualquer `2xx` confirma o recebimento. Qualquer outra resposta,
+  ou um _timeout_, gera nova tentativa. Veja
+  [Retentativas](../webhook/webhook-retry.md) e [Timeout](../webhook/webhook-timeout.md).
+- **Duplicidade**: a entrega é _at least once_, então o mesmo evento pode chegar
+  mais de uma vez. Deduplique pelo par `event` + `payment.id`.
+
+:::tip Não perdeu nada?
+Se o seu endpoint ficou fora do ar, consulte o empréstimo com
+[`GET /api/v1/loan/operation/{id}`](./how-to-track-a-loan-using-api): o
+`status`, o `outstanding` e os `repayments[]` dele são sempre o estado atual.
+:::
