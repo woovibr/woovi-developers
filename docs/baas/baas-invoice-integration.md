@@ -70,6 +70,24 @@ Todos os campos do corpo são opcionais — envie os que se aplicam ao municípi
 | `isPortalNacional`          | `boolean` | Indica se o município emite pelo Portal Nacional da NFS-e               |
 | `isActive`                  | `boolean` | Ativa a integração (só é permitido depois de configurada)               |
 
+### Valores aceitos
+
+Os campos fiscais são enviados ao provedor de nota fiscal exatamente como chegam. Use **só** os valores abaixo, com a mesma grafia (maiúsculas e minúsculas, sem espaços nem acentos). A API só valida `federalTaxDetermination` e `municipalTaxDetermination`; nos demais, um valor fora da lista é gravado, mas faz o envio do certificado falhar no passo 2.
+
+| Campo                                                   | Valores aceitos                                                                                                                                                                                                      |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `taxRegime`                                             | `SimplesNacional`, `SimplesNacionalExcessoSublimite`, `LucroPresumido`, `LucroReal`, `Isento`, `MicroempreendedorIndividual`                                                                                         |
+| `specialTax`                                            | `Nenhum`, `Automatico`, `MicroempresaMunicipal`, `Estimativa`, `SociedadeDeProfissionais`, `Cooperativa`, `MicroempreendedorIndividual`, `MicroempresarioEmpresaPequenoPorte`                                        |
+| `federalTaxDetermination` e `municipalTaxDetermination` | `SimplesNacional`, `Default`, `NotInformed`                                                                                                                                                                          |
+| `cityServiceCode`                                       | Um único código de serviço; não envie uma lista. No Portal Nacional, é o código de 6 dígitos da lista nacional de serviços (ex.: `040101`), com o complemento municipal quando o município exige (ex.: `170202.004`) |
+| `municipalSubscription` e `rpsNumber`                   | Só números                                                                                                                                                                                                           |
+
+:::caution
+
+Textos livres como `simples nacional`, `Lucro presumido`, `não possui` ou `None` **não** são aceitos. Qual valor se aplica à conta (regime, regime especial e código de serviço) é uma definição fiscal: confirme com o contador do titular da conta.
+
+:::
+
 ```bash
 curl 'https://api.woovi.com/api/v1/invoice/integration' -X POST \
   -H 'Authorization: <appId>' \
@@ -78,8 +96,8 @@ curl 'https://api.woovi.com/api/v1/invoice/integration' -X POST \
     "cityServiceCode": "2690",
     "municipalSubscription": "123456",
     "rpsNumber": "1",
-    "taxRegime": "LimitedProfit",
-    "specialTax": "None",
+    "taxRegime": "SimplesNacional",
+    "specialTax": "Nenhum",
     "isPortalNacional": false
   }'
 ```
@@ -99,8 +117,8 @@ Resposta `201`:
         "cityServiceCode": "2690",
         "municipalSubscription": "123456",
         "rpsNumber": "1",
-        "taxRegime": "LimitedProfit",
-        "specialTax": "None",
+        "taxRegime": "SimplesNacional",
+        "specialTax": "Nenhum",
         "isPortalNacional": false
       }
     }
@@ -113,6 +131,25 @@ Resposta `201`:
 O campo `companyBankAccount` na resposta confirma a qual conta a integração ficou vinculada. O status `CONFIGURING` indica que a integração existe, mas ainda não está apta a emitir notas.
 
 :::
+
+### Corrigindo as informações fiscais
+
+Para alterar as informações fiscais de uma integração que já existe, use o `PUT` com os mesmos campos (todos opcionais; só os enviados são alterados). Ele também aceita `legalNature`, a natureza jurídica da empresa (ex.: `SociedadeEmpresariaLimitada`, `Empresario`, `EireliNaturezaEmpresaria`).
+
+`PUT /api/v1/invoice/integration`
+
+```bash
+curl 'https://api.woovi.com/api/v1/invoice/integration' -X PUT \
+  -H 'Authorization: <appId>' \
+  -H 'Content-Type: application/json' \
+  --data-raw '{
+    "taxRegime": "SimplesNacional",
+    "specialTax": "Nenhum",
+    "cityServiceCode": "040101"
+  }'
+```
+
+A resposta `200` devolve a integração atualizada, no mesmo formato da criação. Se o envio do certificado falhou por causa das informações fiscais, corrija aqui e envie o certificado de novo.
 
 ## 2. Enviando o certificado digital A1
 
@@ -157,6 +194,14 @@ Resposta `200`:
 A resposta devolve apenas o status resultante da integração. O certificado, a senha e as credenciais nunca são retornados pela API.
 
 :::
+
+Antes de enviar o certificado, a Woovi cadastra a empresa no provedor de nota fiscal usando as informações fiscais do passo 1. Por isso, um erro neste passo nem sempre é do certificado.
+
+Erros possíveis:
+
+- `400 Error creating company on provider` — o provedor recusou o cadastro da empresa. Quase sempre é um campo fiscal fora dos [valores aceitos](#valores-aceitos). Corrija com o [`PUT`](#corrigindo-as-informações-fiscais) e envie o certificado de novo.
+- `400 Error uploading certificate, check if the password or the certificate is correct` — o arquivo não é um A1 válido ou a senha está errada.
+- `404 You need to configure the invoice integration` — a conta do token ainda não tem integração criada (passo 1).
 
 ## 3. Emitindo a nota fiscal de teste
 
@@ -214,8 +259,8 @@ Resposta `200` com a configuração concluída:
         "cityServiceCode": "2690",
         "municipalSubscription": "123456",
         "rpsNumber": "1",
-        "taxRegime": "LimitedProfit",
-        "specialTax": "None",
+        "taxRegime": "SimplesNacional",
+        "specialTax": "Nenhum",
         "isPortalNacional": false
       }
     }
