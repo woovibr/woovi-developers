@@ -74,13 +74,13 @@ Todos os campos do corpo são opcionais — envie os que se aplicam ao municípi
 
 Os campos fiscais são enviados ao provedor de nota fiscal exatamente como chegam. Use **só** os valores abaixo, com a mesma grafia (maiúsculas e minúsculas, sem espaços nem acentos). A API só valida `federalTaxDetermination` e `municipalTaxDetermination`; nos demais, um valor fora da lista é gravado, mas faz o envio do certificado falhar no passo 2.
 
-| Campo                                                   | Valores aceitos                                                                                                                                                               |
-| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `taxRegime`                                             | `SimplesNacional`, `SimplesNacionalExcessoSublimite`, `LucroPresumido`, `LucroReal`, `Isento`, `MicroempreendedorIndividual`                                                  |
-| `specialTax`                                            | `Nenhum`, `Automatico`, `MicroempresaMunicipal`, `Estimativa`, `SociedadeDeProfissionais`, `Cooperativa`, `MicroempreendedorIndividual`, `MicroempresarioEmpresaPequenoPorte` |
-| `federalTaxDetermination` e `municipalTaxDetermination` | `SimplesNacional`, `Default`, `NotInformed`                                                                                                                                   |
-| `cityServiceCode`                                       | Um único código de serviço, sem espaços nem separadores entre códigos. No Portal Nacional, é o código do item da lista nacional de serviços (ex.: `040101`)                   |
-| `municipalSubscription` e `rpsNumber`                   | Só números                                                                                                                                                                    |
+| Campo                                                   | Valores aceitos                                                                                                                                                                                                      |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `taxRegime`                                             | `SimplesNacional`, `SimplesNacionalExcessoSublimite`, `LucroPresumido`, `LucroReal`, `Isento`, `MicroempreendedorIndividual`                                                                                         |
+| `specialTax`                                            | `Nenhum`, `Automatico`, `MicroempresaMunicipal`, `Estimativa`, `SociedadeDeProfissionais`, `Cooperativa`, `MicroempreendedorIndividual`, `MicroempresarioEmpresaPequenoPorte`                                        |
+| `federalTaxDetermination` e `municipalTaxDetermination` | `SimplesNacional`, `Default`, `NotInformed`                                                                                                                                                                          |
+| `cityServiceCode`                                       | Um único código de serviço; não envie uma lista. No Portal Nacional, é o código de 6 dígitos da lista nacional de serviços (ex.: `040101`), com o complemento municipal quando o município exige (ex.: `170202.004`) |
+| `municipalSubscription` e `rpsNumber`                   | Só números                                                                                                                                                                                                           |
 
 :::caution
 
