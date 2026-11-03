@@ -10,7 +10,7 @@ tags:
 
 A régua de cobrança define quais avisos os seus clientes recebem sobre as cobranças e parcelas de assinatura da sua empresa, por quais canais eles saem e em quais momentos.
 
-É a mesma configuração da tela **Cobranças > Régua de cobrança** do painel. Você pode alterá-la pela tela ou pela [API](./notification-get-api). As duas formas mudam a mesma régua.
+É a mesma configuração da tela **Cobranças > Régua de cobrança** do painel. Você pode alterá-la pela tela ou pela [API](./notification-get-api), e as duas formas mudam a mesma régua.
 
 ## Os avisos
 
