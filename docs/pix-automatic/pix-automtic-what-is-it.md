@@ -25,7 +25,9 @@ As jornadas são as diferentes maneiras de se utilizar o Pix Automático definid
 
 ### Jornada 1 | Autorização via Push Notification
 
-Na jornada 1 o recebedor envia uma notificação ao usuário, convidando-o para entrar em uma recorrência.
+Na jornada 1 não há QR Code. Ao criar a assinatura, você informa a conta bancária do pagador (banco, agência e conta), e a Woovi envia a solicitação de autorização direto para esse banco. O pagador recebe a solicitação no aplicativo do banco e aprova ou recusa a recorrência ali mesmo.
+
+A jornada 1 precisa ser habilitada para a sua conta: fale com o nosso suporte. Veja [Como criar um Pix Automático](./pix-automatic-how-to-create.md#jornada-1).
 
 ### Jornada 2 | Autorização via QRCode
 
