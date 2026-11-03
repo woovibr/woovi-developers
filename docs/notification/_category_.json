@@ -1,0 +1,10 @@
+{
+  "label": "Régua de cobrança",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Régua de cobrança",
+    "description": "Quais avisos os seus clientes recebem sobre as cobranças e parcelas, por quais canais e em quais momentos, e como ler e alterar essa configuração pela API."
+  }
+}
