@@ -1,0 +1,88 @@
+---
+id: notification-get-api
+sidebar_position: 2
+title: Como ler a régua de cobrança usando a API?
+tags:
+  - notification
+  - billing-rule
+  - api
+---
+
+Para ler a régua de cobrança da sua empresa, faça uma chamada `GET` para o _endpoint_ `/api/v1/notification`, autenticando com o seu `AppID` no header `Authorization`.
+
+Você pode acessar [aqui](/api#tag/notification/GET/api/v1/notification) a documentação de referência desse _endpoint_.
+
+## Requisitos
+
+- A aplicação precisa ter o escopo **`NOTIFICATION_GET`**.
+- Um parceiro lê a régua de cada afiliada com o `AppID` daquela afiliada.
+
+## Requisição
+
+```sh
+curl https://api.woovi.com/api/v1/notification \
+  -H "Authorization: <AppID>"
+```
+
+## Resposta
+
+A resposta traz um item por aviso, com a configuração atual de cada um. O significado de cada campo está em [O que é a régua de cobrança?](./notification-billing-rule).
+
+```json
+{
+  "notifications": [
+    {
+      "notificationType": "NOTIFY_CUSTOMER_ON_CHARGE_CREATED",
+      "active": true,
+      "channels": ["WHATSAPP", "EMAIL"],
+      "attachments": ["CHARGE_PDF"]
+    },
+    {
+      "notificationType": "NOTIFY_CUSTOMER_BEFORE_CHARGE_DUE_DATE",
+      "active": true,
+      "channels": ["WHATSAPP"],
+      "offsets": [
+        { "value": 5, "unit": "DAY" },
+        { "value": 1, "unit": "DAY" }
+      ]
+    },
+    {
+      "notificationType": "NOTIFY_CUSTOMER_ON_CHARGE_DUE_DATE",
+      "active": true,
+      "channels": ["WHATSAPP"],
+      "offsets": [{ "value": 3, "unit": "HOUR" }]
+    },
+    {
+      "notificationType": "NOTIFY_CUSTOMER_AFTER_CHARGE_DUE_DATE",
+      "active": false,
+      "channels": ["WHATSAPP"],
+      "offsets": [{ "value": 1, "unit": "DAY" }]
+    },
+    {
+      "notificationType": "NOTIFY_CUSTOMER_ON_CHARGE_PAID",
+      "active": true,
+      "channels": ["WHATSAPP"]
+    },
+    {
+      "notificationType": "NOTIFY_CUSTOMER_ON_INSTALLMENT_CHARGE_CREATED",
+      "active": true,
+      "channels": ["EMAIL"]
+    },
+    {
+      "notificationType": "NOTIFY_CUSTOMER_ON_INSTALLMENT_EXPIRED",
+      "active": true,
+      "channels": ["EMAIL"]
+    }
+  ]
+}
+```
+
+- `offsets` aparece só nos três avisos de vencimento.
+- `attachments` aparece só na cobrança criada e na parcela criada, e só depois que a sua empresa escolheu os anexos.
+
+## Erros
+
+| Status | Quando                                           |
+| ------ | ------------------------------------------------ |
+| `401`  | `AppID` inválido.                                |
+| `403`  | A aplicação não tem o escopo `NOTIFICATION_GET`. |

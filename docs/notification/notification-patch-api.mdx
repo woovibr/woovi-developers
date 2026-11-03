@@ -1,0 +1,128 @@
+---
+id: notification-patch-api
+sidebar_position: 3
+title: Como alterar a régua de cobrança usando a API?
+tags:
+  - notification
+  - billing-rule
+  - api
+---
+
+Para alterar a régua de cobrança da sua empresa, faça uma chamada `PATCH` para o _endpoint_ `/api/v1/notification`, autenticando com o seu `AppID` no header `Authorization` e enviando o corpo em JSON.
+
+Você pode acessar [aqui](/api#tag/notification/PATCH/api/v1/notification) a documentação de referência desse _endpoint_.
+
+## Requisitos
+
+- A aplicação precisa ter o escopo **`NOTIFICATION_PATCH`**.
+- A requisição precisa do header `Content-Type: application/json`.
+- Um parceiro altera a régua de cada afiliada com o `AppID` daquela afiliada.
+
+## Como a alteração funciona
+
+O corpo traz uma lista `notifications`, com um item por aviso que você quer mudar. Cada item tem o `notificationType` e os campos que mudam:
+
+- um campo enviado substitui aquele campo do aviso;
+- um campo não enviado mantém o valor que o aviso já tinha;
+- os avisos que não estão na lista continuam como estão.
+
+A régua que resulta da alteração precisa respeitar os limites de cada aviso, descritos em [O que é a régua de cobrança?](./notification-billing-rule). Se algum item for inválido, **nada é salvo**, nem os itens válidos.
+
+A resposta traz a régua inteira, já com a alteração.
+
+## Exemplos
+
+### Desligar o aviso de cobrança criada
+
+Só `active` muda. Os canais do aviso e os outros avisos continuam como estão.
+
+```sh
+curl -X PATCH https://api.woovi.com/api/v1/notification \
+  -H "Authorization: <AppID>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "notifications": [
+      {
+        "notificationType": "NOTIFY_CUSTOMER_ON_CHARGE_CREATED",
+        "active": false
+      }
+    ]
+  }'
+```
+
+### Trocar os momentos do lembrete antes do vencimento
+
+`offsets` substitui todos os momentos do aviso: o aviso passa a ter só os momentos enviados.
+
+```json
+{
+  "notifications": [
+    {
+      "notificationType": "NOTIFY_CUSTOMER_BEFORE_CHARGE_DUE_DATE",
+      "offsets": [
+        { "value": 3, "unit": "DAY" },
+        { "value": 1, "unit": "DAY" }
+      ]
+    }
+  ]
+}
+```
+
+### Enviar o comprovante só por e-mail
+
+```json
+{
+  "notifications": [
+    {
+      "notificationType": "NOTIFY_CUSTOMER_ON_CHARGE_PAID",
+      "active": true,
+      "channels": ["EMAIL"]
+    }
+  ]
+}
+```
+
+### Ligar o aviso depois do vencimento e desligar o do dia do vencimento
+
+Vários avisos podem mudar na mesma requisição, desde que cada `notificationType` apareça uma vez só.
+
+```json
+{
+  "notifications": [
+    {
+      "notificationType": "NOTIFY_CUSTOMER_ON_CHARGE_DUE_DATE",
+      "active": false
+    },
+    {
+      "notificationType": "NOTIFY_CUSTOMER_AFTER_CHARGE_DUE_DATE",
+      "active": true,
+      "offsets": [
+        { "value": 1, "unit": "DAY" },
+        { "value": 3, "unit": "DAY" }
+      ]
+    }
+  ]
+}
+```
+
+## Erros
+
+Toda resposta de erro traz o motivo em `error`. Um `400` significa que nada foi salvo.
+
+```json
+{
+  "error": "Um aviso aceita no máximo 5 momentos."
+}
+```
+
+| Status | Quando                                                                                                                                                                                                                                     |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `400`  | O corpo não tem a lista `notifications`, ou a lista está vazia.                                                                                                                                                                            |
+| `400`  | Um item traz só o `notificationType`, um campo desconhecido, ou repete um `notificationType` de outro item.                                                                                                                                |
+| `400`  | O `notificationType` não existe ou não pode ser alterado pela API.                                                                                                                                                                         |
+| `400`  | A régua que resulta fere um limite do aviso: canal que o aviso não aceita, aviso ligado sem canal ou sem momento, mais de 5 momentos, momento fora do intervalo do aviso, dois momentos no mesmo instante ou anexo que o aviso não aceita. |
+| `400`  | A régua da sua empresa ainda não pode ser configurada. Fale com o suporte.                                                                                                                                                                 |
+| `400`  | Outra alteração da régua foi salva ao mesmo tempo. Envie a requisição de novo.                                                                                                                                                             |
+| `401`  | `AppID` inválido.                                                                                                                                                                                                                          |
+| `403`  | A aplicação não tem o escopo `NOTIFICATION_PATCH`.                                                                                                                                                                                         |
+| `405`  | O método não é `GET` nem `PATCH`.                                                                                                                                                                                                          |
