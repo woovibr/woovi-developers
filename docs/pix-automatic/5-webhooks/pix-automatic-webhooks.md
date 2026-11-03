@@ -15,7 +15,7 @@ O campo `globalID` representa o id único da assinatura, ele deverá ser usado n
 
 ### PIX_AUTOMATIC_APPROVED
 
-Quando o pix automático é aprovado. Ele ocorre quando o consumidor lê o QRCode e aprova a recorrência em seu banco. Após disso o status é alterado para APPROVED.
+Quando o pix automático é aprovado. Ele ocorre quando o consumidor lê o QRCode e aprova a recorrência em seu banco, ou, na jornada 1 (`PUSH_NOTIFICATION`), quando aprova a solicitação que chegou no aplicativo do banco. Após disso o status é alterado para APPROVED.
 
 Caso você esteja usando a jornada 3 (`PAYMENT_ON_APPROVAL`), vale lembrar que quando receber o webhook, a primeira parcela já foi paga, você também receberá o webhook de `COBR_COMPLETED`.
 
@@ -62,6 +62,8 @@ Caso você esteja usando a jornada 3 (`PAYMENT_ON_APPROVAL`), vale lembrar que q
 ### PIX_AUTOMATIC_REJECTED
 
 Quando o consumidor recusa a recorrência em seu aplicativo do banco. o Status é alterado para REJECTED.
+
+Na jornada 1 (`PUSH_NOTIFICATION`), também ocorre quando o banco do pagador recusa a solicitação de autorização (por exemplo, uma conta que não existe). Nessa jornada o objeto `pixRecurring` não tem `emv`.
 
 ```json
 {

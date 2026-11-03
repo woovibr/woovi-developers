@@ -25,9 +25,10 @@ Caso o dia informado seja inferior ao dia atual, a primeira cobrança ocorrerá 
 
 Dentro do objeto `pixRecurringOptions` você precisa definir alguns parâmetros exclusivos do pix automático:
 
-- **`journey`**: Deve ser baseado em qual jornada escolheu utilizar (`ONLY_RECURRENCY`: Jornada 2,  `PAYMENT_ON_APPROVAL`: Jornada 3),
+- **`journey`**: Deve ser baseado em qual jornada escolheu utilizar (`PUSH_NOTIFICATION`: Jornada 1, `ONLY_RECURRENCY`: Jornada 2,  `PAYMENT_ON_APPROVAL`: Jornada 3),
 - **`retryPolicy`**: Qual Política de rententativa deve ser adotada ( `NON_PERMITED`: Sem política de retentativas, `THREE_RETRIES_7_DAYS`: 3 Retentativas em até 7 dias )
 - **`minimumValue`** (Opcional): Caso sua cobrança tenha valor variável, é o piso para o valor máximo que o pagador pode definir ao aprovar a autorização. Não é o menor valor que você pode cobrar. Veja [Como criar um Pix Automático com valor variável](./pix-automatic-dynamic-value.md).
+- **`debitParty`** (somente na jornada 1): A conta bancária do pagador, para onde a solicitação de autorização é enviada. Veja [Jornada 1: autorização no app do banco](#jornada-1).
 
 ## Exemplo
 
@@ -152,3 +153,76 @@ O `body` para uma assinatura mensal que começa apenas em 22/02/2026 seria semel
   "dayDue": 3
 }
 ```
+
+## Jornada 1: autorização no app do banco {#jornada-1}
+
+Na jornada 1 (`PUSH_NOTIFICATION`) não há QR Code. A Woovi envia a solicitação de autorização direto para o banco do pagador, e o pagador aprova ou recusa a recorrência no aplicativo do banco.
+
+A jornada 1 precisa ser habilitada para a sua conta: fale com o nosso suporte. Sem essa habilitação, `PUSH_NOTIFICATION` funciona como a jornada 2: a resposta traz o QR Code em `emv` e o campo `debitParty` é recusado.
+
+Além dos campos acima, envie dentro de `pixRecurringOptions`:
+
+- **`debitParty`**: a conta bancária do pagador.
+  - **`psp.id`**: o ISPB do banco do pagador, com 8 caracteres (ex.: `60746948` para o Bradesco).
+  - **`account.account`**: o número da conta com o dígito, sem pontos nem traços, com até 20 dígitos.
+  - **`account.branch`** (opcional): a agência sem o dígito, com até 4 dígitos. Não envie para uma conta sem agência.
+
+Regras da jornada 1:
+
+- O titular da conta é o `customer` da assinatura, que precisa ter `taxID` (CPF ou CNPJ).
+- A conta precisa ser de outro banco: Pix Automático entre duas contas Woovi não é suportado.
+- A primeira cobrança (`dayGenerateCharge`) precisa estar a pelo menos 3 dias de hoje.
+- O pagador tem até as 9h (horário de Brasília) do segundo dia antes da primeira cobrança para responder, limitado a 30 dias da criação. Sem resposta até lá, a recorrência expira (`EXPIRED`).
+- Não há link de pagamento (`paymentLinkUrl`) nem e-mail com QR Code para o pagador.
+
+A API responde `400` quando `debitParty` falta (com a jornada 1 habilitada), quando é enviado em outra jornada ou sem a jornada 1 habilitada, quando algum campo está fora do formato, quando a conta é da Woovi e quando a primeira cobrança está a menos de 3 dias.
+
+O `body` de uma assinatura mensal na jornada 1 seria semelhante a este:
+
+```json
+{
+  "name": "Pix Automático",
+  "value": 100,
+  "customer": {
+    "name": "Dan",
+    "taxID": "31324227036",
+    "email": "email0@example.com",
+    "phone": "5511999999999",
+    "address": {
+        "zipcode": "04556300",
+        "street": "rua de são paulo",
+        "number": "3432",
+        "neighborhood": "BROOKLIN PAULISTA",
+        "city": "SAO PAULO",
+        "state": "SP",
+        "complement": "CONJ 26"
+    }
+  },
+  "correlationID": "UniqueID",
+  "comment": "Plano mensal",
+  "frequency": "MONTHLY",
+  "type": "PIX_RECURRING",
+  "pixRecurringOptions": {
+    "journey": "PUSH_NOTIFICATION",
+    "retryPolicy": "NON_PERMITED",
+    "debitParty": {
+      "psp": { "id": "60746948" },
+      "account": { "account": "1234567", "branch": "0001" }
+    }
+  },
+  "dayGenerateCharge": "2026-12-10T00:00:00.000Z",
+  "dayDue": 3
+}
+```
+
+A resposta traz a assinatura como nas outras jornadas, mas o objeto `pixRecurring` vem sem `emv`:
+
+```json
+"pixRecurring": {
+  "recurrencyId": "RN5481141720261103AbCdEfGhIjK",
+  "journey": "PUSH_NOTIFICATION",
+  "status": "CREATED"
+}
+```
+
+Quando o pagador aprova no app do banco, o `status` muda para `APPROVED` e você recebe o webhook `PIX_AUTOMATIC_APPROVED`. Se o pagador recusar, ou se o banco dele recusar a solicitação (por exemplo, uma conta que não existe), o `status` muda para `REJECTED` e você recebe o webhook `PIX_AUTOMATIC_REJECTED`. Veja [Webhooks do Pix Automático](./5-webhooks/pix-automatic-webhooks.md).
