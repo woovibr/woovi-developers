@@ -82,6 +82,42 @@ curl 'https://api.woovi.com/api/v1/charge' -X POST \
   </TabItem>
 </Tabs>
 
+## Parcelamento
+
+Envie o campo `cardInstallments` para o pagador dividir o pagamento no cartão. O valor é o máximo de parcelas: na página de pagamento, o pagador escolhe de 1x até esse número.
+
+```json
+{
+  "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a",
+  "value": 15000,
+  "type": "CREDIT_CARD",
+  "cardInstallments": 3,
+  "customer": {
+    "name": "Dan Silva",
+    "taxID": "31324227036",
+    "email": "dan@woovi.com"
+  }
+}
+```
+
+- Sem o `cardInstallments`, ou com `1`, a cobrança é paga à vista.
+- O parcelamento precisa estar habilitado na sua conta. Ele está disponível por solicitação via chat pela plataforma.
+- O `cardInstallments` não pode passar do máximo de parcelas da sua conta, que é 6 por padrão. Você vê o máximo em **Cartão de Crédito** → **Ajustes**, em **Suas taxas**, na linha **Parcelamento em até Nx**.
+- A cobrança precisa aceitar cartão: `type` `PIX_CREDIT` ou `CREDIT_CARD`, ou sem `type` com o [cartão por padrão](./card-api-charge-card-default.md) ativado.
+- A taxa da venda depende do número de parcelas que o pagador escolheu. Veja [Parcelamento no cartão](./card-installments.md).
+
+#### Erros
+
+| _status code_ | Quando acontece                                                                                                         |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `400`         | O parcelamento não está habilitado na sua conta.                                                                        |
+| `400`         | O `cardInstallments` passa do máximo de parcelas da sua conta.                                                          |
+| `400`         | A cobrança não aceita cartão.                                                                                           |
+| `400`         | O `cardInstallments` não é um número inteiro maior ou igual a 1.                                                        |
+| `502`         | A cobrança foi criada, mas o parcelamento não foi salvo (`errorCode: CARD_INSTALLMENTS_NOT_SAVED`). Ela é paga à vista. |
+
+Nos erros `400`, a cobrança não é criada.
+
 ## Como o pagador paga
 
 ### Pelo link de pagamento
@@ -131,7 +167,3 @@ Veja como acompanhar o cadastro em [Primeiros passos com cartão de crédito](./
 ## Confirmando o pagamento
 
 Quando o pagamento com cartão é aprovado, a cobrança fica com o status `COMPLETED`. Você pode consultar o status com o _endpoint_ `GET /api/v1/charge/{id}`.
-
-:::info Parcelamento
-Hoje, a cobrança criada pela API é paga à vista. O parcelamento é configurado na criação da cobrança pela plataforma. Saiba mais em [Parcelamento no cartão](./card-installments.md).
-:::
