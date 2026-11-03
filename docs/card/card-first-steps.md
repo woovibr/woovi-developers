@@ -38,7 +38,7 @@ Enquanto o status não está **Ativo**, a cobrança é criada normalmente, mas o
 :::
 
 :::info Parcelamento
-O parcelamento no cartão está disponível por solicitação via chat pela plataforma. Ele vale para as cobranças criadas na plataforma, e a cobrança criada pela API é paga à vista. Saiba mais em [Parcelamento no cartão](./card-installments.md).
+O parcelamento no cartão está disponível por solicitação via chat pela plataforma. Ele vale para as cobranças criadas na plataforma e pela API. Saiba mais em [Parcelamento no cartão](./card-installments.md).
 :::
 
 ## Ajustes do cartão
