@@ -1,7 +1,13 @@
 type OpenApiRecord = Record<string, unknown>;
 
 type StableSectionName =
-  'On Ramp' | 'Off Ramp' | 'KYB' | 'KYB USD' | 'Limits' | 'Wallets';
+  | 'On Ramp'
+  | 'Off Ramp'
+  | 'KYB'
+  | 'KYB USD'
+  | 'Limits'
+  | 'Wallets'
+  | 'ACAM 212';
 
 type StableSection = {
   name: StableSectionName;
@@ -49,6 +55,11 @@ const STABLE_SECTIONS: StableSection[] = [
     description:
       'Inspect deposit addresses and balances, and swap assets, optionally delivering them on-chain.',
   },
+  {
+    name: 'ACAM 212',
+    description:
+      'Qualify external wallets and answer the purpose of international operations, as the BCB ACAM 212 report requires.',
+  },
 ];
 
 const getSection = (name: StableSectionName): StableSection => {
@@ -61,6 +72,10 @@ const getSection = (name: StableSectionName): StableSection => {
 
 // First match wins, so more specific prefixes must come before broader ones.
 const SECTION_RULES: Array<{ prefix: string; section: StableSectionName }> = [
+  { prefix: '/qualification-options', section: 'ACAM 212' },
+  { prefix: '/beneficiary-wallets', section: 'ACAM 212' },
+  { prefix: '/deposit-sender-wallets', section: 'ACAM 212' },
+  { prefix: '/purpose-code-requests', section: 'ACAM 212' },
   { prefix: '/quote', section: 'On Ramp' },
   { prefix: '/deposit', section: 'On Ramp' },
   { prefix: '/payout', section: 'Off Ramp' },
@@ -172,7 +187,7 @@ const buildStableOpenApi = (document: unknown): OpenApiRecord => {
       ...(isRecord(document.info) ? document.info : {}),
       title: 'Woovi Stablecoin API',
       description:
-        'APIs for BRL on-ramp, Pix off-ramp, subaccount KYB (BRL and USD), monthly limits and stablecoin wallets.',
+        'APIs for BRL on-ramp, Pix off-ramp, subaccount KYB (BRL and USD), monthly limits, stablecoin wallets and ACAM 212 wallet qualification.',
     },
     tags: STABLE_SECTIONS,
     paths: Object.fromEntries(stablePaths),

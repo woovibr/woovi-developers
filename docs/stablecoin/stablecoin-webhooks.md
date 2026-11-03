@@ -274,3 +274,12 @@ Disparado quando o KYB é recusado. Os campos opcionais `reason` e `rejectionLab
   "rejectionLabels": ["INVALID_DOCUMENT"]
 }
 ```
+
+## Webhooks do ACAM 212
+
+| Evento | Quando ocorre |
+| --- | --- |
+| `STABLECOIN_DEPOSIT_SENDER_WALLET_QUALIFICATION_REQUIRED` | Chegou um depósito de uma carteira remetente que ainda precisa ser qualificada. O depósito não é bloqueado. |
+| `STABLECOIN_PURPOSE_CODE_REQUIRED` | A Avenia precisa da finalidade (`purposeCode`) de uma operação já creditada ou de um depósito retido. |
+
+Os dois trazem também `company` (sua empresa). Payloads e como responder a cada um em [ACAM 212: qualificação de carteiras e finalidade](./stablecoin-acam212.md#webhooks).
