@@ -15,10 +15,12 @@ Todas as rotas ficam sob `/api/v1/stablecoin/` e exigem autenticação com o seu
 
 | Escopo | Rotas |
 | --- | --- |
-| `STABLECOIN_DEPOSIT_CREATE` | `quote`, `deposit`, `deposit/approve` |
-| `STABLECOIN_SUBACCOUNT_CREATE` | `subaccount` (POST — solicitar KYB) |
-| `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar/detalhe), `wallets`, `subaccount/{id}/wallets`, `subaccount/{id}/balances` |
+| `STABLECOIN_DEPOSIT_CREATE` | `quote`, `deposit`, `deposit/approve`, `qualification-options` |
+| `STABLECOIN_SUBACCOUNT_CREATE` | `subaccount` (POST — solicitar KYB), `beneficiary-wallets` (POST/PATCH/DELETE, `enforcement`), `deposit-sender-wallets/{id}` (PATCH), `purpose-code-requests/{id}` (PATCH) |
+| `STABLECOIN_SUBACCOUNT_LIST` | `subaccount` (listar/detalhe), `wallets`, `subaccount/{id}/wallets`, `subaccount/{id}/balances`, `beneficiary-wallets`, `deposit-sender-wallets`, `purpose-code-requests` (GET) |
 | `STABLECOIN_PAYOUT_CREATE` | `payout/quote`, `payout` (criar/aprovar/consultar) |
+
+As rotas de qualificação de carteiras e finalidade exigidas pelo reporte ACAM 212 do Banco Central estão em [ACAM 212: qualificação de carteiras e finalidade](./stablecoin-acam212.md).
 
 > A URL base de produção é `https://api.woovi.com`. Caso o App não tenha o escopo necessário, a resposta é `401` com `Application is missing required scope: ...`.
 
