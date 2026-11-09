@@ -166,7 +166,7 @@ Se preferir consultar, o endpoint <ApiLink method="GET" path="/api/v1/transactio
 - `bank` — instituição financeira da conta.
 - `branch` e `account` — agência e conta confirmadas.
 
-> No fluxo por agência e conta, o `destination` **não** retorna o campo `pixKey` (esse campo só existe na validação [por chave Pix](./validate-bank-data.md)).
+> No fluxo por agência e conta, o `destination` **não** retorna o campo `pixKey` (esse campo só existe no fluxo de [validação de dados bancários](./validate-bank-data.md)).
 
 ## 3. Webhooks
 

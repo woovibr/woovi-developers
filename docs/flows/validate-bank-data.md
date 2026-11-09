@@ -1,13 +1,13 @@
 ---
 id: validate-bank-data
-title: Como validar Dados bancários Usando Chave Pix
+title: Como validar Dados bancários
 tags:
   - api
 ---
 
-Este documento irá ajudá-lo a validar os dados bancários de um beneficiário a partir de uma **chave Pix** (CPF, CNPJ, e-mail, telefone ou chave aleatória).
+Este documento irá ajudá-lo a validar os dados bancários de um beneficiário.
 
-A validação é feita enviando um pagamento de 1 centavo para a chave informada. O banco do recebedor resolve a chave e confirma a quem ela pertence — esses dados voltam na consulta do próprio pagamento, depois que ele é confirmado.
+A validação é feita enviando um pagamento de 1 centavo ao beneficiário. O banco do recebedor confirma a quem pertence a conta de destino — esses dados voltam na consulta do próprio pagamento, depois que ele é confirmado.
 
 :::info Pré-requisitos
 
@@ -271,7 +271,7 @@ Se não souber como configurar o webhook, acesse: [Criando um webhook para inter
 
 Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra implementar a integração no seu app:
 
-> Implemente uma função `validateBankDataByPixKey({ destinationAlias, destinationAliasType })` que valida os dados bancários vinculados a uma chave Pix via Woovi, enviando um pagamento de 1 centavo e devolvendo os dados do titular resolvidos pelo banco pra essa chave.
+> Implemente uma função `validateBankData({ destinationAlias, destinationAliasType })` que valida os dados bancários de um beneficiário via Woovi, enviando um pagamento de 1 centavo e devolvendo os dados do titular resolvidos pelo banco.
 >
 > **Passo 1 — criar e aprovar o pagamento**:
 > `POST https://api.woovi.com/api/v1/payment`
