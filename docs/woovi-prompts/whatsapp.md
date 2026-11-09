@@ -1,6 +1,6 @@
 ---
 id: whatsapp
-title: "Prompt — Cobrança Pix via WhatsApp Woovi"
+title: "Prompt — Cobrança pelo WhatsApp com a Woovi"
 sidebar_label: "WhatsApp"
 sidebar_position: 20
 format: md
