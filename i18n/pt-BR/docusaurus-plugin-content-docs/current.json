@@ -203,13 +203,13 @@
     "message": "Pix Crediário visão geral",
     "description": "The generated-index page title for category Pix Crediário in sidebar docs"
   },
-  "sidebar.docs.category.Maquininha Pix": {
-    "message": "Maquininha Pix",
-    "description": "The label for category Maquininha Pix in sidebar docs"
+  "sidebar.docs.category.Maquininha Woovi": {
+    "message": "Maquininha Woovi",
+    "description": "The label for category Maquininha Woovi in sidebar docs"
   },
-  "sidebar.docs.category.Maquininha Pix.link.generated-index.title": {
-    "message": "Maquininha Pix visão geral",
-    "description": "The generated-index page title for category Maquininha Pix in sidebar docs"
+  "sidebar.docs.category.Maquininha Woovi.link.generated-index.title": {
+    "message": "Maquininha Woovi: visão geral",
+    "description": "The generated-index page title for category Maquininha Woovi in sidebar docs"
   },
   "sidebar.docs.category.Plugin": {
     "message": "Plugin",

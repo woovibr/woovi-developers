@@ -49,6 +49,33 @@ const resolveAcrossLocales = ({ sourceFilePath, url }) => {
   return `/docs/${route}${anchor ? `#${anchor}` : ''}`;
 };
 
+// docs/pix-machine became docs/maquininha-woovi (product renamed to Maquininha Woovi)
+const maquininhaWooviRedirects = [
+  ['category/maquininha-pix', 'category/maquininha-woovi'],
+  ['category/maquininha-pix-tutoriais', 'category/maquininha-woovi-tutoriais'],
+  ...[
+    'do-you-have-to-pay-tuition-to-use',
+    'does-not-cell-phone-work',
+    'how-to-configure-cashback-for-my-clients-on-business-charges',
+    'how-to-print-a-charge',
+    'is-it-necessary-to-install-any-driver-to-print-a-charge',
+    'what-do-i-need-to-do-to-configure-my-machine-and-start-printing-the-charges',
+    'what-is-the-difference-between-the-non-tax-and-tax-thermal-printer',
+    'what-is-the-fee-charged-by-woovi',
+    'where-do-you-click-to-print-a-charge',
+    'which-browsers-are-supported',
+    'which-machine-printer-should-use-to-print-the-charges',
+    'how-to-install-pix-machine',
+    'setup-pix-machine',
+    'pix-machine-faq',
+    'pix-machine-barbershop',
+    'pix-machine-pizzerias',
+    'pix-machine-restaurants',
+    'how-to/pix-machine-how-to-print-charge',
+    'how-to/pix-machine-how-to-print-static-qr-code-receipt',
+  ].map((doc) => [`pix-machine/${doc}`, `maquininha-woovi/${doc.replaceAll('pix-machine', 'maquininha-woovi')}`]),
+].map(([from, to]) => ({ from: `/docs/${from}`, to: `/docs/${to}` }));
+
 const siteUrl = 'https://developers.woovi.com';
 
 // Thin or duplicate routes: tag listings, the search page and the alternate
@@ -372,6 +399,7 @@ module.exports = {
             from: '/docs/category/plugin-how-to',
             to: '/docs/plugin/how-to-render-plugin-without-modal',
           },
+          ...maquininhaWooviRedirects,
         ],
       },
     ],

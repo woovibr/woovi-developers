@@ -4,11 +4,7 @@ sidebar_position: 9
 title: Como configuro cashback para meus clientes nas cobranças impressas?
 tags:
   - pix
-  - pix-machine
-  - pdv
-  - maquininha
-  - maquininha-pix
-  - maquininha pix
+  - maquininha-woovi
   - impressora
   - impressora termica
   - imprimir

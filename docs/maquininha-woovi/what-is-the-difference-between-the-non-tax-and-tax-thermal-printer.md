@@ -4,11 +4,7 @@ sidebar_position: 2
 title: Qual a diferença entre a impressora térmica não fiscal e fiscal?
 tags:
   - pix
-  - pix-machine
-  - pdv
-  - maquininha
-  - maquininha-pix
-  - maquininha pix
+  - maquininha-woovi
   - impressora
   - impressora termica
   - imprimir
@@ -19,4 +15,4 @@ fechamentos de caixa, relatórios mensais de vendas e cancelamentos. Já a impre
 impressora de cupom, geralmente é utilizada para imprimir comprovantes de venda e senhas. Logo, a principal
 diferença entre impressora não fiscal e impressora fiscal é que a primeira não possui memória fiscal e o lacre
 de segurança, cujo uso deve ser fiscalizado. Além disso, não existem pré-requisitos para a compra ou utilização
-das impressoras não fiscais, diferentes da impressora fiscal.
+das impressoras não fiscais, diferentemente da impressora fiscal.
