@@ -7,6 +7,18 @@ tags:
   - api
 ---
 
+:::warning Uso exclusivo para iniciar um pagamento
+Este endpoint serve apenas para identificar o destinatário de um Pix antes de o pagador confirmar o pagamento, conforme o art. 75 do Regulamento do Pix. Toda consulta deve ser seguida da criação do pagamento usando o `pixKeyEndToEndId` retornado.
+
+Não use este endpoint para:
+
+- consultar ou enriquecer dados cadastrais de pessoas ou empresas;
+- validar contas ou identidade em cadastro, onboarding, análise de crédito ou KYC;
+- verificar chaves ou montar bases de dados sem a intenção de realizar um pagamento.
+
+Consultas sem pagamento posterior são monitoradas e podem levar à suspensão e ao encerramento da conta.
+:::
+
 Este documento irá ajudá-lo a validar chave pix.
 
 Uma chave pix é como se fosse um dominio DNS que aponta para uma conta no banco central, você paga para esta conta, e não diretamente para a chave
@@ -88,10 +100,6 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
 
 Na rota `GET` os erros voltam com `error` + `errorCode`. Na rota `POST` apenas `error` é retornado.
 
-## Cobrança
-
-Cada consulta bem-sucedida pode gerar uma tarifa, que vem das configurações de fee da sua conta. A cobrança é **idempotente por dia, conta e chave**: consultar a mesma chave Pix mais de uma vez na mesma conta no mesmo dia gera só uma cobrança. Erros (chave não encontrada, rate limit, etc.) não geram cobrança.
-
 ## Prompt para IA
 
 Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra implementar a integração no seu app:
@@ -124,5 +132,4 @@ Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra
 > - `psp` é só o código ISPB (8 dígitos) — pra mostrar nome do banco mantenha um mapeamento ISPB → nome do seu lado.
 > - `pixKey` sempre volta normalizado: telefone em E.164 (`+55...`), email em lowercase, CPF/CNPJ só dígitos.
 > - `owner.taxID` de CPF vem mascarado (ex `111.***.***-80`); de CNPJ vem inteiro.
-> - Cada consulta bem-sucedida pode ter custo, mas é idempotente por dia/conta/chave.
-> - Guarde o `pixKeyEndToEndId` retornado se for usar pra criar um pagamento depois.
+> - Use a consulta só para identificar o destinatário antes de o pagador confirmar um Pix (art. 75 do Regulamento do Pix). Toda consulta deve ser seguida da criação do pagamento com o `pixKeyEndToEndId` retornado; não use para validar contas, KYC ou enriquecer dados.
