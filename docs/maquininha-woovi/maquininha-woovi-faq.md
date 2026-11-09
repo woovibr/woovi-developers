@@ -7,7 +7,7 @@ tags:
 
 ## Qual impressora devo usar para imprimir as cobranças?
 
-Uma impressora térmica não fiscal, que pode ser a que você já tem. Se ainda não tiver, veja as [impressoras recomendadas](https://woovi.com/artigos/maquininhas/).
+Uma impressora térmica não fiscal, que pode ser a que você já tem. Se ainda não tiver, veja as [impressoras recomendadas](https://woovi.com/en/articles/maquininhas/).
 
 ## Qual a diferença entre a impressora térmica não fiscal e fiscal?
 

@@ -21,7 +21,7 @@ Não é necessário instalar driver. Conecte a impressora e imprima normalmente.
 
 Para conectar sua impressora à plataforma, instale o driver do seu modelo.
 
-Aqui estão os links dos drivers dos modelos que recomendamos:
+Aqui estão os links dos drivers dos modelos que recomendamos ([veja as impressoras recomendadas](https://woovi.com/en/articles/maquininhas/)):
 
 | Modelo | Drivers |
 | --- | --- |
