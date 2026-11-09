@@ -7,6 +7,18 @@ tags:
   - api
 ---
 
+:::warning Uso exclusivo para iniciar um pagamento
+Este endpoint serve apenas para identificar o destinatário de um Pix antes de o pagador confirmar o pagamento, conforme o art. 75 do Regulamento do Pix. Toda consulta deve ser seguida da criação do pagamento usando o `pixKeyEndToEndId` retornado.
+
+Não use este endpoint para:
+
+- consultar ou enriquecer dados cadastrais de pessoas ou empresas;
+- validar contas ou identidade em cadastro, onboarding, análise de crédito ou KYC;
+- verificar chaves ou montar bases de dados sem a intenção de realizar um pagamento.
+
+Consultas sem pagamento posterior são monitoradas e podem levar à suspensão e ao encerramento da conta.
+:::
+
 Este documento irá ajudá-lo a validar chave pix.
 
 Uma chave pix é como se fosse um dominio DNS que aponta para uma conta no banco central, você paga para esta conta, e não diretamente para a chave
@@ -88,19 +100,17 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
 
 Na rota `GET` os erros voltam com `error` + `errorCode`. Na rota `POST` apenas `error` é retornado.
 
-## Cobrança
-
-Cada consulta bem-sucedida pode gerar uma tarifa, que vem das configurações de fee da sua conta. A cobrança é **idempotente por dia, conta e chave**: consultar a mesma chave Pix mais de uma vez na mesma conta no mesmo dia gera só uma cobrança. Erros (chave não encontrada, rate limit, etc.) não geram cobrança.
-
 ## Prompt para IA
 
 Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra implementar a integração no seu app:
 
-> Implemente uma função `checkPixKey(pixKey)` que consulta uma chave Pix no DICT do Banco Central via Woovi e devolve nome do titular, banco e identificador necessário pra pagamento.
+> Implemente uma função `checkPixKeyBeforePayment(pixKey)` que verifica o destinatário de um Pix via Woovi, para exibir os dados ao pagador antes de ele confirmar o pagamento.
+>
+> **Regra de uso obrigatória — inclua no código e respeite na implementação:** este endpoint serve exclusivamente para identificar o destinatário de um Pix que será pago em seguida, conforme o art. 75 do Regulamento do Pix. Toda chamada deve ser seguida da criação do pagamento usando o `pixKeyEndToEndId` retornado. Não implemente nenhum uso para consulta ou enriquecimento de dados cadastrais, validação de conta ou identidade (cadastro, onboarding, crédito, KYC), verificação de chaves em lote ou montagem de bases de dados. Não chame o endpoint sem que haja um pagamento a ser feito. Consultas sem pagamento posterior são monitoradas e podem levar à suspensão e ao encerramento da conta.
 >
 > **Endpoint**: `POST https://api.woovi.com/api/v1/pix-keys/check`
 > **Header**: `Authorization: <APP_ID>` e `Content-Type: application/json`
-> **Body**: `{ "pixKey": "<chave>" }` (aceita CPF, CNPJ, email, telefone ou EVP/UUID; não aceita BRcode/copia e cola — use o endpoint de decode/emv pra isso)
+> **Body**: `{ "pixKey": "<chave>" }` (aceita CPF, CNPJ, e-mail, telefone ou EVP/UUID; não aceita BR Code/copia e cola — use o endpoint de decode/emv pra isso)
 >
 > **Resposta de sucesso (200)**:
 > ```json
@@ -118,11 +128,18 @@ Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra
 > }
 > ```
 >
-> **Erros a tratar**: 404 `PIX_KEY_INFO_NOT_FOUND` (chave não encontrada), 400 (chave inválida ou chave de risco), 429 (rate limit do Bacen), 403 `PIX_KEY_CHECK_NOT_ALLOWED` (feature não liberada).
+> **Fluxo esperado**:
+> 1. O pagador informa a chave Pix.
+> 2. A função chama o endpoint e exibe ao pagador nome, documento mascarado e instituição, para conferência.
+> 3. O pagador confirma.
+> 4. O app cria o pagamento enviando o `pixKeyEndToEndId` (ver [Criar Pagamento](https://developers.woovi.com/docs/payment/payment-how-to-use-api-to-create)).
+>
+> Se o pagador desistir, não repita a consulta automaticamente nem armazene os dados retornados além do necessário para concluir o pagamento.
+>
+> **Erros a tratar**: 400 (chave em formato inválido ou não elegível para pagamento), 404 `PIX_KEY_INFO_NOT_FOUND` (chave não encontrada), 429 (limite de consultas atingido — aguarde a reposição do token bucket), 403 `PIX_KEY_CHECK_NOT_ALLOWED` (funcionalidade não liberada para a conta).
 >
 > **Detalhes importantes**:
-> - `psp` é só o código ISPB (8 dígitos) — pra mostrar nome do banco mantenha um mapeamento ISPB → nome do seu lado.
-> - `pixKey` sempre volta normalizado: telefone em E.164 (`+55...`), email em lowercase, CPF/CNPJ só dígitos.
-> - `owner.taxID` de CPF vem mascarado (ex `111.***.***-80`); de CNPJ vem inteiro.
-> - Cada consulta bem-sucedida pode ter custo, mas é idempotente por dia/conta/chave.
-> - Guarde o `pixKeyEndToEndId` retornado se for usar pra criar um pagamento depois.
+> - `psp` é só o código ISPB (8 dígitos) — pra mostrar o nome do banco, mantenha um mapeamento ISPB → instituição do seu lado.
+> - `pixKey` sempre volta normalizada: telefone em E.164 (`+55...`), e-mail em lowercase, CPF/CNPJ só dígitos.
+> - `owner.taxID` de CPF vem mascarado (ex.: `111.***.***-80`); de CNPJ vem inteiro.
+> - Cada `pixKeyEndToEndId` vale para um pagamento: gere uma nova consulta só quando houver um novo pagamento.
