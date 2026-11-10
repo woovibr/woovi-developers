@@ -1,6 +1,6 @@
 ---
 id: stablecoin-acam212
-sidebar_position: 8
+sidebar_position: 9
 title: 'ACAM 212: qualificação de carteiras e finalidade'
 sidebar_label: ACAM 212
 description: 'Como cumprir o reporte ACAM 212 do Banco Central na API de Stablecoin da Woovi: qualificação de carteiras externas, finalidade (purposeCode) das operações internacionais e pendências.'
@@ -9,6 +9,10 @@ tags:
   - api
   - compliance
 ---
+
+:::tip Comece por aqui
+**[ACAM 212: como ficar em conformidade](./stablecoin-acam212-compliance.md)**: o que a regulação exige, o que é reportado e o que a sua integração precisa garantir. Esta página é o guia técnico da API.
+:::
 
 A partir de **1º de novembro de 2026**, as operações com ativos virtuais entram no reporte **ACAM 212** do Banco Central do Brasil. A Avenia, PSAV parceira que liquida as operações de stablecoin da Woovi, passa a enviar esse reporte e precisa de dois dados que a API não pedia antes:
 
@@ -29,39 +33,6 @@ A Woovi repassa à Avenia o que você manda. Os dados precisam descrever a carte
 | **15/11/2026** | Carteiras cadastradas antes de novembro precisam estar qualificadas. Depósitos recebidos sem finalidade passam a ficar **retidos** até você informá-la. |
 
 Carteiras cadastradas antes de novembro continuam funcionando, mas ficam com a qualificação pendente (`qualificationStatus: PENDING`) até receberem os dados. Operações já creditadas sem finalidade viram pendências que você regulariza depois (veja [Pendências de finalidade](#pendências-de-finalidade)).
-
-## Como ficar em conformidade
-
-### Base legal
-
-- **Lei 14.478/2022**, o marco legal dos ativos virtuais: define os prestadores de serviços de ativos virtuais (PSAV) e põe o setor sob as regras de prevenção à lavagem de dinheiro.
-- **Resoluções BCB 519, 520 e 521/2025**: tratam da autorização e do funcionamento dos PSAV e de quando uma operação com ativo virtual entra no mercado de câmbio. Pagamentos e transferências internacionais com ativos virtuais, e envios para carteiras autocustodiadas ou recebimentos delas, passam a ser reportados ao Banco Central.
-- **Reporte ACAM 212**: o arquivo em que a Avenia, como PSAV, informa essas operações ao Banco Central. Cada operação precisa dizer **quem está do outro lado** (a qualificação da carteira) e, quando é internacional, **por quê** (a finalidade).
-
-A Woovi e a Avenia mandam o reporte, mas os dados vêm da sua plataforma, que conhece o cliente final. Por isso a qualidade da informação é responsabilidade sua.
-
-### O que a sua integração precisa garantir
-
-1. **Nenhuma carteira externa sem qualificação.** Qualifique cada carteira de destino (na requisição ou salvando a carteira) e cada carteira remetente. Os valores padrão da Avenia mantêm a operação funcionando, mas **não** cumprem a exigência.
-2. **Informação real, do seu cadastro.** O `beneficiaryName` é o titular verdadeiro dos recursos, conferido no seu processo de conheça seu cliente. Não use o nome da plataforma, um texto fixo ou o nome do seu cliente quando o dono da carteira for outra pessoa.
-3. **Custódia declarada corretamente.** Use `isSelfCustody: true` só quando o próprio beneficiário guarda as chaves. Carteira de corretora é sempre `isSelfCustody: false`, com o nome da corretora em `custodianName`.
-4. **País do beneficiário, e não da corretora.** `beneficiaryCountry` é onde o beneficiário reside ou tem sede. Uma carteira na Binance de um cliente brasileiro é `BR`.
-5. **Finalidade em toda operação internacional.** Beneficiário fora do Brasil, ou uma ponta em moeda estrangeira (USD, EUR...), exige `purposeCode`. Escolha o código pela natureza **real** da operação e pela faixa de valor (até ou acima de USD 50 mil). Não use um único código para tudo.
-6. **Pendências respondidas.** Consulte as pendências com frequência e responda cada uma. Comece pelas `DEPOSIT_HOLD`, que retêm o dinheiro do cliente.
-7. **Registro do que foi declarado.** Guarde, junto com a operação, de onde veio cada informação (o cadastro do cliente ou o que ele declarou). Isso vale como evidência numa fiscalização ou num pedido de informação.
-
-### Situações comuns
-
-| Situação | Qualificação |
-| --- | --- |
-| Cliente compra stablecoin e envia para a própria MetaMask, morando no Brasil | `isSelfCustody: true`, `beneficiaryName` = nome do cliente |
-| Cliente envia para a própria conta numa corretora, morando no Brasil | `isSelfCustody: false`, `custodianName` = corretora, `beneficiaryCountry: "BR"` |
-| Empresa paga um fornecedor no exterior em stablecoin | `isSelfCustody` conforme a carteira do fornecedor, `beneficiaryName` = fornecedor, país do fornecedor, `purposeCode` da natureza do pagamento (ex.: serviço, mercadoria) |
-| Cliente envia para carteira própria no exterior (recursos próprios) | `beneficiaryName` = nome do cliente, país onde está a carteira do titular, `purposeCode` de transferência entre contas do mesmo titular, consultado em `/qualification-options` |
-
-:::caution
-Esta página explica o que a API pede para atender ao reporte. Ela não substitui a análise do seu jurídico e do seu compliance sobre as obrigações da sua empresa.
-:::
 
 ## O que muda em cada operação
 
