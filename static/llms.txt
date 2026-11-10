@@ -113,7 +113,7 @@ Woovi has an official MCP (Model Context Protocol) server that connects a Woovi 
 ## Pix Keys & DICT
 - [Create a new Pix key](https://developers.woovi.com/docs/pix-keys/how-to-create-new-pix-key)
 - [Pix key campaign](https://developers.woovi.com/docs/apis/api-pix-key-campaign)
-- [Validate bank data](https://developers.woovi.com/docs/flows/validate-bank-data) · [manual](https://developers.woovi.com/docs/flows/validate-bank-data-manual)
+- [Validate bank data](https://developers.woovi.com/docs/flows/validate-bank-data-manual)
 
 ## Pix Automático (recurring)
 - [What is it](https://developers.woovi.com/docs/pix-automatic/pix-automatic-what-is-it) · [Step by step](https://developers.woovi.com/docs/pix-automatic/pix-automatic-step-by-step) · [How to create](https://developers.woovi.com/docs/pix-automatic/pix-automatic-how-to-create)

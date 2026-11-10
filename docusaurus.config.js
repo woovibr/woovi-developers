@@ -236,6 +236,10 @@ module.exports = {
       {
         redirects: [
           {
+            from: '/docs/flows/validate-bank-data',
+            to: '/docs/payment/check-account-data',
+          },
+          {
             from: '/docs/test/adding-funds-in-test-account',
             to: '/docs/test-environment/test-account/adding-funds-in-test-account',
           },

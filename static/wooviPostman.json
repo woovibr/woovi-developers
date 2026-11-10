@@ -31445,7 +31445,7 @@
                       "request": {
                         "name": "Check data from a Pix key",
                         "description": {
-                          "content": "Get data from a Pix key if it exists.\n\n**This endpoint is not enabled by default.** It queries the DICT for the\nholder of a Pix key that is not yours, so it has to be requested from\nsupport and goes through an internal review before being turned on. Calls\nare billed per query.\n\nIf what you need is to confirm that an account belongs to who you expect,\nuse bank data validation instead — it is available to every account with\nno approval:\n\n- [Validating bank data with a Pix key](https://developers.woovi.com/docs/flows/validate-bank-data)\n- [Validating bank data with branch and account number](https://developers.woovi.com/docs/flows/validate-bank-data-manual)\n",
+                          "content": "Get data from a Pix key if it exists.\n\n**This endpoint is not enabled by default.** It queries the DICT for the\nholder of a Pix key that is not yours, so it has to be requested from\nsupport and goes through an internal review before being turned on. Calls\nare billed per query.\n\nIf what you need is to confirm that an account belongs to who you expect,\nuse [bank data validation](https://developers.woovi.com/docs/payment/check-account-data) instead.\n",
                           "type": "text/plain"
                         },
                         "url": {
@@ -31927,7 +31927,7 @@
                   "request": {
                     "name": "Check data from a Pix key",
                     "description": {
-                      "content": "Get data from a Pix key if it exists.\n\n**This endpoint is not enabled by default.** It queries the DICT for the\nholder of a Pix key that is not yours, so it has to be requested from\nsupport and goes through an internal review before being turned on. Calls\nare billed per query.\n\nIf what you need is to confirm that an account belongs to who you expect,\nuse bank data validation instead — it is available to every account with\nno approval:\n\n- [Validating bank data with a Pix key](https://developers.woovi.com/docs/flows/validate-bank-data)\n- [Validating bank data with branch and account number](https://developers.woovi.com/docs/flows/validate-bank-data-manual)\n",
+                      "content": "Get data from a Pix key if it exists.\n\n**This endpoint is not enabled by default.** It queries the DICT for the\nholder of a Pix key that is not yours, so it has to be requested from\nsupport and goes through an internal review before being turned on. Calls\nare billed per query.\n\nIf what you need is to confirm that an account belongs to who you expect,\nuse [bank data validation](https://developers.woovi.com/docs/payment/check-account-data) instead.\n",
                       "type": "text/plain"
                     },
                     "url": {
