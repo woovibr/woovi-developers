@@ -14,23 +14,13 @@ A validação é feita por um **pagamento efetivo de R$ 0,01** para a agência e
 
 A transação prévia confirma dados bancários que você **já possui**, antes de pagar o mesmo beneficiário.
 
-Não use este fluxo para:
+Este fluxo não pode ser utilizado e é expressamente vedado para as seguintes finalidades:
 
 - consultar ou enriquecer dados cadastrais de pessoas ou empresas;
 - montar ou atualizar bases de dados;
 - validar identidade sem a intenção de realizar um pagamento.
 
-Transações prévias sem pagamento posterior ao mesmo beneficiário são monitoradas e podem levar à suspensão e ao encerramento da conta.
-
 :::
-
-:::tip Endpoint dedicado
-
-Para validar agência e conta recebendo apenas o resultado (válido, inválido ou inconclusivo), prefira o endpoint dedicado de [Validação de Dados Bancários](/docs/payment/check-account-data). Este documento descreve a mesma validação usando a API de Pagamentos.
-
-:::
-
-> **Pré-requisitos:** ter uma [API MASTER](/docs/apis/api-master) e o **Pix Out habilitado** na conta. Caso não tenha o Pix Out, solicite seguindo o artigo [Como ativar o Pix Out (pagamento externo)](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-o-pix-out-pagamento-externo).
 
 ## Sequência da integração
 
