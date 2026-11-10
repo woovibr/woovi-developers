@@ -24,12 +24,6 @@ Transações prévias sem pagamento posterior ao mesmo beneficiário são monito
 
 :::
 
-:::tip Endpoint dedicado
-
-Para validar agência e conta recebendo apenas o resultado (válido, inválido ou inconclusivo), prefira o endpoint dedicado de [Validação de Dados Bancários](/docs/payment/check-account-data). Este documento descreve a mesma validação usando a API de Pagamentos.
-
-:::
-
 > **Pré-requisitos:** ter uma [API MASTER](/docs/apis/api-master) e o **Pix Out habilitado** na conta. Caso não tenha o Pix Out, solicite seguindo o artigo [Como ativar o Pix Out (pagamento externo)](https://ajuda.woovi.com/hc/duvidas-frequentes/articles/como-ativar-o-pix-out-pagamento-externo).
 
 ## Sequência da integração
