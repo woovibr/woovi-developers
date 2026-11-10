@@ -3,7 +3,7 @@ id: stablecoin-acam212
 sidebar_position: 8
 title: 'ACAM 212: qualificação de carteiras e finalidade'
 sidebar_label: ACAM 212
-description: 'Como cumprir o reporte ACAM 212 do Banco Central na API de Stablecoin da Woovi: qualificação de carteiras externas, finalidade (purposeCode) das operações internacionais, pendências e webhooks.'
+description: 'Como cumprir o reporte ACAM 212 do Banco Central na API de Stablecoin da Woovi: qualificação de carteiras externas, finalidade (purposeCode) das operações internacionais e pendências.'
 tags:
   - stablecoin
   - api
@@ -47,7 +47,7 @@ A Woovi e a Avenia mandam o reporte, mas os dados vêm da sua plataforma, que co
 3. **Custódia declarada corretamente.** Use `isSelfCustody: true` só quando o próprio beneficiário guarda as chaves. Carteira de corretora é sempre `isSelfCustody: false`, com o nome da corretora em `custodianName`.
 4. **País do beneficiário, e não da corretora.** `beneficiaryCountry` é onde o beneficiário reside ou tem sede. Uma carteira na Binance de um cliente brasileiro é `BR`.
 5. **Finalidade em toda operação internacional.** Beneficiário fora do Brasil, ou uma ponta em moeda estrangeira (USD, EUR...), exige `purposeCode`. Escolha o código pela natureza **real** da operação e pela faixa de valor (até ou acima de USD 50 mil). Não use um único código para tudo.
-6. **Pendências respondidas.** Assine os dois webhooks desta página e responda cada pendência. Comece pelas `DEPOSIT_HOLD`, que retêm o dinheiro do cliente.
+6. **Pendências respondidas.** Consulte as pendências com frequência e responda cada uma. Comece pelas `DEPOSIT_HOLD`, que retêm o dinheiro do cliente.
 7. **Registro do que foi declarado.** Guarde, junto com a operação, de onde veio cada informação (o cadastro do cliente ou o que ele declarou). Isso vale como evidência numa fiscalização ou num pedido de informação.
 
 ### Situações comuns
@@ -333,13 +333,12 @@ Num envio para carteira externa, a Woovi usa, nesta ordem:
 
 Toda carteira externa que envia stablecoin para uma subconta sua é registrada no primeiro depósito. O registro é por família de rede: o mesmo endereço EVM conta como uma carteira só em todas as redes EVM (`EVM`), e TRON é outra família (`TRON`). Carteiras de outras contas Avenia com cadastro aprovado chegam como `INTERNAL`, já qualificadas.
 
-O depósito **nunca é bloqueado** por falta de qualificação da carteira remetente. Enquanto ela estiver `PENDING`, cada novo depósito dela gera o webhook `STABLECOIN_DEPOSIT_SENDER_WALLET_QUALIFICATION_REQUIRED`.
+O depósito **nunca é bloqueado** por falta de qualificação da carteira remetente. Ela fica `PENDING` até você qualificá-la. Consulte as pendentes periodicamente.
 
 | Ação | Rota |
 | --- | --- |
 | Listar as pendentes | [`GET /api/v1/stablecoin/deposit-sender-wallets?qualificationStatus=PENDING`](/stable#tag/acam-212/GET/api/v1/stablecoin/deposit-sender-wallets) |
 | Qualificar ou corrigir | [`PATCH /api/v1/stablecoin/deposit-sender-wallets/{id}`](/stable#tag/acam-212/PATCH/api/v1/stablecoin/deposit-sender-wallets/{id}) |
-| Aviso automático | webhook `STABLECOIN_DEPOSIT_SENDER_WALLET_QUALIFICATION_REQUIRED` |
 
 A listagem aceita `qualificationStatus`, `subAccountId`, `limit` (1 a 100, padrão 50) e `cursor`. Para ler a próxima página, mande o `cursor` da resposta anterior; ele vem `null` na última.
 
@@ -404,12 +403,12 @@ O Banco Central classifica os códigos separadamente para operações de **até 
 A resposta fica em cache por 6 horas. Se a Avenia não responder, a rota devolve `503` com `errorCode: STABLE_QUALIFICATION_OPTIONS_UNAVAILABLE`; tente de novo depois.
 
 :::warning Sujeito a ajuste
-A Avenia ainda vai publicar a seção "International Transfers (ACAM)" do guia de integração dela. Os contratos de **finalidade por operação** (onde o `purposeCode` vai em cada tipo de operação) e de **regularização** (pendências e webhooks abaixo) podem mudar quando essa seção sair. Esta página e a [referência da API](/stable) serão atualizadas.
+A Avenia ainda vai publicar a seção "International Transfers (ACAM)" do guia de integração dela. Os contratos de **finalidade por operação** (onde o `purposeCode` vai em cada tipo de operação) e de **regularização** (pendências abaixo) podem mudar quando essa seção sair. Esta página e a [referência da API](/stable) serão atualizadas.
 :::
 
 ## Pendências de finalidade
 
-Quando a Avenia precisa da finalidade de uma operação que você não informou, a Woovi abre uma pendência (`purposeCodeRequest`) e envia o webhook `STABLECOIN_PURPOSE_CODE_REQUIRED`. Há dois tipos:
+Quando a Avenia precisa da finalidade de uma operação que você não informou, a Woovi abre uma pendência (`purposeCodeRequest`). Consulte as pendências periodicamente. Há dois tipos:
 
 | `kind` | O que é | Efeito |
 | --- | --- | --- |
@@ -420,7 +419,6 @@ Quando a Avenia precisa da finalidade de uma operação que você não informou,
 | --- | --- |
 | Listar | [`GET /api/v1/stablecoin/purpose-code-requests?status=PENDING`](/stable#tag/acam-212/GET/api/v1/stablecoin/purpose-code-requests) |
 | Informar a finalidade | [`PATCH /api/v1/stablecoin/purpose-code-requests/{id}`](/stable#tag/acam-212/PATCH/api/v1/stablecoin/purpose-code-requests/{id}) |
-| Aviso automático | webhook `STABLECOIN_PURPOSE_CODE_REQUIRED` |
 
 A listagem aceita `status` (`PENDING`, `RESOLVED`, `FAILED`), `limit` (1 a 100, padrão 50) e `cursor`, igual à de carteiras remetentes, e devolve as pendências das mais novas para as mais antigas em `purposeCodeRequests`. Para ler a próxima página, mande o `cursor` da resposta anterior; ele vem `null` na última:
 
@@ -476,76 +474,6 @@ Resposta (`200`), a pendência resolvida:
 - Responder de novo uma pendência `RESOLVED` com o mesmo código devolve a pendência sem mudança. Com outro código, a resposta é `409`.
 - Uma pendência `FAILED` (a Avenia recusou o código ou não respondeu) pode ser respondida de novo. O motivo vem em `failureReason`.
 
-## Webhooks
-
-Cadastre os dois eventos como qualquer outro webhook (veja [Webhooks de Stablecoin](./stablecoin-webhooks.md)). Os dois trazem `company` (sua empresa), como os demais webhooks de stablecoin. Os payloads também estão no [Explorador de eventos](/webhook-events).
-
-### STABLECOIN_DEPOSIT_SENDER_WALLET_QUALIFICATION_REQUIRED
-
-Enviado a cada depósito recebido de uma carteira remetente ainda `PENDING`, até ela ser qualificada. O depósito em si segue normalmente.
-
-```json
-{
-  "event": "STABLECOIN_DEPOSIT_SENDER_WALLET_QUALIFICATION_REQUIRED",
-  "depositSenderWallet": {
-    "id": "6650abc1234def567890aaaa",
-    "subAccountId": "b183e08e-9e7c-4be8-8f02-02572f104184",
-    "walletAddress": "0x28C6c06298d514Db089934071355E5743bf21d60",
-    "chainFamily": "EVM",
-    "qualificationStatus": "PENDING",
-    "qualification": null,
-    "acamGroup": null,
-    "lastDepositAt": "2026-10-01T19:44:27.098Z",
-    "lastDeposit": {
-      "ticketId": "0b7c9e2a-5d41-4f8e-8a3b-9c1d2e3f4a5b",
-      "txHash": "0x8f3c...",
-      "chain": "POLYGON",
-      "asset": "USDT",
-      "amount": "10"
-    },
-    "createdAt": "2026-10-01T19:44:27.400Z",
-    "updatedAt": "2026-10-01T19:44:27.400Z"
-  },
-  "company": {
-    "id": "6736a844b2554cc88e9d5124",
-    "name": "ACME",
-    "taxID": "44720743000101"
-  }
-}
-```
-
-Use `depositSenderWallet.id` no `PATCH /deposit-sender-wallets/{id}`.
-
-### STABLECOIN_PURPOSE_CODE_REQUIRED
-
-Enviado uma vez por pendência de finalidade.
-
-```json
-{
-  "event": "STABLECOIN_PURPOSE_CODE_REQUIRED",
-  "purposeCodeRequest": {
-    "id": "6650abc1234def567890cccc",
-    "kind": "DEPOSIT_HOLD",
-    "status": "PENDING",
-    "subAccountId": "6965563f1ad794345eb3ee3a",
-    "aveniaTicketId": null,
-    "aveniaDepositHoldId": "b8a6e1c2-0f3d-4d1e-9a7b-2c3d4e5f6a7b",
-    "linkedEntity": null,
-    "purposeCode": null,
-    "failureReason": null,
-    "resolvedAt": null,
-    "createdAt": "2026-11-15T13:02:11.000Z"
-  },
-  "company": {
-    "id": "6736a844b2554cc88e9d5124",
-    "name": "ACME",
-    "taxID": "44720743000101"
-  }
-}
-```
-
-Use `purposeCodeRequest.id` no `PATCH /purpose-code-requests/{id}`.
-
 ## Escopos
 
 | Rota | Escopo do AppID |
@@ -585,9 +513,9 @@ Erros de validação respondem `400` com `error` e `path`. As demais falhas traz
 - [ ] Ler a lista de países e códigos de `GET /qualification-options` em vez de fixá-la no código.
 - [ ] Mandar `destinationWalletQualification` em todo `POST /deposit` e `POST /swap` com `destinationWalletAddress`, ou salvar e qualificar a carteira em `/beneficiary-wallets`.
 - [ ] Qualificar as carteiras salvas antes de novembro: `GET /beneficiary-wallets?qualificationStatus=PENDING` e um `PATCH` para cada uma.
-- [ ] Cadastrar o webhook `STABLECOIN_DEPOSIT_SENDER_WALLET_QUALIFICATION_REQUIRED` e qualificar as carteiras remetentes pendentes (`GET /deposit-sender-wallets?qualificationStatus=PENDING`).
+- [ ] Qualificar as carteiras remetentes pendentes (`GET /deposit-sender-wallets?qualificationStatus=PENDING`).
 - [ ] Mandar `purposeCode` na cotação e no depósito em dólar.
-- [ ] Cadastrar o webhook `STABLECOIN_PURPOSE_CODE_REQUIRED` e responder as pendências, começando pelas `DEPOSIT_HOLD`, que retêm dinheiro.
+- [ ] Consultar `GET /purpose-code-requests?status=PENDING` e responder as pendências, começando pelas `DEPOSIT_HOLD`, que retêm dinheiro.
 - [ ] Tratar os `400` com `path` mostrando ao seu usuário qual campo corrigir.
 - [ ] Conferir que o AppID tem os escopos `STABLECOIN_SUBACCOUNT_LIST` e `STABLECOIN_SUBACCOUNT_CREATE`.
 
