@@ -129,14 +129,9 @@ Esse evento é enviado quando uma disputa é cancelada
 
 ### Como interpretar o status da disputa
 
-Numa disputa `MED`, o mesmo status quer dizer coisas opostas conforme o lado. Use o campo `sentOrReceived` do payload (ele só vem em disputas `MED`; um `CHARGEBACK` não traz o campo e é sempre do lado recebido):
+Numa disputa `MED`, o campo `sentOrReceived` diz o lado: `RECEIVED` quando a disputa foi aberta contra um pagamento que a sua conta recebeu, `SENT` quando foi a sua conta que abriu a disputa. Ele só vem em disputas `MED`.
 
-| `status` | `sentOrReceived: RECEIVED` (aberta contra um pagamento que a sua conta recebeu) | `sentOrReceived: SENT` (aberta pela sua conta, que é a pagadora) |
-| --- | --- | --- |
-| `ACCEPTED` | a devolução foi aceita: o valor sai da sua conta | o outro banco concordou com a disputa |
-| `REJECTED` | a sua defesa venceu: o valor fica na sua conta | o outro banco discordou da disputa |
-
-Nas disputas `SENT`, o status não diz se o dinheiro voltou. O valor devolvido chega como uma transação de devolução, com o seu próprio webhook (`PIX_TRANSACTION_REFUND_RECEIVED_CONFIRMED`), e pode chegar mesmo depois de a disputa ficar `REJECTED`. Para liberar ou bloquear saldo, use o webhook de devolução, não o da disputa.
+Nas disputas `SENT`, `REJECTED` quer dizer que a instituição do outro lado discordou da disputa, e o status não diz se o dinheiro voltou. O valor devolvido chega como uma transação de devolução, com o seu próprio webhook ([`PIX_TRANSACTION_REFUND_RECEIVED_CONFIRMED`](#pix_transaction_refund_received_confirmed)), e pode chegar depois de a disputa ficar `REJECTED`. Para liberar ou bloquear saldo, use o webhook de devolução, não o da disputa.
 
 ## Eventos de boleto
 
