@@ -6,6 +6,6 @@
   "link": {
     "type": "generated-index",
     "title": "Boleto visão geral",
-    "description": "Como emitir e pagar boletos via API da Woovi, com juros e multa, uso em assinaturas, webhook de boleto pago e conciliação."
+    "description": "Como emitir e pagar boletos via API da Woovi, com juros e multa, desconto de pontualidade, uso em assinaturas, webhook de boleto pago e conciliação."
   }
 }

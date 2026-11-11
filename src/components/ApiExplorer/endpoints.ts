@@ -745,6 +745,52 @@ const endpoints: ApiEndpoint[] = [
         },
       },
       {
+        'name': 'Boleto with Discount (fixed-date modality)',
+        'value': {
+          'type': 'BOLETO',
+          'correlationID': '9134e286-6f71-427a-bf00-241681624590',
+          'value': 10000,
+          'comment': 'R$ 5,00 off until day 3, R$ 2,00 off until day 7',
+          'daysForDueDate': 10,
+          'daysAfterDueDate': 5,
+          'customer': {
+            'name': 'Dan',
+            'taxID': '31324227036',
+            'email': 'email0@example.com',
+            'phone': '5511999999999',
+            'address': {
+              'zipcode': '30421322',
+              'street': 'Street',
+              'number': '100',
+              'neighborhood': 'Neighborhood',
+              'city': 'Belo Horizonte',
+              'state': 'MG',
+              'complement': 'APTO',
+              'country': 'BR',
+            },
+          },
+          'interests': {
+            'value': 100,
+          },
+          'fines': {
+            'value': 200,
+          },
+          'discountSettings': {
+            'modality': 'FIXED_VALUE_UNTIL_SPECIFIED_DATE',
+            'discountFixedDate': [
+              {
+                'daysActive': 3,
+                'value': 500,
+              },
+              {
+                'daysActive': 7,
+                'value': 200,
+              },
+            ],
+          },
+        },
+      },
+      {
         'name': 'Charge with Credit Card',
         'value': {
           'type': 'PIX_CREDIT',
