@@ -52,6 +52,17 @@ Após efetuar a requisição, se tudo ocorreu bem, o _status code_ da requisiç�
 - **`endToEndId`**: o identificador da transferência, o mesmo nas transações de débito e de crédito. Use-o para conciliar a transferência sem uma consulta adicional.
 - **`status`**: a transferência é liquidada antes da resposta, então o status retornado é `CONFIRMED`.
 
+## Como consultar a transferência
+
+Guarde o `endToEndId` retornado e consulte a transferência por ele no _endpoint_ `/api/v1/transaction/{endToEndId}`:
+
+```sh
+curl 'https://api.woovi.com/api/v1/transaction/E2387691120230622153327165Abc1234' \
+    -H "Authorization: AUTHORIZATION"
+```
+
+A resposta traz a transferência com valor, horário e status.
+
 ### Exemplos em código
 
 <Tabs>
