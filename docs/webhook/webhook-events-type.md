@@ -127,6 +127,17 @@ Esse evento é enviado quando uma disputa é cancelada
 
 [Ver exemplo de payload →](/docs/webhook/examples/webhook-canceled-payload)
 
+### Como interpretar o status da disputa
+
+O mesmo status quer dizer coisas opostas conforme o lado da disputa. Use o campo `sentOrReceived` do payload:
+
+| `status` | `sentOrReceived: RECEIVED` (aberta contra um pagamento que a sua conta recebeu) | `sentOrReceived: SENT` (aberta pela sua conta, que é a pagadora) |
+| --- | --- | --- |
+| `ACCEPTED` | a devolução foi aceita: o valor sai da sua conta | o outro banco concordou com a disputa |
+| `REJECTED` | a sua defesa venceu: o valor fica na sua conta | o outro banco discordou da disputa |
+
+Nas disputas `SENT`, o status não diz se o dinheiro voltou. O valor devolvido chega como uma transação de devolução, com o seu próprio webhook (`PIX_TRANSACTION_REFUND_RECEIVED_CONFIRMED`), e pode chegar mesmo depois de a disputa ficar `REJECTED`. Para liberar ou bloquear saldo, use o webhook de devolução, não o da disputa.
+
 ## Eventos de boleto
 
 ### BOLETO_SETTLED
