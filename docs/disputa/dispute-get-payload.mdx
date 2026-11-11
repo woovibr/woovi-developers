@@ -17,6 +17,7 @@ O endpoint GET de `Disputa` retorna um objeto com os seguintes campos:
 
 - `type`: Tipo da disputa (`MED` ou `CHARGEBACK`)
 - `status`: Status da disputa
+- `sentOrReceived`: só em disputas `MED`. `RECEIVED` quando a disputa foi aberta contra um pagamento que a sua conta recebeu; `SENT` quando foi aberta pela sua conta, que é a pagadora. O significado do `status` depende do lado ([como interpretar](/docs/webhook/webhook-events-type#como-interpretar-o-status-da-disputa))
 - `endToEndId`: Identificador end-to-end da transação
 - `id`: ID único da disputa
 - `name`: Nome do cliente que abriu a disputa (apenas para `type: CHARGEBACK`)
