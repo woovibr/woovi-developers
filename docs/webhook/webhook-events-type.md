@@ -129,7 +129,7 @@ Esse evento é enviado quando uma disputa é cancelada
 
 ### Como interpretar o status da disputa
 
-Numa disputa `MED`, o campo `sentOrReceived` diz o lado: `RECEIVED` quando a disputa foi aberta contra um pagamento que a sua conta recebeu, `SENT` quando foi a sua conta que abriu a disputa. Ele só vem em disputas `MED`.
+Numa disputa `MED`, o campo `direction` diz o lado: `RECEIVED` quando a disputa foi aberta contra um pagamento que a sua conta recebeu, `SENT` quando foi a sua conta que abriu a disputa. Ele só vem em disputas `MED`.
 
 Nas disputas `SENT`, `REJECTED` quer dizer que a instituição do outro lado discordou da disputa, e o status não diz se o dinheiro voltou. O valor devolvido chega como uma transação de devolução, com o seu próprio webhook ([`PIX_TRANSACTION_REFUND_RECEIVED_CONFIRMED`](#pix_transaction_refund_received_confirmed)), e pode chegar depois de a disputa ficar `REJECTED`. Para liberar ou bloquear saldo, use o webhook de devolução, não o da disputa.
 
