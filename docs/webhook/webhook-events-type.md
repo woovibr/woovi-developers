@@ -129,7 +129,7 @@ Esse evento é enviado quando uma disputa é cancelada
 
 ### Como interpretar o status da disputa
 
-O mesmo status quer dizer coisas opostas conforme o lado da disputa. Use o campo `sentOrReceived` do payload:
+Numa disputa `MED`, o mesmo status quer dizer coisas opostas conforme o lado. Use o campo `sentOrReceived` do payload (ele só vem em disputas `MED`; um `CHARGEBACK` não traz o campo e é sempre do lado recebido):
 
 | `status` | `sentOrReceived: RECEIVED` (aberta contra um pagamento que a sua conta recebeu) | `sentOrReceived: SENT` (aberta pela sua conta, que é a pagadora) |
 | --- | --- | --- |
