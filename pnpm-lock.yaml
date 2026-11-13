@@ -318,6 +318,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.71.1
         version: 8.71.1(eslint@9.39.5(jiti@1.21.7)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+      '@woovi-private/security':
+        specifier: ^0.5.0
+        version: 0.5.0(eslint@9.39.5(jiti@1.21.7)(supports-color@8.1.1))
       docusaurus-plugin-llms:
         specifier: ^0.6.1
         version: 0.6.1(@docusaurus/core@3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5))(@swc/helpers@0.5.23)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(html-minifier-terser@7.2.0)(postcss@8.5.29)(svgo@3.3.5))(@mdx-js/react@3.1.1(@types/react@18.3.31)(react@18.3.1))(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@swc/core@1.16.13(@swc/helpers@0.5.23))(@swc/html@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(debug@4.4.3(supports-color@8.1.1))(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@8.1.1)(svgo@3.3.5)(typescript@6.0.3))
@@ -3711,6 +3714,17 @@ packages:
 
   '@webassemblyjs/wast-printer@1.14.1':
     resolution: {integrity: sha512-kPSSXE6De1XOR820C90RIo2ogvZG+c3KiHzqUoO/F34Y2shGzesfqv7o57xrxovZJH/MetF5UjroJ/R/3isoiw==}
+
+  '@woovi-private/security@0.5.0':
+    resolution: {integrity: sha512-DYD4hGv/6ZGPndFYTbLGhe/EcfCL0CH1w5ktqZ1mRLBdig1PelBf3HTG14+sygQq2pbBN1MSxrulOLR6njdXQg==, tarball: https://verdaccio.woovi.dev/@woovi-private/security/-/security-0.5.0.tgz}
+    peerDependencies:
+      eslint: '>=9'
+      graphql: '>=15 <17'
+    peerDependenciesMeta:
+      eslint:
+        optional: true
+      graphql:
+        optional: true
 
   '@xobotyi/scrollbar-width@1.9.5':
     resolution: {integrity: sha512-N8tkAACJx2ww8vFMneJmaAgmjAG1tnVBZJRLRcx061tmsLRZHSEZSLuGWnwPtunsSLvSqXQ2wfp7Mgqg1I+2dQ==}
@@ -15529,6 +15543,10 @@ snapshots:
     dependencies:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
+
+  '@woovi-private/security@0.5.0(eslint@9.39.5(jiti@1.21.7)(supports-color@8.1.1))':
+    optionalDependencies:
+      eslint: 9.39.5(jiti@1.21.7)(supports-color@8.1.1)
 
   '@xobotyi/scrollbar-width@1.9.5': {}
 
