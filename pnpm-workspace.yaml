@@ -12,3 +12,6 @@ allowBuilds:
   puppeteer: false
   unrs-resolver: false
   vue-demi: false
+
+minimumReleaseAgeExclude:
+  - '@woovi-private/security@0.5.0'
