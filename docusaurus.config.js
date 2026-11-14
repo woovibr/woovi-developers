@@ -313,6 +313,10 @@ module.exports = {
             to: '/docs/refund/charge-refund-get-all-api',
           },
           {
+            from: '/docs/category/assinaturasrecorrência',
+            to: '/docs/category/subscription-recurrence',
+          },
+          {
             from: '/docs/category/segurança',
             to: '/docs/category/security',
           },

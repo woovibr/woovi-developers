@@ -74,5 +74,17 @@
   "sidebar.docs.category.eFX.link.generated-index.description": {
     "message": "Woovi eFX: foreign eFX platforms receive payments from payers in Brazil via Pix, settled in reais into their non-resident BRL account (CNR).",
     "description": "The generated-index page description for category eFX in sidebar docs"
+  },
+  "sidebar.docs.category.Cobrança Recorrente": {
+    "message": "Subscriptions and Recurring Billing",
+    "description": "The label for category Cobrança Recorrente in sidebar docs"
+  },
+  "sidebar.docs.category.Cobrança Recorrente.link.generated-index.title": {
+    "message": "Subscriptions and Recurring Billing overview",
+    "description": "The generated-index page title for category Cobrança Recorrente in sidebar docs"
+  },
+  "sidebar.docs.category.Cobrança Recorrente.link.generated-index.description": {
+    "message": "Subscriptions and Recurring Billing at Woovi: how to create and query subscriptions through the API, with boleto, interest and fines, or payment booklet.",
+    "description": "The generated-index page description for category Cobrança Recorrente in sidebar docs"
   }
 }
