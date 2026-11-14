@@ -87,10 +87,10 @@ const products = [
     href: '/docs/category/cashback-fidelidade',
   },
   {
-    title: 'Maquininha Pix',
+    title: 'Maquininha Woovi',
     description:
       'Imprima suas cobranças em um clique com a maquininha que você já tem',
-    href: '/docs/category/maquininha-pix',
+    href: '/docs/category/maquininha-woovi',
   },
 ];
 
