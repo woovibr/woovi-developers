@@ -195,13 +195,13 @@
     "message": "Pagamento visão geral",
     "description": "The generated-index page title for category Pagamento in sidebar docs"
   },
-  "sidebar.docs.category.Pix Crediário": {
-    "message": "Pix Crediário",
-    "description": "The label for category Pix Crediário in sidebar docs"
+  "sidebar.docs.category.Crediário Woovi": {
+    "message": "Crediário Woovi",
+    "description": "The label for category Crediário Woovi in sidebar docs"
   },
-  "sidebar.docs.category.Pix Crediário.link.generated-index.title": {
-    "message": "Pix Crediário visão geral",
-    "description": "The generated-index page title for category Pix Crediário in sidebar docs"
+  "sidebar.docs.category.Crediário Woovi.link.generated-index.title": {
+    "message": "Crediário Woovi com parcelas no Pix: visão geral",
+    "description": "The generated-index page title for category Crediário Woovi in sidebar docs"
   },
   "sidebar.docs.category.Maquininha Pix": {
     "message": "Maquininha Pix",

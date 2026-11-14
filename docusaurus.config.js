@@ -296,6 +296,23 @@ module.exports = {
             from: '/docs/ecommerce/oracle-commerce-cloud',
             to: '/docs/ecommerce/oracle/occ-getting-started',
           },
+          // store-credit docs renamed to "Crediário Woovi" (Pix brand rules)
+          {
+            from: '/docs/pix-crediary/pix-crediary-intro',
+            to: '/docs/crediario-woovi/crediario-woovi-intro',
+          },
+          {
+            from: '/docs/pix-crediary/pix-crediary-how-work',
+            to: '/docs/crediario-woovi/crediario-woovi-how-work',
+          },
+          {
+            from: '/docs/pix-crediary/pix-crediary-faq',
+            to: '/docs/crediario-woovi/crediario-woovi-faq',
+          },
+          {
+            from: '/docs/category/pix-crediário',
+            to: '/docs/category/crediario-woovi',
+          },
           {
             from: '/docs/getting-started',
             to: '/docs/intro/getting-started',
