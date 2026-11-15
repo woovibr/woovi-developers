@@ -100,7 +100,7 @@ Use **Filter by Zapier** com `event = OPENPIX:CHARGE_COMPLETED` para tratar só 
 | Nome | Trigger | Ações |
 |------|---------|-------|
 | `pix-vendas-sheets-slack` | `CHARGE_COMPLETED` | Sheets append + Slack post |
-| `crm-pix-whatsapp` | Novo Deal | Charge Woovi + Z-API mensagem |
+| `crm-cobranca-whatsapp` | Novo Deal | Charge Woovi + Z-API mensagem |
 | `inadimplencia-cobranca` | Cron diário | Buscar pendentes → criar charges → e-mail |
 | `reembolso-cs` | Form de cancelamento | Refund Woovi + Slack #cs |
 | `payout-afiliados` | Cron mensal | Para cada afiliado: Transfer Woovi |
