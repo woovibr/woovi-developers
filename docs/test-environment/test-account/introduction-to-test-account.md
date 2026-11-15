@@ -22,7 +22,7 @@ Veja abaixo a lista de funcionalidades que podem ser testadas na conta de teste:
 | Cobrança com vencimento, multa e juros | Sim             |
 | Assinatura                             | Sim             |
 | Qr code estático                       | Sim             |
-| Pix crediário                          | Sim             |
+| Crediário Woovi                        | Sim             |
 | Reembolso                              | Sim             |
 | Reembolso parcial                      | Sim             |
 | Pagamento de chave pix                 | Sim             |

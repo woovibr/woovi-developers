@@ -1,0 +1,14 @@
+{
+  "label": "Buy Now Pay Later Woovi",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "slug": "/category/crediario-woovi",
+    "title": "Buy Now Pay Later Woovi overview"
+  },
+  "customProps": {
+    "description": "Buy Now Pay Later Woovi documentation"
+  }
+}

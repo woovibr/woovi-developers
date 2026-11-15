@@ -1,6 +1,6 @@
 # Woovi Developers
 
-> Woovi (formerly OpenPix) is a Payment Institution regulated by the Central Bank of Brazil and a direct participant of Pix. This documentation covers the REST API, webhooks, SDKs, plugins, the MCP server and product integrations used to create and manage Pix charges (cobranças), Pix Automático (recurring), Pix Crediário (installments), Boleto, refunds, disputes (MED), split payments, sub-accounts, BaaS/KYC and stablecoin conversions. API base URL: https://api.woovi.com (sandbox: https://api.woovi-sandbox.com). Auth is via an AppID sent in the `Authorization` header.
+> Woovi (formerly OpenPix) is a Payment Institution regulated by the Central Bank of Brazil and a direct participant of Pix. This documentation covers the REST API, webhooks, SDKs, plugins, the MCP server and product integrations used to create and manage Pix charges (cobranças), Pix Automático (recurring), Crediário Woovi (store credit with installments paid with Pix), Boleto, refunds, disputes (MED), split payments, sub-accounts, BaaS/KYC and stablecoin conversions. API base URL: https://api.woovi.com (sandbox: https://api.woovi-sandbox.com). Auth is via an AppID sent in the `Authorization` header.
 
 Last updated: 2026-10-01. Endpoints, limits and fees change; confirm on the linked page before quoting a value.
 
@@ -125,8 +125,8 @@ Woovi has an official MCP (Model Context Protocol) server that connects a Woovi 
 - [Create a subscription](https://developers.woovi.com/docs/subscription-recurrence/subscription-recurrence-create) · [via API](https://developers.woovi.com/docs/subscription-recurrence/subscription-recurrence-create-api) · [get](https://developers.woovi.com/docs/subscription-recurrence/subscription-recurrence-get-api)
 - [Subscription with boleto](https://developers.woovi.com/docs/subscription-recurrence/subscription-with-boleto-create-api) · [with interests & fines](https://developers.woovi.com/docs/subscription-recurrence/subscription-with-interests-and-fines-create-api)
 
-## Pix Crediário (installments)
-- [Intro](https://developers.woovi.com/docs/pix-crediary/pix-crediary-intro) · [How it works](https://developers.woovi.com/docs/pix-crediary/pix-crediary-how-work) · [FAQ](https://developers.woovi.com/docs/pix-crediary/pix-crediary-faq)
+## Crediário Woovi (store credit, installments paid with Pix)
+- [Intro](https://developers.woovi.com/docs/crediario-woovi/crediario-woovi-intro) · [How it works](https://developers.woovi.com/docs/crediario-woovi/crediario-woovi-how-work) · [FAQ](https://developers.woovi.com/docs/crediario-woovi/crediario-woovi-faq)
 - [Create charge with Woovi Parcelado](https://developers.woovi.com/docs/charge/how-to-create-charge-woovi-parcelado)
 
 ## Boleto
