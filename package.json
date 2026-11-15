@@ -53,6 +53,7 @@
     "@types/react-dom": "~18.3.7",
     "@typescript-eslint/eslint-plugin": "^8.71.1",
     "@typescript-eslint/parser": "^8.71.1",
+    "@woovi-private/security": "^0.5.0",
     "docusaurus-plugin-llms": "^0.6.1",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
