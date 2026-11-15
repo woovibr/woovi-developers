@@ -1,11 +1,12 @@
 {
-  "label": "Assinaturas/Recorrência",
+  "label": "Cobrança Recorrente",
   "collapsible": true,
   "collapsed": true,
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Assinaturas/Recorrência visão geral",
-    "description": "Assinaturas e recorrência na Woovi: como criar e consultar assinaturas via API, com boleto, juros e multa ou carnê."
+    "title": "Cobrança Recorrente - visão geral",
+    "description": "Cobrança Recorrente na Woovi: como criar e consultar assinaturas via API, com boleto, juros e multa ou carnê.",
+    "slug": "/category/subscription-recurrence"
   }
 }

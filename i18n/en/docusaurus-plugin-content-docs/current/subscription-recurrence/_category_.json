@@ -1,13 +1,13 @@
 {
-  "label": "Subscriptions/Recurrence",
+  "label": "Subscriptions and Recurring Billing",
   "collapsible": true,
   "collapsed": true,
   "className": "red",
   "link": {
     "type": "generated-index",
-    "title": "Subscriptions/Recurrence overview"
+    "title": "Subscriptions and Recurring Billing overview"
   },
   "customProps": {
-    "description": "Subscriptions/Recurrence documentation"
+    "description": "Subscriptions and Recurring Billing documentation"
   }
 }
