@@ -1,0 +1,11 @@
+{
+  "label": "Maquininha Woovi",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Maquininha Woovi: visão geral",
+    "description": "Maquininha Woovi: instalação e configuração, impressão de cobranças e recibos pagos via Pix, cashback, casos de uso e perguntas frequentes."
+  }
+}

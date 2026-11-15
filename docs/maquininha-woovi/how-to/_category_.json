@@ -1,0 +1,11 @@
+{
+  "label": "Maquininha Woovi: Tutoriais",
+  "collapsible": true,
+  "collapsed": true,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "Maquininha Woovi: Tutoriais",
+    "description": "Tutoriais da Maquininha Woovi para imprimir cobranças e recibos de pagamentos de QR Code estático."
+  }
+}

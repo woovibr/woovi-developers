@@ -187,8 +187,8 @@ Woovi has an official MCP (Model Context Protocol) server that connects a Woovi 
 - [Google Sheets](https://developers.woovi.com/docs/integrations/integration-sheets) · [AWS Lambda](https://developers.woovi.com/docs/integrations/integration-aws-lambda) · [Bubble.io](https://developers.woovi.com/docs/integrations/integrating-woovi-with-bubbleio) · [Typebot](https://developers.woovi.com/docs/integrations/integrating-woovi-with-typebot) · [Tracken](https://developers.woovi.com/docs/integrations/integrating-woovi-with-tracken) · [SocPanel](https://developers.woovi.com/docs/integrations/socpanel-woovi) · [Assine Online](https://developers.woovi.com/docs/integrations/assine-online-with-woovi)
 - [Meta Pixel](https://developers.woovi.com/docs/meta-pixel/integrating-with-woovi) · [Woovi Bridge](https://developers.woovi.com/docs/integrations/woovi-bridge)
 
-## Maquininha Pix (POS)
-- [Setup](https://developers.woovi.com/docs/pix-machine/setup-pix-machine) · [Install](https://developers.woovi.com/docs/pix-machine/how-to-install-pix-machine) · [Print a charge](https://developers.woovi.com/docs/pix-machine/how-to-print-a-charge) · [FAQ](https://developers.woovi.com/docs/pix-machine/pix-machine-faq)
+## Maquininha Woovi (Woovi POS)
+- [Overview](https://developers.woovi.com/docs/category/maquininha-woovi) · [Setup](https://developers.woovi.com/docs/maquininha-woovi/setup-maquininha-woovi) · [Install](https://developers.woovi.com/docs/maquininha-woovi/how-to-install-maquininha-woovi) · [Print a charge](https://developers.woovi.com/docs/maquininha-woovi/how-to-print-a-charge) · [FAQ](https://developers.woovi.com/docs/maquininha-woovi/maquininha-woovi-faq)
 
 ## Bank Integrations
 - [Overview](https://developers.woovi.com/docs/bank-integrations/integration-overview) · [Supported banks](https://developers.woovi.com/docs/bank-integrations/integration-supported-banks) (index of 400+ banks under `/docs/supported-banks/...`)
