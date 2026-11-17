@@ -58,7 +58,8 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
 ## Limitação de Taxa
 
 - O endpoint tem um limitador de taxa, devido às restrições do Bacen, por isso o Woovi tem um limite de taxa nesse endpoint.
-- Quando você recebe um 404 em uma chave de pix, após alguns 404, você receberá um 429 e precisará aguardar o reabastecimento do limitador de taxa.
+- Quando você recebe um 404 em uma chave de pix, após alguns 404, você receberá um 429 e precisará aguardar o reabastecimento do limitador de taxa. Veja [Token Bucket](./pix-key-token-bucket.md).
+- Nas contas do modo BaaS, 10 consultas seguidas sem um pagamento por chave Pix deixam a conta 24 horas sem consultar, com `429`. Veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md).
 
 ### O que é retornado ?
 
@@ -96,6 +97,7 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
 - `400` para chave de risco — `Pix key related to an account suspected of fraud`
 - `400` para DICT indisponível — `Error verifying pix key`
 - `429` — rate limit do Bacen estourado (veja a seção "Limitação de Taxa" acima)
+- `429` com `Muitas consultas de chave Pix sem pagamento. Tente novamente amanhã.` — a conta BaaS atingiu 10 consultas seguidas sem pagamento e está bloqueada por 24 horas (veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md))
 - `403 PIX_KEY_CHECK_NOT_ALLOWED` — sua conta não tem a feature liberada
 
 Na rota `GET` os erros voltam com `error` + `errorCode`. Na rota `POST` apenas `error` é retornado.
