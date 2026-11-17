@@ -97,7 +97,7 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
 - `400` para chave de risco — `Pix key related to an account suspected of fraud`
 - `400` para DICT indisponível — `Error verifying pix key`
 - `429` — rate limit do Bacen estourado (veja a seção "Limitação de Taxa" acima)
-- `429` com `Muitas consultas de chave Pix sem pagamento. Tente novamente amanhã.` — a conta BaaS atingiu 10 consultas sem pagamento e está bloqueada por 24 horas (veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md))
+- `429` com `Muitas consultas de chave Pix sem pagamento. Tente novamente amanhã.` — a conta BaaS atingiu 10 consultas sem pagamento e a consulta de chave fica bloqueada por 24 horas (veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md))
 - `403 PIX_KEY_CHECK_NOT_ALLOWED` — sua conta não tem a feature liberada
 
 Na rota `GET` os erros voltam com `error` + `errorCode`. Na rota `POST` apenas `error` é retornado.

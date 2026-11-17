@@ -27,7 +27,7 @@ O pagamento por chave Pix criado com o `pixKeyEndToEndId` devolvido pela consult
 Transferência para agência e conta e pagamento de boleto não contam como pagamento da consulta. Se a consulta é usada só para conferir o destinatário e o pagamento sai por agência e conta, as consultas se acumulam até o limite.
 :::
 
-## Quando a conta é bloqueada
+## Quando a consulta é bloqueada
 
 Durante as 24 horas, toda consulta de chave da conta responde `429`:
 
@@ -37,7 +37,7 @@ Durante as 24 horas, toda consulta de chave da conta responde `429`:
 }
 ```
 
-- O bloqueio vale só para as consultas de chave (`GET /api/v1/pix-keys/{pixKey}/check` e `POST /api/v1/pix-keys/check`). Pagamentos, saques e cobranças da conta seguem funcionando.
+- Só a consulta de chave fica bloqueada (`GET /api/v1/pix-keys/{pixKey}/check` e `POST /api/v1/pix-keys/check`). A conta não é bloqueada: pagamentos, saques e cobranças seguem funcionando.
 - O bloqueio termina sozinho depois de 24 horas. Não é preciso pedir a liberação.
 
 :::info Dois tipos de 429
