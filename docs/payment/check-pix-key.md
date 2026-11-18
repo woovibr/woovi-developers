@@ -19,13 +19,11 @@ Não use este endpoint para:
 Consultas sem pagamento posterior são monitoradas e podem levar à suspensão e ao encerramento da conta.
 :::
 
-Este documento irá ajudá-lo a validar chave pix.
+Este documento explica como identificar o destinatário de um Pix antes de confirmar o pagamento.
 
-Uma chave pix é como se fosse um dominio DNS que aponta para uma conta no banco central, você paga para esta conta, e não diretamente para a chave
+A chave Pix é um identificador (CPF/CNPJ, e-mail, celular ou chave aleatória) vinculado a uma conta transacional mantida em um participante do Pix. Esse vínculo fica registrado no DICT, o diretório de chaves operado pelo Banco Central. O Pix é pago para essa conta, e não para a chave.
 
-Logo é nescessario ter acesso ao numero da conta no banco central para realizar uma transação
-
-Esse endpoint tem a função de validar esse vinculo com o banco central
+A consulta busca no DICT o titular e a instituição dessa conta, para que o pagador confira o destinatário antes de confirmar o Pix.
 
 ![diagram sequencial checagem de chave pix](./__assets__/sequenceDiagrama_checagem_de_chave_pix.png)
 
@@ -57,9 +55,10 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
 
 ## Limitação de Taxa
 
-- O endpoint tem um limitador de taxa, devido às restrições do Bacen, por isso o Woovi tem um limite de taxa nesse endpoint.
-- Quando você recebe um 404 em uma chave de pix, após alguns 404, você receberá um 429 e precisará aguardar o reabastecimento do limitador de taxa. Veja [Token Bucket](./pix-key-token-bucket.md).
-- Nas contas do modo BaaS, 10 consultas sem o pagamento correspondente deixam a conta 24 horas sem consultar, com `429`. Veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md).
+- As consultas ao DICT têm um limite, que pesa as consultas a chaves inexistentes: após alguns `404`, você receberá um `429` e precisará aguardar a reposição do limite. Veja [Token Bucket](./pix-key-token-bucket.md).
+- Toda conta pode fazer no máximo 10 consultas sem o pagamento correspondente. Ao atingir esse limite:
+  - nas contas do modo BaaS, a consulta de chave fica bloqueada por 24 horas, com `429`. Veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md);
+  - nas demais contas, o acesso ao endpoint é retirado e as consultas passam a responder `403 PIX_KEY_CHECK_NOT_ALLOWED`.
 
 ### O que é retornado ?
 
@@ -96,9 +95,9 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
 - `404 PIX_KEY_INFO_NOT_FOUND` — chave válida mas não cadastrada no DICT
 - `400` para chave de risco — `Pix key related to an account suspected of fraud`
 - `400` para DICT indisponível — `Error verifying pix key`
-- `429` — rate limit do Bacen estourado (veja a seção "Limitação de Taxa" acima)
+- `429 TOO_MANY_REQUESTS` — limite de consultas ao DICT atingido (veja a seção "Limitação de Taxa" acima)
 - `429` com `Muitas consultas de chave Pix sem pagamento. Tente novamente amanhã.` — a conta BaaS atingiu 10 consultas sem pagamento e a consulta de chave fica bloqueada por 24 horas (veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md))
-- `403 PIX_KEY_CHECK_NOT_ALLOWED` — sua conta não tem a feature liberada
+- `403 PIX_KEY_CHECK_NOT_ALLOWED` — sua conta não tem a feature liberada, ou o acesso foi retirado depois de 10 consultas sem pagamento
 
 Na rota `GET` os erros voltam com `error` + `errorCode`. Na rota `POST` apenas `error` é retornado.
 
