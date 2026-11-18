@@ -16,16 +16,14 @@ Não use este endpoint para:
 - validar contas ou identidade em cadastro, onboarding, análise de crédito ou KYC;
 - verificar chaves ou montar bases de dados sem a intenção de realizar um pagamento.
 
-Consultas sem pagamento posterior são monitoradas e podem levar à suspensão e ao encerramento da conta.
+Consultas sem pagamento posterior são monitoradas e bloqueadas automaticamente em todas as contas (veja [Limite de consultas](#limite-de-consultas)). O uso indevido pode levar ao encerramento da conta.
 :::
 
-Este documento irá ajudá-lo a validar chave pix.
+Este documento explica como identificar o destinatário de um Pix antes de confirmar o pagamento.
 
-Uma chave pix é como se fosse um dominio DNS que aponta para uma conta no banco central, você paga para esta conta, e não diretamente para a chave
+A chave Pix funciona como um domínio DNS: aponta para uma conta transacional mantida em um participante do Pix. O vínculo fica registrado no DICT, operado pelo Banco Central.
 
-Logo é nescessario ter acesso ao numero da conta no banco central para realizar uma transação
-
-Esse endpoint tem a função de validar esse vinculo com o banco central
+Este endpoint consulta esse vínculo no DICT e devolve os dados do destinatário, para que o pagador confira antes de confirmar o pagamento.
 
 ![diagram sequencial checagem de chave pix](./__assets__/sequenceDiagrama_checagem_de_chave_pix.png)
 
@@ -55,11 +53,14 @@ Você pode acessar [aqui](/api#tag/pixkey-check-request-access/POST/api/v1/pix-k
 
 Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, com `+55` e o DDD (`+5511912345684`): um número só com dígitos que seja um CPF válido é consultado como CPF, mesmo que também seja um celular. Veja [Formato da chave Pix](./pix-key-format.md).
 
-## Limitação de Taxa
+## Limite de consultas
 
-- O endpoint tem um limitador de taxa, devido às restrições do Bacen, por isso o Woovi tem um limite de taxa nesse endpoint.
-- Quando você recebe um 404 em uma chave de pix, após alguns 404, você receberá um 429 e precisará aguardar o reabastecimento do limitador de taxa. Veja [Token Bucket](./pix-key-token-bucket.md).
-- Nas contas do modo BaaS, 10 consultas sem o pagamento correspondente deixam a conta 24 horas sem consultar, com `429`. Veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md).
+A Woovi controla quantas consultas ao DICT cada conta pode fazer. São dois controles:
+
+- **Consultas a chaves inexistentes.** Depois de alguns `404`, a consulta passa a responder `429` até o limitador ser reabastecido. Veja [Token Bucket](./pix-key-token-bucket.md).
+- **Consultas sem pagamento.** Vale para todas as contas: 10 consultas sem o pagamento correspondente disparam o bloqueio automático.
+  - Nas contas do modo BaaS, a consulta de chave fica bloqueada por 24 horas e responde `429`. Veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md).
+  - Nas demais contas, o acesso ao endpoint é retirado e a consulta passa a responder `403 PIX_KEY_CHECK_NOT_ALLOWED`. Para voltar a consultar, é preciso solicitar a liberação novamente.
 
 ### O que é retornado ?
 
@@ -69,9 +70,9 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
   - EMAIL → em lowercase
   - PHONE → formato internacional E.164 (`+5511999998888`)
   - RANDOM / EVP → UUID de 36 chars intacto
-- `owner.name` volta inteiro (não mascarado).
+- `owner.name` volta inteiro (não mascarado), como está registrado no DICT.
 - `owner.taxID`: para **CPF** vem parcialmente mascarado, preservando os 3 primeiros e os 2 últimos dígitos (ex: `111.***.***-80`); para **CNPJ** vem inteiro e formatado (ex: `00.000.000/0001-91`).
-- `owner.branch` e `owner.account` voltam totalmente mascarados (`****` / `********`).
+- `owner.branch` e `owner.account` voltam sempre totalmente mascarados, com valor fixo: `****` e `********************` (20 asteriscos). Os números reais da agência e da conta não são retornados.
 - `owner.psp` é o **código ISPB** (8 dígitos) do PSP da chave, não o nome do banco — se precisar exibir o nome, mantenha um mapeamento ISPB → instituição do seu lado.
 - A cada chamada o DICT é consultado de novo e um novo `pixKeyEndToEndId` é gerado. Esse identificador é o que você precisa guardar e enviar no endpoint de [Criar Pagamento](./payment-how-to-use-api-to-create.mdx).
 
@@ -96,9 +97,9 @@ Envie a chave no formato do seu tipo. Telefone sempre no formato internacional, 
 - `404 PIX_KEY_INFO_NOT_FOUND` — chave válida mas não cadastrada no DICT
 - `400` para chave de risco — `Pix key related to an account suspected of fraud`
 - `400` para DICT indisponível — `Error verifying pix key`
-- `429` — rate limit do Bacen estourado (veja a seção "Limitação de Taxa" acima)
+- `429` — limite de consultas ao DICT atingido (veja [Limite de consultas](#limite-de-consultas))
 - `429` com `Muitas consultas de chave Pix sem pagamento. Tente novamente amanhã.` — a conta BaaS atingiu 10 consultas sem pagamento e a consulta de chave fica bloqueada por 24 horas (veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md))
-- `403 PIX_KEY_CHECK_NOT_ALLOWED` — sua conta não tem a feature liberada
+- `403 PIX_KEY_CHECK_NOT_ALLOWED` — sua conta não tem a feature liberada, ou ela foi retirada depois de 10 consultas sem pagamento (contas fora do modo BaaS)
 
 Na rota `GET` os erros voltam com `error` + `errorCode`. Na rota `POST` apenas `error` é retornado.
 
@@ -108,7 +109,7 @@ Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra
 
 > Implemente uma função `checkPixKeyBeforePayment(pixKey)` que verifica o destinatário de um Pix via Woovi, para exibir os dados ao pagador antes de ele confirmar o pagamento.
 >
-> **Regra de uso obrigatória — inclua no código e respeite na implementação:** este endpoint serve exclusivamente para identificar o destinatário de um Pix que será pago em seguida, conforme o art. 75 do Regulamento do Pix. Toda chamada deve ser seguida da criação do pagamento usando o `pixKeyEndToEndId` retornado. Não implemente nenhum uso para consulta ou enriquecimento de dados cadastrais, validação de conta ou identidade (cadastro, onboarding, crédito, KYC), verificação de chaves em lote ou montagem de bases de dados. Não chame o endpoint sem que haja um pagamento a ser feito. Consultas sem pagamento posterior são monitoradas e podem levar à suspensão e ao encerramento da conta.
+> **Regra de uso obrigatória — inclua no código e respeite na implementação:** este endpoint serve exclusivamente para identificar o destinatário de um Pix que será pago em seguida, conforme o art. 75 do Regulamento do Pix. Toda chamada deve ser seguida da criação do pagamento usando o `pixKeyEndToEndId` retornado. Não implemente nenhum uso para consulta ou enriquecimento de dados cadastrais, validação de conta ou identidade (cadastro, onboarding, crédito, KYC), verificação de chaves em lote ou montagem de bases de dados. Não chame o endpoint sem que haja um pagamento a ser feito. Consultas sem pagamento posterior são monitoradas e bloqueadas automaticamente.
 >
 > **Endpoint**: `POST https://api.woovi.com/api/v1/pix-keys/check`
 > **Header**: `Authorization: <APP_ID>` e `Content-Type: application/json`
@@ -138,7 +139,7 @@ Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra
 >
 > Se o pagador desistir, não repita a consulta automaticamente nem armazene os dados retornados além do necessário para concluir o pagamento.
 >
-> **Erros a tratar**: 400 (chave em formato inválido ou não elegível para pagamento), 404 `PIX_KEY_INFO_NOT_FOUND` (chave não encontrada), 429 (limite de consultas atingido — aguarde a reposição do token bucket), 403 `PIX_KEY_CHECK_NOT_ALLOWED` (funcionalidade não liberada para a conta).
+> **Erros a tratar**: 400 (chave em formato inválido ou não elegível para pagamento), 404 `PIX_KEY_INFO_NOT_FOUND` (chave não encontrada), 429 (limite de consultas ao DICT atingido — aguarde a reposição do token bucket, ou 24 horas se a mensagem for de consultas sem pagamento), 403 `PIX_KEY_CHECK_NOT_ALLOWED` (funcionalidade não liberada para a conta ou retirada após consultas sem pagamento).
 >
 > **Detalhes importantes**:
 > - `psp` é só o código ISPB (8 dígitos) — pra mostrar o nome do banco, mantenha um mapeamento ISPB → instituição do seu lado.
