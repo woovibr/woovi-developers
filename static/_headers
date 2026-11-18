@@ -48,11 +48,18 @@
 /search-index-*.json
   Cache-Control: public, max-age=300
 
+# The Content-Security-Policy below is one line on purpose: _headers has no continuation. A new third-party script,
+# stylesheet, font or iframe has to be added here or the browser blocks it.
+# 'unsafe-inline' stays in script-src for Docusaurus' own inline scripts (theme,
+# analytics); connect-src/img-src are open to https: because the API consoles
+# call whatever server the reader picks and docs embed remote images.
 /*
   Cache-Control: public, max-age=0, must-revalidate
   Link: </llms.txt>; rel="describedby"; type="text/plain"
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://www.clarity.ms https://scripts.clarity.ms https://static.cloudflareinsights.com https://www.youtube.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.scalar.com; connect-src 'self' https:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.loom.com https://kyc.woovi.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
 
 /*.md
   Content-Type: text/markdown; charset=utf-8
