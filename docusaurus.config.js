@@ -519,7 +519,7 @@ module.exports = {
           href: 'https://openpix.com.br',
         },
       ],
-      copyright: 'Copyright © Woovi / OpenPix',
+      copyright: 'Copyright © Woovi',
     },
   },
   presets: [

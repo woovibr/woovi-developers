@@ -230,6 +230,6 @@ Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra
 > **UX recomendada**:
 > - Para o usuário, mostre o valor e o nome do recebedor logo que o decode retornar, mesmo antes da confirmação final.
 > - Se o BRcode for dinâmico, prefira os campos de `cobLocation.payload` ou `recLocation.payload` (vêm direto do PSP emissor, são autoritativos) sobre os campos dentro de `emv` (são só os do payload local).
-> - Se for disparar um pagamento via API em seguida, chame o endpoint de Pix Check com a chave extraída pra obter o `pixKeyEndToEndId` (exigido pra criar pagamento).
+> - Se for disparar um pagamento via API em seguida, chame a [Verificação de Chave Pix](./check-pix-key.md) com a chave extraída pra obter o `pixKeyEndToEndId` (exigido pra criar pagamento).
 >
 > Trate erros 400 (EMV inválido) e 500 mostrando mensagem amigável e oferecendo entrada manual da chave.
