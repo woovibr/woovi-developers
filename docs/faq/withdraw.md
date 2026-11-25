@@ -37,7 +37,7 @@ Você pode solicitar o saque manual a qualquer momento, nesse caso, se a solicit
 
 ### Saque automático
 
-![Saque automatico config exemplo](https://github.com/Open-Pix/openpix-developers/assets/19939822/570639e4-a5b3-41b2-9986-249a1d0f8104)
+![Saque automatico config exemplo](./__assets__/withdraw-automatic-config.png)
 
 O saque automático é grátis para valores iguais ou maiores do que R$ 500 e é realizado todo dia as 19h.
 

@@ -1,0 +1,144 @@
+---
+id: how-to-create-qrcode-static-using-api
+title: How to use the API to create a Static QRCode (cob)?
+tags:
+  - concept
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To create a static Pix QRCode, use the API _endpoint_ `/api/v1/pixQrCode`.
+
+You can find the documentation for this _endpoint_ [here](/api#tag/pixqrcode/POST/api/v1/qrcode-static).
+
+### Required fields
+
+The required fields to create a Static Pix QRCode are:
+
+- **`name`**: The identification name of this QRCode on the Woovi platform.
+- **`identifier`**: A unique identifier for the Static Pix QRCode.
+
+#### Identifier
+
+This identifier must have:
+
+- a maximum length of 25 characters
+- only numbers and letters
+- no special characters
+- no whitespace
+
+Below is an example of how to generate this identifier in JavaScript using uuid:
+
+```ts
+import { v4 as uuidv4 } from 'uuid';
+
+export const getDefaultIdentifier = () =>
+  uuidv4().toString().replace(/-/g, '').slice(0, 25);
+```
+
+### Optional fields
+
+- **`correlationID`**: your correlation ID related to the QRCode ID in your database. Used to track the data. This field is unique.
+- **`value`**: QRCode value in cents. When empty, the customer can enter the QRCode value at the time of the Pix payment.
+- **`comment`**: comments related to the QRCode, shown to the end customer at the time of the Pix payment.
+
+## Example
+
+Your request body will look like this example:
+
+- QRCode with name and identifier only:
+
+```json
+{
+  "name": "QRcode Teste",
+  "identificador": "c782e0ac833d4a899e739b60b"
+}
+```
+
+- QRCode with name, identifier and a value of R$ 10.00:
+
+```json
+{
+  "name": "QRcode Teste",
+  "identifier": "c782e0ac833d4a899e739b60b",
+  "value": 1000,
+}
+```
+
+After making the request, if everything went well, the request _status code_ will be `2xx` and the response `body` will contain the created QRCode.
+
+Here is an example response:
+
+```json
+{
+  "pixQrCode": {
+    "name": "QRCode Teste",
+    "identifier": "c782e0ac833d4a899e739b60b",
+    "correlationID": "91a67996-cd4c-4104-b943-4076ad6319fa",
+    "paymentLinkID": "1efcc519-3056-4a6c-94cd-d686969d8a61",
+    "createdAt": "2023-03-06T13:54:57.899Z",
+    "updatedAt": "2023-03-06T13:54:57.899Z",
+    "brCode": "00020126580014br.gov.bcb.pix013600ad360c-92c7-45ab-adb3-188307a6e4d05204000053039865802BR5910Woovi_Demo6009Sao_Paulo62290525c782e0ac833d4a899e739b60b6304533D",
+    "paymentLinkUrl": "https://woovi.com/pay/1efcc519-3056-4a6c-94cd-d686969d8a61",
+    "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/1efcc519-3056-4a6c-94cd-d686969d8a61.png"
+  }
+}
+```
+
+### Code examples
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request POST \
+  --url https://api.woovi.com/api/v1/qrcode-static \
+  --header 'Authorization: REPLACE_KEY_VALUE' \
+  --header 'content-type: application/json' \
+  --data '{"name":"string","correlationID":"string","value":0,"comment":"string","identifier":"string"}'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="NodeJs + Fetch" default>
+
+```js
+const http = require("https");
+
+const options = {
+  "method": "POST",
+  "hostname": "api.woovi.com",
+  "port": null,
+  "path": "/api/v1/qrcode-static",
+  "headers": {
+    "content-type": "application/json",
+    "Authorization": "REPLACE_KEY_VALUE"
+  }
+};
+
+const req = http.request(options, function (res) {
+  const chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function () {
+    const body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.write(JSON.stringify({
+  name: 'string',
+  correlationID: 'string',
+  value: 0,
+  comment: 'string',
+  identifier: 'string'
+}));
+req.end();
+```
+
+  </TabItem>
+</Tabs>

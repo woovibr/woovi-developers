@@ -1,141 +1,118 @@
 ---
 id: magento2-plugin
-title: Integrando a Woovi com Magento2
-sidebar_label: Magento2 Woovi Plugin
+title: Integrating Woovi with Magento2
+sidebar_label: Magento2 Woovi Pix Plugin
 sidebar_position: 0
 tags:
   - magento2
   - ecommerce
 ---
 
-### Plugin Pix para Magento2
+### Pix Plugin for Magento2
 
-## Resumo
+## Summary
 
-Este documento detalha passos necessários para conectar a sua plataforma de e-Commerce, baseada no Magento2, na Woovi. A plataforma Woovi efetua em tempo real a conciliação entre seu Banco e seu e-Commerce.
-Após conectar a sua conta na Woovi é possível cobrar clientes em tempo real com QrCodes Pix, enviar Links de Pagamento, gerenciar cobranças incluindo extornos.
+This document describes the steps needed to connect your Magento2-based e-commerce platform to Woovi. The Woovi platform reconciles your bank and your e-commerce in real time.
+Once your Woovi account is connected, you can charge customers in real time with Pix QR Codes, send payment links and manage charges, including refunds.
 
-> _Nota: Este documento espera que você já tenha um ambiente Magento2 ativo._
+> _Note: This document assumes you already have an active Magento2 environment._
 
-> _Nota: O plugin é disponibilizado sob o nome **OpenPix** no Magento Marketplace, porém trata-se do mesmo plugin da Woovi._
+> _Note: The plugin is listed as **OpenPix** on the Magento Marketplace, but it is the same Woovi plugin._
 
-## 1. Instale o Plugin Woovi na sua instância Magento2
+## 1. Install the Woovi plugin on your Magento2 instance
 
 [OpenPix For Magento2](https://commercemarketplace.adobe.com/openpix-pix.html)
 
 ![Banner](./__assets__/magento2-banner.png)
 ![Install](./__assets__/magento2-marketplace-search.png)
 
-[Download Woovi Magento2 Plugin - versão 3.0.4](pathname:///magento2/woovi_pix.3.0.4.zip) - Versão Atual
+[Download Woovi Magento2 Plugin - version 3.0.4](pathname:///magento2/woovi_pix.3.0.4.zip) - Current version
 
-## 2. Configurando o Plugin Magento2
+## 2. Configuring the Magento2 plugin
 
-Entre em Magento2 Admin -> Stores > Configuration -> Sales -> Payment Method.
+1. Configure the Magento2 plugin in a single click by following the [Magento2 OneClick](/docs/ecommerce/magento2/magento2-oneclick) documentation
 
-![Credentials](./__assets__/magento2-credentials.png)
+2. Enable the plugin by clicking `Payment via Pix` in the Woovi plugin.
 
-Clicando em em `Credentials` no Plugin Woovi.
-
-- [ ] Cadastre um AppID do tipo Plugin. Crie um appID [aqui](../../apis/api-getting-started.md)
-
-Após adicionar o seu appID, clique em `Configure now with one click` para configurarmos ou criar seu Webhook. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-
-- [ ] Ao clicar os campos, `Webhook Authorization` e `Webhook HMAC Secret Key` irão atualizar automaticamente e mostrar o status em `Webhook Status`.
-
-- [ ] Caso não haja nenhum erro clique em `Save Config` para salvar as configurações.
-
-![Webhook Configured](./__assets__/magento2-webhook-configured.png)
-
-Caso não configure, você pode acessar a plataforma, criar um webhook manualmente. Para isso:
-
-- [ ] Crie uma senha para a integração do Webhook em `Webhook Authorization` clique em `Save Config`.
-- [ ] Va até a plataforma Woovi e acesse: `Admin -> API/Plugins -> Novo Webhook`
-- [ ] A URL de Callback que deve ser utilizada no cadastro se encontra logo abaixo ao campo em que se registra a senha do webhook dentro da sua loja Magento2
-- [ ] Clique em `Configure now with one click` novamente, para configurar o Webhook com esses novos dados criados.
-
-![Webhook Manual Configuration](./__assets__/magento2-new-webhook.png)
-
-Clicando em `Payment via Pix` no Plugin Woovi.
-
-- [ ] Ative ou Desative o Plugin
-- [ ] Customize o título do pagamento dentro da sua Store
+- [ ] Enable or disable the plugin
+- [ ] Customize the payment title shown in your store
 
 ![Customize](./__assets__/magento2-customize.png)
 
-### 2.2 Configurando CPF/CNPJ para o Customer (opcional)
+### 2.2 Configuring CPF/CNPJ for the customer (optional)
 
-Para salvar o cpf/cnpj do customer da order na sua cobrança Woovi é necessário que seja ativado o campo `TaxVat` em sua loja Magento.
+To save the order customer's CPF/CNPJ in your Woovi charge, you need to enable the `TaxVat` field in your Magento store.
 
-**Obs: Caso você siga sem a configuração deste campo suas cobranças serão salvas sem o cliente da mesma.**
+**Note: if you continue without configuring this field, your charges will be saved without their customer.**
 
-Entre em Magento2 Admin -> Stores > Configuration -> Customers -> Customer Configuration
+Go to Magento2 Admin -> Stores > Configuration -> Customers -> Customer Configuration
 
 ![customer-sidemenu](./__assets__/magento2-customer-sidemenu.png)
 
-Primeiro ative o campo `Show VAT Number on Storefront` em `Create New Account Options`:
+First, enable the `Show VAT Number on Storefront` field under `Create New Account Options`:
 
 ![magento2-customer-create-new-account-options](./__assets__/magento2-customer-create-new-account-options.png)
 
-Em seguida em `Name and Address Options` ative o campo `Show Tax/VAT Number`:
+Then, under `Name and Address Options`, enable the `Show Tax/VAT Number` field:
 
 ![magento2-customer-name-address-options.png](./__assets__/magento2-customer-name-address-options.png)
 
-A partir de agora os clientes terão que preencher esse campo com o CPF ou CNPJ e o mesmo será usado para salvar o cliente na plataforma Woovi.
+From now on, customers must fill in this field with their CPF or CNPJ, and it will be used to save the customer on the Woovi platform.
 
-## 3. Crie o Webhook dentro da Plataforma Woovi
+## 3. Create the webhook on the Woovi platform
 
-Ao configurar a Store volte para a Plataforma Woovi e registre o Webhook que será responsável para atualizar sua Store Magento2 quando uma cobrança Pix for paga.
+After configuring the store, go back to the Woovi platform and register the webhook that will update your Magento2 store when a Pix charge is paid.
 
-Para realizar o registro de um novo Webhook siga os passos abaixo:
+To register a new webhook, follow the steps below:
 
-- Va até a plataforma Woovi e acesse: Admin -> API/Plugins -> Novo Webhook
-- Utilize a mesma senha cadastrada em sua store Magento2. O Webhook é necessário para atualizar o status dos Pedidos em tempo real quando a cobrança Pix é paga.
-- A URL de Callback que deve ser utilizada no cadastro se encontra logo abaixo ao campo em que se registra a senha do webhook dentro da sua Store Magento2. O padrão é: [https://youstore.com.br/woovi/index/webhook](https://youstore.com.br/woovi/index/webhook)
+- Go to the Woovi platform and open: Admin -> API/Plugins -> `Novo Webhook` (New webhook)
+- Use the same password registered in your Magento2 store. The webhook is required to update order status in real time when the Pix charge is paid.
+- The callback URL to use in the registration is shown right below the field where you set the webhook password in your Magento2 store. The default is: [https://youstore.com.br/woovi/index/webhook](https://youstore.com.br/woovi/index/webhook)
 
 ![Webhook](./__assets__/magento2-webhook-configuration.png)
 
-## 4. Realizar Pedido com Pix
+## 4. Place an order with Pix
 
-Escolha a opção de pagar o pedido usando Pix
+Choose the option to pay the order using Woovi Parcelado
 
-![Pay Pix](./__assets__/magento2-checkout-cart.png)
+![Pay Pix](./__assets__/magento2-cart.png)
 
-Pague o Pix usando o app do seu banco.
+Pay the Pix using your bank app.
 
 ![Order](./__assets__/magento2-order.png)
 
-Valide que o status do Pedido mudou após o pagamento
+Check that the order status changed after payment
 
-## 5. Visualizar Pedido com Pix
+## 5. View an order paid with Pix
 
-Seu cliente poderá visualizar o pedido realizado via Pix dentro do detalhes do pedido. Basta clicar no botão que irá aparecer dentro da pagina de detalhe do pedido "Clique aqui para ver seu QRCode"
+Your customer can view the order placed via Pix in the order details. They just click the button shown on the order detail page, "Clique aqui para ver seu QRCode" (Click here to see your QR Code)
 
 ![Order information](./__assets__/magento2-order-info.png)
 ![Order](./__assets__/magento2-order-detail.png)
 
-## Expiração
+## Expiration
 
-A Woovi ira cuidar da expiração da cobrança Pix. Entretanto, é preciso que seja configurado em sua loja magento a expiração da order pois o mesmo cuidará de todo o processo.
+Woovi handles the expiration of the Pix charge. However, you must configure order expiration in your Magento store, since Magento handles the whole order process.
 
-Indicamos que a expiração/cancelamento da order no magento possua um tempo semelhante ao tempo configurado na Woovi. Exemplo:
+We recommend that order expiration/cancellation in Magento uses a time similar to the one configured in Woovi. Example:
 
-- tempo de expiração da cobrança Woovi: 15 minutos
-- coloque os mesmos 15 minutos dentro da sua loja Magento.
+- Woovi charge expiration time: 15 minutes
+- set the same 15 minutes in your Magento store.
 
 :::info
-No magento você pode utilizar o lifetime order seguindo a doc abaixo:
+In Magento you can use the order lifetime setting by following the doc below:
 
 - [https://docs.magento.com/user-guide/v2.3/sales/order-pending-payment-lifetime.html](https://docs.magento.com/user-guide/v2.3/sales/order-pending-payment-lifetime.html)
   :::
 
-## Atualizando o plugin
+## Updating the plugin
 
-Indicamos aos clientes Woovi estar sempre atualizados com a última versão do plugin. Você pode identificar a mesma no step de instalação.
+We recommend that Woovi customers always keep the plugin on the latest version. You can find it in the installation step.
 
-Caso seu plugin esteja desatualizado basta seguir os passos do mesmo step de instalação e atualizar os arquivos do plugin em seu ecommerce.
+If your plugin is outdated, just follow the same installation step and update the plugin files in your e-commerce.
 
 ## Debug
 
-Para debugar o plugin Woovi temos o arquivo de log e você encontra dentro de `var/log`:
+To debug the Woovi plugin, there is a log file in `var/log`:
 
-- `woovi.log`: arquivo que concentra logs referentes ao processo de criação de um novo pedido Magento e consequentemente a charge no lado da Woovi e o processo de atualização da Order quando paga.
+- `woovi.log`: logs for creating a new Magento order (and the corresponding charge on Woovi) and for updating the order when it is paid.

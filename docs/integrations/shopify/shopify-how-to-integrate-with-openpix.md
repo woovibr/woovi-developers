@@ -1,5 +1,5 @@
 ---
-title: Como integrar a OpenPix com Shopify?
+title: Como integrar a Woovi com Shopify?
 tags:
   - shopify
   - integration
@@ -8,13 +8,13 @@ import Embed from 'react-embed';
 
 :::caution
 
-Essa documentação espera que você já tenha uma loja Shopify ativa e uma conta criada na OpenPix.
+Essa documentação espera que você já tenha uma loja Shopify ativa e uma conta criada na Woovi.
 
 :::
 
-## 1. Instalando o aplicativo OpenPix através do Shopify
+## 1. Instalando o aplicativo da Woovi através do Shopify
 
-Para integrar sua loja Shopify com a OpenPix, é necessário instalar o aplicativo OpenPix diretamente pela Shopify.
+Para integrar sua loja Shopify com a Woovi, é necessário instalar o aplicativo OpenPix Pay diretamente pela Shopify. Na loja de aplicativos da Shopify, nosso aplicativo ainda aparece com o nome OpenPix Pay.
 
 - Acesse nosso aplicativo na Shopify: [OpenPix Pay](https://apps.shopify.com/openpix-pay-app-prod)
 

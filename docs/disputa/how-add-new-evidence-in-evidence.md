@@ -48,7 +48,7 @@ Enviando por `fileId`:
     "documents": [
       {
         "fileId": "<idDoArquivo>",
-        "description": "<discription>",
+        "description": "<description>",
         "correlationID": "<correlationID>"
       }
     ]
@@ -66,7 +66,7 @@ Enviando por `url`:
     "documents": [
       {
         "url": "<urlDocumento>",
-        "description": "<discription>",
+        "description": "<description>",
         "correlationID": "<correlationID>"
       }
     ]
@@ -82,7 +82,7 @@ Enviando por `url`:
       {
         "url": "<urlParaVisualizarDocumento>",
         "fileId": "<idDoArquivo>",
-        "description": "<discription>",
+        "description": "<description>",
         "correlationID": "<correlationID>"
         "createdAt": "<now>"
       }

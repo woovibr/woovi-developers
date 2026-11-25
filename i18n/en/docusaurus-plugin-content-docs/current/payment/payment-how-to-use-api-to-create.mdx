@@ -1,0 +1,133 @@
+---
+id: payment-how-to-use-api-to-create
+sidebar_position: 3
+title: How to use the Create Payment API?
+tags:
+  - payment
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Creating Payments with the API
+
+We provide the _endpoint_ `/api/v1/payment` so you can create
+a new _payment_ for the respective affiliated company.
+
+You can find the documentation for this _endpoint_
+[here](</api#tag/payment-request-access/POST/api/v1/payment>).
+
+As part of the request `body`, there are two payment modes: by Pix key and by QR Code:
+
+1. By Pix key, the fields `value`, `destinationAlias`, `destinationAliasType` and `correlationID` are required.
+2. By QR Code, the fields `qrCode` and `correlationID` are required.
+
+Below is the description of each field, including the optional ones:
+
+- **`value`**: The amount in cents of the payment to be created.
+- **`destinationAlias`**: The destination Pix key of the created payment, in the format of its type. Phone numbers must always be in international format, with `+55` and the area code (`+5511912345684`). See [Pix key format](./pix-key-format.md).
+- **`destinationAliasType`**: The type of the destination Pix key of the created payment. Must be one of the following values: CPF, CNPJ, EMAIL, PHONE, RANDOM. Always send the type: a key that is both a CPF and a mobile number (ambiguous key) sent without it is rejected with `400`. See [Ambiguous key: CPF or phone](./pix-key-format.md#chave-ambígua-cpf-ou-telefone).
+- **`qrCode`**: The QR Code to be paid
+- **`correlationID`**: A unique identifier for the payment.
+- **`comment`**: Comment attached to your payment when the transfer is made.
+- **`sourceAccountId`**: The source account ID. If not provided, the default account is used.
+
+In practice, your request body would look like this example:
+
+```mdx-code-block
+<Tabs>
+  <TabItem value="pix-key" label="Using Pix key" default>
+```
+
+```json
+{
+  "value": 100,
+  "destinationAlias": "38763885700",
+  "destinationAliasType": "CPF",
+  "correlationID": "31ee9576-99ec-412a-9ac7-e142a4a6acf0",
+  "comment": "um comentário"
+}
+```
+
+```mdx-code-block
+  </TabItem>
+  <TabItem value="pix-key-phone" label="Using a phone Pix key">
+```
+
+```json
+{
+  "value": 100,
+  "destinationAlias": "+5511912345684",
+  "destinationAliasType": "PHONE",
+  "correlationID": "8a1d3c6e-6f2b-4f0e-9b7a-1c2d3e4f5a6b",
+  "comment": "um comentário"
+}
+```
+
+```mdx-code-block
+  </TabItem>
+  <TabItem value="qr-code" label="Using QR Code" default>
+```
+
+```json
+{
+  "qrCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+  "comment": "payment comment",
+  "correlationID": "payment1"
+}
+```
+
+```mdx-code-block
+  </TabItem>
+</Tabs>
+```
+
+After making the request, if everything went well, the request _status code_ will be `2xx` and the response `body`
+will contain the information about the newly created `payment`.
+
+For example, this will be our response:
+
+```mdx-code-block
+<Tabs>
+  <TabItem value="pix-key" label="Payload using Pix key" default>
+```
+
+```json
+{
+  "payment": {
+    "value": 100,
+    "status": "CREATED",
+    "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
+    "destinationAliasType": "RANDOM",
+    "comment": "payment comment",
+    "correlationID": "payment1",
+    "sourceAccountId": "my-source-account-id"
+  }
+}
+```
+
+```mdx-code-block
+  </TabItem>
+  <TabItem value="qr-code" label="Payload using QR Code" default>
+```
+
+```json
+{
+  "payment": {
+    "value": 100,
+    "status": "CREATED",
+    "destinationAlias": "c4249323-b4ca-43f2-8139-8232aab09b93",
+    "destinationAliasType": "RANDOM",
+    "qrCode": "000201010212261060014br.gov.bcb.pix2584https://api.openpix.com.br/openpix/testing?transactionID=867ba5173c734202ac659721306b38c952040000530398654040.015802BR5909LOCALHOST6009Sao Paulo62360532867ba5173c734202ac659721306b38c963044BCA",
+    "comment": "payment comment",
+    "correlationID": "payment1",
+    "sourceAccountId": "my-source-account-id"
+  }
+}
+```
+
+```mdx-code-block
+  </TabItem>
+</Tabs>
+```

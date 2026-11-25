@@ -488,7 +488,7 @@ module.exports = {
           position: 'right',
         },
         {
-          href: 'https://github.com/Open-Pix/woovi-developers',
+          href: 'https://github.com/woovibr/woovi-developers',
           label: 'Github',
           position: 'right',
         },
@@ -514,10 +514,6 @@ module.exports = {
           label: 'Woovi',
           href: 'https://woovi.com',
         },
-        {
-          label: 'OpenPix',
-          href: 'https://openpix.com.br',
-        },
       ],
       copyright: 'Copyright © Woovi',
     },
@@ -532,7 +528,7 @@ module.exports = {
           path: './docs',
           sidebarPath: './sidebars.js',
           editUrl: ({ versionDocsDirPath, docPath }) => {
-            return `https://github.com/Open-Pix/woovi-developers/edit/main/${versionDocsDirPath}/${docPath}`;
+            return `https://github.com/woovibr/woovi-developers/edit/main/${versionDocsDirPath}/${docPath}`;
           },
           editCurrentVersion: true,
           remarkPlugins: [

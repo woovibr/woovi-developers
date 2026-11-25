@@ -75,7 +75,8 @@
     "typescript": "^6.0.3"
   },
   "scripts": {
-    "build": "docusaurus build",
+    "build": "pnpm check:openpix-links && docusaurus build",
+    "check:openpix-links": "! git grep -nIE 'developers\\.openpix\\.com\\.br|Open-Pix/(openpix-)?developers' -- . ':!MIGRATION_PLAN.md'",
     "build:en": "docusaurus build --locale en",
     "build:ptbr": "docusaurus build --locale pt-BR",
     "deploy": "docusaurus deploy",

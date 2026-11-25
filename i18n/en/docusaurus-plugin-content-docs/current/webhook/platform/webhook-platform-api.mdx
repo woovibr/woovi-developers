@@ -1,0 +1,77 @@
+---
+id: webhook-platform-api
+title: Creating a webhook to intercept a Pix and call an API
+tags:
+- webhook
+- platform
+- api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+With Woovi you can create webhooks to be notified when a Pix payment is made. Today there are two ways to create them: through the platform or through the API.
+
+In this tutorial we describe how to create a webhook that notifies you when a new Pix is received and sends it to a registered API.
+
+To create a webhook through the platform, follow the steps below:
+
+### Step 1 - Settings
+
+Go to the Admin Menu and look for `API/Plugins`.
+
+![AdminPanel](/img/apis/admin-panel.png)
+
+Click `Novo Webhook` (New Webhook).
+
+![NewWebhook](/img/webhook/new-webhook.png)
+
+After clicking, the screen to create a new webhook will open:
+
+![CreateWebhook](/img/webhook/create-new-webhook.png)
+
+Fields:
+
+- **Name** - name of the webhook.
+- **Active** - whether the webhook is active or inactive.
+- **Event** - event to listen to (example: Pix transaction received).
+- **URL** - the endpoint the webhook will call.
+  - Note: our webhook always makes a `POST` request to your endpoint.
+- **Action** - there are two types of action: call API and send email. Depending on which you choose, the required parameter fields will be shown.
+
+#### Action
+
+When you choose an action type, you must provide the parameters required for that action.
+
+<Tabs
+defaultValue="action-api"
+    values={[
+    { label: 'API', value: 'action-api', },
+    { label: 'Email', value: 'action-email', },
+    ]
+}>
+
+<TabItem value='action-api'>
+
+![CreateWebhook](/img/webhook/create-new-webhook-api.png)
+
+Fields:
+
+- url: required; must be a valid URL that is available for a test call when saving.
+- authorization: optional
+
+</TabItem>
+
+<TabItem value='action-email'>
+
+![CreateWebhookEmail](/img/webhook/create-new-webhook-email.png)
+
+Fields:
+
+- email: required
+
+</TabItem>
+
+</Tabs>
+
+[Webhook payload examples](/docs/category/exemplos)

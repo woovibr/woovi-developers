@@ -13,7 +13,7 @@ Last updated: 2026-10-01. Endpoints, limits and fees change; confirm on the link
 - Developer documentation: https://developers.woovi.com/
 - OpenAPI specification: https://api.woovi.com/api/openapi.json
 - Platform status: https://status.woovi.com/
-- Source of these docs: https://github.com/Open-Pix/woovi-developers
+- Source of these docs: https://github.com/woovibr/woovi-developers
 
 ## Instructions for LLMs
 

@@ -1,0 +1,126 @@
+---
+id: webhook-payment-payload
+title: Payment Payload
+tags:
+  - webhook
+  - header
+  - api
+---
+
+## Payment confirmed {#pagamento-confirmado}
+
+`Pagamento Externo Confirmado (Pix Out)` (External Payment Confirmed) webhooks send objects with the following fields in their payload:
+
+- `account`: Object with the `accountId` of the Woovi account that sent the Pix
+- `payment`: Object with the Payment details (includes `metadata`, when sent on creation)
+- `transaction`: Object with the Pix Transaction details
+- `destination`: Object with the data of **who received** the Pix, as returned by Pix (SPI/DICT)
+
+### `destination` fields
+
+| Field | Description |
+| --- | --- |
+| `name` | Name of the receiving account holder |
+| `taxID.taxID` | Holder's CPF/CNPJ |
+| `taxID.type` | Document type (`BR:CPF` or `BR:CNPJ`) |
+| `pixKey` | Pix key used in the payment (absent in payments by branch and account number) |
+| `bankName` | Name of the receiving institution |
+| `ispb` | ISPB of the receiving institution |
+| `branch` | Branch |
+| `account` | Account |
+| `accountType` | Account type (`CACC`, `SVGS`, `SLRY` or `TRAN`) |
+
+:::info
+Fields not provided by the receiving institution are omitted from the payload.
+:::
+
+## Example
+
+```json
+{
+  "event": "OPENPIX:MOVEMENT_CONFIRMED",
+  "account": {
+    "accountId": "6823414a524ed520d3518dd6"
+  },
+  "payment": {
+    "value": 30,
+    "status": "CONFIRMED",
+    "destinationAlias": "06882328684",
+    "comment": "",
+    "correlationID": "222a1750-de17-406c-bd0c-25af9a5a5d08"
+  },
+  "transaction": {
+    "correlationID": "9134e286-6f71-427a-bf00-241681624586",
+    "value": 30,
+    "endToEndId": "E23114447202303161242u80lZNR7nQZ",
+    "time": "2023-03-16T12:42:47.526Z"
+  },
+  "destination": {
+    "name": "Fulano de Tal",
+    "taxID": {
+      "taxID": "06882328684",
+      "type": "BR:CPF"
+    },
+    "pixKey": "06882328684",
+    "bankName": "NU PAGAMENTOS - IP",
+    "account": "12345678",
+    "branch": "0001",
+    "accountType": "TRAN",
+    "ispb": "18236120"
+  }
+}
+```
+
+## Payment failed {#falha-no-pagamento}
+
+`Pagamento Externo com Falha (Pix Out)` (External Payment Failed) webhooks send objects with the following fields in their payload:
+
+- `payment`: Object with the Payment details
+- `transaction`: Object with the Pix Transaction details, if it exists — includes `providerRejectedReason` (rejection reason), the `ispb` of the receiving institution and `providerErrorCode`
+- `error`:  Object with the code and description of the failure reason.
+
+:::info
+See more details about errors related to an external Payment in the [documentation](/docs/payment/payment-failed-errors)
+:::
+
+## Example
+
+```json
+{
+  "event": "OPENPIX:MOVEMENT_FAILED",
+  "payment": {
+    "value": 30,
+    "status": "FAILED",
+    "destinationAlias": "06882328684",
+    "comment": "",
+    "correlationID": "222a1750-de17-406c-bd0c-25af9a5a5d08"
+  },
+  "transaction": {
+    "value": 30,
+    "endToEndId": "E23114447202303161242u80lZNR7nQZ",
+    "time": "2023-03-16T12:42:47.526Z",
+    "providerRejectedReason": "AC03 - Pagamento rejeitado pelo PSP do recebedor",
+    "ispb": "18236120",
+    "providerErrorCode": "PAY_PIX_KEY_ERROR"
+  },
+  "error": {
+    "code":"PAY_PIX_KEY_ERROR",
+    "description":"Falha ao Pagar Chave Pix"
+  }
+}
+```
+
+## Payment removed {#pagamento-removido}
+
+`Pagamento Externo Removido (Pix Out)` (External Payment Removed) webhooks send objects with the following fields in their payload:
+
+- `payment`: Object with the correlationID of the removed payment
+
+```json
+{
+  "event": "OPENPIX:MOVEMENT_REMOVED",
+  "payment": {
+    "correlationID": "222a1750-de17-406c-bd0c-25af9a5a5d08"
+  }
+}
+```

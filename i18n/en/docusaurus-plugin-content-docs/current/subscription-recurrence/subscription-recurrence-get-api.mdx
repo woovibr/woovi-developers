@@ -1,0 +1,69 @@
+---
+id: subscription-recurrence-get-api
+sidebar_position: 1
+title: How to get a Subscription using the API?
+tags:
+  - subscription
+  - recurrence
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To get a subscription using the API, make a GET request to the _endpoint_ `/api/v1/subscriptions/<globalID>` using the subscription's `globalID`.
+
+You can find the documentation for this _endpoint_ [here](/api#tag/subscription/GET/api/v1/subscriptions/{id}).
+
+## Example
+
+After making the request, if everything went well, the request _status code_ will be `2xx` and the response `body` will contain the subscription.
+
+We will return the following example response:
+
+```json
+{
+  "subscription": {
+    "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=",
+    "value": 100,
+    "customer": {
+      "name": "Dan",
+      "email": "email0@example.com",
+      "phone": "5511999999999",
+      "taxID": {
+        "taxID": "31324227036",
+        "type": "BR:CPF"
+      }
+    }
+  },
+  "dayGenerateCharge": 5
+}
+```
+
+### Code examples
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+curl --request GET \
+  --url https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM= \
+  --header 'Authorization: <AUTHORIZATION>'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch(
+  'https://api.woovi.com/api/v1/subscriptions/UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=',
+  {
+    headers: {
+      Authorization: '<AUTHORIZATION>',
+    },
+  },
+);
+```
+
+  </TabItem>
+</Tabs>

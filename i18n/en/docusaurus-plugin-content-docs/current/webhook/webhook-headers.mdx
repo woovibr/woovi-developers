@@ -1,0 +1,50 @@
+---
+id: webhook-headers
+title: Configuring my webhook's HTTP headers
+tags:
+- webhook
+- header
+- api
+- integration
+---
+
+## Creating a new HTTP header for my webhook
+
+First, open the page for creating a new webhook. You
+can access it [here](https://app.woovi.com/home/openpix/webhook-create).
+
+You'll see something like this:
+
+![New webhook with custom header inputs](/img/webhook/create-new-webhook-custom-headers.png)
+
+The second section, as you can see, covers the headers of your HTTP request.
+There you can add any custom value you want, such as authentication for your webhook via the `Authorization` header,
+or any other information you want to use in the future.
+
+The first 3 values there are sent in **ALL**
+requests made by our webhook and cannot be changed.
+
+### References
+
+- [HTTP headers - MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Headers)
+
+## Editing the headers of an existing webhook
+
+If you want to edit the headers of an existing webhook, follow this flow:
+
+First, open the list containing the `API/Plugins` and `Webhooks` items.
+You can access it [here](https://app.woovi.com/home/api/list).
+
+In the list of existing webhooks, click a row to open its details.
+
+When you open a webhook's details, you'll see something similar to this:
+
+![Details of an existing webhook](/img/webhook/webhook-details.png)
+
+Click the `Cabeçalhos HTTP` (HTTP headers) section to expand it. Once expanded, you'll see
+inputs similar to the ones in the webhook creation flow, including the 3 default headers
+sent with every request.
+
+![Customize the HTTP request headers](/img/webhook/webhook-details-custom-headers.png)
+
+In this section, you can change each webhook's headers however you like.

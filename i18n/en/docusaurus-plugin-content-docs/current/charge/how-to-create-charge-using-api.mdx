@@ -1,0 +1,97 @@
+---
+id: how-to-create-charge-using-api
+title: How to use the API to create a charge (cob)?
+tags:
+  - concept
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To create a Pix charge, use the API _endpoint_ `/api/v1/charge`.
+
+You can find the documentation for this _endpoint_ [here](/api#tag/charge/POST/api/v1/charge).
+
+The required fields to create a Pix charge are:
+
+- **`value`**: The value of the Pix charge to be created, in cents.
+- **`correlationID`**: A unique identifier for the Pix charge. [CorrelationID](../concepts/correlation-id)
+
+## Example
+
+Your request body will look like this example:
+
+```json
+{
+  "value": 100,
+  "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a"
+}
+```
+
+After making the request, if everything went well, the request _status code_ will be `2xx` and the response `body` will contain the created charge.
+
+Here is an example response:
+
+```json
+{
+  "charge": {
+    "customer": null,
+    "value": 100,
+    "identifier": "996ed4b7cc1c...",
+    "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a",
+    "paymentLinkID": "86f574fb-73...",
+    "transactionID": "996ed4b7cc1c...",
+    "status": "ACTIVE",
+    "giftbackAppliedValue": 0,
+    "discount": 0,
+    "valueWithDiscount": 1500,
+    "expiresDate": "2023-02-25T20:09:06.141Z",
+    "type": "DYNAMIC",
+    "createdAt": "2023-02-24T20:09:06.141Z",
+    "additionalInfo": [],
+    "updatedAt": "2023-02-24T20:09:14.165Z",
+    "expiresIn": 86400,
+    "pixKey": "d65032a3-c0c...",
+    "brCode": "0002010102...",
+    "paymentLinkUrl": "http://url.com/pay/...",
+    "qrCodeImage": "http://url.com/openpix/charge/brcode/image/...",
+    "globalID": "Q2hhcmdlOjYzZjkxOTZhNjA3ODg1..."
+  },
+  "correlationID": "c782e0ac-833d-4a89-9e73-9b60b2b41d3a",
+  "brCode": "0002010102..."
+}
+```
+
+### Code examples
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+  curl 'https://api.woovi.com/api/v1/charge' -X POST \
+      -H "Accept: application/json" \
+      -H "Content-Type: application/json" \
+      -H "user-agent: node-fetch" \
+      --data-binary '{"correlationID":"c782e0ac-833d-4a89-9e73-9b60b2b41d3a","value":1500}'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/charge', {
+  method: 'POST',
+  body: JSON.stringify({
+    value: 100,
+    correlationID: 'c782e0ac-833d-4a89-9e73-9b60b2b41d3a',
+  }),
+  headers: {
+    Authorization: 'AUTHORIZATION',
+    'Content-Type': 'application/json',
+  },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>

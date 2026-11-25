@@ -21,7 +21,7 @@ Nesta modalidade os valores Pix pagos pelos seus clientes são depositados diret
 
 Para operar usando uma conta corrente existente é necessário criar uma nova API Key em sua conta.
 
-Veja em [Documentação](https://www.originalhub.com.br/documentacaohttps://www.originalhub.com.br/documentacao)
+Veja em [Documentação](https://www.originalhub.com.br/documentacao)
 do Banco Original
 
 ## 2. Cadastrando Credenciais do Banco Original da sua conta corrente na plataforma Woovi
