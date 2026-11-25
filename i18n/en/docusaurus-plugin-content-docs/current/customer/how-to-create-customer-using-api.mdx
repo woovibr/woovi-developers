@@ -1,0 +1,206 @@
+---
+id: how-to-create-customer-using-api
+title: How to use the API to create a customer?
+tags:
+  - concept
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To create a customer, use the API _endpoint_ `/api/v1/customer`.
+
+You can find the documentation for this _endpoint_
+[here](/api#tag/customer/POST/api/v1/customer).
+
+The required fields to create a customer are:
+
+- **`name`**: Customer name.
+
+In addition to the name, you must send one of these three fields:
+
+- **`taxID`**: Customer CPF or CNPJ.
+- **`email`**: Customer email.
+- **`phone`**: Customer mobile phone (starting with 55 and the area code).
+
+### Example
+
+Your request body will look like one of these examples:
+
+#### Example with taxID
+
+```json
+{
+  "name": "Dan",
+  "taxID": "360.***.***-72"
+}
+```
+
+#### Example with email
+
+```json
+{
+  "name": "Dan",
+  "email": "dan@gmail.com"
+}
+```
+
+#### Example with phone
+
+```json
+{
+  "name": "Dan",
+  "phone": "554899..."
+}
+```
+
+After making the request, if everything went well, the request _status code_ will be `2xx` and the response `body` will contain the created customer.
+
+We will return the following example response:
+
+```json
+{
+  "customer": {
+    "name": "NOME DO CLIENTE",
+    "taxID": { "taxID": "360...", "type": "BR:CPF" },
+    "correlationID": "d1d46bbd-b010-4beb-b59e-cecf824efb43"
+  }
+}
+```
+
+#### Code examples
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+  curl 'https://api.woovi.com/api/v1/customer' -X POST \
+      -H "Accept: application/json" \
+      -H "Content-Type: application/json" \
+      -H "user-agent: node-fetch" \
+      --data-binary '{ "name": "Dan", "email": "dan@gmail.com" }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/customer', {
+  method: 'POST',
+  body: JSON.stringify({ name: 'Dan', email: 'dan@gmail.com' }),
+  headers: {
+    Authorization: 'AUTHORIZATION',
+    'Content-Type': 'application/json',
+  },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>
+
+## How to use the API to create a customer with an address?
+
+When creating a customer, you can also add an address.
+
+:::info
+
+To create charges with a due date, fines and interest, the customer being charged must have a registered address, as well as their taxID (CPF/CNPJ). The following example assumes this use case.
+
+:::
+
+So, the required fields are:
+
+- **`name`**: Customer name.
+- **`taxID`**: Customer CPF or CNPJ.
+- **`address`**: Customer address.
+
+You can find documentation about the address object model [here](/api#tag/customer/POST/api/v1/customer).
+
+### Example
+
+The request body, with the address data added, looks like this:
+
+```json
+{
+  "name": "Ana",
+  "taxID": "672.***.***-51",
+  "address": {
+    "zipcode": "137...",
+    "street": "R...",
+    "number": "15",
+    "neighborhood": "Centro",
+    "city": "S...",
+    "state": "SP",
+    "complement": "Casa"
+  }
+}
+```
+
+After making the request, if everything went well, the request _status code_ will be `2xx` and the response `body` will contain the created customer.
+
+We will return the following example response:
+
+```json
+{
+  "customer": {
+    "name": "ana",
+    "correlationID": "6ffa...",
+    "address": {
+      "zipcode": "137...",
+      "street": "R...",
+      "number": "15",
+      "neighborhood": "Centro",
+      "city": "S...",
+      "state": "SP",
+      "complement": "Casa"
+    },
+    "taxID": { "taxID": "67...", "type": "BR:CPF" }
+  }
+}
+```
+
+#### Code examples
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+  curl 'https://api.woovi.com/api/v1/customer' -X POST \
+      -H "Accept: application/json" \
+      -H "Content-Type: application/json" \
+      -H "user-agent: node-fetch" \
+      --data-binary '{"name": "Ana", "taxID": "672.***.***-51", "address": {
+        "zipcode": "137...", "street": "R...", "number": "15",
+        "neighborhood": "Centro", "city": "S...", "state": "SP",
+        "complement": "Casa" } }'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/customer', {
+  method: 'POST',
+  body: JSON.stringify({
+    name: 'Ana',
+    taxID: '672.***.***-51',
+    address: {
+      zipcode: '137...',
+      street: 'R...',
+      number: '15',
+      neighborhood: 'Centro',
+      city: 'S...',
+      state: 'SP',
+      complement: 'Casa',
+    },
+  }),
+  headers: {
+    Authorization: 'AUTHORIZATION',
+    'Content-Type': 'application/json',
+  },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>

@@ -1,0 +1,102 @@
+---
+id: subscription-recurrence-create-api
+sidebar_position: 1
+title: How to create a Subscription using the API?
+tags:
+  - subscription
+  - recurrence
+  - api
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To create a new subscription using the API, make a POST request to the `/api/v1/subscriptions` _endpoint_.
+
+You can find the documentation for this _endpoint_ [here](/api#tag/subscription/POST/api/v1/subscriptions).
+
+As part of the request `body`, we expect the following items:
+
+- **`value`**: The value of the subscription to be created, in cents.
+- **`customer`**: The subscription customer to be charged. This field is [idempotent](../concepts/idempotence.md), which means that if you send data for a customer that already exists, we will use the existing one instead of creating a new one.
+
+The body also accepts other **optional** fields:
+
+- **`dayGenerateCharge`**: Day of the month on which charges will be generated. Must be a value from 0 to 27.
+
+## Example
+
+Your request body will look like this example:
+
+```json
+{
+  "value": 100,
+  "customer": {
+    "name": "Dan",
+    "taxID": "31324227036",
+    "email": "email0@example.com",
+    "phone": "5511999999999"
+  }
+}
+```
+
+After making the request, if everything went well, the request _status code_ will be `2xx` and the response `body` will contain the created subscription.
+
+Here is an example response:
+
+```json
+{
+  "subscription": {
+    "globalID": "UGF5bWVudFN1YnNjcmlwdGlvbjo2M2UzYjJiNzczZDNkOTNiY2RkMzI5OTM=",
+    "value": 100,
+    "customer": {
+      "name": "Dan",
+      "email": "email0@example.com",
+      "phone": "5511999999999",
+      "taxID": {
+        "taxID": "31324227036",
+        "type": "BR:CPF"
+      }
+    },
+    "dayGenerateCharge": 5
+  }
+}
+```
+
+### Code examples
+
+<Tabs>
+  <TabItem value="shell-curl" label="Shell + cURL" default>
+
+```sh
+ curl --request POST \
+     --url https://api.woovi.com/api/v1/subscriptions \
+     --header 'Authorization: AUTHORIZATION' \
+     --header 'content-type: application/json' \
+     --data '{"value": 100,"customer": {"name":"Dan","taxID":"31324227036","email":"email0@example.com","phone":"5511999999999"}}'
+```
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript + Fetch" default>
+
+```js
+fetch('https://api.woovi.com/api/v1/subscriptions', {
+  method: 'POST',
+  body: JSON.stringify({
+    value: 100,
+    customer: {
+      name: 'Dan',
+      taxID: '31324227036',
+      email: 'email0@example.com',
+      phone: '5511999999999',
+    },
+  }),
+  headers: {
+    Authorization: 'AUTHORIZATION',
+    'Content-Type': 'application/json',
+  },
+}).then((res) => res.json());
+```
+
+  </TabItem>
+</Tabs>

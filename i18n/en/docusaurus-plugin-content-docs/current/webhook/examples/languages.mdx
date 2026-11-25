@@ -1,0 +1,56 @@
+---
+id: how-to-create-a-webhook-and-intercept-a-pix
+title: How to intercept a Pix using a webhook
+tags:
+  - webhook
+  - platform
+  - api
+  - php
+  - languages
+--- 
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+With Woovi you can create webhooks to intercept when a Pix is made.
+
+In this tutorial we will describe how to create a webhook to notify you when a new Pix is received and deliver it to a registered API.
+
+## Step 1 - Create your webhook pointing to your endpoint
+
+To create a webhook via API, follow the steps in this tutorial: [Creating a webhook to intercept a Pix via API](/docs/webhook/webhook-api).
+
+To create a webhook via the platform, follow the steps in this tutorial: [Creating a webhook to intercept a Pix and call an API](../platform/webhook-platform-api.mdx).
+
+## Step 2 - Create your endpoint
+
+Now that you have created your webhook, you need to create your endpoint to receive it.
+
+There are many languages you can use to build your endpoint; below we describe how to create your endpoint in PHP.
+
+<Tabs>
+  <TabItem value="php" label="PHP" default>
+
+```php
+<?php
+
+  // Get the JSON input data
+  $input = file_get_contents('php://input');
+
+  // Decode the JSON data into an associative array
+  $data = json_decode($input, true);
+
+  // Access the charge object
+  $charge = $data['charge'];
+
+  // Now you can use the $charge object as needed
+  print_r($charge);
+
+  echo 'correlationID: ' . $charge['correlationID'];
+
+?>
+
+```
+
+  </TabItem>
+</Tabs>
