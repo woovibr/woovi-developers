@@ -59,7 +59,7 @@ Woovi controls how many DICT lookups each account can make. There are two contro
 
 - **Checks on keys that do not exist.** After a few `404`s, the check starts answering `429` until the limiter is refilled. See [Token Bucket](./pix-key-token-bucket.md).
 - **Checks without a payment.** Applies to every account: 10 checks without the matching payment trigger an automatic block.
-  - On BaaS accounts, Pix key checks are blocked for 24 hours and answer `429`. See [Pix key checks without payment](../baas/consultas-chave-pix-sem-pagamento.md).
+  - On BaaS accounts, Pix key checks are blocked for 24 hours and answer `429 PIX_KEY_CHECK_UNPAID_LIMIT_REACHED`. See [Pix key checks without payment](../baas/consultas-chave-pix-sem-pagamento.md).
   - On all other accounts, access to the endpoint is removed and the check answers `403 PIX_KEY_CHECK_NOT_ALLOWED`. To check keys again, access must be requested again.
 
 ### What is returned?
@@ -98,10 +98,10 @@ Woovi controls how many DICT lookups each account can make. There are two contro
 - `400` for a risky key — `Pix key related to an account suspected of fraud`
 - `400` when the DICT is unavailable — `Error verifying pix key`
 - `429` — DICT lookup limit reached (see [Check limits](#check-limits))
-- `429` with `Too many Pix key checks without a payment. Try again tomorrow.` — the BaaS account reached 10 checks without payment and Pix key checks are blocked for 24 hours (see [Pix key checks without payment](../baas/consultas-chave-pix-sem-pagamento.md))
+- `429 PIX_KEY_CHECK_UNPAID_LIMIT_REACHED` — the BaaS account reached 10 checks without payment and Pix key checks are blocked for 24 hours (see [Pix key checks without payment](../baas/consultas-chave-pix-sem-pagamento.md))
 - `403 PIX_KEY_CHECK_NOT_ALLOWED` — your account does not have the feature enabled, or it was removed after 10 checks without payment (non-BaaS accounts)
 
-On the `GET` route errors come back with `error` + `errorCode`. On the `POST` route only `error` is returned.
+On the `GET` route errors come back with `error` + `errorCode`. On the `POST` route only `error` is returned, except for `429 PIX_KEY_CHECK_UNPAID_LIMIT_REACHED`, which also carries the `errorCode`.
 
 ## AI prompt
 
@@ -139,7 +139,7 @@ Paste the snippet below into an AI coding tool (Claude / Cursor / Gemini / ChatG
 >
 > If the payer gives up, do not repeat the check automatically and do not store the returned data beyond what is needed to complete the payment.
 >
-> **Errors to handle**: 400 (invalid key format or key not eligible for payment), 404 `PIX_KEY_INFO_NOT_FOUND` (key not found), 429 (DICT lookup limit reached — wait for the token bucket to refill, or 24 hours if the message is about checks without payment), 403 `PIX_KEY_CHECK_NOT_ALLOWED` (feature not enabled for the account, or removed after checks without payment).
+> **Errors to handle**: 400 (invalid key format or key not eligible for payment), 404 `PIX_KEY_INFO_NOT_FOUND` (key not found), 429 (DICT lookup limit reached — wait for the token bucket to refill, or 24 hours if the `errorCode` is `PIX_KEY_CHECK_UNPAID_LIMIT_REACHED`), 403 `PIX_KEY_CHECK_NOT_ALLOWED` (feature not enabled for the account, or removed after checks without payment).
 >
 > **Important details**:
 > - `psp` is only the ISPB code (8 digits) — to show the bank name, keep an ISPB → institution mapping on your side.

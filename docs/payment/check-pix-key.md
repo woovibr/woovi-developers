@@ -59,7 +59,7 @@ A Woovi controla quantas consultas ao DICT cada conta pode fazer. São dois cont
 
 - As consultas ao DICT têm um limite, que pesa as consultas a chaves inexistentes: após alguns `404`, você receberá um `429` e precisará aguardar a reposição do limite. Veja [Token Bucket](./pix-key-token-bucket.md).
 - Toda conta pode fazer no máximo 10 consultas sem o pagamento correspondente. Ao atingir esse limite:
-  - nas contas do modo BaaS, a consulta de chave fica bloqueada por 24 horas, com `429`. Veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md);
+  - nas contas do modo BaaS, a consulta de chave fica bloqueada por 24 horas, com `429 PIX_KEY_CHECK_UNPAID_LIMIT_REACHED`. Veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md);
   - nas demais contas, o acesso ao endpoint é retirado e as consultas passam a responder `403 PIX_KEY_CHECK_NOT_ALLOWED`.
 
 ### O que é retornado ?
@@ -98,10 +98,10 @@ A Woovi controla quantas consultas ao DICT cada conta pode fazer. São dois cont
 - `400` para chave de risco — `Pix key related to an account suspected of fraud`
 - `400` para DICT indisponível — `Error verifying pix key`
 - `429 TOO_MANY_REQUESTS` — limite de consultas ao DICT atingido (veja a seção "Limitação de Taxa" acima)
-- `429` com `Muitas consultas de chave Pix sem pagamento. Tente novamente amanhã.` — a conta BaaS atingiu 10 consultas sem pagamento e a consulta de chave fica bloqueada por 24 horas (veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md))
+- `429 PIX_KEY_CHECK_UNPAID_LIMIT_REACHED` — a conta BaaS atingiu 10 consultas sem pagamento e a consulta de chave fica bloqueada por 24 horas (veja [Consultas de chave Pix sem pagamento](../baas/consultas-chave-pix-sem-pagamento.md))
 - `403 PIX_KEY_CHECK_NOT_ALLOWED` — sua conta não tem a feature liberada, ou o acesso foi retirado depois de 10 consultas sem pagamento
 
-Na rota `GET` os erros voltam com `error` + `errorCode`. Na rota `POST` apenas `error` é retornado.
+Na rota `GET` os erros voltam com `error` + `errorCode`. Na rota `POST` apenas `error` é retornado, exceto no `429 PIX_KEY_CHECK_UNPAID_LIMIT_REACHED`, que também traz o `errorCode`.
 
 ## Prompt para IA
 
@@ -139,7 +139,7 @@ Copie o trecho abaixo numa IA de coding (Claude / Cursor / Gemini / ChatGPT) pra
 >
 > Se o pagador desistir, não repita a consulta automaticamente nem armazene os dados retornados além do necessário para concluir o pagamento.
 >
-> **Erros a tratar**: 400 (chave em formato inválido ou não elegível para pagamento), 404 `PIX_KEY_INFO_NOT_FOUND` (chave não encontrada), 429 (limite de consultas ao DICT atingido — aguarde a reposição do token bucket, ou 24 horas se a mensagem for de consultas sem pagamento), 403 `PIX_KEY_CHECK_NOT_ALLOWED` (funcionalidade não liberada para a conta ou retirada após consultas sem pagamento).
+> **Erros a tratar**: 400 (chave em formato inválido ou não elegível para pagamento), 404 `PIX_KEY_INFO_NOT_FOUND` (chave não encontrada), 429 (limite de consultas ao DICT atingido — aguarde a reposição do token bucket, ou 24 horas se o `errorCode` for `PIX_KEY_CHECK_UNPAID_LIMIT_REACHED`), 403 `PIX_KEY_CHECK_NOT_ALLOWED` (funcionalidade não liberada para a conta ou retirada após consultas sem pagamento).
 >
 > **Detalhes importantes**:
 > - `psp` é só o código ISPB (8 dígitos) — pra mostrar o nome do banco, mantenha um mapeamento ISPB → instituição do seu lado.
