@@ -255,7 +255,7 @@ const cards = [
       'SocPanel. Crie Pix e integre com o SocPanel para receber pagamentos via Pix.',
     icon: <SocPanelIcon size={30} />,
     docsTo:
-      'https://developers.openpix.com.br/docs/integrations/socpanel-openpix',
+      '/docs/integrations/socpanel-woovi',
   },
   {
     title: 'OpenCart 3',

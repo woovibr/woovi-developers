@@ -1,13 +1,13 @@
 ---
 id: woovi-bridge
-title: Integração woovi Bridge
+title: Integração Woovi Bridge
 tags:
   - api
 ---
 
-## O que é a woovi Bridge?
+## O que é a Woovi Bridge?
 
-O woovi Bridge permite que aplicações sem urls/endpoints expostos na internet recebam webhook localmente.
+O Woovi Bridge permite que aplicações sem urls/endpoints expostos na internet recebam webhook localmente.
 - Casos de uso: PDV, sistemas embarcados, IoT.
 
 ### Como as informações são mandadas?

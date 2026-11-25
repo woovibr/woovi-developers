@@ -159,7 +159,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'account',
     'category': 'Conta',
     'summary': 'Withdraw from an Account',
-    'description': 'An additional fee may be charged depending on the minimum free withdrawal amount. See more about at https://developers.openpix.com.br/docs/FAQ/faq-virtual-account/#onde-posso-consultar-as-taxas-da-minha-conta-virtual',
+    'description': 'An additional fee may be charged depending on the minimum free withdrawal amount. See more about at https://developers.woovi.com/docs/faq/faq-virtual-account#onde-posso-consultar-as-taxas-da-minha-conta-virtual',
     'requestExamples': [
       {
         'name': 'default',
@@ -577,7 +577,7 @@ const endpoints: ApiEndpoint[] = [
     'tag': 'charge',
     'category': 'Cobrança',
     'summary': 'Create a new Charge',
-    'description': "Endpoint to create a new Charge for a customer.\n\n## Split\n\nYou can split the value of a charge across other accounts by sending the\n`splits` array in the request body. Each item accepts:\n\n  - `value`: amount in cents that will be split to the destination.\n  - `pixKey`: Pix key of the account that will receive this split.\n  - `splitType`: how the split is processed — one of `SPLIT_INTERNAL_TRANSFER`,\n    `SPLIT_SUB_ACCOUNT` or `SPLIT_PARTNER`.\n    [See how each split type is processed](https://developers.openpix.com.br/docs/splits/split-introduction).\n\nSee the *Charge with Split Internal Transfer* and *Charge with Split Subaccounts*\nrequest body examples below for the full payload shape.\n\n## Credit card\n\nSend `type: PIX_CREDIT` to let the payer choose between Pix and credit card,\nor `type: CREDIT_CARD` to accept only credit card. Credit card needs to be\nenabled on your account, and the charge needs a customer with a valid name\nand CPF/CNPJ.\n\nThe payer pays the card on the charge's `paymentLinkUrl`. To render the\ncard form from your own checkout, call\n`POST /api/v1/charge/{id}/card/smartform` and redirect the payer to the\nreturned `checkoutUrl`.\n\nA charge created through the API is paid in one installment.\n\nSee the *Charge with Credit Card* request body example below.\n",
+    'description': "Endpoint to create a new Charge for a customer.\n\n## Split\n\nYou can split the value of a charge across other accounts by sending the\n`splits` array in the request body. Each item accepts:\n\n  - `value`: amount in cents that will be split to the destination.\n  - `pixKey`: Pix key of the account that will receive this split.\n  - `splitType`: how the split is processed — one of `SPLIT_INTERNAL_TRANSFER`,\n    `SPLIT_SUB_ACCOUNT` or `SPLIT_PARTNER`.\n    [See how each split type is processed](https://developers.woovi.com/docs/splits/split-introduction).\n\nSee the *Charge with Split Internal Transfer* and *Charge with Split Subaccounts*\nrequest body examples below for the full payload shape.\n\n## Credit card\n\nSend `type: PIX_CREDIT` to let the payer choose between Pix and credit card,\nor `type: CREDIT_CARD` to accept only credit card. Credit card needs to be\nenabled on your account, and the charge needs a customer with a valid name\nand CPF/CNPJ.\n\nThe payer pays the card on the charge's `paymentLinkUrl`. To render the\ncard form from your own checkout, call\n`POST /api/v1/charge/{id}/card/smartform` and redirect the payer to the\nreturned `checkoutUrl`.\n\nA charge created through the API is paid in one installment.\n\nSee the *Charge with Credit Card* request body example below.\n",
     'requestExamples': [
       {
         'name': 'Charge',

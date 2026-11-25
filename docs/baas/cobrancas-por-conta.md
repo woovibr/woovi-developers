@@ -42,7 +42,7 @@ O `value` é sempre em **centavos**. Resposta (resumida):
     "correlationID": "pedido-9134",
     "brCode": "000201010212...",
     "qrCodeImage": "https://api.woovi.com/openpix/charge/brcode/image/...",
-    "paymentLinkUrl": "https://openpix.com.br/pay/...",
+    "paymentLinkUrl": "https://woovi.com/pay/...",
     "expiresDate": "2026-09-24T18:00:00.000Z",
     "globalID": "Q2hhcmdlOi4uLg=="
   }
