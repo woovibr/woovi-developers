@@ -18,9 +18,5 @@
   "item.label.Bacen Pix API": {
     "message": "Bacen Pix API",
     "description": "Navbar item with label Bacen Pix API"
-  },
-  "item.label.OpenPix": {
-    "message": "OpenPix",
-    "description": "Navbar item with label OpenPix"
   }
 }

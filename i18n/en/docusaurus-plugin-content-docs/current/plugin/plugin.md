@@ -9,7 +9,7 @@ The OpenPix Plugin let you easily generate new Pix charges using few lines of co
 The first thing you need to do, it is to include OpenPix plugin script tag at the bottom of your html file
 
 ```html
-<script src="https://plugin.openpix.com.br/v1/openpix.js" async />
+<script src="https://plugin.woovi.com/v1/woovi.js" async />
 ```
 
 The script should be imported inside of `.html` file. For example, if your application is a React Application, the OpenPix Plugin script will be imported inside of `index.html`.
@@ -24,7 +24,7 @@ See the example below:
   </head>
   <body>
     <div id="root"></div>
-    <script src="https://plugin.openpix.com.br/v1/openpix.js" async /></script>
+    <script src="https://plugin.woovi.com/v1/woovi.js" async /></script>
   </body>
 </html>
 ```
