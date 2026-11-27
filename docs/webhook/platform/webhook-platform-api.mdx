@@ -34,7 +34,7 @@ Campos:
 
 - **Nome** - nome do webhook.
 - **Ativo** - se o webhook esta ativo ou inativo.
-- **Evento** - evento a ser ouvido (exemplo: transação pix recebida).
+- **Evento** - evento a ser ouvido (exemplo: transação pix recebida). Para ouvir vários eventos no mesmo webhook, veja [Vários eventos no mesmo webhook](../webhook-multiple-events.md).
 - **URL** - o endpoint na qual o webhook irá chamar.
   - Observação: É importante salientar, que nosso webhook sempre fará uma requisição `POST` no seu endpoint.
 - **Ação** existem dois tipos de ação: chamar api e enviar email. Dependendo de qual decidir será disponibilizado os campos paramêtros obrigatórios.
