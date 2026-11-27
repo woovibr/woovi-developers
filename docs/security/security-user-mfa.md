@@ -23,7 +23,24 @@ A ativação é feita uma vez só por usuário.
 
 :::
 
-## Ativando a autenticação multi-fator
+## Pelo app da Woovi (o jeito mais rápido)
+
+Dá para ativar tudo pelo próprio celular, sem computador.
+
+1. No app da Woovi, toque em **Minha conta**, na barra de baixo.
+2. Na seção **Segurança**, toque em **App autenticador**. Ao lado aparece **Desativado**.
+3. Toque em **Ativar autenticador**.
+4. Na tela **Confirme que é você**, digite o código que enviamos para você (no WhatsApp do celular cadastrado ou no e-mail).
+5. Na tela **Conecte o app autenticador**, toque em **Abrir no app autenticador**. Se o celular não abrir o aplicativo autenticador sozinho, toque em **Copiar** ao lado da **Chave de configuração** e cole no aplicativo autenticador, na opção de inserir a chave.
+6. Volte ao app da Woovi, digite no campo **Código gerado pelo app** o código que está aparecendo no aplicativo autenticador e toque em **Ativar autenticador**.
+
+Pronto: aparece **Autenticador ativado**.
+
+Se você tentar fazer um Pix ou pagamento sem o autenticador, o próprio app mostra a tela **Ative o autenticador para pagar** com o botão **Ativar agora**, que leva para esse mesmo passo a passo.
+
+Se o app pedir para ativar no painel web, como na imagem do começo desta página, ele está desatualizado: atualize o app da Woovi na App Store ou na Google Play, ou siga o [passo a passo pelo computador](#pelo-computador).
+
+## Pelo computador
 
 ### 1. Abra o menu do seu usuário e clique em "Segurança"
 
@@ -104,14 +121,22 @@ autenticador e digite o código que está aparecendo para a conta Woovi.
 ## Trocando de celular
 
 O código fica no aplicativo autenticador do celular antigo. Com ele ainda em mãos, desative o autenticador
-(veja abaixo) e ative de novo, lendo o QR Code com o celular novo. Se já não tem o celular antigo, fale com
+(veja abaixo) e ative de novo no celular novo. Se já não tem o celular antigo, fale com
 o suporte pelo chat.
 
 ## Desativando a autenticação multi-fator
 
+Pelo computador:
+
 1. Abra a aba **Dois fatores** em **Segurança**, como nos passos 1 e 2.
 2. Clique em **Autenticação multifator** e depois em **Desativar**.
 3. Digite o código de confirmação que enviamos e confirme.
+
+Pelo app da Woovi:
+
+1. Toque em **Minha conta** > **App autenticador** > **Desativar autenticador**.
+2. Digite o código de verificação que enviamos.
+3. Pague um Pix de R$ 0,01 de uma conta no seu CPF. Assim que o Pix chegar, o autenticador é desativado.
 
 :::caution
 
